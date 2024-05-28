@@ -364,12 +364,13 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        background-color: #ffffff; /* White background */
-        color: #000000; /* Black text */
+        background-color: #15202b; /* Dark blue background */
+        color: #ffffff; /* White text */
         padding: 20px;
         box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for a sleek look */
         font-family: Arial, sans-serif; /* Use a common font */
         text-align: center; /* Center-align the navigation links */
+        transition: background-color 0.3s ease; /* Smooth transition for background color */
     }
 
     .footer-nav ul {
@@ -385,12 +386,17 @@
 
     .footer-nav ul li a {
         text-decoration: none;
-        color: #000000; /* Black text */
+        color: #ffffff; /* White text */
         font-weight: bold;
+        transition: color 0.3s ease; /* Smooth transition for text color */
     }
 
     .footer-nav ul li a:hover {
-        color: #666666; /* Darker gray on hover */
+        color: #1da1f2; /* Light blue text on hover */
+    }
+
+    .footer-nav:hover {
+        background-color: #1da1f2; /* Light blue background on hover */
     }
 </style>
 
