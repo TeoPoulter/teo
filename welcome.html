@@ -1,463 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Teo's Tool</title>
-  <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      font-family: 'Titan One', cursive;
-      color: #fff;
-      background: linear-gradient(-45deg, #00203FFF, #ADEFD1FF, #00203FFF, #ADEFD1FF, #00203FFF, #ADEFD1FF);
-      background-size: 400% 400%;
-      animation: gradient 20s ease infinite;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Your Site</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/IYIWtJQ.jpeg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background color */
+            color: #ffffff; /* White text color */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    @keyframes gradient {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
+        .container {
+            text-align: center;
+        }
 
-    .animation-container {
-      opacity: 0;
-      animation: fadeIn 3s ease forwards, moveDown 3s ease forwards, fadeOut 1s ease forwards 5s;
-    }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 30px;
+            animation: slideInDown 1s ease;
+        }
 
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
+        .pages {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    @keyframes moveDown {
-      0% {
-        transform: translateY(-50%);
-      }
-      100% {
-        transform: translateY(0);
-      }
-    }
+        .page-item {
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease;
+        }
 
-    @keyframes fadeOut {
-      0% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
+        .page-link {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
 
-    .button-container {
-      opacity: 0;
-      animation: fadeIn 3s ease forwards 6s, shake 0.5s infinite alternate 7s, flyAround 3s ease-in-out 7s forwards;
-      z-index: 1;
-    }
+        .page-link:hover {
+            color: #1da1f2; /* Turquoise color on hover */
+        }
 
-/* Button */
-.button {
-  padding: 20px 40px;
-  background-color: #3498db;
-  color: #fff;
-  font-size: 28px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  font-family: 'Titan One', cursive;
-  animation: grow 2s infinite alternate, sparkle 0.5s infinite alternate; /* Add sparkle animation */
-}
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
 
-.button:hover {
-  background-color: #2980b9;
-}
-
-/* Button Sparkle Animation */
-@keyframes sparkle {
-  0% {
-    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #2980b9, 0 0 40px #2980b9, 0 0 55px #2980b9, 0 0 75px #2980b9;
-  }
-  100% {
-    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #2980b9, 0 0 50px #2980b9, 0 0 70px #2980b9, 0 0 90px #2980b9;
-  }
-}
-
-
-    @keyframes grow {
-      0% {
-        transform: scale(1);
-      }
-      100% {
-        transform: scale(1.1);
-      }
-    }
-
-    @keyframes shake {
-      0% {
-        transform: translateX(0);
-      }
-      25% {
-        transform: translateX(-5px);
-      }
-      50% {
-        transform: translateX(5px);
-      }
-      75% {
-        transform: translateX(-5px);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes flyAround {
-      0% {
-        transform: translate(0, 0);
-      }
-      25% {
-        transform: translate(-50px, -50px);
-      }
-      50% {
-        transform: translate(50px, 50px);
-      }
-      75% {
-        transform: translate(50px, -50px);
-      }
-      100% {
-        transform: translate(-50px, 50px);
-      }
-    }
-
-    .arrow {
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-bottom: 30px solid #3498db;
-      margin-top: 20px;
-      animation: arrowBounce 2s infinite;
-      z-index: 1;
-    }
-
-    @keyframes arrowBounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    .detail {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: #e74c3c;
-      animation: detailRotate 5s linear infinite;
-      z-index: 1;
-      left: 10%;
-    }
-
-    @keyframes detailRotate {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .circle {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background-color: #f39c12;
-      animation: pulse 2s infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-      100% {
-        transform: scale(1.2);
-      }
-    }
-
-/* Particle Variations */
-.particle-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #3498db;
-}
-
-.particle-square {
-  width: 20px;
-  height: 20px;
-  background-color: #e74c3c;
-}
-
-.particle-triangle {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 20px solid #f39c12;
-}
-
-.particle-diamond {
-  width: 20px;
-  height: 20px;
-  transform: rotate(45deg);
-  background-color: #2ecc71;
-}
-
-/* Custom Graphics Examples */
-.custom-graphic {
-  position: absolute;
-  width: 20px;
-  height: auto;
-  z-index: 2;
-}
-
-
-    @keyframes float {
-      0% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-20px);
-      }
-      100% {
-        transform: translateY(0);
-      }
-    }
-
-    .bg-lines {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .line {
-      position: absolute;
-      width: 1px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      animation: animateLine 5s infinite;
-    }
-
-    @keyframes animateLine {
-      0% {
-        transform: translateY(100%);
-      }
-      100% {
-        transform: translateY(-100%);
-      }
-    }
-
-    /* Dynamic Text Effects */
-    .dynamic-text {
-      position: absolute;
-      top: 8%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      text-align: center;
-      animation: textAnimation 4s infinite alternate;
-    }
-
-    @keyframes textAnimation {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-        color: #fff;
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(1.2);
-        color: #f39c12;
-      }
-    }
-
-    /* Sound Effects */
-    #background-music {
-      display: none;
-    }
-
-    /* Particle Effects */
-    .particle-effects {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Custom Graphics */
-    .custom-graphics {
-      /* Integrate custom graphics or illustrations here */
-    }
-  </style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="animation-container">
-    <h1 style="font-size: 64px;">Welcome to <span style="color: #3498DB;">Teo's Tools</span></h1>
-  </div>
-  <div class="button-container">
-<button class="button" onclick="window.open('https://teopoulter.github.io/Teo/home', '_blank')">Click here to start</button>
 
-  </div>
-  <div class="arrow"></div>
-  <div class="detail" style="top: 20%; left: 10%;"></div>
-  <div class="detail" style="top: 70%; left: 70%;"></div>
-  <div class="circle" style="top: 30%; left: 30%;"></div>
-  <div class="circle" style="top: 70%; left: 50%;"></div>
-  <div class="circle" style="top: 50%; left: 80%;"></div>
-  <div class="circle" style="top: 80%; left: 20%;"></div>
-  <div class="particle" style="top: 60%; left: 40%;"></div>
-  <div class="particle" style="top: 40%; left: 70%;"></div>
-  <div class="particle" style="top: 20%; left: 50%;"></div>
-  <div class="particle" style="top: 80%; left: 30%;"></div>
-  <!-- Background lines -->
-  <div class="bg-lines">
-    <!-- Vertical lines -->
-    <div class="line" style="left: 5%;"></div>
-    <div class="line" style="left: 15%;"></div>
-    <div class="line" style="left: 25%;"></div>
-    <div class="line" style="left: 35%;"></div>
-    <div class="line" style="left: 45%;"></div>
-    <div class="line" style="left: 55%;"></div>
-    <div class="line" style="left: 65%;"></div>
-    <div class="line" style="left: 75%;"></div>
-    <div class="line" style="left: 85%;"></div>
-    <div class="line" style="left: 95%;"></div>
-    <!-- Horizontal lines -->
-    <div class="line" style="top: 5%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 15%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 25%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 35%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 45%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 55%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 65%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 75%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 85%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 95%; width: 100%; height: 1px;"></div>
-  </div>
-
-  <!-- Dynamic Text Effects -->
-  <div class="dynamic-text">
-    Woah!
-  </div>
-
-  <!-- Sound Effects -->
-  <audio id="background-music" autoplay loop>
-    <source src="background-music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-<!-- Particle Effects -->
-<div class="particle-effects">
-  <!-- Particle Variations -->
-  <div class="particle particle-circle" style="top: 70%; left: 60%;"></div>
-  <div class="particle particle-square" style="top: 40%; left: 80%;"></div>
-  <div class="particle particle-triangle" style="top: 20%; left: 30%;"></div>
-  <div class="particle particle-diamond" style="top: 80%; left: 70%;"></div>
+<div class="container">
+    <h1 class="logo">Welcome to Your Site</h1>
+    <ul class="pages">
+        <li class="page-item"><a href="index.html" class="page-link">Home</a></li>
+        <li class="page-item"><a href="about.html" class="page-link">About</a></li>
+        <li class="page-item"><a href="services.html" class="page-link">Services</a></li>
+        <li class="page-item"><a href="contact.html" class="page-link">Contact</a></li>
+    </ul>
 </div>
 
-<!-- Custom Graphics -->
-<div class="custom-graphics">
-  <!-- Custom Graphics Examples -->
-  <img src="https://i.imgur.com/IYIWtJQ.jpeg" alt="Custom Graphic 1" class="custom-graphic" style="top: 30%; left: 20%;">
-  <img src="https://i.imgur.com/IYIWtJQ.jpeg" alt="Custom Graphic 2" class="custom-graphic" style="top: 60%; left: 50%;">
-  <!-- Additional Duplicated Images -->
-  <script>
-    const numberOfDuplicates = 20; // Number of duplicates
-    const container = document.querySelector('.custom-graphics');
-    const images = [];
-
-    // Create duplicated images
-    for (let i = 0; i < numberOfDuplicates; i++) {
-      const img = document.createElement('img');
-      img.src = 'https://i.imgur.com/IYIWtJQ.jpeg';
-      img.alt = 'Custom Graphic';
-      img.classList.add('custom-graphic');
-      img.style.position = 'fixed'; // Position relative to the viewport
-      img.style.zIndex = '-1'; // Behind other elements
-      img.style.opacity = Math.random() * 0.5 + 0.1; // Set random opacity between 0.1 and 0.6
-
-      // Randomly position the image around the window screen
-      const randomTop = Math.random() * 100;
-      const randomLeft = Math.random() * 100;
-      img.style.top = `${randomTop}%`;
-      img.style.left = `${randomLeft}%`;
-
-      container.appendChild(img);
-      images.push(img);
-    }
-
-    // Function to handle mousemove event
-    function handleMouseMove(event) {
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-
-      // Calculate distance between mouse and each image
-      images.forEach(img => {
-        const rect = img.getBoundingClientRect();
-        const imgX = rect.left + rect.width / 2;
-        const imgY = rect.top + rect.height / 2;
-        const distance = Math.sqrt((mouseX - imgX) ** 2 + (mouseY - imgY) ** 2);
-
-        // Apply movement if mouse is near the image
-        if (distance < 100) {
-          const randomX = (Math.random() - 0.5) * 10;
-          const randomY = (Math.random() - 0.5) * 10;
-          img.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }
-      });
-    }
-
-    // Function to apply random movement even if mouse isn't near
-    function applyRandomMovement() {
-      images.forEach(img => {
-        const randomX = (Math.random() - 0.5) * 2;
-        const randomY = (Math.random() - 0.5) * 2;
-        img.style.transform = `translate(${randomX}px, ${randomY}px)`;
-      });
-    }
-
-    // Add event listener for mousemove
-    document.addEventListener('mousemove', handleMouseMove);
-
-    // Apply random movement every 5 seconds
-    setInterval(applyRandomMovement, 5000);
-  </script>
-</div>
+</body>
+</html>
