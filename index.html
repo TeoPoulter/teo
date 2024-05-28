@@ -9,6 +9,7 @@
             background-color: #121212;
             color: #ffffff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -18,7 +19,6 @@
             position: relative;
         }
 
-        /* Animated background */
         .background {
             position: absolute;
             top: 0;
@@ -29,7 +29,6 @@
             z-index: -1;
         }
 
-        /* Particle animation */
         .background::after {
             content: '';
             position: absolute;
@@ -52,7 +51,6 @@
             }
         }
 
-        /* Keyframes for rotating gradient */
         .background::before {
             content: '';
             position: absolute;
@@ -77,11 +75,11 @@
             background-color: #1db954;
             border: none;
             color: white;
-            padding: 20px 40px;
+            padding: 10px 20px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 24px;
+            font-size: 18px;
             margin: 4px 2px;
             cursor: pointer;
             border-radius: 12px;
@@ -117,46 +115,153 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             transform: scale(0.98);
         }
+
+        .notification {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1db954;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            z-index: 10;
+            display: none;
+        }
+
+        .progress-bar-container {
+            width: 80%;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #444;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #1db954;
+            width: 0;
+            transition: width 0.2s ease;
+        }
     </style>
 </head>
 <body>
     <div class="background"></div>
-    <button class="button" id="playButton">Play</button>
+    <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+    <button class="button" id="fileButton">File</button>
+    <button class="button" id="playButton" style="display: none;">Play</button>
 
     <audio id="audio" loop>
-        <source src="file:///C:/Users/teojo/Downloads/Power%20&%20Conflict%20Poems.mp3" type="audio/mpeg">
+        <source id="audioSource" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
+    <div class="notification" id="notification"></div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+    </div>
+
     <script>
+
+        window.addEventListener('load', () => {
+            const lastUploadedFile = localStorage.getItem('lastUploadedFile');
+            if (lastUploadedFile) {
+                const fileData = JSON.parse(lastUploadedFile);
+                if (fileData && fileData.name && fileData.src) {
+                    const audioSource = document.getElementById('audioSource');
+                    const audio = document.getElementById('audio');
+                    audioSource.src = fileData.src;
+                    audio.load();
+                    const playButton = document.getElementById('playButton');
+                    playButton.style.display = 'inline-block';
+                    const notification = document.getElementById('notification');
+                    notification.textContent = `Playing ${fileData.name} on repeat`;
+                    notification.style.display = 'block';
+                    const progressBarContainer = document.querySelector('.progress-bar-container');
+                    progressBarContainer.style.display = 'block';
+                } else {
+                    console.error('Invalid file data stored in localStorage.');
+                }
+            }
+        });
+
+        const fileButton = document.getElementById('fileButton');
         const playButton = document.getElementById('playButton');
+        const audioFile = document.getElementById('audioFile');
+
+        fileButton.addEventListener('click', () => {
+            audioFile.click();
+        });
+
+        audioFile.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type.startsWith('audio/')) {
+                    const fileURL = URL.createObjectURL(file);
+                    const audioSource = document.getElementById('audioSource');
+                    const audio = document.getElementById('audio');
+                    audioSource.src = fileURL;
+                    audio.load();
+                    playButton.style.display = 'inline-block';
+                    const notification = document.getElementById('notification');
+                    notification.textContent = `Playing ${file.name} on repeat`;
+                    notification.style.display = 'block';
+                    const progressBarContainer = document.querySelector('.progress-bar-container');
+                    progressBarContainer.style.display = 'block';
+                    const progressBarFill = document.getElementById('progressBarFill');
+                    progressBarFill.style.width = '0%';
+
+                    // Save file details to localStorage
+                    const fileData = {
+                        name: file.name,
+                        src: fileURL
+                    };
+                    localStorage.setItem('lastUploadedFile', JSON.stringify(fileData));
+                } else {
+                    const notification = document.getElementById('notification');
+                    notification.textContent = 'Error: Please upload an audio file.';
+                    notification.style.backgroundColor = '#ff3d00'; // Change color to indicate error
+                    setTimeout(() => {
+                        notification.textContent = '';
+                        notification.style.backgroundColor = '#1db954'; // Reset color after a delay
+                    }, 3000);
+                }
+            }
+        });
+
         const audio = document.getElementById('audio');
-
-        let isPlaying = false;
-
-        playButton.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                playButton.textContent = 'Play';
-            } else {
+        const playButtonClickHandler = () => {
+            if (audio.paused) {
                 audio.play();
                 playButton.textContent = 'Pause';
+            } else {
+                audio.pause();
+                playButton.textContent = 'Play';
             }
-            isPlaying = !isPlaying;
-        });
+        };
+
+        playButton.addEventListener('click', playButtonClickHandler);
 
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space') {
-                event.preventDefault(); // Prevent default spacebar action (scrolling)
-                if (isPlaying) {
-                    audio.pause();
-                    playButton.textContent = 'Play';
-                } else {
-                    audio.play();
-                    playButton.textContent = 'Pause';
-                }
-                isPlaying = !isPlaying;
+                event.preventDefault();
+                playButtonClickHandler();
             }
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            const progressBarFill = document.getElementById('progressBarFill');
+            progressBarFill.style.width = `${progress}%`;
         });
     </script>
 </body>
