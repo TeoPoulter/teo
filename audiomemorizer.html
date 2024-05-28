@@ -285,48 +285,70 @@
     </script>
 </body>
 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1a1a1a; /* Dark background color */
+            color: #ffffff; /* White text */
+            padding: 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for a sleek look */
+            font-family: Arial, sans-serif; /* Use a common font */
+            text-align: center; /* Center-align the navigation links */
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        .footer-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        .footer-nav ul li a {
+            text-decoration: none;
+            color: #ffffff; /* White text */
+            font-weight: bold;
+            transition: color 0.3s ease; /* Smooth transition for text color */
+        }
+
+        .footer-nav ul li a:hover {
+            color: #cccccc; /* Light gray on hover */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
 <nav class="footer-nav">
     <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="welcome.html">Home</a></li>
+        <li><a href="memorization.html">Memorization</a></li>
+        <li><a href="audiomemorizer.html">Audio Memorizer</a></li>
         <li><a href="mongoose.html">Mongoose</a></li>
     </ul>
 </nav>
-
-<style>
-    .footer-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #ffffff; /* White background */
-        color: #000000; /* Black text */
-        padding: 20px;
-        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for a sleek look */
-        font-family: Arial, sans-serif; /* Use a common font */
-        text-align: center; /* Center-align the navigation links */
-    }
-
-    .footer-nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .footer-nav ul li {
-        display: inline;
-        margin-right: 20px;
-    }
-
-    .footer-nav ul li a {
-        text-decoration: none;
-        color: #000000; /* Black text */
-        font-weight: bold;
-    }
-
-    .footer-nav ul li a:hover {
-        color: #666666; /* Darker gray on hover */
-    }
-</style>
 
 </body>
 </html>
