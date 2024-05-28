@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorisation</title>
+    <link rel="icon" type="image/jpg" href="https://img.freepik.com/free-vector/gradient-t-logo-template_23-2149372726.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1715644800&semt=ais_user">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            width: 100%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        p {
+            font-size: 2vw;
+            width: 90%;
+            line-height: 1.5;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-gap {
+            border: none;
+            border-bottom: 2px solid #ccc;
+            outline: none;
+            width: auto;
+            margin: 0 5px;
+            padding: 2px;
+            font-size: 1em;
+            text-align: center;
+            background-color: transparent;
+            color: #fff;
+        }
+        .input-gap.correct {
+            border-bottom-color: #00ff00;
+            color: #00ff00;
+        }
+        .input-gap.incorrect {
+            border-bottom-color: red;
+            color: red;
+        }
+        .feedback {
+            display: inline-block;
+            font-size: 1.5em;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .feedback.correct {
+            color: #00ff00;
+        }
+        .feedback.incorrect {
+            color: red;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .option-button, .check-button, .import-button, .export-button {
+            background-color: transparent;
+            color: #ff7f50;
+            border: 2px solid #ff7f50;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+        .option-button:hover, .check-button:hover, .import-button:hover, .export-button:hover {
+            background-color: #ff6347;
+        }
+        .option-button.active {
+            background-color: #ff4500;
+            color: #000;
+            transform: scale(1.1);
+        }
+        .check-button {
+            background-color: transparent;
+            color: #ff7f50;
+            border: 2px solid #ff7f50;
+        }
+        .check-button:hover {
+            background-color: #ff7f50;
+            color: #fff;
+        }
+        .controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .separator {
+            width: 90%;
+            border-bottom: 2px solid #ff7f50;
+            margin: 20px 0;
+        }
+        .text-selection-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #000;
+            color: #ff7f50;
+            border: 2px solid #00008B;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 999;
+        }
+        .text-selection-menu {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-color: #ff7f50;
+            border: 5px solid #fff;
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            animation: fadeIn 0.5s ease;
+        }
+        .text-selection-menu.active {
+            display: block;
+            opacity: 1;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .text-selection-content {
+            height: calc(100% - 80px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 30px;
+        }
+        .text-entry-container {
+            width: 100%;
+            padding: 20px 0;
+        }
+        .text-entry-container button {
+            margin-top: 10px;
+        }
+        .text-item {
+            padding: 10px;
+            border-bottom: 1px solid #fff;
+            cursor: pointer;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        .text-item:last-child {
+            border-bottom: none;
+        }
+        .add-text-button, .remove-text-button, .import-button, .export-button {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 0 10px;
+        }
+        .add-text-button:hover, .remove-text-button:hover, .import-button:hover, .export-button:hover {
+            background-color: #ff7f50;
+            color: #000;
+        }
+        .glitter-animation {
+            animation: glitter 0.25s ease-in-out;
+        }
+        @keyframes glitter {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+            100% { transform: rotate(0deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+      
+/* Add styles for arrow buttons */
+
+        .dialogue-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dialogue-box {
+            background-color: #333;
+            color: #fff;
+            border: 2px solid #ff7f50;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .dialogue-box input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1em;
+            background-color: #444;
+            color: #fff;
+        }
+
+        .dialogue-box button {
+            background-color: #ff7f50;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dialogue-box button:hover {
+            background-color: #ff6347;
+        }
+   
+.arrow-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #000;
+    color: #ff7f50;
+    border: 2px solid #00008B;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.arrow-button:hover {
+    background-color: #ff7f50;
+    color: #000;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p id="text-container"></p>
+    </div>
+    <div class="controls">
+        <div class="separator"></div>
+        <button class="check-button" onclick="checkAnswers()">Check Answers</button>
+        <div class="button-container">
+            <button class="option-button" onclick="changeBlanks(2)">2 blanks</button>
+            <button class="option-button" onclick="changeBlanks(3)">3 blanks</button>
+            <button class="option-button" onclick="changeBlanks(4)">4 blanks</button>
+            <button class="option-button" onclick="changeBlanks(5)">5 blanks</button>
+            <button class="option-button" onclick="changeBlanks(6)">6 blanks</button>
+            <button class="option-button" onclick="changeBlanks(7)">7 blanks</button>
+            <button class="option-button" onclick="changeBlanks(8)">8 blanks</button>
+        </div>
+    </div>
+
+
+
+    <!-- Arrow buttons -->
+    <button class="arrow-button" id="prevButton" onclick="navigateText('prev')">←</button>
+    <button class="arrow-button" id="nextButton" onclick="navigateText('next')">→</button>
+
+    <button class="text-selection-button" onclick="openTextSelection()">Text Selection</button>
+    <div id="text-selection-menu" class="text-selection-menu">
+        <span class="close-button" onclick="closeTextSelection()">&times;</span>
+        <div class="text-selection-content">
+            <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                <button class="add-text-button" onclick="addText()">Add Text</button>
+                <button class="remove-text-button" onclick="removeText()">Remove Text</button>
+                <button class="import-button" onclick="importText()">Import List</button>
+                <button class="export-button" onclick="exportText()">Export List</button>
+            </div>
+            <div id="text-list" class="text-entry-container">
+                <!-- Text items will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let texts = JSON.parse(localStorage.getItem('texts')) || ["This is a simple web page that helps you memorise quotes, answers, and more."];
+        let words = texts[0].split(' ');
+        let numberOfBlanks = 2;
+        let currentIndex = 0;
+
+        function getRandomIndexes(count, max) {
+            const indexes = new Set();
+            while (indexes.size < Math.min(count, max)) {
+                indexes.add(Math.floor(Math.random() * max));
+            }
+            return Array.from(indexes);
+        }
+
+        function createTextWithGaps() {
+            const textContainer = document.getElementById('text-container');
+            textContainer.innerHTML = ''; // Clear previous content
+
+            const randomIndexes = getRandomIndexes(numberOfBlanks, words.length);
+
+            words.forEach((word, index) => {
+                if (randomIndexes.includes(index)) {
+                    const inputWrapper = document.createElement('span');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'input-gap';
+                    input.setAttribute('data-answer', word);
+                    input.setAttribute('size', word.length);
+                    inputWrapper.appendChild(input);
+
+                    const feedback = document.createElement('span');
+                    feedback.classList.add('feedback');
+                    inputWrapper.appendChild(feedback);
+
+                    textContainer.appendChild(inputWrapper);
+                } else {
+                    textContainer.appendChild(document.createTextNode(word + ' '));
+                }
+            });
+        }
+
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('.input-gap');
+            inputs.forEach(input => {
+                const answer = input.getAttribute('data-answer');
+                const feedback = input.nextElementSibling;
+                if (input.value.trim().toLowerCase() === answer.toLowerCase()) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    feedback.classList.add('correct');
+                    feedback.classList.remove('incorrect');
+                    feedback.textContent = '✔️';
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                    feedback.classList.add('incorrect');
+                    feedback.classList.remove('correct');
+                    feedback.textContent = '❌';
+                    input.value = answer;
+                }
+            });
+
+            // Trigger glitter animation
+            const container = document.querySelector('.container');
+            container.classList.add('glitter-animation');
+            setTimeout(() => {
+                container.classList.remove('glitter-animation');
+            }, 250);
+        }
+
+        function changeBlanks(num) {
+            numberOfBlanks = num;
+            createTextWithGaps();
+            document.querySelectorAll('.option-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function openTextSelection() {
+            const menu = document.getElementById('text-selection-menu');
+            menu.classList.add('active');
+
+            // Add event listener for Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeTextSelection();
+                }
+            });
+        }
+
+        function closeTextSelection() {
+            const menu = document.getElementById('text-selection-menu');
+            menu.classList.remove('active');
+        }
+
+        // Add event listener for closing the menu on "x" button click
+        document.querySelector('.close-button').addEventListener('click', closeTextSelection);
+
+        function addText() {
+            const text = prompt("What do you need to learn?");
+            if (text) {
+                texts.push(text);
+                localStorage.setItem('texts', JSON.stringify(texts));
+                const textList = document.getElementById('text-list');
+                const textItem = document.createElement('div');
+                textItem.textContent = text;
+                textItem.classList.add('text-item');
+                textList.appendChild(textItem);
+
+                // Update main text
+                words = text.split(' ');
+                createTextWithGaps();
+            }
+        }
+
+        function removeText() {
+            const textItems = document.querySelectorAll('.text-item');
+            textItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = texts.indexOf(item.textContent);
+                    if (index !== -1) {
+                        texts.splice(index, 1);
+                        localStorage.setItem('texts', JSON.stringify(texts));
+                        item.remove();
+                    }
+                    // Update main text
+                    if (texts.length > 0) {
+                        words = texts[Math.floor(Math.random() * texts.length)].split(' ');
+                        createTextWithGaps();
+                    } else {
+                        document.getElementById('text-container').innerHTML = '';
+                    }
+                });
+            });
+        }
+
+        function navigateText(direction) {
+            if (direction === 'prev') {
+                currentIndex = (currentIndex - 1 + texts.length) % texts.length;
+            } else if (direction === 'next') {
+                currentIndex = (currentIndex + 1) % texts.length;
+            }
+            words = texts[currentIndex].split(' ');
+            createTextWithGaps();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createTextWithGaps();
+            const textList = document.getElementById('text-list');
+            texts.forEach(text => {
+                const textItem = document.createElement('div');
+                textItem.textContent = text;
+                textItem.classList.add('text-item');
+                textList.appendChild(textItem);
+            });
+        });
+
+        document.querySelector('.option-button').classList.add('active');
+
+        // Set event listeners for arrow key navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                navigateText('prev');
+            } else if (event.key === 'ArrowRight') {
+                navigateText('next');
+            }
+        });
+
+        // Add event listener for Enter key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswers();
+            }
+        });
+
+        // Export list function
+        function exportText() {
+            const textToExport = texts.join('\n');
+            const blob = new Blob([textToExport], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'text_list.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Import list function
+        function importText() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'text/plain';
+            fileInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const importedText = event.target.result;
+                        texts = importedText.split('\n').filter(line => line.trim() !== '');
+                        localStorage.setItem('texts', JSON.stringify(texts));
+                        const textList = document.getElementById('text-list');
+                        textList.innerHTML = '';
+                        texts.forEach(text => {
+                            const textItem = document.createElement('div');
+                            textItem.textContent = text;
+                            textItem.classList.add('text-item');
+                            textList.appendChild(textItem);
+                        });
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            fileInput.click();
+        }
+    </script>
+</body>
+</html>
