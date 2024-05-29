@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Memorizer</title>
-      <link rel="icon" type="image/x-icon" href="https://i.imgur.com/IYIWtJQ.jpeg">
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/IYIWtJQ.jpeg">
     <style>
         body {
             background-color: #121212;
             color: #ffffff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -18,7 +20,6 @@
             position: relative;
         }
 
-        /* Animated background */
         .background {
             position: absolute;
             top: 0;
@@ -29,7 +30,6 @@
             z-index: -1;
         }
 
-        /* Particle animation */
         .background::after {
             content: '';
             position: absolute;
@@ -52,7 +52,6 @@
             }
         }
 
-        /* Keyframes for rotating gradient */
         .background::before {
             content: '';
             position: absolute;
@@ -156,6 +155,95 @@
             background-color: #1db954;
             width: 0;
         }
+
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0d47a1; /* Dark blue background color */
+            color: #ffffff; /* White text */
+            padding: 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            transition: background-color 0.3s;
+        }
+
+        .footer-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        .footer-nav ul li a {
+            text-decoration: none;
+            color: #ffffff; /* White text */
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav ul li a:hover {
+            color: #b3e5fc; /* Light turquoise on hover */
+        }
+
+        .footer-nav:hover {
+            background-color: #0b3c8e; /* Slightly darker blue on hover */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .loaded-files {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1db954;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .loaded-files h2 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+
+        .loaded-files ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .loaded-files li {
+            margin: 10px 0;
+        }
+
+        .play-btn {
+            background-color: #1ed760;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .play-btn:hover {
+            background-color: #17a450;
+        }
     </style>
 </head>
 <body>
@@ -168,11 +256,26 @@
     <div class="progress-bar-container">
         <div class="progress-bar-fill" id="progressBarFill"></div>
     </div>
+    <div class="loaded-files">
+        <h2>Play Loaded Files</h2>
+        <ul id="loadedFilesList">
+            <!-- Loaded files will be listed here -->
+        </ul>
+    </div>
 
     <audio id="audio" loop>
         <source id="audioSource" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
+    <nav class="footer-nav">
+        <ul>
+            <li><a href="welcome.html">Home</a></li>
+            <li><a href="memorization.html">Memorization</a></li>
+            <li><a href="audiomemorizer.html">Audio Memorizer</a></li>
+            <li><a href="mongoose.html">Mongoose</a></li>
+        </ul>
+    </nav>
 
     <script>
         const fileButton = document.getElementById('fileButton');
@@ -184,8 +287,10 @@
         const progressBarFill = document.getElementById('progressBarFill');
         const progressBarContainer = document.querySelector('.progress-bar-container');
         const recentlyUploaded = document.getElementById('recentlyUploaded');
+        const loadedFilesList = document.getElementById('loadedFilesList');
 
         let isPlaying = false;
+        let loadedFiles = [];
 
         fileButton.addEventListener('click', () => {
             audioFile.click();
@@ -204,47 +309,43 @@
                     notification.style.display = 'block';
                     progressBarContainer.style.display = 'block';
 
-                    // Update the list of recently uploaded files
-                    updateRecentlyUploaded(file);
+                    // Update the list of loaded files
+                    loadedFiles.push({ name: file.name, url: fileURL });
+                    updateLoadedFilesList();
                 } else {
-                    // Error handling for incorrect file type
                     notification.textContent = 'Error: Please upload an audio file.';
-                    notification.style.backgroundColor = '#ff3d00'; // Change color to indicate error
+                    notification.style.backgroundColor = '#ff3d00';
                     setTimeout(() => {
                         notification.textContent = '';
-                        notification.style.backgroundColor = '#1db954'; // Reset color after a delay
+                        notification.style.backgroundColor = '#1db954';
                     }, 3000);
                 }
             }
         });
 
-        function updateRecentlyUploaded(file) {
-            // Clear the previously uploaded file
-            recentlyUploaded.innerHTML = '<h2>Recently Uploaded Files</h2>';
-
-            // Create a new list item for the recently uploaded file
-            const fileName = file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name;
-            const recentFile = document.createElement('div');
-            recentFile.classList.add('recent-file');
-            recentFile.innerHTML = `
-                <span>${fileName}</span>
-                <button class="play-btn" onclick="playUploadedFile()">Play</button>
-            `;
-            recentlyUploaded.appendChild(recentFile);
+        function updateLoadedFilesList() {
+            loadedFilesList.innerHTML = '';
+            loadedFiles.forEach((file, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span>${file.name}</span>
+                    <button class="play-btn" onclick="playLoadedFile(${index})">Play</button>
+                `;
+                loadedFilesList.appendChild(listItem);
+            });
         }
 
-        function playUploadedFile() {
-            const file = audioFile.files[0];
-            if (file) {
-                const fileURL = URL.createObjectURL(file);
-                audioSource.src = fileURL;
-                audio.load();
-                audio.play();
-                playButton.style.display = 'inline-block';
-                notification.textContent = `Playing ${file.name} on repeat`;
-                notification.style.display = 'block';
-                progressBarContainer.style.display = 'block';
-            }
+        function playLoadedFile(index) {
+            const file = loadedFiles[index];
+            audioSource.src = file.url;
+            audio.load();
+            audio.play();
+            playButton.style.display = 'inline-block';
+            notification.textContent = `Playing ${file.name} on repeat`;
+            notification.style.display = 'block';
+            progressBarContainer.style.display = 'block';
+            playButton.textContent = 'Pause';
+            isPlaying = true;
         }
 
         audio.addEventListener('timeupdate', () => {
@@ -282,73 +383,26 @@
                 }
             }
         });
+
+        // Fetch and list .mp3 files from the GitHub repository
+        async function fetchMp3Files() {
+            const repoUrl = 'https://api.github.com/repos/TeoPoulter/teo/contents/';
+            try {
+                const response = await fetch(repoUrl);
+                const files = await response.json();
+                files.forEach(file => {
+                    if (file.name.endsWith('.mp3')) {
+                        const fileUrl = file.download_url;
+                        loadedFiles.push({ name: file.name, url: fileUrl });
+                    }
+                });
+                updateLoadedFilesList();
+            } catch (error) {
+                console.error('Error fetching .mp3 files from the repository:', error);
+            }
+        }
+
+        fetchMp3Files();
     </script>
-</body>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .footer-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #1a1a1a; /* Dark background color */
-            color: #ffffff; /* White text */
-            padding: 20px;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for a sleek look */
-            font-family: Arial, sans-serif; /* Use a common font */
-            text-align: center; /* Center-align the navigation links */
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-        }
-
-        .footer-nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .footer-nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-
-        .footer-nav ul li a {
-            text-decoration: none;
-            color: #ffffff; /* White text */
-            font-weight: bold;
-            transition: color 0.3s ease; /* Smooth transition for text color */
-        }
-
-        .footer-nav ul li a:hover {
-            color: #cccccc; /* Light gray on hover */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<nav class="footer-nav">
-    <ul>
-        <li><a href="welcome.html">Home</a></li>
-        <li><a href="memorization.html">Memorization</a></li>
-        <li><a href="audiomemorizer.html">Audio Memorizer</a></li>
-        <li><a href="mongoose.html">Mongoose</a></li>
-    </ul>
-</nav>
-
 </body>
 </html>
