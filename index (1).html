@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Infinite Canvas</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/IYIWtJQ.jpeg">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #toolbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            flex-shrink: 0;
+        }
+
+        #toolbar button {
+            margin: 0 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        #toolbar label {
+            margin-right: 5px;
+        }
+
+        #canvas {
+            display: block;
+            flex-grow: 1;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="toolbar">
+        <label for="colorPicker">Color:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <label for="lineWidth">Width:</label>
+        <input type="range" id="lineWidth" min="1" max="10" value="2">
+        <label for="gridSize">Grid Size:</label>
+        <input type="range" id="gridSize" min="10" max="100" value="20">
+        <button id="toggleGrid">Toggle Grid</button>
+        <button id="clearCanvas">Clear Canvas</button>
+        <button id="undoButton">Undo</button>
+        <button id="redoButton">Redo</button>
+        <button id="exportButton">Export as PNG</button>
+    </div>
+    <canvas id="canvas">Your browser does not support HTML5 canvas</canvas>
+    <script>
+        // get our canvas element
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+
+        // disable right clicking
+        document.oncontextmenu = function () {
+            return false;
+        }
+
+        // list of all strokes drawn
+        let drawings = [];
+        let undoneDrawings = [];
+
+        // coordinates of our cursor
+        let cursorX;
+        let cursorY;
+        let prevCursorX;
+        let prevCursorY;
+
+        // distance from origin
+        let offsetX = 0;
+        let offsetY = 0;
+
+        // zoom amount
+        let scale = 1;
+
+        // drawing settings
+        let drawingColor = '#000000';
+        let drawingWidth = 2;
+
+        // grid settings
+        let gridSize = 20;
+        let showGrid = false;
+
+        // controls
+        const colorPicker = document.getElementById("colorPicker");
+        const lineWidth = document.getElementById("lineWidth");
+        const gridSizeSlider = document.getElementById("gridSize");
+        const toggleGridButton = document.getElementById("toggleGrid");
+        const clearCanvasButton = document.getElementById("clearCanvas");
+        const undoButton = document.getElementById("undoButton");
+        const redoButton = document.getElementById("redoButton");
+        const exportButton = document.getElementById("exportButton");
+
+        colorPicker.addEventListener("input", (e) => {
+            drawingColor = e.target.value;
+        });
+
+        lineWidth.addEventListener("input", (e) => {
+            drawingWidth = e.target.value;
+        });
+
+        gridSizeSlider.addEventListener("input", (e) => {
+            gridSize = e.target.value;
+            redrawCanvas();
+        });
+
+        toggleGridButton.addEventListener("click", () => {
+            showGrid = !showGrid;
+            redrawCanvas();
+        });
+
+        clearCanvasButton.addEventListener("click", () => {
+            clearCanvas();
+        });
+
+        undoButton.addEventListener("click", () => {
+            undo();
+        });
+
+        redoButton.addEventListener("click", () => {
+            redo();
+        });
+
+        exportButton.addEventListener("click", () => {
+            exportCanvasAsPNG();
+        });
+
+        function clearCanvas() {
+            drawings = [];
+            redrawCanvas();
+            saveToLocalStorage();
+        }
+
+        function undo() {
+            if (drawings.length > 0) {
+                undoneDrawings.push(drawings.pop());
+                redrawCanvas();
+                saveToLocalStorage();
+            }
+        }
+
+        function redo() {
+            if (undoneDrawings.length > 0) {
+                drawings.push(undoneDrawings.pop());
+                redrawCanvas();
+                saveToLocalStorage();
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('drawings', JSON.stringify(drawings));
+        }
+
+        function loadFromLocalStorage() {
+            const savedDrawings = localStorage.getItem('drawings');
+            if (savedDrawings) {
+                drawings = JSON.parse(savedDrawings);
+                redrawCanvas();
+            }
+        }
+
+        // convert coordinates
+        function toScreenX(xTrue) {
+            return (xTrue + offsetX) * scale;
+        }
+
+        function toScreenY(yTrue) {
+            return (yTrue + offsetY) * scale;
+        }
+
+        function toTrueX(xScreen) {
+            return (xScreen / scale) - offsetX;
+        }
+
+        function toTrueY(yScreen) {
+            return (yScreen / scale) - offsetY;
+        }
+
+        function trueHeight() {
+            return canvas.clientHeight / scale;
+        }
+
+        function trueWidth() {
+            return canvas.clientWidth / scale;
+        }
+
+        function redrawCanvas() {
+            // set the canvas to the size of the window
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - document.getElementById("toolbar").offsetHeight;
+
+            context.fillStyle = '#fff';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (showGrid) {
+                drawGrid();
+            }
+
+            for (let i = 0; i < drawings.length; i++) {
+                const line = drawings[i];
+                drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1), line.color, line.width);
+            }
+        }
+
+        function drawGrid() {
+            context.strokeStyle = '#ccc';
+            context.lineWidth = 0.5;
+
+            for (let x = 0; x < canvas.width; x += gridSize * scale) {
+                context.beginPath();
+                context.moveTo(x, 0);
+                context.lineTo(x, canvas.height);
+                context.stroke();
+            }
+
+            for (let y = 0; y < canvas.height; y += gridSize * scale) {
+                context.beginPath();
+                context.moveTo(0, y);
+                context.lineTo(canvas.width, y);
+                context.stroke();
+            }
+        }
+
+        // if the window changes size, redraw the canvas
+        window.addEventListener("resize", (event) => {
+            redrawCanvas();
+        });
+
+        // Load drawings from localStorage when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFromLocalStorage();
+        });
+
+        // Mouse Event Handlers
+        canvas.addEventListener('mousedown', onMouseDown);
+        canvas.addEventListener('mouseup', onMouseUp, false);
+        canvas.addEventListener('mouseout', onMouseUp, false);
+        canvas.addEventListener('mousemove', onMouseMove, false);
+        canvas.addEventListener('wheel', onMouseWheel, false);
+
+        // Touch Event Handlers 
+        canvas.addEventListener('touchstart', onTouchStart);
+        canvas.addEventListener('touchend', onTouchEnd);
+        canvas.addEventListener('touchcancel', onTouchEnd);
+        canvas.addEventListener('touchmove', onTouchMove);
+
+        // mouse functions
+        let leftMouseDown = false;
+        let rightMouseDown = false;
+
+        function onMouseDown(event) {
+            // detect left clicks
+            if (event.button == 0) {
+                leftMouseDown = true;
+                rightMouseDown = false;
+            }
+            // detect right clicks
+            if (event.button == 2) {
+                rightMouseDown = true;
+                leftMouseDown = false;
+            }
+
+            // update the cursor coordinates
+            cursorX = event.pageX;
+            cursorY = event.pageY;
+            prevCursorX = event.pageX;
+            prevCursorY = event.pageY;
+        }
+
+        function onMouseMove(event) {
+            // get mouse position
+            cursorX = event.pageX;
+            cursorY = event.pageY;
+            const scaledX = toTrueX(cursorX);
+            const scaledY = toTrueY(cursorY);
+            const prevScaledX = toTrueX(prevCursorX);
+            const prevScaledY = toTrueY(prevCursorY);
+
+            if (leftMouseDown) {
+                // add the line to our drawing history
+                drawings.push({
+                    x0: prevScaledX,
+                    y0: prevScaledY,
+                    x1: scaledX,
+                    y1: scaledY,
+                    color: drawingColor,
+                    width: drawingWidth
+                });
+
+                // redraw only the part of the canvas that has changed
+                drawLine(prevCursorX, prevCursorY, cursorX, cursorY, drawingColor, drawingWidth);
+                saveToLocalStorage();
+            }
+
+            // if the right mouse button is pressed, pan the camera
+            if (rightMouseDown) {
+                // calculate the difference in cursor position
+                const deltaX = cursorX - prevCursorX;
+                const deltaY = cursorY - prevCursorY;
+
+                // update the offset of our canvas
+                offsetX += deltaX / scale;
+                offsetY += deltaY / scale;
+
+                // redraw the canvas
+                redrawCanvas();
+            }
+
+            // update previous cursor positions
+            prevCursorX = cursorX;
+            prevCursorY = cursorY;
+        }
+
+        function onMouseUp(event) {
+            leftMouseDown = false;
+            rightMouseDown = false;
+        }
+
+        // touch functions
+        function onTouchStart(event) {
+            // update cursor position
+            cursorX = event.touches[0].pageX;
+            cursorY = event.touches[0].pageY;
+            prevCursorX = event.touches[0].pageX;
+            prevCursorY = event.touches[0].pageY;
+
+            if (event.touches.length == 2) {
+                prevDistance = getDistance(event.touches);
+                panning = true;
+            }
+        }
+
+        function onTouchMove(event) {
+            cursorX = event.touches[0].pageX;
+            cursorY = event.touches[0].pageY;
+
+            const scaledX = toTrueX(cursorX);
+            const scaledY = toTrueY(cursorY);
+            const prevScaledX = toTrueX(prevCursorX);
+            const prevScaledY = toTrueY(prevCursorY);
+
+            if (event.touches.length == 1) {
+                drawings.push({
+                    x0: prevScaledX,
+                    y0: prevScaledY,
+                    x1: scaledX,
+                    y1: scaledY,
+                    color: drawingColor,
+                    width: drawingWidth
+                });
+
+                drawLine(prevCursorX, prevCursorY, cursorX, cursorY, drawingColor, drawingWidth);
+                saveToLocalStorage();
+            }
+
+            if (event.touches.length == 2 && panning) {
+                // calculate the difference in cursor position
+                const deltaX = cursorX - prevCursorX;
+                const deltaY = cursorY - prevCursorY;
+
+                // update the offset of our canvas
+                offsetX += deltaX / scale;
+                offsetY += deltaY / scale;
+
+                // redraw the canvas
+                redrawCanvas();
+            }
+
+            // update previous cursor positions
+            prevCursorX = cursorX;
+            prevCursorY = cursorY;
+        }
+
+        function onTouchEnd(event) {
+            panning = false;
+        }
+
+        function getDistance(touches) {
+            return Math.sqrt(Math.pow(touches[0].pageX - touches[1].pageX, 2) + Math.pow(touches[0].pageY - touches[1].pageY, 2));
+        }
+
+        // zoom functions
+        let zoomIntensity = 0.1;
+
+        function onMouseWheel(event) {
+            const mouseX = toTrueX(event.pageX);
+            const mouseY = toTrueY(event.pageY);
+
+            if (event.deltaY < 0) {
+                scale *= 1 + zoomIntensity;
+            } else {
+                scale /= 1 + zoomIntensity;
+            }
+
+            offsetX = mouseX - (event.pageX / scale);
+            offsetY = mouseY - (event.pageY / scale);
+
+            redrawCanvas();
+        }
+
+        function onTouchStart(event) {
+            // code to handle touch start event
+        }
+
+        function onTouchEnd(event) {
+            // code to handle touch end event
+        }
+
+        function onTouchMove(event) {
+            // code to handle touch move event
+        }
+
+        // drawing functions
+        function drawLine(x0, y0, x1, y1, color, width) {
+            context.strokeStyle = color;
+            context.lineWidth = width;
+            context.beginPath();
+            context.moveTo(x0, y0);
+            context.lineTo(x1, y1);
+            context.stroke();
+        }
+
+        function exportCanvasAsPNG() {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'Teos Canvas.png';
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
