@@ -285,7 +285,7 @@
             cursorY = event.pageY;
             if (event.button == 0) {
                 if (isErasing) {
-                    eraseObject(toTrueX(cursorX), toTrueY(cursorY));
+                    startErasing(toTrueX(cursorX), toTrueY(cursorY));
                 } else {
                     startDrawing(toTrueX(cursorX), toTrueY(cursorY));
                 }
@@ -297,8 +297,12 @@
         function onMouseUp(event) {
             cursorX = event.pageX;
             cursorY = event.pageY;
-            if (event.button == 0 && !isErasing) {
-                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (event.button == 0) {
+                if (isErasing) {
+                    stopErasing(toTrueX(cursorX), toTrueY(cursorY));
+                } else {
+                    stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                }
             } else if (event.button == 1) {
                 stopDragging(event.pageX, event.pageY);
             }
@@ -307,7 +311,11 @@
         function onMouseMove(event) {
             cursorX = event.pageX;
             cursorY = event.pageY;
-            continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                continueErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
             continueDragging(event.pageX, event.pageY);
         }
 
@@ -324,6 +332,7 @@
 
         let isDrawing = false;
         let isDragging = false;
+        let isErasingNow = false;
 
         function startDrawing(x, y) {
             isDrawing = true;
@@ -375,7 +384,11 @@
             const touch = event.touches[0];
             cursorX = touch.pageX;
             cursorY = touch.pageY;
-            startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                startErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function onTouchMove(event) {
@@ -383,15 +396,27 @@
             const touch = event.touches[0];
             cursorX = touch.pageX;
             cursorY = touch.pageY;
-            continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                continueErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function onTouchEnd(event) {
-            stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                stopErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function onTouchCancel(event) {
-            stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                stopErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function drawLine(x0, y0, x1, y1, color, width) {
@@ -403,18 +428,38 @@
             context.stroke();
         }
 
-        function eraseObject(x, y) {
-            const index = drawings.findIndex(drawing => 
-                x >= Math.min(drawing.x0, drawing.x1) &&
-                x <= Math.max(drawing.x0, drawing.x1) &&
-                y >= Math.min(drawing.y0, drawing.y1) &&
-                y <= Math.max(drawing.y0, drawing.y1)
-            );
+        function startErasing(x, y) {
+            isErasingNow = true;
+            eraseObject(x, y);
+        }
 
-            if (index !== -1) {
-                drawings.splice(index, 1);
-                redrawCanvas();
+        function continueErasing(x, y) {
+            if (isErasingNow) {
+                eraseObject(x, y);
             }
+        }
+
+        function stopErasing(x, y) {
+            if (isErasingNow) {
+                continueErasing(x, y);
+                isErasingNow = false;
+            }
+        }
+
+        function eraseObject(x, y) {
+            const eraserSize = drawingWidth * 10; // Adjust eraser size as needed
+            for (let i = drawings.length - 1; i >= 0; i--) {
+                const drawing = drawings[i];
+                if (
+                    (x >= Math.min(drawing.x0, drawing.x1) - eraserSize &&
+                        x <= Math.max(drawing.x0, drawing.x1) + eraserSize &&
+                        y >= Math.min(drawing.y0, drawing.y1) - eraserSize &&
+                        y <= Math.max(drawing.y0, drawing.y1) + eraserSize)
+                ) {
+                    drawings.splice(i, 1);
+                }
+            }
+            redrawCanvas();
         }
     </script>
 </body>
