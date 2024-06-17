@@ -150,6 +150,7 @@
         let showGrid = false;
         let gridSize = 40;
         let isErasing = false;
+        let isFirstDraw = true; // Track if it's the first draw
 
         const colorPicker = document.getElementById("colorPicker");
         const lineWidth = document.getElementById("lineWidth");
@@ -188,7 +189,6 @@
 
         toggleGridButton.addEventListener("click", () => {
             showGrid = !showGrid;
-            toggleFullScreen();
             redrawCanvas();
         });
 
@@ -338,6 +338,12 @@
             isDrawing = true;
             prevCursorX = x;
             prevCursorY = y;
+
+            // If it's the first draw, go fullscreen
+            if (isFirstDraw) {
+                isFirstDraw = false;
+                toggleFullScreen();
+            }
         }
 
         function continueDrawing(x, y) {
