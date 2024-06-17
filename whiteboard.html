@@ -45,7 +45,6 @@
             display: block;
         }
 
-
         .control-item {
             margin: 0 10px;
             display: flex;
@@ -78,10 +77,38 @@
         .control-item button:hover {
             background-color: #0056b3;
         }
+
+        #fullscreenButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+            AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAh1BMVEX////eAPnRAPnHAPm+
+            APnAAPnQAPnKAPnEAPntAPnRAPnMAPntAPniAPnBAPm9APneAPntAPnRAPnUAPntAPneAPnXAPnt
+            APnRAPnEAPnpAPntAPneAPntAPntAPntAPm8APm9APm6APntAPm5APntAPneAPntAPntAPntAPnt
+            APntAPntAPneAPnOAPntAPm2n0X2AAAAUHRSTlMAESIiJygnKys7P0BCREVGSElJSktMU1RYWlxf
+            YGhoaWlqbG1vc3R1enqDhYWKjI2Oj5GUlZeZmpucnZ6goqSmp6ipqq2vr7CxsrO2ubq7vr/AwMLG
+            x8jJy8zNzc7P0NHS3NvZ7T+hoAAAAXdJREFUeJxjQAFAAQAAAQsAawAFKGoAgSFgAgYFgYGBgUBw
+            UABAF4DUBSACkgEogCaGgKKToQGqAwAFCcQABFUVsGiFUFqFSUA2AoBKGkA6gJACtIBINpQAAGBC
+            ACm3m/q+AAAAAElFTkSuQmCC') no-repeat center center;
+            background-size: contain;
+            width: 32px;
+            height: 32px;
+            border: none;
+            cursor: pointer;
+            z-index: 20;
+            transition: transform 0.3s;
+        }
+
+        #fullscreenButton:active {
+            transform: scale(0.9);
+        }
     </style>
 </head>
 
 <body>
+    <button id="fullscreenButton"></button>
+
     <div id="controls">
         <div class="control-item">
             <label for="colorPicker">Color:</label>
@@ -140,6 +167,7 @@
         const exportButton = document.getElementById("exportButton");
         const toggleGridButton = document.getElementById("toggleGrid");
         const gridSizeSlider = document.getElementById("gridSize");
+        const fullscreenButton = document.getElementById("fullscreenButton");
 
         colorPicker.addEventListener("input", (e) => {
             drawingColor = e.target.value;
@@ -198,8 +226,8 @@
             return (xScreen / scale) - offsetX;
         }
 
-        function toTrueY(yScreen) {
-            return (yScreen / scale) - offsetY;
+        function toTrueY(xScreen) {
+            return (xScreen / scale) - offsetY;
         }
 
         function trueHeight() {
@@ -213,220 +241,141 @@
         function drawGrid() {
             context.strokeStyle = 'rgba(0,0,0,0.1)';
             context.lineWidth = 1;
-            for (let x = -offsetX % gridSize; x < canvas.width; x += gridSize) {
+            for (let x = -offsetX % gridSize; x < trueWidth(); x += gridSize) {
                 context.beginPath();
-                context.moveTo(x, 0);
-                context.lineTo(x, canvas.height);
+                context.moveTo(toScreenX(x), toScreenY(-offsetY));
+                context.lineTo(toScreenX(x), toScreenY(trueHeight() - offsetY));
                 context.stroke();
             }
-            for (let y = -offsetY % gridSize; y < canvas.height; y += gridSize) {
+            for (let y = -offsetY % gridSize; y < trueHeight(); y += gridSize) {
                 context.beginPath();
-                context.moveTo(0, y);
-                context.lineTo(canvas.width, y);
+                context.moveTo(toScreenX(-offsetX), toScreenY(y));
+                context.lineTo(toScreenX(trueWidth() - offsetX), toScreenY(y));
                 context.stroke();
             }
         }
 
         function redrawCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            context.fillStyle = '#fff';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-
+            context.clearRect(0, 0, canvas.width, canvas.height);
             if (showGrid) {
                 drawGrid();
             }
-
-            for (let i = 0; i < drawings.length; i++) {
-                const line = drawings[i];
-                drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1), line.color, line.width);
-            }
-        }
-        redrawCanvas();
-
-        window.addEventListener("resize", (event) => {
-            redrawCanvas();
-        });
-
-        canvas.addEventListener('mousedown', onMouseDown);
-        canvas.addEventListener('mouseup', onMouseUp, false);
-        canvas.addEventListener('mouseout', onMouseUp, false);
-        canvas.addEventListener('mousemove', onMouseMove, false);
-        canvas.addEventListener('wheel', onMouseWheel, false);
-
-        canvas.addEventListener('touchstart', onTouchStart);
-        canvas.addEventListener('touchend', onTouchEnd);
-        canvas.addEventListener('touchcancel', onTouchEnd);
-        canvas.addEventListener('touchmove', onTouchMove);
-
-        let leftMouseDown = false;
-        let rightMouseDown = false;
-
-        function onMouseDown(event) {
-            if (event.button == 0) {
-                leftMouseDown = true;
-                rightMouseDown = false;
-            }
-            if (event.button == 2) {
-                rightMouseDown = true;
-                leftMouseDown = false;
-            }
-
-            cursorX = event.pageX;
-            cursorY = event.pageY;
-            prevCursorX = event.pageX;
-            prevCursorY = event.pageY;
-        }
-
-        function onMouseMove(event) {
-            cursorX = event.pageX;
-            cursorY = event.pageY;
-            const scaledX = toTrueX(cursorX);
-            const scaledY = toTrueY(cursorY);
-            const prevScaledX = toTrueX(prevCursorX);
-            const prevScaledY = toTrueY(prevCursorY);
-
-            if (leftMouseDown) {
-                drawings.push({
-                    x0: prevScaledX,
-                    y0: prevScaledY,
-                    x1: scaledX,
-                    y1: scaledY,
-                    color: drawingColor,
-                    width: drawingWidth
+            drawings.forEach(drawing => {
+                context.strokeStyle = drawing.color;
+                context.lineWidth = drawing.width;
+                context.beginPath();
+                context.moveTo(toScreenX(drawing[0].x), toScreenY(drawing[0].y));
+                drawing.forEach(point => {
+                    context.lineTo(toScreenX(point.x), toScreenY(point.y));
                 });
-                drawLine(prevCursorX, prevCursorY, cursorX, cursorY, drawingColor, drawingWidth);
-            }
-            if (rightMouseDown) {
-                offsetX += (cursorX - prevCursorX) / scale;
-                offsetY += (cursorY - prevCursorY) / scale;
-                redrawCanvas();
-            }
-            prevCursorX = cursorX;
-            prevCursorY = cursorY;
+                context.stroke();
+            });
         }
 
-        function onMouseUp(event) {
-            leftMouseDown = false;
-            rightMouseDown = false;
-        }
-
-        function drawLine(x0, y0, x1, y1, color, width) {
-            context.beginPath();
-            context.moveTo(x0, y0);
-            context.lineTo(x1, y1);
-            context.strokeStyle = color;
-            context.lineWidth = width;
-            context.stroke();
-            context.closePath();
-        }
-
-        function onMouseWheel(event) {
-            const scaleAmount = event.deltaY * -0.01;
-            scale += scaleAmount;
-
-            const mouseX = event.pageX / canvas.clientWidth;
-            const mouseY = event.pageY / canvas.clientHeight;
-
-            const unitsZoomedX = trueWidth() * scaleAmount;
-            const unitsZoomedY = trueHeight() * scaleAmount;
-
-            const unitsAddLeft = unitsZoomedX * mouseX;
-            const unitsAddTop = unitsZoomedY * mouseY;
-
-            offsetX -= unitsAddLeft;
-            offsetY -= unitsAddTop;
-
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             redrawCanvas();
         }
 
-        const prevTouches = [null, null];
-        let singleTouch = false;
-        let doubleTouch = false;
-
-        function onTouchStart(event) {
-            if (event.touches.length == 1) {
-                singleTouch = true;
-                doubleTouch = false;
-            }
-            if (event.touches.length >= 2) {
-                singleTouch = false;
-                doubleTouch = true;
-            }
-
-            prevTouches[0] = event.touches[0];
-            prevTouches[1] = event.touches[1];
+        function handleDrawStart(x, y) {
+            prevCursorX = x;
+            prevCursorY = y;
+            undoneDrawings.length = 0;
+            drawings.push([{ x: toTrueX(x), y: toTrueY(y), color: drawingColor, width: drawingWidth }]);
         }
 
-        function onTouchMove(event) {
-            const touch0X = event.touches[0].pageX;
-            const touch0Y = event.touches[0].pageY;
-            const prevTouch0X = prevTouches[0].pageX;
-            const prevTouch0Y = prevTouches[0].pageY;
-
-            const scaledX = toTrueX(touch0X);
-            const scaledY = toTrueY(touch0Y);
-            const prevScaledX = toTrueX(prevTouch0X);
-            const prevScaledY = toTrueY(prevTouch0Y);
-
-            if (singleTouch) {
-                drawings.push({
-                    x0: prevScaledX,
-                    y0: prevScaledY,
-                    x1: scaledX,
-                    y1: scaledY,
-                    color: drawingColor,
-                    width: drawingWidth
-                });
-                drawLine(prevTouch0X, prevTouch0Y, touch0X, touch0Y, drawingColor, drawingWidth);
-            }
-
-            if (doubleTouch) {
-                const touch1X = event.touches[1].pageX;
-                const touch1Y = event.touches[1].pageY;
-                const prevTouch1X = prevTouches[1].pageX;
-                const prevTouch1Y = prevTouches[1].pageY;
-
-                const midX = (touch0X + touch1X) / 2;
-                const midY = (touch0Y + touch1Y) / 2;
-                const prevMidX = (prevTouch0X + prevTouch1X) / 2;
-                const prevMidY = (prevTouch0Y + prevTouch1Y) / 2;
-
-                const hypot = Math.sqrt(Math.pow((touch0X - touch1X), 2) + Math.pow((touch0Y - touch1Y), 2));
-                const prevHypot = Math.sqrt(Math.pow((prevTouch0X - prevTouch1X), 2) + Math.pow((prevTouch0Y - prevTouch1Y), 2));
-
-                const zoomAmount = hypot / prevHypot;
-                scale *= zoomAmount;
-                const scaleAmount = 1 - zoomAmount;
-
-                const panX = midX - prevMidX;
-                const panY = midY - prevMidY;
-                offsetX += (panX / scale);
-                offsetY += (panY / scale);
-
-                const zoomRatioX = midX / canvas.clientWidth;
-                const zoomRatioY = midY / canvas.clientHeight;
-
-                const unitsZoomedX = trueWidth() * scaleAmount;
-                const unitsZoomedY = trueHeight() * scaleAmount;
-
-                const unitsAddLeft = unitsZoomedX * zoomRatioX;
-                const unitsAddTop = unitsZoomedY * zoomRatioY;
-
-                offsetX += unitsAddLeft;
-                offsetY += unitsAddTop;
-
+        function handleDrawMove(x, y) {
+            if (prevCursorX !== undefined && prevCursorY !== undefined) {
+                drawings[drawings.length - 1].push({ x: toTrueX(x), y: toTrueY(y) });
+                prevCursorX = x;
+                prevCursorY = y;
                 redrawCanvas();
             }
-            prevTouches[0] = event.touches[0];
-            prevTouches[1] = event.touches[1];
         }
 
-        function onTouchEnd(event) {
-            singleTouch = false;
-            doubleTouch = false;
+        function handleDrawEnd() {
+            prevCursorX = undefined;
+            prevCursorY = undefined;
         }
+
+        function handlePanStart(x, y) {
+            cursorX = x;
+            cursorY = y;
+        }
+
+        function handlePanMove(x, y) {
+            if (cursorX !== undefined && cursorY !== undefined) {
+                offsetX += (x - cursorX) / scale;
+                offsetY += (y - cursorY) / scale;
+                cursorX = x;
+                cursorY = y;
+                redrawCanvas();
+            }
+        }
+
+        function handlePanEnd() {
+            cursorX = undefined;
+            cursorY = undefined;
+        }
+
+        function handleWheel(event) {
+            const zoomIntensity = 0.1;
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+            const wheel = event.deltaY < 0 ? 1 : -1;
+            const zoom = Math.exp(wheel * zoomIntensity);
+
+            context.translate(offsetX, offsetY);
+            offsetX -= mouseX / (scale * zoom);
+            offsetY -= mouseY / (scale * zoom);
+            context.translate(-offsetX, -offsetY);
+
+            scale *= zoom;
+            redrawCanvas();
+        }
+
+        function initEventListeners() {
+            canvas.addEventListener("mousedown", (event) => {
+                if (event.button === 0) {
+                    handleDrawStart(event.clientX, event.clientY);
+                } else if (event.button === 1) {
+                    handlePanStart(event.clientX, event.clientY);
+                }
+            });
+
+            canvas.addEventListener("mousemove", (event) => {
+                if (event.buttons === 1) {
+                    handleDrawMove(event.clientX, event.clientY);
+                } else if (event.buttons === 4) {
+                    handlePanMove(event.clientX, event.clientY);
+                }
+            });
+
+            canvas.addEventListener("mouseup", (event) => {
+                if (event.button === 0) {
+                    handleDrawEnd();
+                } else if (event.button === 1) {
+                    handlePanEnd();
+                }
+            });
+
+            canvas.addEventListener("wheel", handleWheel);
+            window.addEventListener("resize", resizeCanvas);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+
+        fullscreenButton.addEventListener("click", toggleFullscreen);
+
+        resizeCanvas();
+        initEventListeners();
     </script>
 </body>
 
