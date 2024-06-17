@@ -129,7 +129,7 @@
     </div>
 
     <button id="fullscreenButton">
-        <img src="https://www.shareicon.net/data/128x128/2015/09/13/100230_fullscreen_512x512.png", /* Your Base64 encoded image data here */" alt="Fullscreen">
+        <img src="https://www.shareicon.net/data/128x128/2015/09/13/100230_fullscreen_512x512.png" alt="Fullscreen">
     </button>
 
     <canvas id="canvas">Your browser does not support HTML5 canvas</canvas>
@@ -286,12 +286,12 @@
         canvas.addEventListener('mouseup', onMouseUp, false);
         canvas.addEventListener('mouseout', onMouseUp, false);
         canvas.addEventListener('mousemove', onMouseMove, false);
-        canvas.addEventListener('wheel', onMouseWheel, false);
+        canvas.addEventListener('wheel', onMouseWheel, { passive: false });
 
-        canvas.addEventListener('touchstart', onTouchStart);
-        canvas.addEventListener('touchmove', onTouchMove);
-        canvas.addEventListener('touchend', onTouchEnd);
-        canvas.addEventListener('touchcancel', onTouchCancel);
+        canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+        canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+        canvas.addEventListener('touchcancel', onTouchCancel, { passive: false });
 
         function onMouseDown(event) {
             cursorX = event.pageX;
@@ -321,6 +321,7 @@
         }
 
         function onMouseWheel(event) {
+            event.preventDefault();
             const delta = -Math.sign(event.deltaY);
             const mouseX = toTrueX(event.pageX);
             const mouseY = toTrueY(event.pageY);
@@ -379,6 +380,7 @@
         }
 
         function onTouchStart(event) {
+            event.preventDefault();
             const touch = event.touches[0];
             cursorX = touch.pageX;
             cursorY = touch.pageY;
@@ -386,6 +388,7 @@
         }
 
         function onTouchMove(event) {
+            event.preventDefault();
             const touch = event.touches[0];
             cursorX = touch.pageX;
             cursorY = touch.pageY;
