@@ -82,33 +82,22 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-            AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAh1BMVEX////eAPnRAPnHAPm+
-            APnAAPnQAPnKAPnEAPntAPnRAPnMAPntAPniAPnBAPm9APneAPntAPnRAPnUAPntAPneAPnXAPnt
-            APnRAPnEAPnpAPntAPneAPntAPntAPntAPm8APm9APm6APntAPm5APntAPneAPntAPntAPntAPnt
-            APntAPntAPneAPnOAPntAPm2n0X2AAAAUHRSTlMAESIiJygnKys7P0BCREVGSElJSktMU1RYWlxf
-            YGhoaWlqbG1vc3R1enqDhYWKjI2Oj5GUlZeZmpucnZ6goqSmp6ipqq2vr7CxsrO2ubq7vr/AwMLG
-            x8jJy8zNzc7P0NHS3NvZ7T+hoAAAAXdJREFUeJxjQAFAAQAAAQsAawAFKGoAgSFgAgYFgYGBgUBw
-            UABAF4DUBSACkgEogCaGgKKToQGqAwAFCcQABFUVsGiFUFqFSUA2AoBKGkA6gJACtIBINpQAAGBC
-            ACm3m/q+AAAAAElFTkSuQmCC') no-repeat center center;
-            background-size: contain;
-            width: 32px;
-            height: 32px;
-            border: none;
+            z-index: 11;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
             cursor: pointer;
-            z-index: 20;
-            transition: transform 0.3s;
         }
 
-        #fullscreenButton:active {
-            transform: scale(0.9);
+        #fullscreenButton img {
+            width: 24px;
+            height: 24px;
         }
     </style>
 </head>
 
 <body>
-    <button id="fullscreenButton"></button>
-
     <div id="controls">
         <div class="control-item">
             <label for="colorPicker">Color:</label>
@@ -139,7 +128,12 @@
         </div>
     </div>
 
+    <button id="fullscreenButton">
+        <img src="https://www.shareicon.net/data/128x128/2015/09/13/100230_fullscreen_512x512.png", /* Your Base64 encoded image data here */" alt="Fullscreen">
+    </button>
+
     <canvas id="canvas">Your browser does not support HTML5 canvas</canvas>
+
     <script>
         const canvas = document.getElementById("canvas");
         const context = canvas.getContext("2d");
@@ -167,6 +161,7 @@
         const exportButton = document.getElementById("exportButton");
         const toggleGridButton = document.getElementById("toggleGrid");
         const gridSizeSlider = document.getElementById("gridSize");
+
         const fullscreenButton = document.getElementById("fullscreenButton");
 
         colorPicker.addEventListener("input", (e) => {
@@ -214,6 +209,16 @@
             redrawCanvas();
         });
 
+        fullscreenButton.addEventListener("click", () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
         function toScreenX(xTrue) {
             return (xTrue + offsetX) * scale;
         }
@@ -226,8 +231,8 @@
             return (xScreen / scale) - offsetX;
         }
 
-        function toTrueY(xScreen) {
-            return (xScreen / scale) - offsetY;
+        function toTrueY(yScreen) {
+            return (yScreen / scale) - offsetY;
         }
 
         function trueHeight() {
@@ -241,141 +246,168 @@
         function drawGrid() {
             context.strokeStyle = 'rgba(0,0,0,0.1)';
             context.lineWidth = 1;
-            for (let x = -offsetX % gridSize; x < trueWidth(); x += gridSize) {
+            for (let x = -offsetX % gridSize; x < canvas.width; x += gridSize) {
                 context.beginPath();
-                context.moveTo(toScreenX(x), toScreenY(-offsetY));
-                context.lineTo(toScreenX(x), toScreenY(trueHeight() - offsetY));
+                context.moveTo(x, 0);
+                context.lineTo(x, canvas.height);
                 context.stroke();
             }
-            for (let y = -offsetY % gridSize; y < trueHeight(); y += gridSize) {
+            for (let y = -offsetY % gridSize; y < canvas.height; y += gridSize) {
                 context.beginPath();
-                context.moveTo(toScreenX(-offsetX), toScreenY(y));
-                context.lineTo(toScreenX(trueWidth() - offsetX), toScreenY(y));
+                context.moveTo(0, y);
+                context.lineTo(canvas.width, y);
                 context.stroke();
             }
         }
 
         function redrawCanvas() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            context.fillStyle = '#fff';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
             if (showGrid) {
                 drawGrid();
             }
-            drawings.forEach(drawing => {
-                context.strokeStyle = drawing.color;
-                context.lineWidth = drawing.width;
-                context.beginPath();
-                context.moveTo(toScreenX(drawing[0].x), toScreenY(drawing[0].y));
-                drawing.forEach(point => {
-                    context.lineTo(toScreenX(point.x), toScreenY(point.y));
-                });
-                context.stroke();
-            });
+
+            for (let i = 0; i < drawings.length; i++) {
+                const line = drawings[i];
+                drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1), line.color, line.width);
+            }
+        }
+        redrawCanvas();
+
+        window.addEventListener("resize", (event) => {
+            redrawCanvas();
+        });
+
+        canvas.addEventListener('mousedown', onMouseDown);
+        canvas.addEventListener('mouseup', onMouseUp, false);
+        canvas.addEventListener('mouseout', onMouseUp, false);
+        canvas.addEventListener('mousemove', onMouseMove, false);
+        canvas.addEventListener('wheel', onMouseWheel, false);
+
+        canvas.addEventListener('touchstart', onTouchStart);
+        canvas.addEventListener('touchmove', onTouchMove);
+        canvas.addEventListener('touchend', onTouchEnd);
+        canvas.addEventListener('touchcancel', onTouchCancel);
+
+        function onMouseDown(event) {
+            cursorX = event.pageX;
+            cursorY = event.pageY;
+            if (event.button == 0) {
+                startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            } else if (event.button == 1) {
+                startDragging(event.pageX, event.pageY);
+            }
         }
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function onMouseUp(event) {
+            cursorX = event.pageX;
+            cursorY = event.pageY;
+            if (event.button == 0) {
+                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            } else if (event.button == 1) {
+                stopDragging(event.pageX, event.pageY);
+            }
+        }
+
+        function onMouseMove(event) {
+            cursorX = event.pageX;
+            cursorY = event.pageY;
+            continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            continueDragging(event.pageX, event.pageY);
+        }
+
+        function onMouseWheel(event) {
+            const delta = -Math.sign(event.deltaY);
+            const mouseX = toTrueX(event.pageX);
+            const mouseY = toTrueY(event.pageY);
+            scale = Math.max(0.1, Math.min(10, scale * (1 + delta * 0.1)));
+            offsetX = mouseX - (event.pageX / scale);
+            offsetY = mouseY - (event.pageY / scale);
             redrawCanvas();
         }
 
-        function handleDrawStart(x, y) {
+        let isDrawing = false;
+        let isDragging = false;
+
+        function startDrawing(x, y) {
+            isDrawing = true;
             prevCursorX = x;
             prevCursorY = y;
-            undoneDrawings.length = 0;
-            drawings.push([{ x: toTrueX(x), y: toTrueY(y), color: drawingColor, width: drawingWidth }]);
         }
 
-        function handleDrawMove(x, y) {
-            if (prevCursorX !== undefined && prevCursorY !== undefined) {
-                drawings[drawings.length - 1].push({ x: toTrueX(x), y: toTrueY(y) });
+        function continueDrawing(x, y) {
+            if (isDrawing) {
+                drawLine(toScreenX(prevCursorX), toScreenY(prevCursorY), toScreenX(x), toScreenY(y), drawingColor, drawingWidth);
+                drawings.push({ x0: prevCursorX, y0: prevCursorY, x1: x, y1: y, color: drawingColor, width: drawingWidth });
+                prevCursorX = x;
+                prevCursorY = y;
+            }
+        }
+
+        function stopDrawing(x, y) {
+            if (isDrawing) {
+                continueDrawing(x, y);
+                isDrawing = false;
+            }
+        }
+
+        function startDragging(x, y) {
+            isDragging = true;
+            prevCursorX = x;
+            prevCursorY = y;
+        }
+
+        function continueDragging(x, y) {
+            if (isDragging) {
+                offsetX += (x - prevCursorX) / scale;
+                offsetY += (y - prevCursorY) / scale;
                 prevCursorX = x;
                 prevCursorY = y;
                 redrawCanvas();
             }
         }
 
-        function handleDrawEnd() {
-            prevCursorX = undefined;
-            prevCursorY = undefined;
-        }
-
-        function handlePanStart(x, y) {
-            cursorX = x;
-            cursorY = y;
-        }
-
-        function handlePanMove(x, y) {
-            if (cursorX !== undefined && cursorY !== undefined) {
-                offsetX += (x - cursorX) / scale;
-                offsetY += (y - cursorY) / scale;
-                cursorX = x;
-                cursorY = y;
-                redrawCanvas();
+        function stopDragging(x, y) {
+            if (isDragging) {
+                continueDragging(x, y);
+                isDragging = false;
             }
         }
 
-        function handlePanEnd() {
-            cursorX = undefined;
-            cursorY = undefined;
+        function onTouchStart(event) {
+            const touch = event.touches[0];
+            cursorX = touch.pageX;
+            cursorY = touch.pageY;
+            startDrawing(toTrueX(cursorX), toTrueY(cursorY));
         }
 
-        function handleWheel(event) {
-            const zoomIntensity = 0.1;
-            const mouseX = event.clientX;
-            const mouseY = event.clientY;
-            const wheel = event.deltaY < 0 ? 1 : -1;
-            const zoom = Math.exp(wheel * zoomIntensity);
-
-            context.translate(offsetX, offsetY);
-            offsetX -= mouseX / (scale * zoom);
-            offsetY -= mouseY / (scale * zoom);
-            context.translate(-offsetX, -offsetY);
-
-            scale *= zoom;
-            redrawCanvas();
+        function onTouchMove(event) {
+            const touch = event.touches[0];
+            cursorX = touch.pageX;
+            cursorY = touch.pageY;
+            continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
         }
 
-        function initEventListeners() {
-            canvas.addEventListener("mousedown", (event) => {
-                if (event.button === 0) {
-                    handleDrawStart(event.clientX, event.clientY);
-                } else if (event.button === 1) {
-                    handlePanStart(event.clientX, event.clientY);
-                }
-            });
-
-            canvas.addEventListener("mousemove", (event) => {
-                if (event.buttons === 1) {
-                    handleDrawMove(event.clientX, event.clientY);
-                } else if (event.buttons === 4) {
-                    handlePanMove(event.clientX, event.clientY);
-                }
-            });
-
-            canvas.addEventListener("mouseup", (event) => {
-                if (event.button === 0) {
-                    handleDrawEnd();
-                } else if (event.button === 1) {
-                    handlePanEnd();
-                }
-            });
-
-            canvas.addEventListener("wheel", handleWheel);
-            window.addEventListener("resize", resizeCanvas);
+        function onTouchEnd(event) {
+            stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
         }
 
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
+        function onTouchCancel(event) {
+            stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
         }
 
-        fullscreenButton.addEventListener("click", toggleFullscreen);
-
-        resizeCanvas();
-        initEventListeners();
+        function drawLine(x0, y0, x1, y1, color, width) {
+            context.strokeStyle = color;
+            context.lineWidth = width;
+            context.beginPath();
+            context.moveTo(x0, y0);
+            context.lineTo(x1, y1);
+            context.stroke();
+        }
     </script>
 </body>
 
