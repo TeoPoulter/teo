@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Add this meta tag -->
     <title>Enhanced Infinite Canvas</title>
 
     <style>
@@ -94,21 +95,6 @@
             width: 24px;
             height: 24px;
         }
-
-        .fullscreen-prompt {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            z-index: 1000;
-            cursor: pointer;
-            font-size: 18px;
-            text-align: center;
-        }
     </style>
 </head>
 
@@ -130,7 +116,7 @@
             <input type="range" id="gridSize" min="10" max="100" value="40">
         </div>
         <div class="control-item">
-            <button id="objectEraser">Object Eraser</button>
+            <button id="eraserButton">Object Eraser</button>
         </div>
         <div class="control-item">
             <button id="clearCanvas">Clear Canvas</button>
@@ -164,7 +150,8 @@
         let drawingWidth = 3;
         let showGrid = false;
         let gridSize = 40;
-        let isFirstDraw = true; // Flag to track the first draw action
+        let isErasing = false;
+        let isFirstDraw = true; // Track if it's the first draw
 
         const colorPicker = document.getElementById("colorPicker");
         const lineWidth = document.getElementById("lineWidth");
@@ -172,8 +159,7 @@
         const exportButton = document.getElementById("exportButton");
         const toggleGridButton = document.getElementById("toggleGrid");
         const gridSizeSlider = document.getElementById("gridSize");
-        const objectEraserButton = document.getElementById("objectEraser");
-
+        const eraserButton = document.getElementById("eraserButton");
         const fullscreenButton = document.getElementById("fullscreenButton");
 
         colorPicker.addEventListener("input", (e) => {
@@ -190,6 +176,11 @@
             redrawCanvas();
         });
 
+        eraserButton.addEventListener("click", () => {
+            isErasing = !isErasing;
+            eraserButton.style.backgroundColor = isErasing ? '#ff0000' : '#007bff';
+        });
+
         exportButton.addEventListener("click", () => {
             const link = document.createElement('a');
             link.download = 'canvas.png';
@@ -202,27 +193,9 @@
             redrawCanvas();
         });
 
-        gridSizeSlider.addEventListener("input", (e) => {
-            gridSize = parseInt(e.target.value);
+        gridSizeSlider.addEventListener("input", () => {
+            gridSize = parseInt(gridSizeSlider.value);
             redrawCanvas();
-        });
-
-        objectEraserButton.addEventListener("mousedown", () => {
-            startErasing();
-        });
-
-        objectEraserButton.addEventListener("mouseup", () => {
-            stopErasing();
-        });
-
-        objectEraserButton.addEventListener("touchstart", (event) => {
-            event.preventDefault();
-            startErasing();
-        });
-
-        objectEraserButton.addEventListener("touchend", (event) => {
-            event.preventDefault();
-            stopErasing();
         });
 
         fullscreenButton.addEventListener("click", () => {
@@ -231,25 +204,12 @@
 
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
-                canvas.requestFullscreen(); // Request fullscreen on canvas
+                document.documentElement.requestFullscreen();
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 }
             }
-        }
-
-        function promptFullscreen() {
-            const fullscreenPrompt = document.createElement('div');
-            fullscreenPrompt.classList.add('fullscreen-prompt');
-            fullscreenPrompt.innerHTML = `
-                <p>Tap here to enter fullscreen mode and continue drawing.</p>
-            `;
-            fullscreenPrompt.addEventListener('click', () => {
-                toggleFullScreen();
-                fullscreenPrompt.remove();
-            });
-            document.body.appendChild(fullscreenPrompt);
         }
 
         function toScreenX(xTrue) {
@@ -266,6 +226,14 @@
 
         function toTrueY(yScreen) {
             return (yScreen / scale) - offsetY;
+        }
+
+        function trueHeight() {
+            return canvas.clientHeight / scale;
+        }
+
+        function trueWidth() {
+            return canvas.clientWidth / scale;
         }
 
         function drawGrid() {
@@ -311,18 +279,22 @@
         canvas.addEventListener('mouseup', onMouseUp, false);
         canvas.addEventListener('mouseout', onMouseUp, false);
         canvas.addEventListener('mousemove', onMouseMove, false);
-        canvas.addEventListener('wheel', onMouseWheel, false);
+        canvas.addEventListener('wheel', onMouseWheel, { passive: false });
 
-        canvas.addEventListener('touchstart', onTouchStart);
-        canvas.addEventListener('touchmove', onTouchMove);
-        canvas.addEventListener('touchend', onTouchEnd);
-        canvas.addEventListener('touchcancel', onTouchCancel);
+        canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+        canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+        canvas.addEventListener('touchcancel', onTouchCancel, { passive: false });
 
         function onMouseDown(event) {
             cursorX = event.pageX;
             cursorY = event.pageY;
             if (event.button == 0) {
-                startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                if (isErasing) {
+                    startErasing(toTrueX(cursorX), toTrueY(cursorY));
+                } else {
+                    startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                }
             } else if (event.button == 1) {
                 startDragging(event.pageX, event.pageY);
             }
@@ -332,7 +304,11 @@
             cursorX = event.pageX;
             cursorY = event.pageY;
             if (event.button == 0) {
-                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                if (isErasing) {
+                    stopErasing(toTrueX(cursorX), toTrueY(cursorY));
+                } else {
+                    stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                }
             } else if (event.button == 1) {
                 stopDragging(event.pageX, event.pageY);
             }
@@ -341,11 +317,16 @@
         function onMouseMove(event) {
             cursorX = event.pageX;
             cursorY = event.pageY;
-            continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                continueErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
             continueDragging(event.pageX, event.pageY);
         }
 
         function onMouseWheel(event) {
+            event.preventDefault();
             const delta = -Math.sign(event.deltaY);
             const mouseX = toTrueX(event.pageX);
             const mouseY = toTrueY(event.pageY);
@@ -357,15 +338,17 @@
 
         let isDrawing = false;
         let isDragging = false;
+        let isErasingNow = false;
 
         function startDrawing(x, y) {
             isDrawing = true;
             prevCursorX = x;
             prevCursorY = y;
 
+            // If it's the first draw, go fullscreen
             if (isFirstDraw) {
                 isFirstDraw = false;
-                promptFullscreen(); // Prompt to enter fullscreen mode on first draw
+                toggleFullScreen();
             }
         }
 
@@ -409,25 +392,43 @@
         }
 
         function onTouchStart(event) {
+            event.preventDefault();
             const touch = event.touches[0];
             cursorX = touch.pageX;
             cursorY = touch.pageY;
-            startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                startErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function onTouchMove(event) {
+            event.preventDefault();
             const touch = event.touches[0];
             cursorX = touch.pageX;
             cursorY = touch.pageY;
-            continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                continueErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function onTouchEnd(event) {
-            stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                stopErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function onTouchCancel(event) {
-            stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (isErasing) {
+                stopErasing(toTrueX(cursorX), toTrueY(cursorY));
+            } else {
+                stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            }
         }
 
         function drawLine(x0, y0, x1, y1, color, width) {
@@ -439,80 +440,41 @@
             context.stroke();
         }
 
-        // Object Eraser functionality
-
-        let isErasing = false;
-
-        function startErasing() {
-            isErasing = true;
+        function startErasing(x, y) {
+            isErasingNow = true;
+            eraseObject(x, y);
         }
 
-        function stopErasing() {
-            isErasing = false;
+        function continueErasing(x, y) {
+            if (isErasingNow) {
+                eraseObject(x, y);
+            }
         }
 
-        canvas.addEventListener('mousemove', (event) => {
-            if (isErasing) {
-                const mouseX = toTrueX(event.pageX);
-                const mouseY = toTrueY(event.pageY);
-                eraseObjects(mouseX, mouseY);
+        function stopErasing(x, y) {
+            if (isErasingNow) {
+                continueErasing(x, y);
+                isErasingNow = false;
             }
-        });
+        }
 
-        canvas.addEventListener('touchmove', (event) => {
-            event.preventDefault();
-            if (isErasing) {
-                const touch = event.touches[0];
-                const mouseX = toTrueX(touch.pageX);
-                const mouseY = toTrueY(touch.pageY);
-                eraseObjects(mouseX, mouseY);
-            }
-        });
-
-        function eraseObjects(x, y) {
-            const newDrawings = [];
-            for (let i = 0; i < drawings.length; i++) {
-                const line = drawings[i];
-                const dist = pointToLineDistance(x, y, line.x0, line.y0, line.x1, line.y1);
-                if (dist > drawingWidth / 2) {
-                    newDrawings.push(line);
+        function eraseObject(x, y) {
+            const eraserSize = drawingWidth * 10; // Adjust eraser size as needed
+            for (let i = drawings.length - 1; i >= 0; i--) {
+                const drawing = drawings[i];
+                if (
+                    (x >= Math.min(drawing.x0, drawing.x1) - eraserSize &&
+                        x <= Math.max(drawing.x0, drawing.x1) + eraserSize &&
+                        y >= Math.min(drawing.y0, drawing.y1) - eraserSize &&
+                        y <= Math.max(drawing.y0, drawing.y1) + eraserSize)
+                ) {
+                    drawings.splice(i, 1);
                 }
             }
-            drawings.length = 0;
-            drawings.push(...newDrawings);
             redrawCanvas();
-        }
-
-        function pointToLineDistance(px, py, x1, y1, x2, y2) {
-            const A = px - x1;
-            const B = py - y1;
-            const C = x2 - x1;
-            const D = y2 - y1;
-
-            const dot = A * C + B * D;
-            const len_sq = C * C + D * D;
-            let param = -1;
-            if (len_sq !== 0) // in case of 0 length line
-                param = dot / len_sq;
-
-            let xx, yy;
-
-            if (param < 0) {
-                xx = x1;
-                yy = y1;
-            } else if (param > 1) {
-                xx = x2;
-                yy = y2;
-            } else {
-                xx = x1 + param * C;
-                yy = y1 + param * D;
-            }
-
-            const dx = px - xx;
-            const dy = py - yy;
-            return Math.sqrt(dx * dx + dy * dy);
         }
     </script>
 </body>
 
 </html>
+
