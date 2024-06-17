@@ -115,10 +115,7 @@
             <input type="range" id="gridSize" min="10" max="100" value="40">
         </div>
         <div class="control-item">
-            <button id="undoButton">Undo</button>
-        </div>
-        <div class="control-item">
-            <button id="redoButton">Redo</button>
+            <button id="eraserButton">Object Eraser</button>
         </div>
         <div class="control-item">
             <button id="clearCanvas">Clear Canvas</button>
@@ -152,16 +149,15 @@
         let drawingWidth = 3;
         let showGrid = false;
         let gridSize = 40;
+        let isErasing = false;
 
         const colorPicker = document.getElementById("colorPicker");
         const lineWidth = document.getElementById("lineWidth");
         const clearCanvasButton = document.getElementById("clearCanvas");
-        const undoButton = document.getElementById("undoButton");
-        const redoButton = document.getElementById("redoButton");
         const exportButton = document.getElementById("exportButton");
         const toggleGridButton = document.getElementById("toggleGrid");
         const gridSizeSlider = document.getElementById("gridSize");
-
+        const eraserButton = document.getElementById("eraserButton");
         const fullscreenButton = document.getElementById("fullscreenButton");
 
         colorPicker.addEventListener("input", (e) => {
@@ -178,18 +174,9 @@
             redrawCanvas();
         });
 
-        undoButton.addEventListener("click", () => {
-            if (drawings.length > 0) {
-                undoneDrawings.push(drawings.pop());
-                redrawCanvas();
-            }
-        });
-
-        redoButton.addEventListener("click", () => {
-            if (undoneDrawings.length > 0) {
-                drawings.push(undoneDrawings.pop());
-                redrawCanvas();
-            }
+        eraserButton.addEventListener("click", () => {
+            isErasing = !isErasing;
+            eraserButton.style.backgroundColor = isErasing ? '#ff0000' : '#007bff';
         });
 
         exportButton.addEventListener("click", () => {
@@ -201,15 +188,15 @@
 
         toggleGridButton.addEventListener("click", () => {
             showGrid = !showGrid;
-            redrawCanvas();
-        });
-
-        gridSizeSlider.addEventListener("input", (e) => {
-            gridSize = parseInt(e.target.value);
+            toggleFullScreen();
             redrawCanvas();
         });
 
         fullscreenButton.addEventListener("click", () => {
+            toggleFullScreen();
+        });
+
+        function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
             } else {
@@ -217,7 +204,7 @@
                     document.exitFullscreen();
                 }
             }
-        });
+        }
 
         function toScreenX(xTrue) {
             return (xTrue + offsetX) * scale;
@@ -297,7 +284,11 @@
             cursorX = event.pageX;
             cursorY = event.pageY;
             if (event.button == 0) {
-                startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                if (isErasing) {
+                    eraseObject(toTrueX(cursorX), toTrueY(cursorY));
+                } else {
+                    startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                }
             } else if (event.button == 1) {
                 startDragging(event.pageX, event.pageY);
             }
@@ -306,7 +297,7 @@
         function onMouseUp(event) {
             cursorX = event.pageX;
             cursorY = event.pageY;
-            if (event.button == 0) {
+            if (event.button == 0 && !isErasing) {
                 stopDrawing(toTrueX(cursorX), toTrueY(cursorY));
             } else if (event.button == 1) {
                 stopDragging(event.pageX, event.pageY);
@@ -410,6 +401,20 @@
             context.moveTo(x0, y0);
             context.lineTo(x1, y1);
             context.stroke();
+        }
+
+        function eraseObject(x, y) {
+            const index = drawings.findIndex(drawing => 
+                x >= Math.min(drawing.x0, drawing.x1) &&
+                x <= Math.max(drawing.x0, drawing.x1) &&
+                y >= Math.min(drawing.y0, drawing.y1) &&
+                y <= Math.max(drawing.y0, drawing.y1)
+            );
+
+            if (index !== -1) {
+                drawings.splice(index, 1);
+                redrawCanvas();
+            }
         }
     </script>
 </body>
