@@ -124,6 +124,9 @@
         <div class="control-item">
             <button id="exportButton">Export as PNG</button>
         </div>
+        <div class="control-item">
+            <button id="exportSVGButton">Export as SVG</button>
+        </div>
     </div>
 
     <button id="fullscreenButton">
@@ -157,6 +160,7 @@
         const lineWidth = document.getElementById("lineWidth");
         const clearCanvasButton = document.getElementById("clearCanvas");
         const exportButton = document.getElementById("exportButton");
+        const exportSVGButton = document.getElementById("exportSVGButton");
         const toggleGridButton = document.getElementById("toggleGrid");
         const gridSizeSlider = document.getElementById("gridSize");
         const eraserButton = document.getElementById("eraserButton");
@@ -185,6 +189,15 @@
             const link = document.createElement('a');
             link.download = 'canvas.png';
             link.href = canvas.toDataURL();
+            link.click();
+        });
+
+        exportSVGButton.addEventListener("click", () => {
+            const svgContent = convertToSVG();
+            const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "canvas.svg";
             link.click();
         });
 
@@ -257,22 +270,17 @@
             }
 
             for (let i = 0; i < drawings.length; i++) {
-                const line = drawings[i];
-                drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1), line.color, line.width);
+                const { x0, y0, x1, y1, color, width } = drawings[i];
+                drawLine(toScreenX(x0), toScreenY(y0), toScreenX(x1), toScreenY(y1), color, width);
             }
         }
-        redrawCanvas();
 
-        window.addEventListener("resize", (event) => {
-            redrawCanvas();
-        });
+        window.addEventListener('resize', redrawCanvas);
 
-        canvas.addEventListener('mousedown', onMouseDown);
-        canvas.addEventListener('mouseup', onMouseUp, false);
-        canvas.addEventListener('mouseout', onMouseUp, false);
-        canvas.addEventListener('mousemove', onMouseMove, false);
+        canvas.addEventListener('mousedown', onMouseDown, { passive: false });
+        window.addEventListener('mouseup', onMouseUp, { passive: false });
+        window.addEventListener('mousemove', onMouseMove, { passive: false });
         canvas.addEventListener('wheel', onMouseWheel, { passive: false });
-
         canvas.addEventListener('touchstart', onTouchStart, { passive: false });
         canvas.addEventListener('touchmove', onTouchMove, { passive: false });
         canvas.addEventListener('touchend', onTouchEnd, { passive: false });
@@ -493,6 +501,17 @@
             }
             redrawCanvas();
         }
+
+        function convertToSVG() {
+            let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 ${canvas.width} ${canvas.height}">`;
+            drawings.forEach(({ x0, y0, x1, y1, color, width }) => {
+                svgContent += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${color}" stroke-width="${width}" stroke-linecap="round"/>`;
+            });
+            svgContent += `</svg>`;
+            return svgContent;
+        }
+
+        redrawCanvas();
     </script>
 </body>
 
