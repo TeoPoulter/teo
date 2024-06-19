@@ -228,14 +228,6 @@
             return (yScreen / scale) - offsetY;
         }
 
-        function trueHeight() {
-            return canvas.clientHeight / scale;
-        }
-
-        function trueWidth() {
-            return canvas.clientWidth / scale;
-        }
-
         function drawGrid() {
             context.strokeStyle = 'rgba(0,0,0,0.1)';
             context.lineWidth = 1;
@@ -339,6 +331,15 @@
         let isDrawing = false;
         let isDragging = false;
         let isErasingNow = false;
+        let initialPinchDistance = null;
+        let initialScale = 1;
+
+        function getDistance(touches) {
+            return Math.sqrt(
+                (touches[0].pageX - touches[1].pageX) ** 2 +
+                (touches[0].pageY - touches[1].pageY) ** 2
+            );
+        }
 
         function startDrawing(x, y) {
             isDrawing = true;
@@ -393,25 +394,42 @@
 
         function onTouchStart(event) {
             event.preventDefault();
-            const touch = event.touches[0];
-            cursorX = touch.pageX;
-            cursorY = touch.pageY;
-            if (isErasing) {
-                startErasing(toTrueX(cursorX), toTrueY(cursorY));
-            } else {
-                startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (event.touches.length === 1) {
+                const touch = event.touches[0];
+                cursorX = touch.pageX;
+                cursorY = touch.pageY;
+                if (isErasing) {
+                    startErasing(toTrueX(cursorX), toTrueY(cursorY));
+                } else {
+                    startDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                }
+            } else if (event.touches.length === 2) {
+                isDrawing = false;
+                isDragging = false;
+                initialPinchDistance = getDistance(event.touches);
+                initialScale = scale;
             }
         }
 
         function onTouchMove(event) {
             event.preventDefault();
-            const touch = event.touches[0];
-            cursorX = touch.pageX;
-            cursorY = touch.pageY;
-            if (isErasing) {
-                continueErasing(toTrueX(cursorX), toTrueY(cursorY));
-            } else {
-                continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+            if (event.touches.length === 1) {
+                const touch = event.touches[0];
+                cursorX = touch.pageX;
+                cursorY = touch.pageY;
+                if (isErasing) {
+                    continueErasing(toTrueX(cursorX), toTrueY(cursorY));
+                } else {
+                    continueDrawing(toTrueX(cursorX), toTrueY(cursorY));
+                }
+            } else if (event.touches.length === 2) {
+                const currentDistance = getDistance(event.touches);
+                scale = Math.max(0.1, Math.min(10, initialScale * (currentDistance / initialPinchDistance)));
+                const touchCenterX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
+                const touchCenterY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
+                offsetX = toTrueX(touchCenterX) - (touchCenterX / scale);
+                offsetY = toTrueY(touchCenterY) - (touchCenterY / scale);
+                redrawCanvas();
             }
         }
 
@@ -477,4 +495,3 @@
 </body>
 
 </html>
-
