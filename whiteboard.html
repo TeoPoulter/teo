@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Add this meta tag -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Enhanced Infinite Canvas</title>
 
     <style>
@@ -322,9 +322,10 @@
             const delta = -Math.sign(event.deltaY);
             const mouseX = toTrueX(event.pageX);
             const mouseY = toTrueY(event.pageY);
-            scale = Math.max(0.1, Math.min(10, scale * (1 + delta * 0.1)));
-            offsetX = mouseX - (event.pageX / scale);
-            offsetY = mouseY - (event.pageY / scale);
+            const newScale = Math.max(0.1, Math.min(10, scale * (1 + delta * 0.1)));
+            offsetX = mouseX - (event.pageX / newScale);
+            offsetY = mouseY - (event.pageY / newScale);
+            scale = newScale;
             redrawCanvas();
         }
 
@@ -424,11 +425,12 @@
                 }
             } else if (event.touches.length === 2) {
                 const currentDistance = getDistance(event.touches);
-                scale = Math.max(0.1, Math.min(10, initialScale * (currentDistance / initialPinchDistance)));
+                const newScale = Math.max(0.1, Math.min(10, initialScale * (currentDistance / initialPinchDistance)));
                 const touchCenterX = (event.touches[0].pageX + event.touches[1].pageX) / 2;
                 const touchCenterY = (event.touches[0].pageY + event.touches[1].pageY) / 2;
-                offsetX = toTrueX(touchCenterX) - (touchCenterX / scale);
-                offsetY = toTrueY(touchCenterY) - (touchCenterY / scale);
+                offsetX = toTrueX(touchCenterX) - (touchCenterX / newScale);
+                offsetY = toTrueY(touchCenterY) - (touchCenterY / newScale);
+                scale = newScale;
                 redrawCanvas();
             }
         }
