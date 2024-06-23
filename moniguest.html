@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monica's Visit</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        animation: backgroundAnimation 10s infinite alternate;
+    }
+    @keyframes backgroundAnimation {
+        0% { background-color: #121212; }
+        100% { background-color: #1e1e1e; }
+    }
+    .form-container {
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        opacity: 0;
+        animation: fadeIn 2s forwards;
+        transform: scale(0.9);
+    }
+    .form-container h1, .form-container h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        animation: textFadeIn 1.5s forwards;
+    }
+    @keyframes textFadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .form-container label {
+        display: block;
+        margin: 20px 0;
+        font-size: 1.2em;
+        animation: textFadeIn 1.5s forwards;
+    }
+    .form-container .options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: optionsFadeIn 1.5s forwards;
+    }
+    .form-container .options input[type="radio"] {
+        margin: 10px 5px;
+    }
+    .form-container button {
+        background-color: #6200ee;
+        color: #ffffff;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.2em;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        margin-top: 20px;
+        opacity: 0;
+        animation: fadeInButton 2s forwards;
+        animation-delay: 2s;
+    }
+    .form-container button:hover {
+        background-color: #3700b3;
+    }
+    .hidden {
+        display: none;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeInButton {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes optionsFadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+    }
+    .message-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #4CAF50;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        animation: messageFadeIn 2s forwards;
+        z-index: 1000;
+        text-align: center;
+    }
+    @keyframes messageFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+</head>
+<body>
+<div class="form-container">
+    <h1 id="greeting">Hello Monica!</h1>
+    <form id="visitForm" onsubmit="sendEmail(event)">
+        <div id="question1" class="fade-in">
+            <label>Do you cherish your boyfriend's heart?</label>
+            <div class="options">
+                <input type="radio" name="Do you love your boyfriend?" value="Yes" required> Yes
+                <input type="radio" name="Do you love your boyfriend?" value="No"> No
+                <input type="radio" name="Do you love your boyfriend?" value="He loves me more"> He loves me more
+            </div>
+        </div>
+        <div id="question2" class="hidden">
+            <label>Do you recognize his devoted care and wish for your blissful weekly stays?</label>
+            <div class="options">
+                <input type="radio" name="Awareness of care" value="Yes" required> Yes
+                <input type="radio" name="Awareness of care" value="No"> No
+                <input type="radio" name="Awareness of care" value="I loathe him"> I loathe him
+            </div>
+        </div>
+        <div id="question3" class="hidden">
+            <label>What elixir would quench your thirst upon today's arrival?</label>
+            <div class="options">
+                <input type="radio" name="Preferred drink" value="Coffee" required> Coffee
+                <input type="radio" name="Preferred drink" value="Tea"> Tea
+                <input type="radio" name="Preferred drink" value="Hot Chocolate"> Hot Chocolate
+                <input type="radio" name="Preferred drink" value="Water"> Water
+                <input type="radio" name="Preferred drink" value="Milk"> Milk
+            </div>
+        </div>
+        <div id="question4" class="hidden">
+            <label>Would you delight in unlimited snack provisions throughout the day, graciously provided by TP?</label>
+            <div class="options">
+                <input type="radio" name="Snack access" value="Yes" required> Yes
+                <input type="radio" name="Snack access" value="No"> No
+            </div>
+        </div>
+        <div id="question5" class="hidden">
+            <label>Who holds the deeper affection?</label>
+            <div class="options">
+                <input type="radio" name="Who loves more?" value="Teo" required> Teo
+                <input type="radio" name="Who loves more?" value="Monica"> Monica
+            </div>
+        </div>
+        <div id="thanks" class="hidden">
+            <h2>Thank you, my heart belongs to you!</h2>
+        </div>
+        <button type="button" onclick="nextQuestion()">Next</button>
+    </form>
+</div>
+<div id="message" class="message-container hidden">
+    <p>Clicking "Submit" will open your email client to send your preferences to Teo.</p>
+</div>
+<script>
+    let currentQuestion = 1;
+
+    function nextQuestion() {
+        if (!document.querySelector(`#question${currentQuestion} input:checked`)) {
+            alert('Please select an option before proceeding.');
+            return;
+        }
+        document.querySelector('button').classList.remove('shake');
+        if (currentQuestion < 5) {
+            document.getElementById(`question${currentQuestion}`).classList.add('hidden');
+            currentQuestion++;
+            document.getElementById(`question${currentQuestion}`).classList.remove('hidden');
+            document.getElementById(`question${currentQuestion}`).classList.add('fade-in');
+        } else {
+            document.getElementById(`question${currentQuestion}`).classList.add('hidden');
+            document.getElementById('thanks').classList.remove('hidden');
+            document.getElementById('thanks').classList.add('fade-in');
+            document.querySelector('button').innerText = 'Submit';
+            document.querySelector('button').setAttribute('type', 'submit');
+            showSubmitMessage();
+        }
+    }
+
+    document.querySelector('button').addEventListener('mouseover', () => {
+        document.querySelector('button').classList.add('shake');
+    });
+
+    function showSubmitMessage() {
+        document.getElementById('message').classList.remove('hidden');
+    }
+
+    function sendEmail(event) {
+        event.preventDefault();
+        const form = document.getElementById('visitForm');
+        const formData = new FormData(form);
+        const mailtoLink = `mailto:teojop@outlook.com?subject=Monica's%20Preferences&body=${
+            [...formData.entries()].map(([key, value]) => `${key}: ${value}`).join('%0D%0A')
+        }`;
+        alert("You'll be redirected to your email client to send the form details. Please press send in your email client.");
+        window.location.href = mailtoLink;
+    }
+</script>
+</body>
+</html>
