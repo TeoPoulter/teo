@@ -13,8 +13,8 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
-            position: relative;
             margin: 0;
+            overflow: hidden; /* Prevent scrollbars */
         }
         .container {
             text-align: center;
@@ -86,18 +86,27 @@
             width: 400px;
             padding: 10px;
             background-color: #333;
-            color: green; /* Green text */
-            font-size: 7em;
+            color: green;
+            font-size: 2em;
             text-align: center;
             border-radius: 10px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+        }
+        .estimated-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: yellow;
+            display: none; /* Hide initially */
         }
     </style>
 </head>
 <body>
     <div class="notification" id="notification"></div>
     <div class="lifetime-presses">Lifetime Presses: <span id="pressesCount">0</span></div>
+    <div class="estimated-time" id="estimatedTime">Estimated Time: 0 minutes 0 seconds</div>
     <div class="container">
         <h1>Simple Alarm</h1>
         <div class="button-container">
@@ -116,80 +125,125 @@
         
         <button onclick="startAlarm()">Start Alarm</button>
     </div>
-
+    <audio id="alarmSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const pressesCountElement = document.getElementById('pressesCount');
-            const pressesCount = localStorage.getItem('pressesCount') || 0;
-            pressesCountElement.textContent = pressesCount;
+            try {
+                const pressesCountElement = document.getElementById('pressesCount');
+                const pressesCount = localStorage.getItem('pressesCount') || 0;
+                pressesCountElement.textContent = pressesCount;
 
-            // Restore settings from localStorage
-            const times = localStorage.getItem('times');
-            const minutes = localStorage.getItem('minutes');
-            const seconds = localStorage.getItem('seconds');
+                // Restore settings from localStorage
+                const times = localStorage.getItem('times');
+                const minutes = localStorage.getItem('minutes');
+                const seconds = localStorage.getItem('seconds');
 
-            if (times) document.getElementById('times').value = times;
-            if (minutes) document.getElementById('minutes').value = minutes;
-            if (seconds) document.getElementById('seconds').value = seconds;
+                if (times) document.getElementById('times').value = times;
+                if (minutes) document.getElementById('minutes').value = minutes;
+                if (seconds) document.getElementById('seconds').value = seconds;
+            } catch (error) {
+                console.error('Error loading settings: ', error);
+            }
         });
 
         function playSound() {
-            const audio = document.getElementById('alarmSound');
-            audio.currentTime = 0; // Reset audio to start
-            audio.play();
-
-            updatePressesCount();
-        }
-
-        function startAlarm() {
-            const times = parseInt(document.getElementById('times').value);
-            const minutes = parseInt(document.getElementById('minutes').value);
-            const seconds = parseInt(document.getElementById('seconds').value);
-            const interval = (minutes * 60000) + (seconds * 1000); // Convert minutes and seconds to milliseconds
-
-            if (isNaN(times) || isNaN(minutes) || isNaN(seconds) || times <= 0 || interval <= 0) {
-                alert('Please enter valid values for times and interval.');
-                return;
-            }
-
-            let remainingDings = times;
-
-            for (let i = 0; i < times; i++) {
-                setTimeout(() => {
-                    playSound();
-                    showNotification(remainingDings);
-                    remainingDings--;
-                }, i * interval);
+            try {
+                const audio = document.getElementById('alarmSound');
+                audio.currentTime = 0; // Reset audio to start
+                audio.play();
+                updatePressesCount();
+            } catch (error) {
+                console.error('Error playing sound: ', error);
             }
         }
 
-        function updatePressesCount() {
-            const pressesCountElement = document.getElementById('pressesCount');
-            let pressesCount = localStorage.getItem('pressesCount') || 0;
-            pressesCount = parseInt(pressesCount) + 1;
-            localStorage.setItem('pressesCount', pressesCount);
-            pressesCountElement.textContent = pressesCount;
+function startAlarm() {
+    try {
+        const times = parseInt(document.getElementById('times').value);
+        const minutes = parseInt(document.getElementById('minutes').value);
+        const seconds = parseInt(document.getElementById('seconds').value);
+        const interval = (minutes * 60000) + (seconds * 1000); // Convert minutes and seconds to milliseconds
+
+        if (isNaN(times) || isNaN(minutes) || isNaN(seconds) || times <= 0 || interval <= 0) {
+            alert('Please enter valid values for times and interval.');
+            return;
         }
 
-        function showNotification(remainingDings) {
-            const notificationElement = document.getElementById('notification');
-            notificationElement.textContent = `${remainingDings} left`;
-            notificationElement.style.opacity = 1;
+        let remainingDings = times;
+        let delay = 0;
 
+        for (let i = 0; i < times; i++) {
             setTimeout(() => {
-                notificationElement.style.opacity = 0;
-            }, 3000);
+                playSound();
+                showNotification(remainingDings);
+                remainingDings--;
+            }, delay);
+            
+            delay += interval; // Increment delay for the next sound
         }
+
+        updateEstimatedTime();
+        document.getElementById('estimatedTime').style.display = 'block'; // Show the estimated time
+    } catch (error) {
+        console.error('Error starting alarm: ', error);
+    }
+}
+
+function showNotification(remainingDings) {
+    try {
+        const notificationElement = document.getElementById('notification');
+        notificationElement.textContent = `${remainingDings} left`;
+        notificationElement.style.opacity = 1;
+
+        // Clear previous timeouts to ensure smooth transition
+        clearTimeout(notificationElement.timeoutId);
+
+        notificationElement.timeoutId = setTimeout(() => {
+            notificationElement.style.opacity = 0;
+        }, 3000);
+    } catch (error) {
+        console.error('Error showing notification: ', error);
+    }
+}
+
 
         function saveSettings() {
-            const times = document.getElementById('times').value;
-            const minutes = document.getElementById('minutes').value;
-            const seconds = document.getElementById('seconds').value;
+            try {
+                const times = document.getElementById('times').value;
+                const minutes = document.getElementById('minutes').value;
+                const seconds = document.getElementById('seconds').value;
 
-            localStorage.setItem('times', times);
-            localStorage.setItem('minutes', minutes);
-            localStorage.setItem('seconds', seconds);
+                localStorage.setItem('times', times);
+                localStorage.setItem('minutes', minutes);
+                localStorage.setItem('seconds', seconds);
+            } catch (error) {
+                console.error('Error saving settings: ', error);
+            }
+        }
+
+        function updateEstimatedTime() {
+            try {
+                const times = parseInt(document.getElementById('times').value);
+                const minutes = parseInt(document.getElementById('minutes').value);
+                const seconds = parseInt(document.getElementById('seconds').value);
+
+                if (isNaN(times) || isNaN(minutes) || isNaN(seconds) || times <= 0 || (minutes <= 0 && seconds <= 0)) {
+                    alert('Please enter valid values for times and interval.');
+                    return;
+                }
+
+                const interval = (minutes * 60000) + (seconds * 1000); // Convert to milliseconds
+                const totalTime = interval * times; // Total time in milliseconds
+
+                const totalMinutes = Math.floor(totalTime / 60000);
+                const totalSeconds = Math.floor((totalTime % 60000) / 1000);
+
+                const estimatedTimeElement = document.getElementById('estimatedTime');
+                estimatedTimeElement.textContent = `Estimated Time: ${totalMinutes} minutes ${totalSeconds} seconds`;
+            } catch (error) {
+                console.error('Error updating estimated time: ', error);
+            }
         }
     </script>
 </body>
