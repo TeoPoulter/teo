@@ -324,7 +324,7 @@
     <h1 style="font-size: 70px;">Teo's Tools</h1>
   </div>
   <div class="button-container">
-    <button class="button" onclick="startGame()">Home</button>
+    <button class="button" onclick="navigateToTeoHomePage()">Home</button>
   </div>
   <div class="arrow"></div>
   <div class="detail"></div>
@@ -386,8 +386,8 @@
   <div class="dynamic-text">Teo's Tools</div>
   <audio id="background-music" src="background-music.mp3" loop></audio>
   <script>
-    function startGame() {
-      // Start the game logic here
+    function navigateToTeoHomePage() {
+      window.location.href = 'https://teopoulter.github.io/teo/home';
     }
   </script>
 </body>
