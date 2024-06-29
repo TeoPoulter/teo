@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teo's Tools</title>
   <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/IYIWtJQ.jpeg">
+  <link rel="icon" type="image/x-icon" href="https://i.imgur.com/IYIWtJQ.jpeg">
   <style>
     body {
       margin: 0;
@@ -17,9 +17,9 @@
       overflow: hidden;
       font-family: 'Titan One', cursive;
       color: #fff;
-      background: linear-gradient(-45deg, #00203FFF, #ADEFD1FF, #00203FFF, #ADEFD1FF, #00203FFF, #ADEFD1FF);
+      background: linear-gradient(-45deg, #000022, #003333, #000022, #003333, #000022, #003333);
       background-size: 400% 400%;
-      animation: gradient 20s ease infinite;
+      animation: gradient 10s ease infinite;
     }
 
     @keyframes gradient {
@@ -36,7 +36,7 @@
 
     .animation-container {
       opacity: 0;
-      animation: fadeIn 3s ease forwards, moveDown 3s ease forwards, fadeOut 1s ease forwards 5s;
+      animation: fadeIn 1.5s ease forwards, moveDown 1.5s ease forwards, fadeOut 0.5s ease forwards 3s;
     }
 
     @keyframes fadeIn {
@@ -68,38 +68,35 @@
 
     .button-container {
       opacity: 0;
-      animation: fadeIn 3s ease forwards 6s, shake 0.5s infinite alternate 7s, flyAround 3s ease-in-out 7s forwards;
+      animation: fadeIn 1.5s ease forwards 3s, shake 0.25s infinite alternate 4.5s, flyAround 1.5s ease-in-out 4.5s forwards;
       z-index: 1;
     }
 
-/* Button */
-.button {
-  padding: 20px 40px;
-  background-color: #3498db;
-  color: #fff;
-  font-size: 28px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  font-family: 'Titan One', cursive;
-  animation: grow 2s infinite alternate, sparkle 0.5s infinite alternate; /* Add sparkle animation */
-}
+    .button {
+      padding: 20px 40px;
+      background-color: #1a73e8;
+      color: #fff;
+      font-size: 28px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      font-family: 'Titan One', cursive;
+      animation: grow 1s infinite alternate, sparkle 0.25s infinite alternate;
+    }
 
-.button:hover {
-  background-color: #2980b9;
-}
+    .button:hover {
+      background-color: #155bb5;
+    }
 
-/* Button Sparkle Animation */
-@keyframes sparkle {
-  0% {
-    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #2980b9, 0 0 40px #2980b9, 0 0 55px #2980b9, 0 0 75px #2980b9;
-  }
-  100% {
-    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #2980b9, 0 0 50px #2980b9, 0 0 70px #2980b9, 0 0 90px #2980b9;
-  }
-}
-
+    @keyframes sparkle {
+      0% {
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #155bb5, 0 0 40px #155bb5, 0 0 55px #155bb5, 0 0 75px #155bb5;
+      }
+      100% {
+        box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #155bb5, 0 0 50px #155bb5, 0 0 70px #155bb5, 0 0 90px #155bb5;
+      }
+    }
 
     @keyframes grow {
       0% {
@@ -155,9 +152,9 @@
       height: 0;
       border-left: 20px solid transparent;
       border-right: 20px solid transparent;
-      border-bottom: 30px solid #3498db;
+      border-bottom: 30px solid #1a73e8;
       margin-top: 20px;
-      animation: arrowBounce 2s infinite;
+      animation: arrowBounce 1s infinite;
       z-index: 1;
     }
 
@@ -175,8 +172,8 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      background-color: #e74c3c;
-      animation: detailRotate 5s linear infinite;
+      background-color: #d32f2f;
+      animation: detailRotate 2.5s linear infinite;
       z-index: 1;
       left: 10%;
     }
@@ -195,8 +192,8 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background-color: #f39c12;
-      animation: pulse 2s infinite alternate;
+      background-color: #e67e22;
+      animation: pulse 1s infinite alternate;
     }
 
     @keyframes pulse {
@@ -208,43 +205,40 @@
       }
     }
 
-/* Particle Variations */
-.particle-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #3498db;
-}
+    .particle-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #1a73e8;
+    }
 
-.particle-square {
-  width: 20px;
-  height: 20px;
-  background-color: #e74c3c;
-}
+    .particle-square {
+      width: 20px;
+      height: 20px;
+      background-color: #d32f2f;
+    }
 
-.particle-triangle {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 20px solid #f39c12;
-}
+    .particle-triangle {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid #e67e22;
+    }
 
-.particle-diamond {
-  width: 20px;
-  height: 20px;
-  transform: rotate(45deg);
-  background-color: #2ecc71;
-}
+    .particle-diamond {
+      width: 20px;
+      height: 20px;
+      transform: rotate(45deg);
+      background-color: #27ae60;
+    }
 
-/* Custom Graphics Examples */
-.custom-graphic {
-  position: absolute;
-  width: 20px;
-  height: auto;
-  z-index: 2;
-}
-
+    .custom-graphic {
+      position: absolute;
+      width: 20px;
+      height: auto;
+      z-index: 2;
+    }
 
     @keyframes float {
       0% {
@@ -273,7 +267,7 @@
       width: 1px;
       height: 100%;
       background: rgba(255, 255, 255, 0.2);
-      animation: animateLine 5s infinite;
+      animation: animateLine 2.5s infinite;
     }
 
     @keyframes animateLine {
@@ -285,7 +279,6 @@
       }
     }
 
-    /* Dynamic Text Effects */
     .dynamic-text {
       position: absolute;
       top: 8%;
@@ -293,7 +286,7 @@
       transform: translate(-50%, -50%);
       font-size: 48px;
       text-align: center;
-      animation: textAnimation 4s infinite alternate;
+      animation: textAnimation 2s infinite alternate;
     }
 
     @keyframes textAnimation {
@@ -303,16 +296,14 @@
       }
       100% {
         transform: translate(-50%, -50%) scale(1.2);
-        color: #f39c12;
+        color: #e67e22;
       }
     }
 
-    /* Sound Effects */
     #background-music {
       display: none;
     }
 
-    /* Particle Effects */
     .particle-effects {
       position: absolute;
       top: 0;
@@ -323,142 +314,49 @@
       z-index: 1;
     }
 
-    /* Custom Graphics */
     .custom-graphics {
-      /* Integrate custom graphics or illustrations here */
     }
   </style>
 </head>
 <body>
   <div class="animation-container">
-    <h1 style="font-size: 64px;">Welcome to <span style="color: #3498DB;">Teo's Tools</span></h1>
+    <h1 style="font-size: 70px;">Teo's Tools</h1>
   </div>
   <div class="button-container">
-<button class="button" onclick="window.location.href='https://teopoulter.github.io/teo/home'">Click here to start</button>
-
+    <button class="button" onclick="startGame()">Start Game</button>
   </div>
   <div class="arrow"></div>
-  <div class="detail" style="top: 20%; left: 10%;"></div>
-  <div class="detail" style="top: 70%; left: 70%;"></div>
-  <div class="circle" style="top: 30%; left: 30%;"></div>
-  <div class="circle" style="top: 70%; left: 50%;"></div>
-  <div class="circle" style="top: 50%; left: 80%;"></div>
-  <div class="circle" style="top: 80%; left: 20%;"></div>
-  <div class="particle" style="top: 60%; left: 40%;"></div>
-  <div class="particle" style="top: 40%; left: 70%;"></div>
-  <div class="particle" style="top: 20%; left: 50%;"></div>
-  <div class="particle" style="top: 80%; left: 30%;"></div>
-  <!-- Background lines -->
+  <div class="detail"></div>
+  <div class="circle" style="top: 50px; left: 50%;"></div>
+  <div class="circle" style="top: 70%; left: 20%;"></div>
+  <div class="circle" style="top: 20%; left: 80%;"></div>
+  <div class="particle-circle" style="top: 80%; left: 70%;"></div>
+  <div class="particle-square" style="top: 30%; left: 30%;"></div>
+  <div class="particle-triangle" style="top: 60%; left: 60%;"></div>
+  <div class="particle-diamond" style="top: 40%; left: 40%;"></div>
+  <div class="custom-graphics">
+    <img src="https://via.placeholder.com/50" class="custom-graphic" style="top: 10%; left: 10%;" alt="Custom Graphic 1">
+    <img src="https://via.placeholder.com/50" class="custom-graphic" style="top: 20%; left: 70%;" alt="Custom Graphic 2">
+    <img src="https://via.placeholder.com/50" class="custom-graphic" style="top: 60%; left: 20%;" alt="Custom Graphic 3">
+  </div>
+  <canvas class="particle-effects"></canvas>
   <div class="bg-lines">
-    <!-- Vertical lines -->
-    <div class="line" style="left: 5%;"></div>
-    <div class="line" style="left: 15%;"></div>
-    <div class="line" style="left: 25%;"></div>
-    <div class="line" style="left: 35%;"></div>
-    <div class="line" style="left: 45%;"></div>
-    <div class="line" style="left: 55%;"></div>
-    <div class="line" style="left: 65%;"></div>
-    <div class="line" style="left: 75%;"></div>
-    <div class="line" style="left: 85%;"></div>
-    <div class="line" style="left: 95%;"></div>
-    <!-- Horizontal lines -->
-    <div class="line" style="top: 5%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 15%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 25%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 35%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 45%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 55%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 65%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 75%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 85%; width: 100%; height: 1px;"></div>
-    <div class="line" style="top: 95%; width: 100%; height: 1px;"></div>
+    <div class="line" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="line" style="left: 20%; animation-delay: 0.5s;"></div>
+    <div class="line" style="left: 30%; animation-delay: 1s;"></div>
+    <div class="line" style="left: 40%; animation-delay: 1.5s;"></div>
+    <div class="line" style="left: 50%; animation-delay: 2s;"></div>
+    <div class="line" style="left: 60%; animation-delay: 2.5s;"></div>
+    <div class="line" style="left: 70%; animation-delay: 3s;"></div>
+    <div class="line" style="left: 80%; animation-delay: 3.5s;"></div>
+    <div class="line" style="left: 90%; animation-delay: 4s;"></div>
   </div>
-
-  <!-- Dynamic Text Effects -->
-  <div class="dynamic-text">
-    Woah!
-  </div>
-
-  <!-- Sound Effects -->
-  <audio id="background-music" autoplay loop>
-    <source src="background-music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-<!-- Particle Effects -->
-<div class="particle-effects">
-  <!-- Particle Variations -->
-  <div class="particle particle-circle" style="top: 70%; left: 60%;"></div>
-  <div class="particle particle-square" style="top: 40%; left: 80%;"></div>
-  <div class="particle particle-triangle" style="top: 20%; left: 30%;"></div>
-  <div class="particle particle-diamond" style="top: 80%; left: 70%;"></div>
-</div>
-
-<!-- Custom Graphics -->
-<div class="custom-graphics">
-  <!-- Custom Graphics Examples -->
-  <img src="https://i.imgur.com/IYIWtJQ.jpeg" alt="Custom Graphic 1" class="custom-graphic" style="top: 30%; left: 20%;">
-  <img src="https://i.imgur.com/IYIWtJQ.jpeg" alt="Custom Graphic 2" class="custom-graphic" style="top: 60%; left: 50%;">
-  <!-- Additional Duplicated Images -->
+  <div class="dynamic-text">Welcome to Teo's Tools!</div>
+  <audio id="background-music" src="background-music.mp3" loop></audio>
   <script>
-    const numberOfDuplicates = 20; // Number of duplicates
-    const container = document.querySelector('.custom-graphics');
-    const images = [];
-
-    // Create duplicated images
-    for (let i = 0; i < numberOfDuplicates; i++) {
-      const img = document.createElement('img');
-      img.src = 'https://i.imgur.com/IYIWtJQ.jpeg';
-      img.alt = 'Custom Graphic';
-      img.classList.add('custom-graphic');
-      img.style.position = 'fixed'; // Position relative to the viewport
-      img.style.zIndex = '-1'; // Behind other elements
-      img.style.opacity = Math.random() * 0.5 + 0.1; // Set random opacity between 0.1 and 0.6
-
-      // Randomly position the image around the window screen
-      const randomTop = Math.random() * 100;
-      const randomLeft = Math.random() * 100;
-      img.style.top = `${randomTop}%`;
-      img.style.left = `${randomLeft}%`;
-
-      container.appendChild(img);
-      images.push(img);
+    function startGame() {
+      // Start the game logic here
     }
-
-    // Function to handle mousemove event
-    function handleMouseMove(event) {
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-
-      // Calculate distance between mouse and each image
-      images.forEach(img => {
-        const rect = img.getBoundingClientRect();
-        const imgX = rect.left + rect.width / 2;
-        const imgY = rect.top + rect.height / 2;
-        const distance = Math.sqrt((mouseX - imgX) ** 2 + (mouseY - imgY) ** 2);
-
-        // Apply movement if mouse is near the image
-        if (distance < 100) {
-          const randomX = (Math.random() - 0.5) * 10;
-          const randomY = (Math.random() - 0.5) * 10;
-          img.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }
-      });
-    }
-
-    // Function to apply random movement even if mouse isn't near
-    function applyRandomMovement() {
-      images.forEach(img => {
-        const randomX = (Math.random() - 0.5) * 2;
-        const randomY = (Math.random() - 0.5) * 2;
-        img.style.transform = `translate(${randomX}px, ${randomY}px)`;
-      });
-    }
-
-    // Add event listener for mousemove
-    document.addEventListener('mousemove', handleMouseMove);
-
-    // Apply random movement every 5 seconds
-    setInterval(applyRandomMovement, 5000);
   </script>
-</div>
+</body>
+</html>
