@@ -19,7 +19,7 @@
       color: #fff;
       background: linear-gradient(-45deg, #000022, #003333, #000022, #003333, #000022, #003333);
       background-size: 400% 400%;
-      animation: gradient 10s ease infinite;
+      animation: gradient 5s ease infinite;
     }
 
     @keyframes gradient {
@@ -36,7 +36,7 @@
 
     .animation-container {
       opacity: 0;
-      animation: fadeIn 1.5s ease forwards, moveDown 1.5s ease forwards, fadeOut 0.5s ease forwards 3s;
+      animation: fadeIn 1s ease forwards, moveDown 1s ease forwards, fadeOut 0.3s ease forwards 2s;
     }
 
     @keyframes fadeIn {
@@ -68,7 +68,7 @@
 
     .button-container {
       opacity: 0;
-      animation: fadeIn 1.5s ease forwards 3s, shake 0.25s infinite alternate 4.5s, flyAround 1.5s ease-in-out 4.5s forwards;
+      animation: fadeIn 1s ease forwards 2s, shake 0.3s infinite alternate 3s, flyAround 1s ease-in-out 3s forwards;
       z-index: 1;
     }
 
@@ -82,7 +82,7 @@
       cursor: pointer;
       transition: transform 0.3s ease;
       font-family: 'Titan One', cursive;
-      animation: grow 1s infinite alternate, sparkle 0.25s infinite alternate;
+      animation: grow 1s infinite alternate, sparkle 0.3s infinite alternate;
     }
 
     .button:hover {
@@ -173,7 +173,7 @@
       height: 50px;
       border-radius: 50%;
       background-color: #d32f2f;
-      animation: detailRotate 2.5s linear infinite;
+      animation: detailRotate 3s linear infinite;
       z-index: 1;
       left: 10%;
     }
@@ -187,13 +187,16 @@
       }
     }
 
-    .circle {
+    .circle, .particle-circle, .particle-square, .particle-triangle, .particle-diamond {
       position: absolute;
       width: 20px;
       height: 20px;
+    }
+
+    .circle {
       border-radius: 50%;
       background-color: #e67e22;
-      animation: pulse 1s infinite alternate;
+      animation: pulse 2s infinite alternate;
     }
 
     @keyframes pulse {
@@ -206,16 +209,14 @@
     }
 
     .particle-circle {
-      width: 20px;
-      height: 20px;
       border-radius: 50%;
       background-color: #1a73e8;
+      animation: float 12s infinite ease-in-out;
     }
 
     .particle-square {
-      width: 20px;
-      height: 20px;
       background-color: #d32f2f;
+      animation: float 12s infinite ease-in-out;
     }
 
     .particle-triangle {
@@ -224,20 +225,13 @@
       border-left: 10px solid transparent;
       border-right: 10px solid transparent;
       border-bottom: 20px solid #e67e22;
+      animation: float 12s infinite ease-in-out;
     }
 
     .particle-diamond {
-      width: 20px;
-      height: 20px;
       transform: rotate(45deg);
       background-color: #27ae60;
-    }
-
-    .custom-graphic {
-      position: absolute;
-      width: 20px;
-      height: auto;
-      z-index: 2;
+      animation: float 12s infinite ease-in-out;
     }
 
     @keyframes float {
@@ -250,6 +244,13 @@
       100% {
         transform: translateY(0);
       }
+    }
+
+    .custom-graphic {
+      position: absolute;
+      width: 20px;
+      height: auto;
+      z-index: 2;
     }
 
     .bg-lines {
@@ -267,7 +268,7 @@
       width: 1px;
       height: 100%;
       background: rgba(255, 255, 255, 0.2);
-      animation: animateLine 2.5s infinite;
+      animation: animateLine 1.5s infinite;
     }
 
     @keyframes animateLine {
@@ -323,17 +324,48 @@
     <h1 style="font-size: 70px;">Teo's Tools</h1>
   </div>
   <div class="button-container">
-    <button class="button" onclick="startGame()">Start Game</button>
+    <button class="button" onclick="startGame()">Home</button>
   </div>
   <div class="arrow"></div>
   <div class="detail"></div>
-  <div class="circle" style="top: 50px; left: 50%;"></div>
+  <div class="circle" style="top: 50px; left: 80%;"></div>
   <div class="circle" style="top: 70%; left: 20%;"></div>
   <div class="circle" style="top: 20%; left: 80%;"></div>
   <div class="particle-circle" style="top: 80%; left: 70%;"></div>
   <div class="particle-square" style="top: 30%; left: 30%;"></div>
   <div class="particle-triangle" style="top: 60%; left: 60%;"></div>
   <div class="particle-diamond" style="top: 40%; left: 40%;"></div>
+
+  <!-- Additional shapes -->
+  <div class="particle-circle" style="top: 10%; left: 20%;"></div>
+  <div class="particle-square" style="top: 15%; left: 30%;"></div>
+  <div class="particle-triangle" style="top: 25%; left: 40%;"></div>
+  <div class="particle-diamond" style="top: 35%; left: 50%;"></div>
+  <div class="particle-circle" style="top: 45%; left: 60%;"></div>
+  <div class="particle-square" style="top: 55%; left: 70%;"></div>
+  <div class="particle-triangle" style="top: 65%; left: 80%;"></div>
+  <div class="particle-diamond" style="top: 75%; left: 90%;"></div>
+  <div class="particle-circle" style="top: 85%; left: 10%;"></div>
+  <div class="particle-square" style="top: 90%; left: 20%;"></div>
+  <div class="particle-triangle" style="top: 95%; left: 30%;"></div>
+  <div class="particle-diamond" style="top: 5%; left: 40%;"></div>
+  <div class="particle-circle" style="top: 15%; left: 50%;"></div>
+  <div class="particle-square" style="top: 25%; left: 60%;"></div>
+  <div class="particle-triangle" style="top: 35%; left: 70%;"></div>
+  <div class="particle-diamond" style="top: 45%; left: 80%;"></div>
+  <div class="particle-circle" style="top: 25%; left: 10%;"></div>
+  <div class="particle-square" style="top: 35%; left: 20%;"></div>
+  <div class="particle-triangle" style="top: 45%; left: 30%;"></div>
+  <div class="particle-diamond" style="top: 55%; left: 40%;"></div>
+  <div class="particle-circle" style="top: 65%; left: 50%;"></div>
+  <div class="particle-square" style="top: 75%; left: 60%;"></div>
+  <div class="particle-triangle" style="top: 85%; left: 70%;"></div>
+  <div class="particle-diamond" style="top: 95%; left: 80%;"></div>
+  <div class="particle-circle" style="top: 5%; left: 90%;"></div>
+  <div class="particle-square" style="top: 10%; left: 40%;"></div>
+  <div class="particle-triangle" style="top: 20%; left: 50%;"></div>
+  <div class="particle-diamond" style="top: 30%; left: 60%;"></div>
+
   <div class="custom-graphics">
     <img src="https://via.placeholder.com/50" class="custom-graphic" style="top: 10%; left: 10%;" alt="Custom Graphic 1">
     <img src="https://via.placeholder.com/50" class="custom-graphic" style="top: 20%; left: 70%;" alt="Custom Graphic 2">
@@ -342,16 +374,16 @@
   <canvas class="particle-effects"></canvas>
   <div class="bg-lines">
     <div class="line" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="line" style="left: 20%; animation-delay: 0.5s;"></div>
-    <div class="line" style="left: 30%; animation-delay: 1s;"></div>
-    <div class="line" style="left: 40%; animation-delay: 1.5s;"></div>
-    <div class="line" style="left: 50%; animation-delay: 2s;"></div>
-    <div class="line" style="left: 60%; animation-delay: 2.5s;"></div>
-    <div class="line" style="left: 70%; animation-delay: 3s;"></div>
-    <div class="line" style="left: 80%; animation-delay: 3.5s;"></div>
-    <div class="line" style="left: 90%; animation-delay: 4s;"></div>
+    <div class="line" style="left: 20%; animation-delay: 0.25s;"></div>
+    <div class="line" style="left: 30%; animation-delay: 0.5s;"></div>
+    <div class="line" style="left: 40%; animation-delay: 0.75s;"></div>
+    <div class="line" style="left: 50%; animation-delay: 1s;"></div>
+    <div class="line" style="left: 60%; animation-delay: 1.25s;"></div>
+    <div class="line" style="left: 70%; animation-delay: 1.5s;"></div>
+    <div class="line" style="left: 80%; animation-delay: 1.75s;"></div>
+    <div class="line" style="left: 90%; animation-delay: 2s;"></div>
   </div>
-  <div class="dynamic-text">Welcome to Teo's Tools!</div>
+  <div class="dynamic-text">Teo's Tools</div>
   <audio id="background-music" src="background-music.mp3" loop></audio>
   <script>
     function startGame() {
