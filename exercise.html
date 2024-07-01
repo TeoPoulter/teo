@@ -488,7 +488,8 @@
         const fullScreenContent = document.getElementById('fullScreenContent');
 
         const endTime = startTime + totalTime;
-        const timeTaken = calculateTimeDifference(start, end);
+const timeTaken = calculateTimeDifference(startTime, endTime);
+
 
         fullScreenContent.innerHTML = `
             <h1>Workout Complete</h1>
