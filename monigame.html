@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Lovely Monica</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInImage {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes popup {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Roboto', sans-serif;
+            color: #ECF0F1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .container {
+            text-align: center;
+            background: #2c3e50;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
+            max-width: 80%;
+            margin: auto;
+        }
+
+        h1 {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin: 15px 0;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 20px;
+            animation: fadeInImage 3s ease-in-out;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 1em;
+            color: white;
+            background: #e74c3c;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            animation: fadeIn 3.5s ease-in-out;
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #c0392b;
+            animation: pulse 0.6s infinite;
+        }
+
+        /* Popup styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: popup 0.5s ease-in-out;
+            max-width: 80%;
+        }
+
+        .popup a {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 1em;
+            color: white;
+            background: #e74c3c;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.3s;
+            margin-top: 20px;
+        }
+
+        .popup a:hover {
+            background: #c0392b;
+            animation: pulse 0.6s infinite;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .close-btn:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            .popup {
+                padding: 15px;
+            }
+            .popup a, .close-btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>hiii babyyy!</h1>
+        <p>i made up a little fun game for us to play!</p>
+        <p>I have 40 Mentos, 14 different flavours. We'll each take one of the same flavour and then make out to taste the different flavours on each other. hehehe i thought of this all myself tooooo</p>
+        <img src="https://d2dyh47stel7w4.cloudfront.net/Pictures/780xany/1/9/3/317193_mentosdiscovery_367510.png" alt="14 different flavoured Mentos in a line">
+        <p>Can't wait to play this game with you :)</p>
+        <button class="btn" onclick="showPopup()">I Love You!</button>
+    </div>
+
+    <div class="overlay" id="popupOverlay">
+        <div class="popup">
+            <p>I know you wanted to play this togetherrrrr:</p>
+            <a href="https://www.friv.com/z/games/fireboyandwatergirlforest/game.html" target="_blank">Play Fireboy and Watergirl!!</a>
+            <button class="close-btn" onclick="hidePopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showPopup() {
+            document.getElementById('popupOverlay').style.display = 'flex';
+        }
+
+        function hidePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
