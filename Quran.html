@@ -4,86 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran Memorisation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
     <style>
         /* Base styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1f1c2c, #928DAB);
+            color: #f5f5f5;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            overflow-x: hidden;
         }
 
         h1 {
-            color: #00bcd4;
-            margin-top: 20px;
+            color: #4caf50;
+            margin-top: 40px;
             font-size: 3em;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
+            letter-spacing: 2px;
+            transition: color 0.4s ease;
         }
 
         h1:hover {
-            color: #03a9f4;
+            color: #81c784;
         }
 
         ul {
             list-style: none;
             padding: 0;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
+            margin: 20px 0;
         }
 
         li {
-            background-color: #1e1e1e;
+            background: rgba(0, 0, 0, 0.8);
             margin: 15px 0;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transform: scale(1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         li:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
         }
 
         button {
-            background-color: #00bcd4;
+            background: linear-gradient(45deg, #4caf50, #81c784);
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
             color: #ffffff;
-            font-size: 1em;
-            font-weight: bold;
+            font-size: 1.1em;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
 
         button:hover {
-            background-color: #03a9f4;
-            transform: translateY(-3px);
+            background: linear-gradient(45deg, #81c784, #4caf50);
+            transform: scale(1.05);
         }
 
         button:active {
-            background-color: #0288d1;
-            transform: translateY(1px);
+            background: linear-gradient(45deg, #66bb6a, #43a047);
+            transform: scale(0.95);
         }
 
         audio {
             margin: 30px 0;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 8px;
-            background-color: #1e1e1e;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8);
             padding: 10px;
+            display: none;
+        }
+
+        .audio-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .audio-controls button {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+
+        .audio-controls button:hover {
+            background: #555;
+        }
+
+        .audio-controls button:active {
+            background: #222;
         }
 
         /* Responsive design */
@@ -102,12 +131,17 @@
                 margin-top: 10px;
                 text-align: center;
             }
+
+            .audio-controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Quran Memorisation</h1>
     <ul>
+        <!-- List all Surahs -->
         <li>Surah 1: Al-Fatiha <button onclick="playAudio('001.mp3')">Play</button></li>
         <li>Surah 2: Al-Baqarah <button onclick="playAudio('002.mp3')">Play</button></li>
         <li>Surah 3: Aal-E-Imran <button onclick="playAudio('003.mp3')">Play</button></li>
@@ -224,7 +258,7 @@
         <li>Surah 114: An-Nas <button onclick="playAudio('114.mp3')">Play</button></li>
     </ul>
 
-    <audio id="audioPlayer" controls style="display:none;">
+    <audio id="audioPlayer" controls>
         <source id="audioSource" src="" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -233,7 +267,7 @@
         function playAudio(fileName) {
             const audioPlayer = document.getElementById('audioPlayer');
             const audioSource = document.getElementById('audioSource');
-            audioSource.src = `https://github.com/TeoPoulter/teo/blob/main/${fileName}?raw=true`;
+            audioSource.src = `https://github.com/TeoPoulter/teo/raw/main/${fileName}`;
             audioPlayer.load();
             audioPlayer.play();
         }
