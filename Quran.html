@@ -7,69 +7,89 @@
     <style>
         /* Base styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
         }
 
         h1 {
-            color: #50fa7b;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2.5em;
+            color: #00bcd4;
+            margin-top: 20px;
+            font-size: 3em;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        h1:hover {
+            color: #03a9f4;
         }
 
         ul {
-            list-style-type: none;
+            list-style: none;
             padding: 0;
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
         }
 
         li {
-            background-color: #282a36;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 8px;
+            background-color: #1e1e1e;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transform: scale(1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         li:hover {
-            background-color: #44475a;
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         button {
-            background-color: #50fa7b;
+            background-color: #00bcd4;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #282a36;
+            padding: 12px 25px;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1em;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         button:hover {
-            background-color: #40c66d;
+            background-color: #03a9f4;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            background-color: #0288d1;
+            transform: translateY(1px);
         }
 
         audio {
-            margin-top: 20px;
-            width: 100%;
-            max-width: 600px;
+            margin: 30px 0;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            padding: 10px;
         }
 
         /* Responsive design */
         @media (max-width: 600px) {
             h1 {
-                font-size: 2em;
+                font-size: 2.5em;
             }
 
             li {
@@ -78,8 +98,8 @@
             }
 
             button {
-                margin-top: 10px;
                 width: 100%;
+                margin-top: 10px;
                 text-align: center;
             }
         }
@@ -204,17 +224,16 @@
         <li>Surah 114: An-Nas <button onclick="playAudio('114.mp3')">Play</button></li>
     </ul>
 
-    <!-- Audio Player -->
-    <audio id="audioPlayer" controls>
-        <source id="audioSource" src="" type="audio/mp3">
+    <audio id="audioPlayer" controls style="display:none;">
+        <source id="audioSource" src="" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <script>
         function playAudio(fileName) {
-            var audioPlayer = document.getElementById('audioPlayer');
-            var audioSource = document.getElementById('audioSource');
-            audioSource.src = fileName;
+            const audioPlayer = document.getElementById('audioPlayer');
+            const audioSource = document.getElementById('audioSource');
+            audioSource.src = `https://github.com/TeoPoulter/teo/blob/main/${fileName}?raw=true`;
             audioPlayer.load();
             audioPlayer.play();
         }
