@@ -4,6 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran Memorisation</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #50fa7b;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        li {
+            background-color: #282a36;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li:hover {
+            background-color: #44475a;
+        }
+
+        button {
+            background-color: #50fa7b;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #282a36;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #40c66d;
+        }
+
+        audio {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            button {
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Quran Memorisation</h1>
@@ -69,7 +149,7 @@
         <li>Surah 59: Al-Hashr <button onclick="playAudio('059.mp3')">Play</button></li>
         <li>Surah 60: Al-Mumtahina <button onclick="playAudio('060.mp3')">Play</button></li>
         <li>Surah 61: As-Saff <button onclick="playAudio('061.mp3')">Play</button></li>
-        <li>Surah 62: Al-Jumu'a <button onclick="playAudio('062.mp3')">Play</button></li>
+        <li>Surah 62: Al-Jumua <button onclick="playAudio('062.mp3')">Play</button></li>
         <li>Surah 63: Al-Munafiqun <button onclick="playAudio('063.mp3')">Play</button></li>
         <li>Surah 64: At-Taghabun <button onclick="playAudio('064.mp3')">Play</button></li>
         <li>Surah 65: At-Talaq <button onclick="playAudio('065.mp3')">Play</button></li>
@@ -124,8 +204,8 @@
         <li>Surah 114: An-Nas <button onclick="playAudio('114.mp3')">Play</button></li>
     </ul>
 
-    <!-- Audio Player (Hidden by default) -->
-    <audio id="audioPlayer" controls style="display:none;">
+    <!-- Audio Player -->
+    <audio id="audioPlayer" controls>
         <source id="audioSource" src="" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
@@ -134,11 +214,9 @@
         function playAudio(fileName) {
             var audioPlayer = document.getElementById('audioPlayer');
             var audioSource = document.getElementById('audioSource');
-
-            audioSource.src = fileName; // Set the source of the audio file
-            audioPlayer.style.display = 'block'; // Display the audio controls
-            audioPlayer.load(); // Load the new audio file
-            audioPlayer.play(); // Play the audio file
+            audioSource.src = fileName;
+            audioPlayer.load();
+            audioPlayer.play();
         }
     </script>
 </body>
