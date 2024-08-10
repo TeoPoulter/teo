@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran Memorisation</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <link rel="icon" type="image/jpeg" href="https://i.imgur.com/peUGC7J.jpeg">
     <style>
-        /* Base styles */
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1f1c2c, #928DAB);
@@ -79,47 +79,87 @@
             transform: scale(0.95);
         }
 
-        /* Audio player styling */
-        #audioPlayer {
-            margin: 30px 0;
+        button.playing {
+            background: #43a047;
+        }
+
+        /* Custom Audio Player Styles */
+        #customPlayer {
             width: 100%;
             max-width: 900px;
-            border-radius: 10px;
+            margin-top: 30px;
+            border-radius: 15px;
             background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-        }
-
-        .audio-controls {
-            display: flex;
-            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            text-align: center;
         }
 
-        .audio-controls button {
+        #customPlayer .controls {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        #customPlayer .controls button {
             background: #333;
             color: #fff;
-            padding: 10px;
+            padding: 14px;
             border: none;
-            border-radius: 5px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.2em;
             transition: background 0.3s ease;
         }
 
-        .audio-controls button:hover {
+        #customPlayer .controls button:hover {
             background: #555;
         }
 
-        .audio-controls button:active {
+        #customPlayer .controls button:active {
             background: #222;
         }
 
-        .audio-controls button.playing {
+        #customPlayer .controls button.playPause.playing {
             background: #4caf50;
         }
 
-        /* Responsive design */
+        #customPlayer .track-info {
+            margin-bottom: 20px;
+        }
+
+        #customPlayer .track-info p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        #customPlayer .track-info p.title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        #settings {
+            margin-top: 10px;
+        }
+
+        #settings label {
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+
+        #settings select {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2.5em;
@@ -136,7 +176,7 @@
                 text-align: center;
             }
 
-            .audio-controls {
+            #customPlayer .controls {
                 flex-direction: column;
             }
         }
@@ -144,163 +184,145 @@
 </head>
 <body>
     <h1>Quran Memorisation</h1>
-    <ul>
-        <!-- List all Surahs -->
-        <li>Surah 1: Al-Fatiha <button onclick="playAudio('001.mp3')">Play</button></li>
-        <li>Surah 2: Al-Baqarah <button onclick="playAudio('002.mp3')">Play</button></li>
-        <li>Surah 3: Aal-E-Imran <button onclick="playAudio('003.mp3')">Play</button></li>
-        <li>Surah 4: An-Nisa <button onclick="playAudio('004.mp3')">Play</button></li>
-        <li>Surah 5: Al-Ma'idah <button onclick="playAudio('005.mp3')">Play</button></li>
-        <li>Surah 6: Al-An'am <button onclick="playAudio('006.mp3')">Play</button></li>
-        <li>Surah 7: Al-A'raf <button onclick="playAudio('007.mp3')">Play</button></li>
-        <li>Surah 8: Al-Anfal <button onclick="playAudio('008.mp3')">Play</button></li>
-        <li>Surah 9: At-Tawbah <button onclick="playAudio('009.mp3')">Play</button></li>
-        <li>Surah 10: Yunus <button onclick="playAudio('010.mp3')">Play</button></li>
-        <li>Surah 11: Hud <button onclick="playAudio('011.mp3')">Play</button></li>
-        <li>Surah 12: Yusuf <button onclick="playAudio('012.mp3')">Play</button></li>
-        <li>Surah 13: Ar-Ra'd <button onclick="playAudio('013.mp3')">Play</button></li>
-        <li>Surah 14: Ibrahim <button onclick="playAudio('014.mp3')">Play</button></li>
-        <li>Surah 15: Al-Hijr <button onclick="playAudio('015.mp3')">Play</button></li>
-        <li>Surah 16: An-Nahl <button onclick="playAudio('016.mp3')">Play</button></li>
-        <li>Surah 17: Al-Isra <button onclick="playAudio('017.mp3')">Play</button></li>
-        <li>Surah 18: Al-Kahf <button onclick="playAudio('018.mp3')">Play</button></li>
-        <li>Surah 19: Maryam <button onclick="playAudio('019.mp3')">Play</button></li>
-        <li>Surah 20: Ta-Ha <button onclick="playAudio('020.mp3')">Play</button></li>
-        <li>Surah 21: Al-Anbiya <button onclick="playAudio('021.mp3')">Play</button></li>
-        <li>Surah 22: Al-Hajj <button onclick="playAudio('022.mp3')">Play</button></li>
-        <li>Surah 23: Al-Mu'minun <button onclick="playAudio('023.mp3')">Play</button></li>
-        <li>Surah 24: An-Nur <button onclick="playAudio('024.mp3')">Play</button></li>
-        <li>Surah 25: Al-Furqan <button onclick="playAudio('025.mp3')">Play</button></li>
-        <li>Surah 26: Ash-Shu'ara <button onclick="playAudio('026.mp3')">Play</button></li>
-        <li>Surah 27: An-Naml <button onclick="playAudio('027.mp3')">Play</button></li>
-        <li>Surah 28: Al-Qasas <button onclick="playAudio('028.mp3')">Play</button></li>
-        <li>Surah 29: Al-Ankabut <button onclick="playAudio('029.mp3')">Play</button></li>
-        <li>Surah 30: Ar-Rum <button onclick="playAudio('030.mp3')">Play</button></li>
-        <li>Surah 31: Luqman <button onclick="playAudio('031.mp3')">Play</button></li>
-        <li>Surah 32: As-Sajda <button onclick="playAudio('032.mp3')">Play</button></li>
-        <li>Surah 33: Al-Ahzab <button onclick="playAudio('033.mp3')">Play</button></li>
-        <li>Surah 34: Saba <button onclick="playAudio('034.mp3')">Play</button></li>
-        <li>Surah 35: Fatir <button onclick="playAudio('035.mp3')">Play</button></li>
-        <li>Surah 36: Ya-Sin <button onclick="playAudio('036.mp3')">Play</button></li>
-        <li>Surah 37: As-Saffat <button onclick="playAudio('037.mp3')">Play</button></li>
-        <li>Surah 38: Sad <button onclick="playAudio('038.mp3')">Play</button></li>
-        <li>Surah 39: Az-Zumar <button onclick="playAudio('039.mp3')">Play</button></li>
-        <li>Surah 40: Ghafir <button onclick="playAudio('040.mp3')">Play</button></li>
-        <li>Surah 41: Fussilat <button onclick="playAudio('041.mp3')">Play</button></li>
-        <li>Surah 42: Ash-Shura <button onclick="playAudio('042.mp3')">Play</button></li>
-        <li>Surah 43: Az-Zukhruf <button onclick="playAudio('043.mp3')">Play</button></li>
-        <li>Surah 44: Ad-Dukhan <button onclick="playAudio('044.mp3')">Play</button></li>
-        <li>Surah 45: Al-Jathiya <button onclick="playAudio('045.mp3')">Play</button></li>
-        <li>Surah 46: Al-Ahqaf <button onclick="playAudio('046.mp3')">Play</button></li>
-        <li>Surah 47: Muhammad <button onclick="playAudio('047.mp3')">Play</button></li>
-        <li>Surah 48: Al-Fath <button onclick="playAudio('048.mp3')">Play</button></li>
-        <li>Surah 49: Al-Hujurat <button onclick="playAudio('049.mp3')">Play</button></li>
-        <li>Surah 50: Qaf <button onclick="playAudio('050.mp3')">Play</button></li>
-        <li>Surah 51: Adh-Dhariyat <button onclick="playAudio('051.mp3')">Play</button></li>
-        <li>Surah 52: At-Tur <button onclick="playAudio('052.mp3')">Play</button></li>
-        <li>Surah 53: An-Najm <button onclick="playAudio('053.mp3')">Play</button></li>
-        <li>Surah 54: Al-Qamar <button onclick="playAudio('054.mp3')">Play</button></li>
-        <li>Surah 55: Ar-Rahman <button onclick="playAudio('055.mp3')">Play</button></li>
-        <li>Surah 56: Al-Waqi'ah <button onclick="playAudio('056.mp3')">Play</button></li>
-        <li>Surah 57: Al-Hadid <button onclick="playAudio('057.mp3')">Play</button></li>
-        <li>Surah 58: Al-Mujadila <button onclick="playAudio('058.mp3')">Play</button></li>
-        <li>Surah 59: Al-Hashr <button onclick="playAudio('059.mp3')">Play</button></li>
-        <li>Surah 60: Al-Mumtahina <button onclick="playAudio('060.mp3')">Play</button></li>
-        <li>Surah 61: As-Saff <button onclick="playAudio('061.mp3')">Play</button></li>
-        <li>Surah 62: Al-Jumu'ah <button onclick="playAudio('062.mp3')">Play</button></li>
-        <li>Surah 63: Al-Munafiqun <button onclick="playAudio('063.mp3')">Play</button></li>
-        <li>Surah 64: At-Taghabun <button onclick="playAudio('064.mp3')">Play</button></li>
-        <li>Surah 65: At-Talaq <button onclick="playAudio('065.mp3')">Play</button></li>
-        <li>Surah 66: At-Tahrim <button onclick="playAudio('066.mp3')">Play</button></li>
-        <li>Surah 67: Al-Mulk <button onclick="playAudio('067.mp3')">Play</button></li>
-        <li>Surah 68: Al-Qalam <button onclick="playAudio('068.mp3')">Play</button></li>
-        <li>Surah 69: Al-Haaqqa <button onclick="playAudio('069.mp3')">Play</button></li>
-        <li>Surah 70: Al-Ma'arij <button onclick="playAudio('070.mp3')">Play</button></li>
-        <li>Surah 71: Nuh <button onclick="playAudio('071.mp3')">Play</button></li>
-        <li>Surah 72: Al-Jinn <button onclick="playAudio('072.mp3')">Play</button></li>
-        <li>Surah 73: Al-Muzzammil <button onclick="playAudio('073.mp3')">Play</button></li>
-        <li>Surah 74: Al-Muddathir <button onclick="playAudio('074.mp3')">Play</button></li>
-        <li>Surah 75: Al-Qiyamah <button onclick="playAudio('075.mp3')">Play</button></li>
-        <li>Surah 76: Al-Insan <button onclick="playAudio('076.mp3')">Play</button></li>
-        <li>Surah 77: Al-Mursalat <button onclick="playAudio('077.mp3')">Play</button></li>
-        <li>Surah 78: An-Naba <button onclick="playAudio('078.mp3')">Play</button></li>
-        <li>Surah 79: An-Nazi'at <button onclick="playAudio('079.mp3')">Play</button></li>
-        <li>Surah 80: Abasa <button onclick="playAudio('080.mp3')">Play</button></li>
-        <li>Surah 81: At-Takwir <button onclick="playAudio('081.mp3')">Play</button></li>
-        <li>Surah 82: Al-Infitar <button onclick="playAudio('082.mp3')">Play</button></li>
-        <li>Surah 83: Al-Mutaffifin <button onclick="playAudio('083.mp3')">Play</button></li>
-        <li>Surah 84: Al-Inshiqaq <button onclick="playAudio('084.mp3')">Play</button></li>
-        <li>Surah 85: Al-Buruj <button onclick="playAudio('085.mp3')">Play</button></li>
-        <li>Surah 86: At-Tariq <button onclick="playAudio('086.mp3')">Play</button></li>
-        <li>Surah 87: Al-A'la <button onclick="playAudio('087.mp3')">Play</button></li>
-        <li>Surah 88: Al-Ghashiya <button onclick="playAudio('088.mp3')">Play</button></li>
-        <li>Surah 89: Al-Fajr <button onclick="playAudio('089.mp3')">Play</button></li>
-        <li>Surah 90: Al-Balad <button onclick="playAudio('090.mp3')">Play</button></li>
-        <li>Surah 91: Ash-Shams <button onclick="playAudio('091.mp3')">Play</button></li>
-        <li>Surah 92: Al-Lail <button onclick="playAudio('092.mp3')">Play</button></li>
-        <li>Surah 93: Ad-Duha <button onclick="playAudio('093.mp3')">Play</button></li>
-        <li>Surah 94: Ash-Sharh <button onclick="playAudio('094.mp3')">Play</button></li>
-        <li>Surah 95: At-Tin <button onclick="playAudio('095.mp3')">Play</button></li>
-        <li>Surah 96: Al-Alaq <button onclick="playAudio('096.mp3')">Play</button></li>
-        <li>Surah 97: Al-Qadr <button onclick="playAudio('097.mp3')">Play</button></li>
-        <li>Surah 98: Al-Bayyina <button onclick="playAudio('098.mp3')">Play</button></li>
-        <li>Surah 99: Az-Zalzalah <button onclick="playAudio('099.mp3')">Play</button></li>
-        <li>Surah 100: Al-Adiyat <button onclick="playAudio('100.mp3')">Play</button></li>
-        <li>Surah 101: Al-Qari'ah <button onclick="playAudio('101.mp3')">Play</button></li>
-        <li>Surah 102: At-Takathur <button onclick="playAudio('102.mp3')">Play</button></li>
-        <li>Surah 103: Al-Asr <button onclick="playAudio('103.mp3')">Play</button></li>
-        <li>Surah 104: Al-Humazah <button onclick="playAudio('104.mp3')">Play</button></li>
-        <li>Surah 105: Al-Fil <button onclick="playAudio('105.mp3')">Play</button></li>
-        <li>Surah 106: Quraish <button onclick="playAudio('106.mp3')">Play</button></li>
-        <li>Surah 107: Al-Ma'un <button onclick="playAudio('107.mp3')">Play</button></li>
-        <li>Surah 108: Al-Kawthar <button onclick="playAudio('108.mp3')">Play</button></li>
-        <li>Surah 109: Al-Kafirun <button onclick="playAudio('109.mp3')">Play</button></li>
-        <li>Surah 110: An-Nasr <button onclick="playAudio('110.mp3')">Play</button></li>
-        <li>Surah 111: Al-Masad <button onclick="playAudio('111.mp3')">Play</button></li>
-        <li>Surah 112: Al-Ikhlas <button onclick="playAudio('112.mp3')">Play</button></li>
-        <li>Surah 113: Al-Falaq <button onclick="playAudio('113.mp3')">Play</button></li>
-        <li>Surah 114: An-Nas <button onclick="playAudio('114.mp3')">Play</button></li>
+    <ul id="surahList">
+        <!-- Surahs will be dynamically generated here -->
     </ul>
-    <div id="audioPlayer" style="display: none;">
-        <audio id="audioElement" controls>
-            <source id="audioSource" src="" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
-        <div class="audio-controls">
-            <button id="playPauseButton" onclick="togglePlayPause()">Play</button>
+
+    <div id="customPlayer">
+        <div class="track-info">
+            <p class="title" id="trackTitle"></p>
+        </div>
+        <div class="controls">
+            <button id="playPauseButton" class="playPause" onclick="togglePlayPause()">&#9654;</button>
+            <button onclick="repeatTrack()">&#x21bb;</button>
+        </div>
+        <div id="settings">
+            <label for="repeatMode">Repeat Mode:</label>
+            <select id="repeatMode" onchange="setRepeatMode()">
+                <option value="none">None</option>
+                <option value="track">Repeat Track</option>
+                <option value="playlist">Repeat Playlist</option>
+            </select>
         </div>
     </div>
 
     <script>
-        let audio = document.getElementById('audioElement');
-        let audioSource = document.getElementById('audioSource');
-        let playPauseButton = document.getElementById('playPauseButton');
-        let currentSurah = null;
+        const surahList = [
+            "Al-Fatiha", "Al-Baqarah", "Aal-E-Imran", "An-Nisa", "Al-Ma'idah",
+            "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus", "Hud",
+            "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra",
+            "Al-Kahf", "Maryam", "Ta-Ha", "Al-Anbiya", "Al-Hajj", "Al-Mu'minun",
+            "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas",
+            "Al-Ankabut", "Ar-Rum", "Luqman", "As-Sajda", "Al-Ahzab", "Saba",
+            "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
+            "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiya",
+            "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
+            "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman",
+            "Al-Waqi'ah", "Al-Hadid", "Al-Mujadila", "Al-Hashr", "Al-Mumtahina",
+            "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq",
+            "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haaqqa", "Al-Ma'arij",
+            "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddathir", "Al-Qiyamah",
+            "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa",
+            "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq",
+            "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiya", "Al-Fajr",
+            "Al-Balad", "Ash-Shams", "Al-Lail", "Ad-Duha", "Ash-Sharh",
+            "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyina", "Az-Zalzalah",
+            "Al-Adiyat", "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah",
+            "Al-Fil", "Quraish", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun",
+            "An-Nasr", "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+        ];
 
-        function playAudio(fileName) {
-            if (currentSurah === fileName) {
+        let currentSurah = null;
+        let currentIndex = null;
+        let isRepeating = false;
+        let repeatMode = 'none';
+
+        const audio = new Audio();
+        const surahListElement = document.getElementById('surahList');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const trackTitle = document.getElementById('trackTitle');
+        const customPlayer = document.getElementById('customPlayer');
+
+        surahList.forEach((surah, index) => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `Surah ${index + 1}: ${surah} <button id="playButton${index}" onclick="playSurah(${index})">Play</button>`;
+            surahListElement.appendChild(listItem);
+        });
+
+        function playSurah(index) {
+            if (currentIndex === index && !audio.paused) {
                 togglePlayPause();
                 return;
             }
 
-            audioSource.src = `https://github.com/TeoPoulter/teo/blob/main/${fileName}?raw=true`;
-            audio.load();
+            currentIndex = index;
+            currentSurah = surahList[index];
+            audio.src = `https://github.com/TeoPoulter/teo/blob/main/${String(index + 1).padStart(3, '0')}.mp3?raw=true`;
             audio.play();
-            playPauseButton.textContent = 'Pause';
-            playPauseButton.classList.add('playing');
-            document.getElementById('audioPlayer').style.display = 'block';
-            currentSurah = fileName;
+
+            updateUIForPlayingSurah();
         }
 
         function togglePlayPause() {
             if (audio.paused) {
                 audio.play();
-                playPauseButton.textContent = 'Pause';
-                playPauseButton.classList.add('playing');
+                playPauseButton.innerHTML = '&#10074;&#10074;';
+                updatePlayButtonUI('playing');
             } else {
                 audio.pause();
-                playPauseButton.textContent = 'Play';
-                playPauseButton.classList.remove('playing');
+                playPauseButton.innerHTML = '&#9654;';
+                updatePlayButtonUI('');
+            }
+        }
+
+        function updateUIForPlayingSurah() {
+            trackTitle.textContent = `Now Playing: Surah ${currentIndex + 1} - ${currentSurah}`;
+            playPauseButton.innerHTML = '&#10074;&#10074;';
+            updatePlayButtonUI('playing');
+            customPlayer.style.display = 'flex';
+        }
+
+        function updatePlayButtonUI(state) {
+            surahListElement.querySelectorAll('button').forEach(button => {
+                button.classList.remove('playing');
+                button.textContent = 'Play';
+            });
+            const currentButton = document.getElementById(`playButton${currentIndex}`);
+            currentButton.classList.add(state);
+            currentButton.textContent = state === 'playing' ? 'Pause' : 'Play';
+        }
+
+        function repeatTrack() {
+            isRepeating = !isRepeating;
+            audio.loop = isRepeating;
+            alert(`Repeat Track: ${isRepeating ? 'On' : 'Off'}`);
+        }
+
+        function setRepeatMode() {
+            repeatMode = document.getElementById('repeatMode').value;
+            if (repeatMode === 'track') {
+                audio.loop = true;
+            } else {
+                audio.loop = false;
+            }
+        }
+
+        audio.onended = () => {
+            if (repeatMode === 'track') {
+                audio.play();
+            } else if (repeatMode === 'playlist') {
+                playNextSurah();
+            } else {
+                updatePlayButtonUI('');
+                playPauseButton.innerHTML = '&#9654;';
+            }
+        };
+
+        function playNextSurah() {
+            if (currentIndex < surahList.length - 1) {
+                playSurah(currentIndex + 1);
+            } else if (repeatMode === 'playlist') {
+                playSurah(0);
             }
         }
     </script>
