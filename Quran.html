@@ -190,16 +190,8 @@
         #bottomBar .track-info {
             display: flex;
             align-items: center;
-            max-width: 40%;
+            max-width: 30%; /* Reduced width to make space for other elements */
             overflow: hidden;
-        }
-
-        #bottomBar .track-info img {
-            width: 50px;
-            height: 50px;
-            border-radius: 5px;
-            margin-right: 15px;
-            object-fit: cover;
         }
 
         #bottomBar .track-info .title {
@@ -213,13 +205,13 @@
         #bottomBar .controls {
             display: flex;
             align-items: center;
+            gap: 20px; /* Added space between controls */
         }
 
         #bottomBar .controls button {
             background: none;
             border: none;
             color: #fff;
-            margin: 0 15px;
             font-size: 2em;
             cursor: pointer;
             transition: color 0.3s ease;
@@ -269,32 +261,7 @@
             font-size: 0.9em;
             color: #fff;
             margin-left: 10px;
-        }
-
-        #bottomBar .volume-control {
-            margin-left: 10px;
-        }
-
-        #bottomBar .volume-control input[type="range"] {
-            width: 100px;
-            cursor: pointer;
-            background: transparent;
-            -webkit-appearance: none;
-        }
-
-        #bottomBar .volume-control input[type="range"]::-webkit-slider-runnable-track {
-            height: 6px;
-            background: #555;
-            border-radius: 3px;
-        }
-
-        #bottomBar .volume-control input[type="range"]::-webkit-slider-thumb {
-            width: 14px;
-            height: 14px;
-            background: #4caf50;
-            border-radius: 50%;
-            -webkit-appearance: none;
-            margin-top: -4px;
+            white-space: nowrap;
         }
 
         @media (max-width: 600px) {
@@ -347,9 +314,6 @@
             <button id="playPauseButton">Play</button>
             <button id="nextButton">&#9654;</button>
             <button id="repeatButton">&#10227;</button>
-            <div class="volume-control">
-                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
-            </div>
         </div>
         <div class="progress-container">
             <input type="range" id="progressBar" value="0" step="0.1" min="0" max="100">
@@ -534,9 +498,10 @@
             }
 
             function formatTime(seconds) {
-                const minutes = Math.floor(seconds / 60);
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
                 const remainingSeconds = Math.floor(seconds % 60);
-                return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+                return `${hours > 0 ? String(hours).padStart(2, '0') + ':' : ''}${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
             }
 
             function playSurah() {
@@ -591,38 +556,24 @@
                 }
             });
 
-            document.getElementById('nextButton').addEventListener('click', () => {
-                if (currentSurahIndex >= 0 && currentSurahIndex < surahList.length - 1) {
-                    currentSurahIndex++;
-                    playSurah();
-                }
-            });
-
-            document.getElementById('previousButton').addEventListener('click', () => {
-                if (currentSurahIndex > 0) {
-                    currentSurahIndex--;
-                    playSurah();
-                }
-            });
-
-            document.getElementById('volumeControl').addEventListener('input', function () {
-                audioPlayer.volume = this.value;
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                document.getElementById('duration').textContent = formatTime(audioPlayer.duration);
+                updateProgressBar();
             });
 
             audioPlayer.addEventListener('timeupdate', () => {
-                document.getElementById('progressBar').value = audioPlayer.currentTime;
+                document.getElementById('progressBar').value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
                 document.getElementById('currentTime').textContent = formatTime(audioPlayer.currentTime);
             });
 
             function updateProgressBar() {
                 if (audioPlayer.duration) {
-                    document.getElementById('progressBar').max = audioPlayer.duration;
                     document.getElementById('duration').textContent = formatTime(audioPlayer.duration);
                 }
             }
 
             document.getElementById('progressBar').addEventListener('input', (e) => {
-                audioPlayer.currentTime = e.target.value;
+                audioPlayer.currentTime = (e.target.value / 100) * audioPlayer.duration;
             });
 
             populateSurahList();
