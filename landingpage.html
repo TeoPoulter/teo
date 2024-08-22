@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join the Spartan System to unlock ancient secrets to fat loss and muscle gain. Achieve your best physique in 90 days!">
+    <meta name="keywords" content="fat loss, muscle gain, fitness, workout program, Spartan System">
+    <title>Transform Your Body in 90 Days | Spartan System</title>
+
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Styles -->
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: #ff7e5f;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #feb47b;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            from {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                transform: rotate(-360deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #ffffff;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeInDown 2s ease-in-out;
+            font-family: 'Montserrat', sans-serif;
+            animation-delay: 0.5s;
+        }
+
+        .header p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            animation: slideInLeft 2s ease-in-out;
+            animation-delay: 1s;
+        }
+
+        .header .cta-btn {
+            background-color: #333;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .header .cta-btn:hover {
+            background-color: #555;
+            transform: translateY(-3px);
+        }
+
+        .header .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.5;
+            animation: zoomIn 3s ease-in-out;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 20px;
+            background-color: #1e1e1e;
+            position: relative;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .hero img {
+            max-width: 50%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+            animation: rotateIn 1.5s ease-in-out;
+        }
+
+        .hero img:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-content {
+            max-width: 45%;
+            animation: slideInLeft 1.5s ease-in-out;
+        }
+
+        .hero-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero-content .cta-btn {
+            background-color: #333;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .hero-content .cta-btn:hover {
+            background-color: #555;
+            transform: translateY(-3px);
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 60px 20px;
+            background-color: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .benefits h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-direction: row;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            animation: bounceIn 1.5s ease-in-out;
+        }
+
+        .benefit-item i {
+            font-size: 40px;
+            color: #ff7e5f;
+            margin-right: 20px;
+            animation: pulse 3s infinite;
+        }
+
+        .benefit-item p {
+            font-size: 18px;
+            flex: 1;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 20px;
+            background-color: #282828;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .feature-item {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 1.5s ease-in-out;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature-item i {
+            font-size: 40px;
+            color: #ff7e5f;
+            margin-bottom: 20px;
+            animation: rotateIn 2s ease-in-out;
+        }
+
+        .feature-item p {
+            font-size: 16px;
+            color: #e0e0e0;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 60px 20px;
+            background-color: #1e1e1e;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .testimonials h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .testimonial {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            background-color: #282828;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            animation: slideInRight 1.5s ease-in-out;
+        }
+
+        .testimonial img {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: bounceIn 2s ease-in-out;
+        }
+
+        .testimonial-content {
+            text-align: left;
+        }
+
+        .testimonial-content p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-style: italic;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .testimonial-content h3 {
+            font-size: 18px;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        /* Client Logos */
+        .clients {
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #1e1e1e;
+            animation: fadeIn 1.5s ease-in-out;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .clients img {
+            margin: 20px;
+            max-width: 120px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            animation: pulse 3s infinite;
+        }
+
+        .clients img:hover {
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+
+        /* Case Studies Section */
+        .case-studies {
+            padding: 60px 20px;
+            background-color: #ff7e5f;
+            color: #ffffff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .case-study {
+            display: inline-block;
+            width: 45%;
+            margin: 0 20px 40px 20px;
+            text-align: left;
+            background-color: #333;
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: zoomIn 1.5s ease-in-out;
+        }
+
+        .case-study img {
+            max-width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            animation: rotateIn 2s ease-in-out;
+        }
+
+        .case-study p {
+            font-size: 16px;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .case-study .cta-btn {
+            background-color: #ff7e5f;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .case-study .cta-btn:hover {
+            background-color: #e66e50;
+            transform: translateY(-3px);
+        }
+
+        /* Customer Reviews Section */
+        .reviews {
+            padding: 60px 20px;
+            background-color: #1e1e1e;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .reviews h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            animation: fadeInDown 1.5s ease-in-out;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .review-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            background-color: #282828;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            animation: slideInLeft 1.5s ease-in-out;
+        }
+
+        .review-item i {
+            color: #ff7e5f;
+            font-size: 24px;
+            margin-right: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .review-item p {
+            font-size: 16px;
+            font-weight: 300;
+            margin-top: 10px;
+            color: #e0e0e0;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Lead Capture Form */
+        .lead-capture {
+            padding: 60px 20px;
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 20px;
+            margin: 40px 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .lead-capture h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .lead-capture p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .lead-capture input[type="email"],
+        .lead-capture input[type="text"] {
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 400px;
+            font-size: 16px;
+            font-family: 'Raleway', sans-serif;
+            background-color: #555;
+            color: #ffffff;
+            animation: slideInRight 1.5s ease-in-out;
+        }
+
+        .lead-capture button {
+            background-color: #ff7e5f;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .lead-capture button:hover {
+            background-color: #e66e50;
+            transform: translateY(-3px);
+        }
+
+        /* Social Media Mentions Section */
+        .social-media {
+            padding: 60px 20px;
+            background-color: #282828;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .social-media h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            animation: fadeInDown 1.5s ease-in-out;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .social-media .social-post {
+            display: inline-block;
+            width: 30%;
+            margin: 0 10px;
+            text-align: left;
+            vertical-align: top;
+            animation: slideInRight 1.5s ease-in-out;
+            color: #e0e0e0;
+        }
+
+        .social-media .social-post p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .social-media .social-post img {
+            width: 100%;
+            border-radius: 10px;
+            animation: zoomIn 2s ease-in-out;
+        }
+
+        /* Footer Section */
+        footer {
+            padding: 20px;
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 20px;
+            margin: 40px 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        footer p {
+            font-size: 14px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        footer a {
+            color: #ff7e5f;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .hero {
+                flex-direction: column;
+            }
+
+            .hero img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            .testimonial, .review-item, .case-study, .social-post {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .lead-capture input[type="email"],
+            .lead-capture input[type="text"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Unlock Your Full Potential</h1>
+        <p>Transform Your Body and Mind with the Spartan System</p>
+        <button class="cta-btn">Get Started Now</button>
+        <video class="bg-video" autoplay muted loop>
+            <source src="background-video.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h2>Join the Ultimate 90-Day Fitness Journey</h2>
+            <p>Discover the ancient secrets of Greek warriors that will help you burn fat, build muscle, and transform your body.</p>
+            <button class="cta-btn">Download Now</button>
+        </div>
+        <img src="https://embed.filekitcdn.com/e/m924dYKoNXd6WErvSc47qu/dd8N7CkyMk6kbFRZ8Ahe31" alt="Spartan Workout">
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="benefits">
+        <h2>Why Choose the Spartan System?</h2>
+        <div class="benefit-item">
+            <i class="fas fa-bolt"></i>
+            <p>Rapid fat loss with high-intensity workouts that burn calories fast.</p>
+        </div>
+        <div class="benefit-item">
+            <i class="fas fa-dumbbell"></i>
+            <p>Build lean muscle and sculpt a powerful physique.</p>
+        </div>
+        <div class="benefit-item">
+            <i class="fas fa-heartbeat"></i>
+            <p>Boost endurance and energy levels to power through every workout.</p>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features">
+        <h2>Features of the Spartan System</h2>
+        <div class="feature-item">
+            <i class="fas fa-calendar-alt"></i>
+            <p>90-day program with daily workout plans and progress tracking.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-utensils"></i>
+            <p>Customized meal plans tailored to your fitness goals.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-mobile-alt"></i>
+            <p>Access the program on any device, anytime, anywhere.</p>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="testimonials">
+        <h2>What Our Members Are Saying</h2>
+        <div class="testimonial">
+            <img src="https://via.placeholder.com/150" alt="Customer Image">
+            <div class="testimonial-content">
+                <p>"The Spartan System changed my life! I lost 20 pounds in 3 months and feel stronger than ever."</p>
+                <h3>John Doe</h3>
+            </div>
+        </div>
+        <div class="testimonial">
+            <img src="https://via.placeholder.com/150" alt="Customer Image">
+            <div class="testimonial-content">
+                <p>"I've tried many programs, but this is the only one that delivered real results. Highly recommend it!"</p>
+                <h3>Jane Smith</h3>
+            </div>
+        </div>
+        <div class="testimonial">
+            <img src="https://via.placeholder.com/150" alt="Customer Image">
+            <div class="testimonial-content">
+                <p>"A game-changer for my fitness journey. The workouts are intense, but the results are worth it."</p>
+                <h3>Michael Lee</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Logos -->
+    <div class="clients">
+        <img src="https://via.placeholder.com/100x50" alt="Client Logo">
+        <img src="https://via.placeholder.com/100x50" alt="Client Logo">
+        <img src="https://via.placeholder.com/100x50" alt="Client Logo">
+        <img src="https://via.placeholder.com/100x50" alt="Client Logo">
+    </div>
+
+    <!-- Case Studies Section -->
+    <div class="case-studies">
+        <h2>Success Stories</h2>
+        <div class="case-study">
+            <img src="https://via.placeholder.com/600x400" alt="Case Study">
+            <h3>Case Study: John’s 20-Pound Transformation</h3>
+            <p>John started the Spartan System weighing 220 pounds. In just 90 days, he dropped to 200 pounds and gained significant muscle, completely transforming his physique.</p>
+            <button class="cta-btn">Read More</button>
+        </div>
+        <div class="case-study">
+            <img src="https://via.placeholder.com/600x400" alt="Case Study">
+            <h3>Case Study: Sarah’s Fitness Journey</h3>
+            <p>Sarah struggled with consistency in her workouts. With the Spartan System, she found the motivation and structure she needed to achieve her fitness goals, shedding 15 pounds and improving her strength.</p>
+            <button class="cta-btn">Read More</button>
+        </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <div class="reviews">
+        <h2>Customer Reviews</h2>
+        <div class="review-item">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <p>"Absolutely love the Spartan System! The workouts are intense, but the results are worth it."</p>
+        </div>
+        <div class="review-item">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <p>"The meal plans are easy to follow, and the workouts keep me motivated. A game-changer for my fitness journey."</p>
+        </div>
+        <div class="review-item">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <p>"I've tried many programs before, but none compare to the effectiveness of the Spartan System."</p>
+        </div>
+    </div>
+
+    <!-- Lead Capture Form -->
+    <div class="lead-capture">
+        <h2>Join the Spartan System Today</h2>
+        <p>Sign up now and get started on your 90-day transformation journey!</p>
+        <input type="text" placeholder="Enter your name" required>
+        <input type="email" placeholder="Enter your email" required>
+        <button>Get Started</button>
+    </div>
+
+    <!-- Social Media Mentions Section -->
+    <div class="social-media">
+        <h2>Social Media Mentions</h2>
+        <div class="social-post">
+            <p>"Just finished week 2 of the Spartan System and I'm already seeing results! #fitnessgoals"</p>
+            <img src="https://via.placeholder.com/600x400" alt="Social Media Mention">
+        </div>
+        <div class="social-post">
+            <p>"This program is the real deal. Tough but worth it! #SpartanSystem"</p>
+            <img src="https://via.placeholder.com/600x400" alt="Social Media Mention">
+        </div>
+        <div class="social-post">
+            <p>"The Spartan System is keeping me on track even during the holidays. No excuses! #NoPainNoGain"</p>
+            <img src="https://via.placeholder.com/600x400" alt="Social Media Mention">
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Spartan System. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <!-- Script for A/B Testing, Analytics, and Interactive Elements -->
+    <script>
+        // Example: Google Analytics Tracking
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('send', 'pageview');
+
+        // Additional Interactive Scripts and A/B Testing
+    </script>
+</body>
+
+</html>
