@@ -919,66 +919,67 @@ const scheduleData = {
 
 
 
-        let currentDate = new Date().toISOString().split('T')[0];
+    // Set currentDate to today's date in YYYY-MM-DD format based on local time
+    let currentDate = new Date().toLocaleDateString('en-CA');  // en-CA gives YYYY-MM-DD format
 
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const options = { weekday: 'long', month: 'short', day: 'numeric' };
-            return date.toLocaleDateString('en-US', options).replace(',', '');
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { weekday: 'long', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options).replace(',', '');
+    }
+
+    function renderSchedule(date) {
+        const scheduleContainer = document.getElementById('schedule');
+        const dateElement = document.getElementById('date');
+        scheduleContainer.innerHTML = '';
+
+        dateElement.textContent = formatDate(date);
+
+        if (scheduleData[date]) {
+            scheduleData[date].forEach(item => {
+                const scheduleItem = document.createElement('div');
+                scheduleItem.className = 'schedule-item';
+
+                const timeElement = document.createElement('span');
+                timeElement.className = 'time';
+                timeElement.textContent = item.time;
+
+                const contentElement = document.createElement('span');
+                contentElement.className = 'content';
+                contentElement.textContent = item.content;
+
+                const infoButton = document.createElement('span');
+                infoButton.className = 'info-button';
+                infoButton.textContent = 'i';
+                infoButton.onclick = () => {
+                    infoText.classList.toggle('active');
+                };
+
+                const infoText = document.createElement('div');
+                infoText.className = 'info-text';
+                infoText.textContent = item.full;
+
+                scheduleItem.appendChild(timeElement);
+                scheduleItem.appendChild(contentElement);
+                scheduleItem.appendChild(infoButton);
+                scheduleItem.appendChild(infoText);
+
+                scheduleContainer.appendChild(scheduleItem);
+            });
+        } else {
+            scheduleContainer.innerHTML = '<div class="schedule-item">No schedule available for this date.</div>';
         }
+    }
 
-        function renderSchedule(date) {
-            const scheduleContainer = document.getElementById('schedule');
-            const dateElement = document.getElementById('date');
-            scheduleContainer.innerHTML = '';
-
-            dateElement.textContent = formatDate(date);
-
-            if (scheduleData[date]) {
-                scheduleData[date].forEach(item => {
-                    const scheduleItem = document.createElement('div');
-                    scheduleItem.className = 'schedule-item';
-
-                    const timeElement = document.createElement('span');
-                    timeElement.className = 'time';
-                    timeElement.textContent = item.time;
-
-                    const contentElement = document.createElement('span');
-                    contentElement.className = 'content';
-                    contentElement.textContent = item.content;
-
-                    const infoButton = document.createElement('span');
-                    infoButton.className = 'info-button';
-                    infoButton.textContent = 'i';
-                    infoButton.onclick = () => {
-                        infoText.classList.toggle('active');
-                    };
-
-                    const infoText = document.createElement('div');
-                    infoText.className = 'info-text';
-                    infoText.textContent = item.full;
-
-                    scheduleItem.appendChild(timeElement);
-                    scheduleItem.appendChild(contentElement);
-                    scheduleItem.appendChild(infoButton);
-                    scheduleItem.appendChild(infoText);
-
-                    scheduleContainer.appendChild(scheduleItem);
-                });
-            } else {
-                scheduleContainer.innerHTML = '<div class="schedule-item">No schedule available for this date.</div>';
-            }
-        }
-
-        function navigateSchedule(offset) {
-            const current = new Date(currentDate);
-            current.setDate(current.getDate() + offset);
-            currentDate = current.toISOString().split('T')[0];
-            renderSchedule(currentDate);
-        }
-
-        // Initial load
+    function navigateSchedule(offset) {
+        const current = new Date(currentDate);
+        current.setDate(current.getDate() + offset);
+        currentDate = current.toISOString().split('T')[0];
         renderSchedule(currentDate);
-    </script>
+    }
+
+    // Initial load: Render the schedule for today's date
+    renderSchedule(currentDate);
+</script>
 </body>
 </html>
