@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>100 Perfections of Jannah</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Embedded CSS -->
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Variables for Dark Theme */
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #1f8ef1;
+            --nav-bg: #1e1e1e;
+            --card-bg: #1e1e1e;
+        }
+
+        /* Body Styles */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--nav-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        nav .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .nav-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1rem;
+        }
+
+        nav .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        nav .toggle-collapse {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            background-color: var(--accent-color);
+            border-radius: 5px;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        nav .toggle-collapse:hover {
+            background-color: #0d6efd;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        /* Intro Section */
+        .intro {
+            text-align: center;
+            padding: 2rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .intro h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .intro p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        /* Perfections Section */
+        .perfections {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .perfection-item {
+            background-color: var(--card-bg);
+            width: 80%;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            transition: transform 0.3s, background-color 0.3s;
+            animation: slideUp 0.5s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .perfection-item.collapsed {
+            padding: 1rem 1.5rem;
+        }
+
+        .perfection-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .perfection-item h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .perfection-item p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .perfection-item .quote,
+        .perfection-item .source {
+            display: block;
+        }
+
+        .perfection-item.collapsed .quote,
+        .perfection-item.collapsed .source {
+            display: none;
+        }
+
+        .perfection-item .source {
+            margin-top: 1rem;
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        .perfection-item .source a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .perfection-item .source a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background-color: var(--nav-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .perfection-item {
+                width: 90%;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav .logo {
+                margin-bottom: 0.5rem;
+            }
+
+            nav .nav-links {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">100 Perfections of Jannah</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+        </div>
+        <div class="toggle-collapse" id="toggle-collapse">Collapse</div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <section class="intro">
+            <h1>100 Perfections of Jannah</h1>
+            <p>A collection of the blessings and perfections promised in Jannah (Paradise), as described in the Qur'an and Hadith.</p>
+        </section>
+
+        <section class="perfections">
+            <!-- Perfection Items will be injected here -->
+        </section>
+    </main>
+
+    <!-- Embedded JavaScript -->
+    <script>
+
+const perfections = [
+    {
+        number: 1,
+        title: "Seeing Allah",
+        quote: "\"[Some] faces, that Day, will be radiant, looking at their Lord.\"",
+        source: "— Qur'an 75:22-23",
+        link: "https://quran.com/75/22-23"
+    },
+    {
+        number: 2,
+        title: "The Greatest Joy",
+        quote: "\"For those who have done good is the best reward and extra.\"",
+        source: "— Qur'an 10:26",
+        link: "https://quran.com/10/26"
+    },
+    {
+        number: 3,
+        title: "Unimaginable Happiness",
+        quote: "\"No soul knows what has been hidden for them of comfort for eyes as reward for what they used to do.\"",
+        source: "— Qur'an 32:17",
+        link: "https://quran.com/32/17"
+    },
+    {
+        number: 4,
+        title: "Unimaginable Beauty",
+        quote: "\"I have prepared for My righteous servants what no eye has seen, no ear has heard, and no human heart has conceived.\"",
+        source: "— Hadith, Sahih al-Bukhari 3244",
+        link: "https://sunnah.com/bukhari:3244"
+    },
+    {
+        number: 5,
+        title: "Reunion with Loved Ones",
+        quote: "\"And those who believed and whose descendants followed them in faith—we will join with them their descendants...\"",
+        source: "— Qur'an 52:21",
+        link: "https://quran.com/52/21"
+    },
+    {
+        number: 6,
+        title: "Desires Fulfilled",
+        quote: "\"There they will have all that they desire, and We have more for them.\"",
+        source: "— Qur'an 50:35",
+        link: "https://quran.com/50/35"
+    },
+    {
+        number: 7,
+        title: "Perfect Relationships",
+        quote: "\"And We will remove whatever is in their breasts of resentment, [so they will be] brothers, on thrones facing each other.\"",
+        source: "— Qur'an 15:47",
+        link: "https://quran.com/15/47"
+    },
+    {
+        number: 8,
+        title: "Eternal Life",
+        quote: "\"They will not taste death therein except the first death...\"",
+        source: "— Qur'an 44:56",
+        link: "https://quran.com/44/56"
+    },
+    {
+        number: 9,
+        title: "Company of the Righteous",
+        quote: "\"And whoever obeys Allah and the Messenger—those will be with the ones upon whom Allah has bestowed favor: the prophets, the steadfast affirmers of truth, the martyrs, and the righteous. And excellent are those as companions.\"",
+        source: "— Qur'an 4:69",
+        link: "https://quran.com/4/69"
+    },
+    {
+        number: 10,
+        title: "Eternal Youth",
+        quote: "\"The people of Paradise will enter Paradise hairless, beardless, with their eyes anointed with kohl, thirty or thirty-three years old.\"",
+        source: "— Hadith, Jami` at-Tirmidhi 2545",
+        link: "https://sunnah.com/tirmidhi:2545"
+    },
+    {
+        number: 11,
+        title: "Perfect Bodies",
+        quote: "\"They will not urinate, relieve nature, spit, or have any nasal secretions.\"",
+        source: "— Hadith, Sahih Muslim 2835a",
+        link: "https://sunnah.com/muslim:2835a"
+    },
+    {
+        number: 12,
+        title: "No Illness Ever",
+        quote: "\"They will not feel therein any fatigue, nor will they ever be asked to leave.\"",
+        source: "— Qur'an 15:48",
+        link: "https://quran.com/15/48"
+    },
+    {
+        number: 13,
+        title: "No Sickness",
+        quote: "\"They will not fall ill, blow their noses, or spit.\"",
+        source: "— Hadith, Sahih al-Bukhari 3326",
+        link: "https://sunnah.com/bukhari:3326"
+    },
+    {
+        number: 14,
+        title: "No Sadness",
+        quote: "\"No fear will there be concerning them, nor will they grieve.\"",
+        source: "— Qur'an 2:112",
+        link: "https://quran.com/2/112"
+    },
+    {
+        number: 15,
+        title: "No Jealousy",
+        quote: "\"And We will remove whatever is in their breasts of resentment...\"",
+        source: "— Qur'an 7:43",
+        link: "https://quran.com/7/43"
+    },
+    {
+        number: 16,
+        title: "No Hatred",
+        quote: "\"And We will remove whatever is in their breasts of bitterness [so they will be] brothers, on thrones facing each other.\"",
+        source: "— Qur'an 15:47",
+        link: "https://quran.com/15/47"
+    },
+    {
+        number: 17,
+        title: "Hearts Purified",
+        quote: "\"And We will remove whatever is in their breasts of resentment...\"",
+        source: "— Qur'an 7:43",
+        link: "https://quran.com/7/43"
+    },
+    {
+        number: 18,
+        title: "No Emotional Pain",
+        quote: "\"They will not be grieved by the greatest terror...\"",
+        source: "— Qur'an 21:103",
+        link: "https://quran.com/21/103"
+    },
+    {
+        number: 19,
+        title: "No Fatigue",
+        quote: "\"No fatigue will touch them therein, nor from it will they [ever] be removed.\"",
+        source: "— Qur'an 15:48",
+        link: "https://quran.com/15/48"
+    },
+    {
+        number: 20,
+        title: "Everlasting Energy",
+        quote: "\"There will touch them therein no fatigue, nor from it will they be removed.\"",
+        source: "— Qur'an 35:35",
+        link: "https://quran.com/35/35"
+    },
+    {
+        number: 21,
+        title: "Endless Delight",
+        quote: "\"Indeed, the companions of Paradise, that Day, will be amused in joyful occupation.\"",
+        source: "— Qur'an 36:55",
+        link: "https://quran.com/36/55"
+    },
+    {
+        number: 22,
+        title: "No Need for Rest",
+        quote: "\"No fatigue will touch them therein...\"",
+        source: "— Qur'an 35:35",
+        link: "https://quran.com/35/35"
+    },
+    {
+        number: 23,
+        title: "No Boredom",
+        quote: "\"They will abide therein eternally, enjoying themselves.\"",
+        source: "— Qur'an 36:55",
+        link: "https://quran.com/36/55"
+    },
+    {
+        number: 24,
+        title: "No Sleep Needed",
+        quote: "\"Sleep is the brother of death; the people of Paradise do not sleep.\"",
+        source: "— Hadith, Al-Mu'jam al-Awsat by At-Tabarani",
+        link: "https://www.al-islam.org/heaven-in-islamic-tradition-sayyid-muhammad-husayn-fadhlullah/physical-pleasures-heaven#fn2"
+    },
+    {
+        number: 25,
+        title: "Ability to Fly",
+        quote: "\"If one of the people of Paradise were to wish to fly, he would fly...\"",
+        source: "— Hadith, Musnad Ahmad 11005",
+        link: "https://sunnah.com/ahmad:11005"
+    },
+    {
+        number: 26,
+        title: "Unending Happiness",
+        quote: "\"For them is the glad tidings in the worldly life and in the Hereafter...\"",
+        source: "— Qur'an 10:64",
+        link: "https://quran.com/10/64"
+    },
+    {
+        number: 27,
+        title: "Reward for Excellence",
+        quote: "\"For them who have done good is the best [reward] and extra...\"",
+        source: "— Qur'an 10:26",
+        link: "https://quran.com/10/26"
+    },
+    {
+        number: 28,
+        title: "Personalized Paradise",
+        quote: "\"They will have whatever they wish therein, and with Us is more.\"",
+        source: "— Qur'an 50:35",
+        link: "https://quran.com/50/35"
+    },
+    {
+        number: 29,
+        title: "Abundance Beyond Measure",
+        quote: "\"There will be for them whatever they wish, and with Us is more.\"",
+        source: "— Qur'an 50:35",
+        link: "https://quran.com/50/35"
+    },
+    {
+        number: 30,
+        title: "Perpetual Vitality",
+        quote: "\"Their youth will not fade away, and their clothes will not wear out.\"",
+        source: "— Hadith, Sahih Muslim 2836a",
+        link: "https://sunnah.com/muslim:2836a"
+    },
+    {
+        number: 31,
+        title: "Delicious Meats",
+        quote: "\"And the meat of fowl, from whatever they desire.\"",
+        source: "— Qur'an 56:21",
+        link: "https://quran.com/56/21"
+    },
+    {
+        number: 32,
+        title: "Endless Food Varieties",
+        quote: "\"They will have therein whatever they wish, and with Us is more.\"",
+        source: "— Qur'an 50:35",
+        link: "https://quran.com/50/35"
+    },
+    {
+        number: 33,
+        title: "Food Without Effort",
+        quote: "\"Eat and drink in satisfaction for what you used to do.\"",
+        source: "— Qur'an 77:43",
+        link: "https://quran.com/77/43"
+    },
+    {
+        number: 34,
+        title: "All Kinds of Fruits",
+        quote: "\"In both of them are fruit and palm trees and pomegranates.\"",
+        source: "— Qur'an 55:68",
+        link: "https://quran.com/55/68"
+    },
+    {
+        number: 35,
+        title: "Ever-Improving Fruits",
+        quote: "\"Every time they are provided with a fruit therefrom, they will say, 'This is what we were provided with before,' and it is given to them in likeness.\"",
+        source: "— Qur'an 2:25",
+        link: "https://quran.com/2/25"
+    },
+    {
+        number: 36,
+        title: "Fruits Within Reach",
+        quote: "\"Its shade will be close over them, and its fruit to be picked will be lowered in compliance.\"",
+        source: "— Qur'an 76:14",
+        link: "https://quran.com/76/14"
+    },
+    {
+        number: 37,
+        title: "Wine Without Harm",
+        quote: "\"They will be given to drink [pure] wine [which was] sealed. The last of it is musk...\"",
+        source: "— Qur'an 83:25-26",
+        link: "https://quran.com/83/25-26"
+    },
+    {
+        number: 38,
+        title: "Pure Drinks",
+        quote: "\"And their Lord will give them a purifying drink.\"",
+        source: "— Qur'an 76:21",
+        link: "https://quran.com/76/21"
+    },
+    {
+        number: 39,
+        title: "Rivers of Pure Water",
+        quote: "\"In it are rivers of water unaltered...\"",
+        source: "— Qur'an 47:15",
+        link: "https://quran.com/47/15"
+    },
+    {
+        number: 40,
+        title: "Rivers of Milk",
+        quote: "\"...Rivers of milk whose taste never changes...\"",
+        source: "— Qur'an 47:15",
+        link: "https://quran.com/47/15"
+    },
+    {
+        number: 41,
+        title: "Rivers of Honey",
+        quote: "\"...Rivers of purified honey...\"",
+        source: "— Qur'an 47:15",
+        link: "https://quran.com/47/15"
+    },
+    {
+        number: 42,
+        title: "Rivers of Wine",
+        quote: "\"...Rivers of wine delicious to those who drink...\"",
+        source: "— Qur'an 47:15",
+        link: "https://quran.com/47/15"
+    },
+    {
+        number: 43,
+        title: "Flowing Streams",
+        quote: "\"Gardens beneath which rivers flow...\"",
+        source: "— Qur'an 9:72",
+        link: "https://quran.com/9/72"
+    },
+    {
+        number: 44,
+        title: "Ever-Flowing Rivers",
+        quote: "\"Beneath them rivers flow in the Gardens of Pleasure.\"",
+        source: "— Qur'an 9:21",
+        link: "https://quran.com/9/21"
+    },
+    {
+        number: 45,
+        title: "Lush Greenery",
+        quote: "\"In both of them are two gardens of dark green [foliage].\"",
+        source: "— Qur'an 55:64",
+        link: "https://quran.com/55/64"
+    },
+    {
+        number: 46,
+        title: "Vast Shade from Trees",
+        quote: "\"And extended shade.\"",
+        source: "— Qur'an 56:30",
+        link: "https://quran.com/56/30"
+    },
+    {
+        number: 47,
+        title: "Immense Trees",
+        quote: "\"In Paradise, there is a tree under the shadow of which a rider can travel for a hundred years.\"",
+        source: "— Hadith, Sahih al-Bukhari 3252",
+        link: "https://sunnah.com/bukhari:3252"
+    },
+    {
+        number: 48,
+        title: "Pleasant Fragrances",
+        quote: "\"Its soil is a fine white powder of pure musk.\"",
+        source: "— Hadith, Sahih al-Bukhari 5610",
+        link: "https://sunnah.com/bukhari:5610"
+    },
+    {
+        number: 49,
+        title: "Scents Surpassing Earthly Ones",
+        quote: "\"The fragrance of Paradise can be perceived from a distance of forty years.\"",
+        source: "— Hadith, Sunan Ibn Majah 4336",
+        link: "https://sunnah.com/ibnmajah:4336"
+    },
+    {
+        number: 50,
+        title: "Scent of Musk",
+        quote: "\"Whose seal is musk...\"",
+        source: "— Qur'an 83:26",
+        link: "https://quran.com/83/26"
+    },
+    {
+        number: 51,
+        title: "Melodious Sounds",
+        quote: "\"I have prepared for My righteous servants what no eye has seen, no ear has heard...\"",
+        source: "— Hadith, Sahih Muslim 2824a",
+        link: "https://sunnah.com/muslim:2824a"
+    },
+    {
+        number: 52,
+        title: "Joyful Companionship",
+        quote: "\"They will be on thrones facing each other.\"",
+        source: "— Qur'an 15:47",
+        link: "https://quran.com/15/47"
+    },
+    {
+        number: 53,
+        title: "Reclining in Comfort",
+        quote: "\"Reclining on adorned couches.\"",
+        source: "— Qur'an 36:56",
+        link: "https://quran.com/36/56"
+    },
+    {
+        number: 54,
+        title: "Golden Thrones",
+        quote: "\"They will be reclining on thrones lined up.\"",
+        source: "— Qur'an 52:20",
+        link: "https://quran.com/52/20"
+    },
+    {
+        number: 55,
+        title: "Fine Cushions",
+        quote: "\"And cushions lined up.\"",
+        source: "— Qur'an 88:15",
+        link: "https://quran.com/88/15"
+    },
+    {
+        number: 56,
+        title: "Palaces of Silver and Gold",
+        quote: "\"The bricks of it are of gold and silver...\"",
+        source: "— Hadith, Jami` at-Tirmidhi 2527",
+        link: "https://sunnah.com/tirmidhi:2527"
+    },
+    {
+        number: 57,
+        title: "Palaces of Gold",
+        quote: "\"I entered Paradise where I saw a palace made of gold...\"",
+        source: "— Hadith, Sahih al-Bukhari 1142",
+        link: "https://sunnah.com/bukhari:1142"
+    },
+    {
+        number: 58,
+        title: "Pavilions of Pearls",
+        quote: "\"In Paradise, there is a pavilion made of a single hollow pearl...\"",
+        source: "— Hadith, Sahih al-Bukhari 4879",
+        link: "https://sunnah.com/bukhari:4879"
+    },
+    {
+        number: 59,
+        title: "Adorned with Jewels",
+        quote: "\"Its pebbles are pearls and sapphires...\"",
+        source: "— Hadith, Jami` at-Tirmidhi 2527",
+        link: "https://sunnah.com/tirmidhi:2527"
+    },
+    {
+        number: 60,
+        title: "Magnificent Homes",
+        quote: "\"But those who feared their Lord will have chambers, above them chambers built high...\"",
+        source: "— Qur'an 39:20",
+        link: "https://quran.com/39/20"
+    },
+    {
+        number: 61,
+        title: "Walls of Gems",
+        quote: "\"Bricks of gold and silver...\"",
+        source: "— Hadith, Musnad Ahmad 11602",
+        link: "https://sunnah.com/ahmad:11602"
+    },
+    {
+        number: 62,
+        title: "Streets Paved with Gold",
+        quote: "\"I was led into Paradise where I found walls of gold and silver...\"",
+        source: "— Hadith, Musnad Ahmad 11602",
+        link: "https://sunnah.com/ahmad:11602"
+    },
+    {
+        number: 63,
+        title: "Fine Silk Garments",
+        quote: "\"They will be adorned therein with bracelets of gold and pearls, and their garments therein will be silk.\"",
+        source: "— Qur'an 22:23",
+        link: "https://quran.com/22/23"
+    },
+    {
+        number: 64,
+        title: "Brocade Clothing",
+        quote: "\"They will wear green garments of fine silk and heavy brocade...\"",
+        source: "— Qur'an 76:21",
+        link: "https://quran.com/76/21"
+    },
+    {
+        number: 65,
+        title: "Golden Crowns",
+        quote: "\"They will have on them crowns of gold.\"",
+        source: "— Hadith, Jami` at-Tirmidhi 2549",
+        link: "https://sunnah.com/tirmidhi:2549"
+    },
+    {
+        number: 66,
+        title: "Clothes Remain Pristine",
+        quote: "\"Their garments will not wear out, and their youth will not fade away.\"",
+        source: "— Hadith, Sahih Muslim 2836a",
+        link: "https://sunnah.com/muslim:2836a"
+    },
+    {
+        number: 67,
+        title: "No Hunger",
+        quote: "\"Indeed, it is promised for you that you will not be hungry therein or be unclothed.\"",
+        source: "— Qur'an 20:118",
+        link: "https://quran.com/20/118"
+    },
+    {
+        number: 68,
+        title: "No Thirst",
+        quote: "\"And [that] you will not be thirsty therein or be hot from the sun.\"",
+        source: "— Qur'an 20:119",
+        link: "https://quran.com/20/119"
+    },
+    {
+        number: 69,
+        title: "No Discomfort from Eating",
+        quote: "\"Eat and drink in satisfaction for what you used to do.\"",
+        source: "— Qur'an 77:43",
+        link: "https://quran.com/77/43"
+    },
+    {
+        number: 70,
+        title: "Ideal Climate",
+        quote: "\"They will see there neither sun nor bitter cold.\"",
+        source: "— Qur'an 76:13",
+        link: "https://quran.com/76/13"
+    },
+    {
+        number: 71,
+        title: "Divine Illumination",
+        quote: "\"They will not see therein a [burning] sun nor [freezing] cold.\"",
+        source: "— Qur'an 76:13",
+        link: "https://quran.com/76/13"
+    },
+    {
+        number: 72,
+        title: "Angelic Greetings",
+        quote: "\"The ones whom the angels take in death, [being] good and pure; [the angels] will say, 'Peace be upon you...\"",
+        source: "— Qur'an 16:32",
+        link: "https://quran.com/16/32"
+    },
+    {
+        number: 73,
+        title: "Conversations with Angels",
+        quote: "\"And the angels will enter upon them from every gate, [saying], 'Peace be upon you...\"",
+        source: "— Qur'an 13:23-24",
+        link: "https://quran.com/13/23-24"
+    },
+    {
+        number: 74,
+        title: "Welcoming Angels",
+        quote: "\"And those who feared their Lord will be led to Paradise in groups... and its keepers will say, 'Peace be upon you; you have become pure; so enter it to abide eternally therein.'\"",
+        source: "— Qur'an 39:73",
+        link: "https://quran.com/39/73"
+    },
+    {
+        number: 75,
+        title: "Youth Serving Them",
+        quote: "\"There will circulate among them young boys made eternal. When you see them, you would think them scattered pearls.\"",
+        source: "— Qur'an 76:19",
+        link: "https://quran.com/76/19"
+    },
+    {
+        number: 76,
+        title: "Beautiful Companions",
+        quote: "\"And with them will be companions with modest gaze, of equal age.\"",
+        source: "— Qur'an 38:52",
+        link: "https://quran.com/38/52"
+    },
+    {
+        number: 77,
+        title: "Enhanced Knowledge",
+        quote: "\"Glorified are You, we have no knowledge except what You have taught us...\"",
+        source: "— Qur'an 2:32",
+        link: "https://quran.com/2/32"
+    },
+    {
+        number: 78,
+        title: "Highest Level Beneath Allah's Throne",
+        quote: "\"When you ask Allah, ask Him for Al-Firdaus, for it is the middle of Paradise and the highest part of Paradise, and above it is the Throne of the Most Merciful.\"",
+        source: "— Hadith, Sahih al-Bukhari 2790",
+        link: "https://sunnah.com/bukhari:2790"
+    },
+    {
+        number: 79,
+        title: "Complete Harmony",
+        quote: "\"They will not hear therein ill speech or commission of sin.\"",
+        source: "— Qur'an 56:25",
+        link: "https://quran.com/56/25"
+    },
+    {
+        number: 80,
+        title: "Open Gates for the Righteous",
+        quote: "\"Gardens of perpetual residence, whose doors will be opened to them.\"",
+        source: "— Qur'an 38:50",
+        link: "https://quran.com/38/50"
+    },
+    {
+        number: 81,
+        title: "Ample Shade",
+        quote: "\"And extended shade.\"",
+        source: "— Qur'an 56:30",
+        link: "https://quran.com/56/30"
+    },
+    {
+        number: 82,
+        title: "Vessels of Silver",
+        quote: "\"And there will be circulated among them vessels of silver and cups having been [created] clear [as glass].\"",
+        source: "— Qur'an 76:15",
+        link: "https://quran.com/76/15"
+    },
+    {
+        number: 83,
+        title: "Instant Fulfillment",
+        quote: "\"They will have whatever they wish therein...\"",
+        source: "— Qur'an 25:16",
+        link: "https://quran.com/25/16"
+    },
+    {
+        number: 84,
+        title: "Company of the Truthful",
+        quote: "\"...With those upon whom Allah has bestowed favor of the prophets, the steadfast affirmers of truth, the martyrs, and the righteous...\"",
+        source: "— Qur'an 4:69",
+        link: "https://quran.com/4/69"
+    },
+    {
+        number: 85,
+        title: "Never Lonely",
+        quote: "\"And We will remove whatever is in their breasts of resentment, [so they will be] brothers, on thrones facing each other.\"",
+        source: "— Qur'an 15:47",
+        link: "https://quran.com/15/47"
+    },
+    {
+        number: 86,
+        title: "Endless Laughter",
+        quote: "\"So today those who believed are laughing at the disbelievers.\"",
+        source: "— Qur'an 83:34",
+        link: "https://quran.com/83/34"
+    },
+    {
+        number: 87,
+        title: "No Disputes",
+        quote: "\"They will not hear therein ill speech or falsehood.\"",
+        source: "— Qur'an 78:35",
+        link: "https://quran.com/78/35"
+    },
+    {
+        number: 88,
+        title: "Silver and Golden Dishes",
+        quote: "\"And there will be passed around them vessels of silver and cups having been [created] clear [as glass].\"",
+        source: "— Qur'an 76:15",
+        link: "https://quran.com/76/15"
+    },
+    {
+        number: 89,
+        title: "Meeting the Best Believers",
+        quote: "\"And whoever obeys Allah and the Messenger—those will be with the ones upon whom Allah has bestowed favor...\"",
+        source: "— Qur'an 4:69",
+        link: "https://quran.com/4/69"
+    },
+    {
+        number: 90,
+        title: "Perpetual Vitality",
+        quote: "\"Their youth will not fade away, and their clothes will not wear out.\"",
+        source: "— Hadith, Sahih Muslim 2836a",
+        link: "https://sunnah.com/muslim:2836a"
+    },
+    {
+        number: 91,
+        title: "Divine Pleasure",
+        quote: "\"Allah will say: 'I bestow My pleasure upon you, and I will never be angry with you after that.'\"",
+        source: "— Hadith, Sahih al-Bukhari 6549",
+        link: "https://sunnah.com/bukhari:6549"
+    },
+    {
+        number: 92,
+        title: "No Fear",
+        quote: "\"They will not fear therein nor will they grieve.\"",
+        source: "— Qur'an 7:49",
+        link: "https://quran.com/7/49"
+    },
+    {
+        number: 93,
+        title: "Eternal Abode",
+        quote: "\"They will abide therein eternally.\"",
+        source: "— Qur'an 98:8",
+        link: "https://quran.com/98/8"
+    },
+    {
+        number: 94,
+        title: "Ultimate Success",
+        quote: "\"And whoever is removed away from the Fire and admitted to Paradise, he indeed is successful.\"",
+        source: "— Qur'an 3:185",
+        link: "https://quran.com/3/185"
+    },
+    {
+        number: 95,
+        title: "Peaceful Life",
+        quote: "\"They will not hear therein any ill speech or commission of sin, only a saying: 'Peace, peace.'\"",
+        source: "— Qur'an 56:25-26",
+        link: "https://quran.com/56/25-26"
+    },
+    {
+        number: 96,
+        title: "Ever-Increasing Blessings",
+        quote: "\"For them who have done good is the best reward and extra.\"",
+        source: "— Qur'an 10:26",
+        link: "https://quran.com/10/26"
+    },
+    {
+        number: 97,
+        title: "Gardens of Delight",
+        quote: "\"Indeed, the righteous will be among gardens and rivers.\"",
+        source: "— Qur'an 54:54",
+        link: "https://quran.com/54/54"
+    },
+    {
+        number: 98,
+        title: "Highest Honor",
+        quote: "\"Their reward with their Lord will be Gardens of perpetual residence beneath which rivers flow, wherein they will abide forever.\"",
+        source: "— Qur'an 98:8",
+        link: "https://quran.com/98/8"
+    },
+    {
+        number: 99,
+        title: "Faces Radiant with Joy",
+        quote: "\"[Some] faces, that Day, will be bright—laughing, rejoicing at good news.\"",
+        source: "— Qur'an 80:38-39",
+        link: "https://quran.com/80/38-39"
+    },
+    {
+        number: 100,
+        title: "Ultimate Bliss",
+        quote: "\"And in Paradise is whatever the souls desire and delights the eyes, and you will abide therein eternally.\"",
+        source: "— Qur'an 43:71",
+        link: "https://quran.com/43/71"
+    }
+];
+
+
+        // Function to Render Perfections
+        function renderPerfections() {
+            const perfectionsContainer = document.querySelector('.perfections');
+
+            perfections.forEach((perfection, index) => {
+                const perfectionItem = document.createElement('div');
+                perfectionItem.classList.add('perfection-item');
+                perfectionItem.style.animationDelay = `${index * 0.05}s`;
+
+                perfectionItem.innerHTML = `
+                    <h2>${perfection.number}. ${perfection.title}</h2>
+                    <p class="quote">${perfection.quote}</p>
+                    <p class="source"><a href="${perfection.link}" target="_blank">${perfection.source}</a></p>
+                `;
+
+                // Add click event to toggle individual perfection
+                perfectionItem.addEventListener('click', () => {
+                    perfectionItem.classList.toggle('collapsed');
+                });
+
+                perfectionsContainer.appendChild(perfectionItem);
+            });
+        }
+
+        // Collapse/Expand Functionality
+        const toggleCollapseBtn = document.getElementById('toggle-collapse');
+        let isCollapsed = false;
+
+        toggleCollapseBtn.addEventListener('click', () => {
+            const perfectionItems = document.querySelectorAll('.perfection-item');
+            isCollapsed = !isCollapsed;
+            toggleCollapseBtn.textContent = isCollapsed ? 'Expand' : 'Collapse';
+
+            perfectionItems.forEach(item => {
+                if (isCollapsed) {
+                    item.classList.add('collapsed');
+                } else {
+                    item.classList.remove('collapsed');
+                }
+            });
+        });
+
+        // Initialize
+        renderPerfections();
+    </script>
+</body>
+</html>
