@@ -174,6 +174,19 @@
             background: #43a047;
         }
 
+        /* Blue Button Style */
+        .blue-button {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+        }
+
+        .blue-button:hover {
+            background: linear-gradient(45deg, #2a5298, #1e3c72);
+        }
+
+        .blue-button:active {
+            background: linear-gradient(45deg, #16335b, #1e3c72);
+        }
+
         /* Bottom Bar */
         #bottomBar {
             position: fixed;
@@ -332,17 +345,115 @@
             display: none;
             padding-left: 20px;
         }
+
+        /* Playlist Modal Styles */
+        #playlistModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 300;
+            overflow-y: auto;
+        }
+
+        #playlistModalContent {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #282828;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        #playlistModalContent h2 {
+            margin-bottom: 20px;
+        }
+
+        #playlistModalContent ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #playlistModalContent li {
+            background: rgba(0, 0, 0, 0.8);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #playlistModalContent li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .add-button {
+            background: #4caf50;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background: #81c784;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+        }
+
+        #playlistDisplay {
+            max-width: 800px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Close Button */
+        .close-modal {
+            background: #f44336;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .close-modal:hover {
+            background: #e57373;
+        }
     </style>
 </head>
 <body>
     <h1>Quran Memorization</h1>
+    <!-- Playlist Display -->
+    <div id="playlistDisplay" style="display: none;">
+        <h2>Your Playlist</h2>
+        <div id="playlistItems"></div>
+        <button id="playPlaylistButton" class="blue-button">Play Playlist</button>
+    </div>
     <input type="text" id="searchBar" placeholder="Search Surah..." />
     <div class="filter-buttons">
-        <button id="sortDefaultOrder">Default Order</button>
+        <button id="sortDefaultOrder">Qur'anic Order</button>
         <button id="sortShortestToLongest">Shortest to Longest</button>
         <button id="sortLongestToShortest">Longest to Shortest</button>
         <button id="sortRevelationOrder">Revelation Order</button>
         <button id="sortByJuz">Juz</button>
+        <button id="createPlaylistButton">Create Playlist</button>
     </div>
     <ul id="surahList"></ul>
     <div id="juzList" class="juz-container" style="display: none;"></div>
@@ -380,6 +491,15 @@
         <button id="closeRepeatMenuButton">Close</button>
     </div>
 
+    <!-- Playlist Modal -->
+    <div id="playlistModal">
+        <div id="playlistModalContent">
+            <h2>Choose Surahs to Add to the Playlist</h2>
+            <ul id="playlistSurahList"></ul>
+            <button class="close-modal" id="finishPlaylistButton">Finish</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             function timeToSeconds(time) {
@@ -387,7 +507,7 @@
                 return (hours * 3600) + (minutes * 60) + seconds;
             }
 
-            // Surah data with lengths in seconds and revelation orders
+           // Surah data with lengths in seconds and revelation orders
             // Surah data with lengths in seconds and revelation orders
 // Surah data with lengths in seconds and revelation orders
 const surahList = [
@@ -548,15 +668,6 @@ const juzData = [
 
 
 
-
-
-
-
-
-
-
-
-
             const ul = document.getElementById('surahList');
             const juzContainer = document.getElementById('juzList');
             const audioPlayer = new Audio();
@@ -566,13 +677,17 @@ const juzData = [
             let repeatCount = 1;
             let currentRepeatCount = 1;
 
+            // Playlist variables
+            let playlist = [];
+            let currentPlaylistIndex = 0;
+            let isPlaylistPlaying = false;
+
             // Populate the surah list
             function populateSurahList(list = surahList) {
                 ul.style.display = 'block';
                 juzContainer.style.display = 'none';
                 ul.innerHTML = ''; // Clear existing list
                 list.forEach((surah) => {
-                    const index = surahList.findIndex(s => s.number === surah.number);
                     const li = createSurahListItem(surah);
                     ul.appendChild(li);
                 });
@@ -586,6 +701,7 @@ const juzData = [
                     currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
                     currentPlayCount = playCount; // Reset play count
                     currentRepeatCount = repeatCount; // Reset repeat count
+                    isPlaylistPlaying = false; // Not playing from playlist
                     playSurah();
                 });
 
@@ -662,6 +778,7 @@ const juzData = [
             document.getElementById('sortByJuz').addEventListener('click', () => {
                 ul.style.display = 'none';
                 juzContainer.style.display = 'block';
+                document.getElementById('playlistDisplay').style.display = 'none';
                 populateJuzList();
             });
 
@@ -695,6 +812,90 @@ const juzData = [
                     juzContainer.appendChild(juzHeader);
                     juzContainer.appendChild(juzContent);
                 });
+            }
+
+            // Playlist Feature
+            document.getElementById('createPlaylistButton').addEventListener('click', () => {
+                openPlaylistModal();
+            });
+
+            function openPlaylistModal() {
+                document.getElementById('playlistModal').style.display = 'block';
+                const playlistSurahList = document.getElementById('playlistSurahList');
+                playlistSurahList.innerHTML = '';
+
+                surahList.forEach(surah => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${surah.number}. ${surah.name}</span>`;
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.min = '1';
+                    input.value = '1';
+                    input.style.width = '50px';
+                    input.style.marginRight = '10px';
+
+                    const addButton = document.createElement('button');
+                    addButton.textContent = 'Add';
+                    addButton.className = 'add-button';
+                    addButton.addEventListener('click', () => {
+                        let count = parseInt(input.value);
+                        if (!isNaN(count) && count > 0) {
+                            for (let i = 0; i < count; i++) {
+                                playlist.push(surah);
+                            }
+                            alert(`${surah.name} added ${count} times to the playlist.`);
+                        } else {
+                            alert("Invalid number.");
+                        }
+                    });
+                    li.appendChild(input);
+                    li.appendChild(addButton);
+                    playlistSurahList.appendChild(li);
+                });
+            }
+
+            document.getElementById('finishPlaylistButton').addEventListener('click', () => {
+                document.getElementById('playlistModal').style.display = 'none';
+                displayPlaylist();
+            });
+
+            function displayPlaylist() {
+                const playlistDisplay = document.getElementById('playlistDisplay');
+                const playlistItems = document.getElementById('playlistItems');
+                playlistItems.innerHTML = '';
+                if (playlist.length > 0) {
+                    playlistDisplay.style.display = 'block';
+                    playlist.forEach((surah, index) => {
+                        const div = document.createElement('div');
+                        div.className = 'playlist-item';
+                        div.textContent = `${index + 1}. ${surah.name}`;
+                        playlistItems.appendChild(div);
+                    });
+                } else {
+                    playlistDisplay.style.display = 'none';
+                }
+            }
+
+            document.getElementById('playPlaylistButton').addEventListener('click', () => {
+                if (playlist.length > 0) {
+                    currentPlaylistIndex = 0;
+                    isPlaylistPlaying = true;
+                    playPlaylistSurah();
+                }
+            });
+
+            function playPlaylistSurah() {
+                if (currentPlaylistIndex < playlist.length) {
+                    const surah = playlist[currentPlaylistIndex];
+                    currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
+                    audioPlayer.src = `${String(surah.number).padStart(3, '0')}.mp3`;
+                    audioPlayer.play();
+                    document.getElementById('bottomTrackTitle').textContent = surah.name;
+                    document.getElementById('playPauseButton').innerHTML = '&#9208;'; // Pause icon
+                    updateProgressBar();
+                } else {
+                    isPlaylistPlaying = false;
+                }
             }
 
             document.getElementById('playPauseButton').addEventListener('click', () => {
@@ -753,6 +954,11 @@ const juzData = [
                     currentPlayCount = 1;
                     audioPlayer.currentTime = 0;
                     audioPlayer.play();
+                } else if (isPlaylistPlaying) {
+                    currentPlaylistIndex++;
+                    currentPlayCount = 1;
+                    currentRepeatCount = 1;
+                    playPlaylistSurah();
                 } else {
                     document.getElementById('playPauseButton').innerHTML = '&#9654;'; // Play icon
                 }
