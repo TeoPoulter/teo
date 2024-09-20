@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Memorisation</title>
+    <title>Quran Memorization</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
     <link rel="icon" type="image/jpeg" href="https://i.imgur.com/peUGC7J.jpeg">
     <style>
@@ -12,13 +12,12 @@
             background: linear-gradient(135deg, #1f1c2c, #928DAB);
             color: #f5f5f5;
             margin: 0;
-            padding: 0;
+            padding: 0 0 100px 0; /* Adjusted padding */
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             overflow-x: hidden;
-            padding-bottom: 100px;
         }
 
         h1 {
@@ -31,6 +30,28 @@
 
         h1:hover {
             color: #81c784;
+        }
+
+        #searchBar {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        #searchBar::placeholder {
+            color: #ccc;
+        }
+
+        #searchBar:focus {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .filter-buttons {
@@ -155,33 +176,16 @@
             background: #43a047;
         }
 
-        #settings {
-            margin-top: 10px;
-        }
-
-        #settings label {
-            font-size: 1.1em;
-            margin-right: 10px;
-        }
-
-        #settings select {
-            background: #333;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
         /* Bottom Bar */
         #bottomBar {
             position: fixed;
             bottom: 0;
             width: 100%;
             background: linear-gradient(45deg, #181818, #282828);
-            padding: 15px 30px;
+            padding: 10px 20px;
             box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.5);
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             color: #fff;
@@ -192,7 +196,8 @@
         #bottomBar .track-info {
             display: flex;
             align-items: center;
-            max-width: 25%;
+            flex: 1 1 100%;
+            margin-bottom: 10px;
             overflow: hidden;
         }
 
@@ -208,6 +213,8 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            flex: 1 1 auto;
+            order: 2;
         }
 
         #bottomBar .controls button {
@@ -228,12 +235,11 @@
         }
 
         #bottomBar .progress-container {
-            flex-grow: 1;
-            margin: 0 15px;
+            flex: 1 1 100%;
             display: flex;
             align-items: center;
             position: relative;
-            max-width: 40%;
+            order: 3;
         }
 
         #bottomBar .progress-container input[type="range"] {
@@ -267,50 +273,36 @@
             white-space: nowrap;
         }
 
-        @media (max-width: 800px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            .filter-buttons {
-                flex-direction: column;
-            }
-
-            .filter-buttons button {
-                margin: 5px 0;
-            }
-
+        @media (min-width: 600px) {
             #bottomBar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 20px;
-            }
-
-            #bottomBar .controls {
-                margin-top: 10px;
-                width: 100%;
-                justify-content: space-around;
-            }
-
-            #bottomBar .progress-container {
-                width: 100%;
-                max-width: none;
-                margin: 10px 0;
+                flex-wrap: nowrap;
             }
 
             #bottomBar .track-info {
-                align-items: flex-start;
-                max-width: 100%;
+                flex: 1 1 25%;
+                margin-bottom: 0;
+            }
+
+            #bottomBar .controls {
+                order: 2;
+                flex: 0 0 auto;
+            }
+
+            #bottomBar .progress-container {
+                flex: 1 1 50%;
+                order: 3;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Quran Memorisation</h1>
+    <h1>Quran Memorization</h1>
     <input type="text" id="searchBar" placeholder="Search Surah..." />
     <div class="filter-buttons">
+        <button id="sortDefaultOrder">Default Order</button>
         <button id="sortShortestToLongest">Shortest to Longest</button>
         <button id="sortLongestToShortest">Longest to Shortest</button>
+        <button id="sortRevelationOrder">Revelation Order</button>
     </div>
     <ul id="surahList"></ul>
 
@@ -349,15 +341,31 @@
 
             // Surah data with lengths in seconds and surah numbers
             const surahList = [
-                { number: 1, name: "Al-Fatiha", length: timeToSeconds("0:00:52") },
-                { number: 2, name: "Al-Baqarah", length: timeToSeconds("2:06:16") },
-                { number: 3, name: "Aal-E-Imran", length: timeToSeconds("1:18:45") },
-                // ... Continue adding the rest with their respective numbers
-                { number: 4, name: "An-Nisa", length: timeToSeconds("1:19:57") },
-                { number: 5, name: "Al-Ma-idah", length: timeToSeconds("1:03:01") },
-                // ... (Make sure to include all surahs with their numbers)
-                { number: 114, name: "An-Nas", length: timeToSeconds("0:00:50") }
+                { number: 1, name: "Al-Fatiha", length: timeToSeconds("0:00:52"), revelationOrder: 5 },
+                { number: 2, name: "Al-Baqarah", length: timeToSeconds("2:06:16"), revelationOrder: 87 },
+                { number: 3, name: "Aal-E-Imran", length: timeToSeconds("1:18:45"), revelationOrder: 89 },
+                { number: 4, name: "An-Nisa", length: timeToSeconds("1:19:57"), revelationOrder: 92 },
+                { number: 5, name: "Al-Ma'idah", length: timeToSeconds("1:03:01"), revelationOrder: 112 },
+                { number: 6, name: "Al-An'am", length: timeToSeconds("1:12:30"), revelationOrder: 55 },
+                { number: 7, name: "Al-A'raf", length: timeToSeconds("1:23:15"), revelationOrder: 39 },
+                { number: 8, name: "Al-Anfal", length: timeToSeconds("0:30:38"), revelationOrder: 88 },
+                { number: 9, name: "At-Tawbah", length: timeToSeconds("1:00:25"), revelationOrder: 113 },
+                { number: 10, name: "Yunus", length: timeToSeconds("0:45:13"), revelationOrder: 51 },
+                { number: 11, name: "Hud", length: timeToSeconds("0:46:26"), revelationOrder: 52 },
+                { number: 12, name: "Yusuf", length: timeToSeconds("0:42:05"), revelationOrder: 53 },
+                { number: 13, name: "Ar-Ra'd", length: timeToSeconds("0:20:31"), revelationOrder: 96 },
+                { number: 14, name: "Ibrahim", length: timeToSeconds("0:20:27"), revelationOrder: 72 },
+                { number: 15, name: "Al-Hijr", length: timeToSeconds("0:15:55"), revelationOrder: 54 },
+                { number: 16, name: "An-Nahl", length: timeToSeconds("0:42:24"), revelationOrder: 70 },
+                { number: 17, name: "Al-Isra", length: timeToSeconds("0:35:14"), revelationOrder: 50 },
+                { number: 18, name: "Al-Kahf", length: timeToSeconds("0:33:30"), revelationOrder: 69 },
+                { number: 19, name: "Maryam", length: timeToSeconds("0:21:23"), revelationOrder: 44 },
+                { number: 20, name: "Ta-Ha", length: timeToSeconds("0:27:08"), revelationOrder: 45 },
+                // ... Continue adding the rest with their respective numbers and revelation orders
             ];
+
+            // Copy of the original surah list for default sorting
+            const originalSurahList = [...surahList];
 
             const ul = document.getElementById('surahList');
             const audioPlayer = new Audio();
@@ -372,7 +380,7 @@
                 list.forEach((surah) => {
                     const index = surahList.findIndex(s => s.number === surah.number);
                     const li = document.createElement('li');
-                    li.innerHTML = `<span class="surah-name">${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
+                    li.innerHTML = `<span class="surah-name">${surah.number}. ${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
                     li.addEventListener('click', () => {
                         currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
                         currentPlayCount = playCount; // Reset play count
@@ -421,6 +429,11 @@
                 }
             }
 
+            document.getElementById('sortDefaultOrder').addEventListener('click', () => {
+                surahList.sort((a, b) => a.number - b.number);
+                populateSurahList();
+            });
+
             document.getElementById('sortShortestToLongest').addEventListener('click', () => {
                 surahList.sort((a, b) => a.length - b.length);
                 populateSurahList();
@@ -428,6 +441,11 @@
 
             document.getElementById('sortLongestToShortest').addEventListener('click', () => {
                 surahList.sort((a, b) => b.length - a.length);
+                populateSurahList();
+            });
+
+            document.getElementById('sortRevelationOrder').addEventListener('click', () => {
+                surahList.sort((a, b) => a.revelationOrder - b.revelationOrder);
                 populateSurahList();
             });
 
