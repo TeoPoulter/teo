@@ -1,294 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags and title -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Memorizer</title>
     <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
+    <!-- Styles -->
     <style>
+        /* General styles */
         body {
             background-color: #121212;
             color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             font-family: Arial, sans-serif;
-            overflow: hidden;
-            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        .background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
+        /* Center content */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .background::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%231db954" fill-opacity="0.3"%3E%3Ccircle cx="10" cy="10" r="2"%3E%3Canimate attributeName="cy" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3Ccircle cx="90" cy="90" r="2"%3E%3Canimate attributeName="cy" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E') repeat;
-            z-index: -1;
-            opacity: 0.5;
-            animation: moveParticles 10s linear infinite;
-        }
-
-        @keyframes moveParticles {
-            from {
-                background-position: 0 0;
-            }
-            to {
-                background-position: 100% 100%;
-            }
-        }
-
-        .background::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background-image: radial-gradient(circle, rgba(29, 185, 84, 0.4), transparent);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .button {
+        /* Button styles */
+        .button, .repeat-button {
             background-color: #1db954;
             border: none;
             color: white;
-            padding: 20px 40px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 24px;
-            margin: 4px 2px;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px 5px;
             cursor: pointer;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            animation: fadeIn 2s forwards, pulse 2s infinite alternate;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            width: calc(50% - 20px);
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(1.1);
-            }
-        }
-
-        .button:hover {
+        .button:hover, .repeat-button:hover {
             background-color: #1ed760;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            transform: scale(1.1);
         }
 
-        .button:active {
+        .button:active, .repeat-button:active {
             background-color: #1a9f45;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transform: scale(0.98);
         }
 
+        /* Control panel */
+        .control-panel {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .control-panel div {
+            margin-bottom: 15px;
+        }
+
+        .control-panel label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .control-panel input[type="range"] {
+            width: 80%;
+        }
+
+        .control-panel input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+        }
+
+        /* Notification */
         .notification {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
             background-color: #1db954;
             padding: 10px 20px;
             border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
             display: none;
         }
 
-        .recently-uploaded {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(29, 185, 84, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-        }
-
+        /* Progress bar */
         .progress-bar-container {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
             width: 100%;
             height: 5px;
             background-color: rgba(255, 255, 255, 0.3);
-            z-index: 1000;
-            display: none;
+            margin-top: 20px;
+            position: relative;
         }
 
         .progress-bar-fill {
             height: 100%;
             background-color: #1db954;
-            width: 0;
+            width: 0%;
         }
 
-        .footer-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #0d47a1; /* Dark blue background color */
-            color: #ffffff; /* White text */
-            padding: 20px;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            transition: background-color 0.3s;
-        }
-
-        .footer-nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .footer-nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-
-        .footer-nav ul li a {
-            text-decoration: none;
-            color: #ffffff; /* White text */
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .footer-nav ul li a:hover {
-            color: #b3e5fc; /* Light turquoise on hover */
-        }
-
-        .footer-nav:hover {
-            background-color: #0b3c8e; /* Slightly darker blue on hover */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .button, .repeat-button {
+                width: calc(100% - 20px);
             }
-            to {
-                opacity: 1;
+
+            .control-panel input[type="range"] {
+                width: 100%;
             }
-        }
-
-        .loaded-files {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #1db954;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .loaded-files h2 {
-            margin: 0 0 10px 0;
-            font-size: 24px;
-        }
-
-        .loaded-files ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .loaded-files li {
-            margin: 10px 0;
-        }
-
-        .play-btn {
-            background-color: #1ed760;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .play-btn:hover {
-            background-color: #17a450;
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    <button class="button" id="fileButton">File</button>
-    <input type="file" id="audioFile" accept="audio/*" style="display: none;">
-    <button class="button" id="playButton" style="display: none;">Play</button>
-    <div id="notification" class="notification"></div>
-    <div id="recentlyUploaded" class="recently-uploaded"></div>
-    <div class="progress-bar-container">
-        <div class="progress-bar-fill" id="progressBarFill"></div>
-    </div>
-    <div class="loaded-files">
-        <h2>Play Loaded Files</h2>
-        <ul id="loadedFilesList">
-            <!-- Loaded files will be listed here -->
-        </ul>
+    <!-- Main container -->
+    <div class="container">
+        <!-- File upload button -->
+        <button class="button" id="fileButton">Choose Audio File</button>
+        <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+
+        <!-- Playback controls -->
+        <div class="control-panel" style="display: none;" id="controlPanel">
+            <!-- Repeat options -->
+            <div class="repeat-options">
+                <button class="repeat-button" data-repeat="10">Play 10x</button>
+                <button class="repeat-button" data-repeat="20">Play 20x</button>
+                <button class="repeat-button" data-repeat="30">Play 30x</button>
+                <button class="repeat-button" data-repeat="infinite">Play Infinite</button>
+            </div>
+
+            <!-- Custom repeat count -->
+            <div class="custom-repeat">
+                <label for="customRepeatCount">Custom Repeat Count:</label>
+                <input type="number" id="customRepeatCount" min="1" placeholder="Times">
+                <button class="repeat-button" id="customRepeatButton">Play</button>
+            </div>
+
+            <!-- Volume control -->
+            <div class="volume-control">
+                <label for="volumeSlider">Volume:</label>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+            </div>
+
+            <!-- Speed control -->
+            <div class="speed-control">
+                <label for="speedSlider">Playback Speed:</label>
+                <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
+            </div>
+
+            <!-- Play/Pause button -->
+            <button class="button" id="playPauseButton">Play</button>
+        </div>
+
+        <!-- Notification -->
+        <div id="notification" class="notification"></div>
+
+        <!-- Progress bar -->
+        <div class="progress-bar-container" id="progressBarContainer" style="display: none;">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
     </div>
 
-    <audio id="audio" loop>
+    <!-- Audio element -->
+    <audio id="audio">
         <source id="audioSource" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
+    <!-- Footer navigation -->
+    <nav class="footer-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
 
-
+    <!-- Scripts -->
     <script>
+        // Element references
         const fileButton = document.getElementById('fileButton');
-        const playButton = document.getElementById('playButton');
         const audioFile = document.getElementById('audioFile');
         const audio = document.getElementById('audio');
         const audioSource = document.getElementById('audioSource');
         const notification = document.getElementById('notification');
         const progressBarFill = document.getElementById('progressBarFill');
-        const progressBarContainer = document.querySelector('.progress-bar-container');
-        const recentlyUploaded = document.getElementById('recentlyUploaded');
-        const loadedFilesList = document.getElementById('loadedFilesList');
+        const progressBarContainer = document.getElementById('progressBarContainer');
+        const controlPanel = document.getElementById('controlPanel');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const speedSlider = document.getElementById('speedSlider');
+        const repeatButtons = document.querySelectorAll('.repeat-button');
+        const customRepeatCount = document.getElementById('customRepeatCount');
+        const customRepeatButton = document.getElementById('customRepeatButton');
 
+        // State variables
         let isPlaying = false;
-        let loadedFiles = [];
+        let repeatCount = 1;
+        let playCounter = 0;
+        let selectedFileName = '';
 
+        // File button click handler
         fileButton.addEventListener('click', () => {
             audioFile.click();
         });
 
+        // File selection handler
         audioFile.addEventListener('change', (event) => {
             const files = event.target.files;
             if (files && files.length > 0) {
@@ -297,16 +213,14 @@
                     const fileURL = URL.createObjectURL(file);
                     audioSource.src = fileURL;
                     audio.load();
-                    playButton.style.display = 'inline-block';
-                    notification.textContent = `Playing ${file.name} on repeat`;
+                    controlPanel.style.display = 'block';
                     notification.style.display = 'block';
+                    notification.textContent = `Selected: ${file.name}`;
+                    selectedFileName = file.name;
                     progressBarContainer.style.display = 'block';
-
-                    // Update the list of loaded files
-                    loadedFiles.push({ name: file.name, url: fileURL });
-                    updateLoadedFilesList();
+                    resetPlayback();
                 } else {
-                    notification.textContent = 'Error: Please upload an audio file.';
+                    notification.textContent = 'Error: Please upload a valid audio file.';
                     notification.style.backgroundColor = '#ff3d00';
                     setTimeout(() => {
                         notification.textContent = '';
@@ -316,74 +230,122 @@
             }
         });
 
-        function updateLoadedFilesList() {
-            loadedFilesList.innerHTML = '';
-            loadedFiles.forEach((file, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <span>${file.name}</span>
-                    <button class="play-btn" onclick="playLoadedFile(${index})">Play</button>
-                `;
-                loadedFilesList.appendChild(listItem);
+        // Reset playback state
+        function resetPlayback() {
+            isPlaying = false;
+            playCounter = 0;
+            repeatCount = 1;
+            playPauseButton.textContent = 'Play';
+            audio.pause();
+            audio.currentTime = 0;
+            progressBarFill.style.width = '0%';
+        }
+
+        // Play/Pause button handler
+        playPauseButton.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playPauseButton.textContent = 'Play';
+                notification.textContent = `Paused: ${selectedFileName}`;
+            } else {
+                audio.play();
+                playPauseButton.textContent = 'Pause';
+                notification.textContent = `Playing: ${selectedFileName}`;
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Volume control handler
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
+
+        // Speed control handler
+        speedSlider.addEventListener('input', () => {
+            audio.playbackRate = speedSlider.value;
+        });
+
+        // Repeat buttons handler
+        repeatButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const repeatValue = button.getAttribute('data-repeat');
+                if (repeatValue === 'infinite') {
+                    repeatCount = Infinity;
+                } else {
+                    repeatCount = parseInt(repeatValue);
+                }
+                playCounter = 0;
+                audio.currentTime = 0;
+                audio.play();
+                playPauseButton.textContent = 'Pause';
+                isPlaying = true;
+                notification.textContent = `Playing: ${selectedFileName} (${repeatCount === Infinity ? 'Infinite' : repeatCount + 'x'})`;
             });
-        }
+        });
 
-        function playLoadedFile(index) {
-            const file = loadedFiles[index];
-            audioSource.src = file.url;
-            audio.load();
-            audio.play();
-            playButton.style.display = 'inline-block';
-            notification.textContent = `Playing ${file.name} on repeat`;
-            notification.style.display = 'block';
-            progressBarContainer.style.display = 'block';
-            playButton.textContent = 'Pause';
-            isPlaying = true;
-        }
+        // Custom repeat button handler
+        customRepeatButton.addEventListener('click', () => {
+            const customCount = parseInt(customRepeatCount.value);
+            if (!isNaN(customCount) && customCount > 0) {
+                repeatCount = customCount;
+                playCounter = 0;
+                audio.currentTime = 0;
+                audio.play();
+                playPauseButton.textContent = 'Pause';
+                isPlaying = true;
+                notification.textContent = `Playing: ${selectedFileName} (${repeatCount}x)`;
+            } else {
+                alert('Please enter a valid repeat count.');
+            }
+        });
 
+        // Audio ended event handler
+        audio.addEventListener('ended', () => {
+            playCounter++;
+            if (playCounter < repeatCount) {
+                audio.currentTime = 0;
+                audio.play();
+            } else {
+                isPlaying = false;
+                playPauseButton.textContent = 'Play';
+                notification.textContent = `Finished playing ${selectedFileName} (${repeatCount}x)`;
+            }
+        });
+
+        // Progress bar update
         audio.addEventListener('timeupdate', () => {
             const progress = (audio.currentTime / audio.duration) * 100;
             progressBarFill.style.width = `${progress}%`;
         });
 
-        playButton.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                playButton.textContent = 'Play';
-                notification.textContent = `Paused ${audioFile.files[0].name}`;
-            } else {
-                audio.play();
-                playButton.textContent = 'Pause';
-                notification.textContent = `Playing ${audioFile.files[0].name} on repeat`;
-            }
-            isPlaying = !isPlaying;
-        });
-
+        // Keyboard controls
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space') {
                 event.preventDefault();
-                if (audioFile.files.length > 0) {
-                    if (isPlaying) {
-                        audio.pause();
-                        playButton.textContent = 'Play';
-                        notification.textContent = `Paused ${audioFile.files[0].name}`;
-                    } else {
-                        audio.play();
-                        playButton.textContent = 'Pause';
-                        notification.textContent = `Playing ${audioFile.files[0].name} on repeat`;
-                    }
-                    isPlaying = !isPlaying;
-                }
+                playPauseButton.click();
             }
         });
 
-    </script>
+        // Mobile adaptation
+        // Adjust font sizes and button sizes for mobile devices
+        function adjustForMobile() {
+            if (window.innerWidth <= 600) {
+                document.body.style.fontSize = '16px';
+                document.querySelectorAll('.button, .repeat-button').forEach(btn => {
+                    btn.style.fontSize = '16px';
+                    btn.style.padding = '10px 20px';
+                });
+            } else {
+                document.body.style.fontSize = '18px';
+                document.querySelectorAll('.button, .repeat-button').forEach(btn => {
+                    btn.style.fontSize = '18px';
+                    btn.style.padding = '15px 30px';
+                });
+            }
+        }
 
-    <nav class="footer-nav">
-    <ul>
-        <li><a href="index.html">Home</a></li>
-    </ul>
-</nav>
-    
+        window.addEventListener('resize', adjustForMobile);
+        adjustForMobile();
+    </script>
 </body>
 </html>
