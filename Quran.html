@@ -291,6 +291,19 @@
                 margin: 0;
             }
         }
+
+        /* Repeat Menu Styles */
+        #repeatMenu {
+            display: none;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            text-align: center;
+            z-index: 200;
+        }
     </style>
 </head>
 <body>
@@ -309,9 +322,7 @@
             <p id="bottomTrackTitle" class="title"></p>
         </div>
         <div class="controls">
-            <button id="previousButton">&#9198;</button>
             <button id="playPauseButton">&#9654;</button>
-            <button id="nextButton">&#9197;</button>
             <button id="repeatButton">&#128257;</button>
         </div>
         <div class="progress-container">
@@ -330,6 +341,15 @@
         <button id="closeMenuButton">Close</button>
     </div>
 
+    <!-- Repeat Menu -->
+    <div id="repeatMenu" class="menu">
+        <p>Repeat No.</p>
+        <input type="range" id="repeatCountSlider" class="menu-slider" min="1" max="31" step="1" value="1">
+        <span id="repeatCountValue">1</span> times
+        <br>
+        <button id="closeRepeatMenuButton">Close</button>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             function timeToSeconds(time) {
@@ -337,6 +357,7 @@
                 return (hours * 3600) + (minutes * 60) + seconds;
             }
 
+            // Surah data with lengths in seconds and revelation orders
             // Surah data with lengths in seconds and revelation orders
 // Surah data with lengths in seconds and revelation orders
 const surahList = [
@@ -455,17 +476,16 @@ const surahList = [
     { number: 113, name: "Al-Falaq", length: timeToSeconds("0:00:33"), revelationOrder: 20 },
     { number: 114, name: "An-Nas", length: timeToSeconds("0:00:50"), revelationOrder: 21 }
 ];
-
-
             // Ensure all surahs from 1 to 114 are included in the list
             // Note: For brevity, only some surahs are shown here. Please fill in the rest.
 
             const ul = document.getElementById('surahList');
             const audioPlayer = new Audio();
             let currentSurahIndex = -1;
-            let isRepeating = false;
             let playCount = 1;
             let currentPlayCount = 1;
+            let repeatCount = 1;
+            let currentRepeatCount = 1;
 
             // Populate the list
             function populateSurahList(list = surahList) {
@@ -477,6 +497,7 @@ const surahList = [
                     li.addEventListener('click', () => {
                         currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
                         currentPlayCount = playCount; // Reset play count
+                        currentRepeatCount = repeatCount; // Reset repeat count
                         playSurah();
                     });
 
@@ -488,7 +509,7 @@ const surahList = [
 
                     playCountSlider.max = 31; // Set max to 31 (30 + infinite)
                     playCountSlider.addEventListener('input', function () {
-                        playCount = this.value;
+                        playCount = parseInt(this.value);
                         if (playCount == 31) {
                             playCountValue.textContent = 'infinite';
                         } else {
@@ -558,9 +579,34 @@ const surahList = [
                 }
             });
 
+            // Repeat Button Functionality
             document.getElementById('repeatButton').addEventListener('click', () => {
-                isRepeating = !isRepeating;
-                document.getElementById('repeatButton').style.color = isRepeating ? '#4caf50' : '#fff';
+                const repeatMenu = document.getElementById('repeatMenu');
+                if (repeatMenu.style.display === 'block') {
+                    repeatMenu.style.display = 'none';
+                } else {
+                    const repeatButton = document.getElementById('repeatButton');
+                    const rect = repeatButton.getBoundingClientRect();
+                    repeatMenu.style.display = 'block';
+                    repeatMenu.style.top = `${rect.top + window.scrollY - repeatMenu.offsetHeight}px`;
+                    repeatMenu.style.left = `${rect.left + window.scrollX - repeatMenu.offsetWidth / 2 + repeatButton.offsetWidth / 2}px`;
+                }
+            });
+
+            const repeatCountSlider = document.getElementById('repeatCountSlider');
+            const repeatCountValue = document.getElementById('repeatCountValue');
+
+            repeatCountSlider.addEventListener('input', function () {
+                repeatCount = parseInt(this.value);
+                if (repeatCount === 31) {
+                    repeatCountValue.textContent = 'infinite';
+                } else {
+                    repeatCountValue.textContent = repeatCount;
+                }
+            });
+
+            document.getElementById('closeRepeatMenuButton').addEventListener('click', () => {
+                document.getElementById('repeatMenu').style.display = 'none';
             });
 
             audioPlayer.addEventListener('play', () => {
@@ -572,10 +618,13 @@ const surahList = [
             });
 
             audioPlayer.addEventListener('ended', () => {
-                if (isRepeating || currentPlayCount > 1 || playCount == 31) {
-                    if (playCount != 31 && currentPlayCount > 1) {
-                        currentPlayCount--;
-                    }
+                if (playCount === 31 || currentPlayCount < playCount) {
+                    currentPlayCount++;
+                    audioPlayer.currentTime = 0;
+                    audioPlayer.play();
+                } else if (repeatCount === 31 || currentRepeatCount < repeatCount) {
+                    currentRepeatCount++;
+                    currentPlayCount = 1;
                     audioPlayer.currentTime = 0;
                     audioPlayer.play();
                 } else {
@@ -630,10 +679,6 @@ const surahList = [
                         break;
                     case 'ArrowRight':
                         audioPlayer.currentTime += 10;
-                        break;
-                    case 'KeyR':
-                        isRepeating = !isRepeating;
-                        document.getElementById('repeatButton').style.color = isRepeating ? '#4caf50' : '#fff';
                         break;
                 }
             });
