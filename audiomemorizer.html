@@ -1,210 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags and title -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playback Master</title>
+    <title>Audio Memorizer</title>
     <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
-    <!-- Styles -->
     <style>
-        /* General styles */
         body {
             background-color: #121212;
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Center content */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
         }
 
-        /* Button styles */
-        .button, .repeat-button {
+        .background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%231db954" fill-opacity="0.3"%3E%3Ccircle cx="10" cy="10" r="2"%3E%3Canimate attributeName="cy" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3Ccircle cx="90" cy="90" r="2"%3E%3Canimate attributeName="cy" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E') repeat;
+            z-index: -1;
+            opacity: 0.5;
+            animation: moveParticles 10s linear infinite;
+        }
+
+        @keyframes moveParticles {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 100% 100%;
+            }
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(circle, rgba(29, 185, 84, 0.4), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .button {
             background-color: #1db954;
             border: none;
             color: white;
             padding: 15px 30px;
-            font-size: 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
             margin: 10px 5px;
             cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-            width: calc(50% - 20px);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeIn 2s forwards, pulse 2s infinite alternate;
         }
 
-        .button:hover, .repeat-button:hover {
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .button:hover {
             background-color: #1ed760;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: scale(1.1);
         }
 
-        .button:active, .repeat-button:active {
+        .button:active {
             background-color: #1a9f45;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transform: scale(0.98);
         }
 
-        /* Control panel */
-        .control-panel {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .control-panel div {
-            margin-bottom: 15px;
-        }
-
-        .control-panel label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .control-panel input[type="range"] {
-            width: 80%;
-        }
-
-        .control-panel input[type="number"] {
-            width: 60px;
-            padding: 5px;
-            margin-right: 10px;
-            border-radius: 5px;
-            border: none;
-            text-align: center;
-        }
-
-        /* Notification */
         .notification {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background-color: #1db954;
             padding: 10px 20px;
             border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
+            display: none;
+            z-index: 100;
+        }
+
+        .recently-uploaded {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(29, 185, 84, 0.2);
+            padding: 20px;
+            border-radius: 10px;
             display: none;
         }
 
-        /* Progress bar */
         .progress-bar-container {
-            width: 100%;
+            position: fixed;
+            bottom: 60px;
+            left: 10%;
+            width: 80%;
             height: 5px;
             background-color: rgba(255, 255, 255, 0.3);
-            margin-top: 20px;
-            position: relative;
+            z-index: 1000;
+            display: none;
+            cursor: pointer;
         }
 
         .progress-bar-fill {
             height: 100%;
             background-color: #1db954;
-            width: 0%;
+            width: 0;
         }
 
-        /* Responsive design */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0d47a1;
+            color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            transition: background-color 0.3s;
+        }
+
+        .footer-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        .footer-nav ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav ul li a:hover {
+            color: #b3e5fc;
+        }
+
+        .footer-nav:hover {
+            background-color: #0b3c8e;
+        }
+
+        .repeat-options, .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .repeat-button, .control-button {
+            background-color: #1db954;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        .repeat-button:hover, .control-button:hover {
+            background-color: #1ed760;
+        }
+
+        .time-display {
+            color: #ffffff;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .controls label {
+            margin-right: 5px;
+        }
+
+        .controls input[type="range"] {
+            width: 100px;
+        }
+
+        .controls select {
+            padding: 5px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #1db954;
+            color: white;
+            font-size: 14px;
+        }
+
         @media (max-width: 600px) {
-            .button, .repeat-button {
-                width: calc(100% - 20px);
+            .button {
+                padding: 10px 20px;
+                font-size: 18px;
             }
 
-            .control-panel input[type="range"] {
-                width: 100%;
+            .repeat-button, .control-button {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .progress-bar-container {
+                bottom: 80px;
+                left: 5%;
+                width: 90%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main container -->
-    <div class="container">
-        <!-- File upload button -->
-        <button class="button" id="fileButton">Choose Audio File</button>
-        <input type="file" id="audioFile" accept="audio/*" style="display: none;">
-
-        <!-- Playback controls -->
-        <div class="control-panel" style="display: none;" id="controlPanel">
-            <!-- Repeat options -->
-            <div class="repeat-options">
-                <button class="repeat-button" data-repeat="10">Play 10x</button>
-                <button class="repeat-button" data-repeat="20">Play 20x</button>
-                <button class="repeat-button" data-repeat="30">Play 30x</button>
-                <button class="repeat-button" data-repeat="infinite">Play Infinite</button>
-            </div>
-
-            <!-- Custom repeat count -->
-            <div class="custom-repeat">
-                <label for="customRepeatCount">Custom Repeat Count:</label>
-                <input type="number" id="customRepeatCount" min="1" placeholder="Times">
-                <button class="repeat-button" id="customRepeatButton">Play</button>
-            </div>
-
-            <!-- Volume control -->
-            <div class="volume-control">
-                <label for="volumeSlider">Volume:</label>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-            </div>
-
-            <!-- Speed control -->
-            <div class="speed-control">
-                <label for="speedSlider">Playback Speed:</label>
-                <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
-            </div>
-
-            <!-- Play/Pause button -->
-            <button class="button" id="playPauseButton">Play</button>
-        </div>
-
-        <!-- Notification -->
-        <div id="notification" class="notification"></div>
-
-        <!-- Progress bar -->
-        <div class="progress-bar-container" id="progressBarContainer" style="display: none;">
-            <div class="progress-bar-fill" id="progressBarFill"></div>
-        </div>
+    <div class="background"></div>
+    <button class="button" id="fileButton">Upload Audio File</button>
+    <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+    <button class="button" id="playButton" style="display: none;">Play</button>
+    <div class="repeat-options" id="repeatOptions" style="display: none;">
+        <button class="repeat-button" data-repeat="10">Play 10x</button>
+        <button class="repeat-button" data-repeat="20">Play 20x</button>
+        <button class="repeat-button" data-repeat="30">Play 30x</button>
+        <button class="repeat-button" data-repeat="infinite">Play Infinite</button>
+    </div>
+    <div class="controls" id="controls" style="display: none;">
+        <label for="volumeSlider">Volume:</label>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+        <label for="speedSelector">Speed:</label>
+        <select id="speedSelector">
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+        </select>
+    </div>
+    <div class="time-display" id="timeDisplay" style="display: none;">
+        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+    </div>
+    <div id="notification" class="notification"></div>
+    <div id="recentlyUploaded" class="recently-uploaded"></div>
+    <div class="progress-bar-container" id="progressBarContainer">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
     </div>
 
-    <!-- Audio element -->
     <audio id="audio">
         <source id="audioSource" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Footer navigation -->
-    <nav class="footer-nav">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-        </ul>
-    </nav>
-
-    <!-- Scripts -->
     <script>
-        // Element references
         const fileButton = document.getElementById('fileButton');
+        const playButton = document.getElementById('playButton');
         const audioFile = document.getElementById('audioFile');
         const audio = document.getElementById('audio');
         const audioSource = document.getElementById('audioSource');
         const notification = document.getElementById('notification');
         const progressBarFill = document.getElementById('progressBarFill');
         const progressBarContainer = document.getElementById('progressBarContainer');
-        const controlPanel = document.getElementById('controlPanel');
-        const playPauseButton = document.getElementById('playPauseButton');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const speedSlider = document.getElementById('speedSlider');
+        const repeatOptions = document.getElementById('repeatOptions');
         const repeatButtons = document.querySelectorAll('.repeat-button');
-        const customRepeatCount = document.getElementById('customRepeatCount');
-        const customRepeatButton = document.getElementById('customRepeatButton');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const speedSelector = document.getElementById('speedSelector');
+        const controls = document.getElementById('controls');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const timeDisplay = document.getElementById('timeDisplay');
 
-        // State variables
         let isPlaying = false;
-        let repeatCount = 1;
+        let repeatCount = Infinity;
         let playCounter = 0;
-        let selectedFileName = '';
 
-        // File button click handler
         fileButton.addEventListener('click', () => {
             audioFile.click();
         });
 
-        // File selection handler
         audioFile.addEventListener('change', (event) => {
             const files = event.target.files;
             if (files && files.length > 0) {
@@ -213,14 +337,20 @@
                     const fileURL = URL.createObjectURL(file);
                     audioSource.src = fileURL;
                     audio.load();
-                    controlPanel.style.display = 'block';
+                    playButton.style.display = 'inline-block';
+                    repeatOptions.style.display = 'flex';
+                    controls.style.display = 'flex';
+                    timeDisplay.style.display = 'block';
+                    notification.textContent = `Loaded ${file.name}`;
                     notification.style.display = 'block';
-                    notification.textContent = `Selected: ${file.name}`;
-                    selectedFileName = file.name;
                     progressBarContainer.style.display = 'block';
-                    resetPlayback();
+                    playCounter = 0;
+                    isPlaying = false;
+                    playButton.textContent = 'Play';
+                    currentTimeEl.textContent = '0:00';
+                    durationEl.textContent = '0:00';
                 } else {
-                    notification.textContent = 'Error: Please upload a valid audio file.';
+                    notification.textContent = 'Error: Please upload an audio file.';
                     notification.style.backgroundColor = '#ff3d00';
                     setTimeout(() => {
                         notification.textContent = '';
@@ -230,42 +360,6 @@
             }
         });
 
-        // Reset playback state
-        function resetPlayback() {
-            isPlaying = false;
-            playCounter = 0;
-            repeatCount = 1;
-            playPauseButton.textContent = 'Play';
-            audio.pause();
-            audio.currentTime = 0;
-            progressBarFill.style.width = '0%';
-        }
-
-        // Play/Pause button handler
-        playPauseButton.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                playPauseButton.textContent = 'Play';
-                notification.textContent = `Paused: ${selectedFileName}`;
-            } else {
-                audio.play();
-                playPauseButton.textContent = 'Pause';
-                notification.textContent = `Playing: ${selectedFileName}`;
-            }
-            isPlaying = !isPlaying;
-        });
-
-        // Volume control handler
-        volumeSlider.addEventListener('input', () => {
-            audio.volume = volumeSlider.value;
-        });
-
-        // Speed control handler
-        speedSlider.addEventListener('input', () => {
-            audio.playbackRate = speedSlider.value;
-        });
-
-        // Repeat buttons handler
         repeatButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const repeatValue = button.getAttribute('data-repeat');
@@ -275,31 +369,11 @@
                     repeatCount = parseInt(repeatValue);
                 }
                 playCounter = 0;
-                audio.currentTime = 0;
-                audio.play();
-                playPauseButton.textContent = 'Pause';
-                isPlaying = true;
-                notification.textContent = `Playing: ${selectedFileName} (${repeatCount === Infinity ? 'Infinite' : repeatCount + 'x'})`;
+                notification.textContent = `Set to play ${repeatValue} times`;
+                notification.style.display = 'block';
             });
         });
 
-        // Custom repeat button handler
-        customRepeatButton.addEventListener('click', () => {
-            const customCount = parseInt(customRepeatCount.value);
-            if (!isNaN(customCount) && customCount > 0) {
-                repeatCount = customCount;
-                playCounter = 0;
-                audio.currentTime = 0;
-                audio.play();
-                playPauseButton.textContent = 'Pause';
-                isPlaying = true;
-                notification.textContent = `Playing: ${selectedFileName} (${repeatCount}x)`;
-            } else {
-                alert('Please enter a valid repeat count.');
-            }
-        });
-
-        // Audio ended event handler
         audio.addEventListener('ended', () => {
             playCounter++;
             if (playCounter < repeatCount) {
@@ -307,45 +381,78 @@
                 audio.play();
             } else {
                 isPlaying = false;
-                playPauseButton.textContent = 'Play';
-                notification.textContent = `Finished playing ${selectedFileName} (${repeatCount}x)`;
+                playButton.textContent = 'Play';
+                notification.textContent = `Finished playing ${audioFile.files[0].name} ${repeatCount} times`;
             }
         });
 
-        // Progress bar update
         audio.addEventListener('timeupdate', () => {
-            const progress = (audio.currentTime / audio.duration) * 100;
-            progressBarFill.style.width = `${progress}%`;
+            if (audio.duration) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                progressBarFill.style.width = `${progress}%`;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                durationEl.textContent = formatTime(audio.duration);
+            }
         });
 
-        // Keyboard controls
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        progressBarContainer.addEventListener('click', (e) => {
+            const rect = progressBarContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const percentage = clickX / width;
+            audio.currentTime = percentage * audio.duration;
+        });
+
+        playButton.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playButton.textContent = 'Play';
+                notification.textContent = `Paused ${audioFile.files[0].name}`;
+            } else {
+                audio.play();
+                playButton.textContent = 'Pause';
+                notification.textContent = `Playing ${audioFile.files[0].name}`;
+            }
+            isPlaying = !isPlaying;
+        });
+
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space') {
                 event.preventDefault();
-                playPauseButton.click();
+                if (audioFile.files.length > 0) {
+                    if (isPlaying) {
+                        audio.pause();
+                        playButton.textContent = 'Play';
+                        notification.textContent = `Paused ${audioFile.files[0].name}`;
+                    } else {
+                        audio.play();
+                        playButton.textContent = 'Pause';
+                        notification.textContent = `Playing ${audioFile.files[0].name}`;
+                    }
+                    isPlaying = !isPlaying;
+                }
             }
         });
 
-        // Mobile adaptation
-        // Adjust font sizes and button sizes for mobile devices
-        function adjustForMobile() {
-            if (window.innerWidth <= 600) {
-                document.body.style.fontSize = '16px';
-                document.querySelectorAll('.button, .repeat-button').forEach(btn => {
-                    btn.style.fontSize = '16px';
-                    btn.style.padding = '10px 20px';
-                });
-            } else {
-                document.body.style.fontSize = '18px';
-                document.querySelectorAll('.button, .repeat-button').forEach(btn => {
-                    btn.style.fontSize = '18px';
-                    btn.style.padding = '15px 30px';
-                });
-            }
-        }
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
 
-        window.addEventListener('resize', adjustForMobile);
-        adjustForMobile();
+        speedSelector.addEventListener('change', () => {
+            audio.playbackRate = speedSelector.value;
+        });
     </script>
+
+    <nav class="footer-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
 </body>
 </html>
