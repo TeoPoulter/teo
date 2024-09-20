@@ -304,6 +304,34 @@
             text-align: center;
             z-index: 200;
         }
+
+        /* Juz Dropdown Styles */
+        .juz-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .juz-header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .juz-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .juz-content {
+            display: none;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -314,8 +342,10 @@
         <button id="sortShortestToLongest">Shortest to Longest</button>
         <button id="sortLongestToShortest">Longest to Shortest</button>
         <button id="sortRevelationOrder">Revelation Order</button>
+        <button id="sortByJuz">Juz</button>
     </div>
     <ul id="surahList"></ul>
+    <div id="juzList" class="juz-container" style="display: none;"></div>
 
     <div id="bottomBar">
         <div class="track-info">
@@ -343,7 +373,7 @@
 
     <!-- Repeat Menu -->
     <div id="repeatMenu" class="menu">
-        <p>Repeat <span id="menuSurahName"></span></p>
+        <p>Repeat No.</p>
         <input type="range" id="repeatCountSlider" class="menu-slider" min="1" max="31" step="1" value="1">
         <span id="repeatCountValue">1</span> times
         <br>
@@ -476,10 +506,59 @@ const surahList = [
     { number: 113, name: "Al-Falaq", length: timeToSeconds("0:00:33"), revelationOrder: 20 },
     { number: 114, name: "An-Nas", length: timeToSeconds("0:00:50"), revelationOrder: 21 }
 ];
-            // Ensure all surahs from 1 to 114 are included in the list
-            // Note: For brevity, only some surahs are shown here. Please fill in the rest.
+
+
+
+
+
+
+// Juz data mapping juz number to surah numbers
+const juzData = [
+    { juzNumber: 1, surahs: [1, 2] },
+    { juzNumber: 2, surahs: [2] },
+    { juzNumber: 3, surahs: [2, 3] },
+    { juzNumber: 4, surahs: [3, 4] },
+    { juzNumber: 5, surahs: [4] },
+    { juzNumber: 6, surahs: [4, 5] },
+    { juzNumber: 7, surahs: [5, 6] },
+    { juzNumber: 8, surahs: [6, 7] },
+    { juzNumber: 9, surahs: [7, 8] },
+    { juzNumber: 10, surahs: [8, 9] },
+    { juzNumber: 11, surahs: [9, 10, 11] },
+    { juzNumber: 12, surahs: [11, 12] },
+    { juzNumber: 13, surahs: [12, 13, 14, 15] },
+    { juzNumber: 14, surahs: [15, 16] },
+    { juzNumber: 15, surahs: [17, 18] },
+    { juzNumber: 16, surahs: [18, 19, 20] },
+    { juzNumber: 17, surahs: [21, 22] },
+    { juzNumber: 18, surahs: [23, 24, 25] },
+    { juzNumber: 19, surahs: [25, 26, 27] },
+    { juzNumber: 20, surahs: [27, 28, 29] },
+    { juzNumber: 21, surahs: [29, 30, 31, 32, 33] },
+    { juzNumber: 22, surahs: [33, 34, 35, 36] },
+    { juzNumber: 23, surahs: [36, 37, 38, 39] },
+    { juzNumber: 24, surahs: [39, 40, 41] },
+    { juzNumber: 25, surahs: [41, 42, 43, 44, 45, 46] },
+    { juzNumber: 26, surahs: [46, 47, 48, 49, 50, 51] },
+    { juzNumber: 27, surahs: [51, 52, 53, 54, 55, 56, 57] },
+    { juzNumber: 28, surahs: [58, 59, 60, 61, 62, 63, 64, 65, 66] },
+    { juzNumber: 29, surahs: [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77] },
+    { juzNumber: 30, surahs: [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114] }
+];
+
+
+
+
+
+
+
+
+
+
+
 
             const ul = document.getElementById('surahList');
+            const juzContainer = document.getElementById('juzList');
             const audioPlayer = new Audio();
             let currentSurahIndex = -1;
             let playCount = 1;
@@ -487,50 +566,58 @@ const surahList = [
             let repeatCount = 1;
             let currentRepeatCount = 1;
 
-            // Populate the list
+            // Populate the surah list
             function populateSurahList(list = surahList) {
+                ul.style.display = 'block';
+                juzContainer.style.display = 'none';
                 ul.innerHTML = ''; // Clear existing list
                 list.forEach((surah) => {
                     const index = surahList.findIndex(s => s.number === surah.number);
-                    const li = document.createElement('li');
-                    li.innerHTML = `<span class="surah-name">${surah.number}. ${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
-                    li.addEventListener('click', () => {
-                        currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
-                        currentPlayCount = playCount; // Reset play count
-                        currentRepeatCount = repeatCount; // Reset repeat count
-                        playSurah();
-                    });
-
-                    const menu = document.getElementById('menuTemplate').cloneNode(true);
-                    menu.id = `menu-${surah.number}`;
-                    menu.querySelector('#menuSurahName').textContent = surah.name;
-                    const playCountSlider = menu.querySelector('#surahPlayCount');
-                    const playCountValue = menu.querySelector('#surahPlayCountValue');
-
-                    playCountSlider.max = 31; // Set max to 31 (30 + infinite)
-                    playCountSlider.addEventListener('input', function () {
-                        playCount = parseInt(this.value);
-                        if (playCount == 31) {
-                            playCountValue.textContent = 'Infinite';
-                        } else {
-                            playCountValue.textContent = playCount;
-                        }
-                    });
-                    menu.querySelector('#closeMenuButton').addEventListener('click', () => {
-                        menu.style.display = 'none';
-                    });
-
-                    li.querySelector('.three-dots').addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        const rect = li.getBoundingClientRect();
-                        menu.style.display = 'block';
-                        menu.style.top = `${rect.bottom + window.scrollY}px`;
-                        menu.style.left = `${rect.left + window.scrollX}px`;
-                    });
-
+                    const li = createSurahListItem(surah);
                     ul.appendChild(li);
-                    document.body.appendChild(menu);
                 });
+            }
+
+            // Create Surah List Item
+            function createSurahListItem(surah) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="surah-name">${surah.number}. ${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
+                li.addEventListener('click', () => {
+                    currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
+                    currentPlayCount = playCount; // Reset play count
+                    currentRepeatCount = repeatCount; // Reset repeat count
+                    playSurah();
+                });
+
+                const menu = document.getElementById('menuTemplate').cloneNode(true);
+                menu.id = `menu-${surah.number}`;
+                menu.querySelector('#menuSurahName').textContent = surah.name;
+                const playCountSlider = menu.querySelector('#surahPlayCount');
+                const playCountValue = menu.querySelector('#surahPlayCountValue');
+
+                playCountSlider.max = 31; // Set max to 31 (30 + infinite)
+                playCountSlider.addEventListener('input', function () {
+                    playCount = parseInt(this.value);
+                    if (playCount == 31) {
+                        playCountValue.textContent = 'infinite';
+                    } else {
+                        playCountValue.textContent = playCount;
+                    }
+                });
+                menu.querySelector('#closeMenuButton').addEventListener('click', () => {
+                    menu.style.display = 'none';
+                });
+
+                li.querySelector('.three-dots').addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const rect = li.getBoundingClientRect();
+                    menu.style.display = 'block';
+                    menu.style.top = `${rect.bottom + window.scrollY}px`;
+                    menu.style.left = `${rect.left + window.scrollX}px`;
+                });
+
+                document.body.appendChild(menu);
+                return li;
             }
 
             function formatTime(seconds) {
@@ -571,6 +658,45 @@ const surahList = [
                 populateSurahList();
             });
 
+            // Juz Sorting
+            document.getElementById('sortByJuz').addEventListener('click', () => {
+                ul.style.display = 'none';
+                juzContainer.style.display = 'block';
+                populateJuzList();
+            });
+
+            function populateJuzList() {
+                juzContainer.innerHTML = ''; // Clear existing content
+                juzData.forEach(juz => {
+                    const juzHeader = document.createElement('div');
+                    juzHeader.className = 'juz-header';
+                    juzHeader.textContent = `Juz ${juz.juzNumber}`;
+                    const juzContent = document.createElement('div');
+                    juzContent.className = 'juz-content';
+
+                    juz.surahs.forEach(surahNumber => {
+                        const surah = surahList.find(s => s.number === surahNumber);
+                        if (surah) {
+                            const li = createSurahListItem(surah);
+                            juzContent.appendChild(li);
+                        }
+                    });
+
+                    juzHeader.addEventListener('click', () => {
+                        const allContents = document.querySelectorAll('.juz-content');
+                        allContents.forEach(content => {
+                            if (content !== juzContent) {
+                                content.style.display = 'none';
+                            }
+                        });
+                        juzContent.style.display = juzContent.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    juzContainer.appendChild(juzHeader);
+                    juzContainer.appendChild(juzContent);
+                });
+            }
+
             document.getElementById('playPauseButton').addEventListener('click', () => {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
@@ -599,7 +725,7 @@ const surahList = [
             repeatCountSlider.addEventListener('input', function () {
                 repeatCount = parseInt(this.value);
                 if (repeatCount === 31) {
-                    repeatCountValue.textContent = 'Infinite';
+                    repeatCountValue.textContent = 'infinite';
                 } else {
                     repeatCountValue.textContent = repeatCount;
                 }
