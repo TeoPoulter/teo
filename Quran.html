@@ -343,7 +343,7 @@
 
     <!-- Repeat Menu -->
     <div id="repeatMenu" class="menu">
-        <p>Repeat No.</p>
+        <p>Repeat <span id="menuSurahName"></span></p>
         <input type="range" id="repeatCountSlider" class="menu-slider" min="1" max="31" step="1" value="1">
         <span id="repeatCountValue">1</span> times
         <br>
@@ -511,7 +511,7 @@ const surahList = [
                     playCountSlider.addEventListener('input', function () {
                         playCount = parseInt(this.value);
                         if (playCount == 31) {
-                            playCountValue.textContent = 'infinite';
+                            playCountValue.textContent = 'Infinite';
                         } else {
                             playCountValue.textContent = playCount;
                         }
@@ -599,7 +599,7 @@ const surahList = [
             repeatCountSlider.addEventListener('input', function () {
                 repeatCount = parseInt(this.value);
                 if (repeatCount === 31) {
-                    repeatCountValue.textContent = 'infinite';
+                    repeatCountValue.textContent = 'Infinite';
                 } else {
                     repeatCountValue.textContent = repeatCount;
                 }
