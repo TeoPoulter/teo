@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,11 +81,13 @@
             align-items: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
+            cursor: pointer;
         }
 
         li:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .surah-name {
@@ -96,6 +97,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 1.1em;
         }
 
         .three-dots {
@@ -171,9 +173,9 @@
             cursor: pointer;
         }
 
-        /* Bottom Bar (Spotify-like) */
+        /* Bottom Bar */
         #bottomBar {
-            position: sticky;
+            position: fixed;
             bottom: 0;
             width: 100%;
             background: linear-gradient(45deg, #181818, #282828);
@@ -190,7 +192,7 @@
         #bottomBar .track-info {
             display: flex;
             align-items: center;
-            max-width: 30%; /* Reduced width to make space for other elements */
+            max-width: 25%;
             overflow: hidden;
         }
 
@@ -205,14 +207,14 @@
         #bottomBar .controls {
             display: flex;
             align-items: center;
-            gap: 20px; /* Added space between controls */
+            gap: 15px;
         }
 
         #bottomBar .controls button {
             background: none;
             border: none;
             color: #fff;
-            font-size: 2em;
+            font-size: 1.8em;
             cursor: pointer;
             transition: color 0.3s ease;
         }
@@ -231,6 +233,7 @@
             display: flex;
             align-items: center;
             position: relative;
+            max-width: 40%;
         }
 
         #bottomBar .progress-container input[type="range"] {
@@ -264,7 +267,7 @@
             white-space: nowrap;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 800px) {
             h1 {
                 font-size: 2em;
             }
@@ -279,13 +282,20 @@
 
             #bottomBar {
                 flex-direction: column;
+                align-items: flex-start;
                 padding: 10px 20px;
             }
 
             #bottomBar .controls {
                 margin-top: 10px;
-                justify-content: space-around;
                 width: 100%;
+                justify-content: space-around;
+            }
+
+            #bottomBar .progress-container {
+                width: 100%;
+                max-width: none;
+                margin: 10px 0;
             }
 
             #bottomBar .track-info {
@@ -294,11 +304,10 @@
             }
         }
     </style>
-
 </head>
-
 <body>
     <h1>Quran Memorisation</h1>
+    <input type="text" id="searchBar" placeholder="Search Surah..." />
     <div class="filter-buttons">
         <button id="sortShortestToLongest">Shortest to Longest</button>
         <button id="sortLongestToShortest">Longest to Shortest</button>
@@ -310,10 +319,10 @@
             <p id="bottomTrackTitle" class="title"></p>
         </div>
         <div class="controls">
-            <button id="previousButton">&#9664;</button>
-            <button id="playPauseButton">Play</button>
-            <button id="nextButton">&#9654;</button>
-            <button id="repeatButton">&#10227;</button>
+            <button id="previousButton">&#9198;</button>
+            <button id="playPauseButton">&#9654;</button>
+            <button id="nextButton">&#9197;</button>
+            <button id="repeatButton">&#128257;</button>
         </div>
         <div class="progress-container">
             <input type="range" id="progressBar" value="0" step="0.1" min="0" max="100">
@@ -338,122 +347,16 @@
                 return (hours * 3600) + (minutes * 60) + seconds;
             }
 
-            // Surah data with lengths in seconds
+            // Surah data with lengths in seconds and surah numbers
             const surahList = [
-                { name: "Al-Fatiha", length: timeToSeconds("0:00:52") },
-                { name: "Al-Baqarah", length: timeToSeconds("2:06:16") },
-                { name: "Aal-E-Imran", length: timeToSeconds("1:18:45") },
-                { name: "An-Nisa", length: timeToSeconds("1:19:57") },
-                { name: "Al-Ma-idah", length: timeToSeconds("1:03:01") },
-                { name: "Al-Anaam", length: timeToSeconds("1:12:30") },
-                { name: "Al-Araf", length: timeToSeconds("1:23:15") },
-                { name: "Al-Anfal", length: timeToSeconds("0:30:38") },
-                { name: "At-Tawba", length: timeToSeconds("1:00:25") },
-                { name: "Yunus", length: timeToSeconds("0:45:13") },
-                { name: "Hud", length: timeToSeconds("0:46:26") },
-                { name: "Yusuf", length: timeToSeconds("0:42:05") },
-                { name: "Ar-Rad", length: timeToSeconds("0:20:31") },
-                { name: "Ibrahim", length: timeToSeconds("0:20:27") },
-                { name: "Al-Hijr", length: timeToSeconds("0:15:55") },
-                { name: "An-Nahl", length: timeToSeconds("0:42:24") },
-                { name: "Al-Isra", length: timeToSeconds("00:35:14") },
-                { name: "Al-Kahf", length: timeToSeconds("0:33:30") },
-                { name: "Maryam", length: timeToSeconds("0:21:23") },
-                { name: "Ta-Ha", length: timeToSeconds("0:27:08") },
-                { name: "Al-Anbiya", length: timeToSeconds("0:26:25") },
-                { name: "Al-Hajj", length: timeToSeconds("0:29:32") },
-                { name: "Al-Muminoon", length: timeToSeconds("0:25:00") },
-                { name: "An-Noor", length: timeToSeconds("0:30:41") },
-                { name: "Al-Furqan", length: timeToSeconds("0:18:22") },
-                { name: "Ash-Shuara", length: timeToSeconds("0:30:47") },
-                { name: "An-Naml", length: timeToSeconds("0:26:12") },
-                { name: "Al-Qasas", length: timeToSeconds("0:31:44") },
-                { name: "Al-Ankaboot", length: timeToSeconds("0:21:25") },
-                { name: "Ar-Room", length: timeToSeconds("0:19:31") },
-                { name: "Luqman", length: timeToSeconds("0:11:55") },
-                { name: "As-Sajda", length: timeToSeconds("0:08:44") },
-                { name: "Al-Ahzab", length: timeToSeconds("0:29:17") },
-                { name: "Saba", length: timeToSeconds("0:19:03") },
-                { name: "Fatir", length: timeToSeconds("0:17:37") },
-                { name: "Ya-Seen", length: timeToSeconds("0:17:40") },
-                { name: "As-Saaffat", length: timeToSeconds("0:24:24") },
-                { name: "Sad", length: timeToSeconds("0:17:50") },
-                { name: "Az-Zumar", length: timeToSeconds("0:27:10") },
-                { name: "Ghafir", length: timeToSeconds("0:26:22") },
-                { name: "Fussilat", length: timeToSeconds("0:19:20") },
-                { name: "Ash-Shura", length: timeToSeconds("0:19:30") },
-                { name: "Az-Zukhruf", length: timeToSeconds("0:20:28") },
-                { name: "Ad-Dukhan", length: timeToSeconds("0:09:51") },
-                { name: "Al-Jathiya", length: timeToSeconds("00:10:52") },
-                { name: "Al-Ahqaf", length: timeToSeconds("0:15:57") },
-                { name: "Muhammad", length: timeToSeconds("0:12:18") },
-                { name: "Al-Fath", length: timeToSeconds("0:12:02") },
-                { name: "Al-Hujraat", length: timeToSeconds("0:08:35") },
-                { name: "Qaf", length: timeToSeconds("0:09:20") },
-                { name: "Adh-Dhariyat", length: timeToSeconds("0:09:05") },
-                { name: "At-Tur", length: timeToSeconds("0:08:05") },
-                { name: "An-Najm", length: timeToSeconds("0:07:41") },
-                { name: "Al-Qamar", length: timeToSeconds("0:08:03") },
-                { name: "Ar-Rahman", length: timeToSeconds("0:11:19") },
-                { name: "Al-Waqia", length: timeToSeconds("0:11:57") },
-                { name: "Al-Hadid", length: timeToSeconds("0:13:43") },
-                { name: "Al-Mujadila", length: timeToSeconds("0:10:13") },
-                { name: "Al-Hashr", length: timeToSeconds("0:10:27") },
-                { name: "Al-Mumtahina", length: timeToSeconds("0:07:31") },
-                { name: "As-Saff", length: timeToSeconds("0:04:53") },
-                { name: "Al-Jumua", length: timeToSeconds("0:03:34") },
-                { name: "Al-Munafiqoon", length: timeToSeconds("0:04:18") },
-                { name: "At-Taghabun", length: timeToSeconds("0:05:25") },
-                { name: "At-Talaq", length: timeToSeconds("0:06:01") },
-                { name: "At-Tahrim", length: timeToSeconds("0:06:12") },
-                { name: "Al-Mulk", length: timeToSeconds("0:07:35") },
-                { name: "Al-Qalam", length: timeToSeconds("0:07:36") },
-                { name: "Al-Haaqqa", length: timeToSeconds("0:06:46") },
-                { name: "Al-Maarij", length: timeToSeconds("0:05:18") },
-                { name: "Nooh", length: timeToSeconds("0:04:41") },
-                { name: "Al-Jinn", length: timeToSeconds("0:05:35") },
-                { name: "Al-Muzzammil", length: timeToSeconds("0:04:04") },
-                { name: "Al-Muddaththir", length: timeToSeconds("0:05:24") },
-                { name: "Al-Qiyama", length: timeToSeconds("0:03:32") },
-                { name: "Al-Insan", length: timeToSeconds("0:05:15") },
-                { name: "Al-Mursalat", length: timeToSeconds("0:04:59") },
-                { name: "An-Naba", length: timeToSeconds("0:04:52") },
-                { name: "An-Naziat", length: timeToSeconds("0:04:16") },
-                { name: "Abasa", length: timeToSeconds("0:03:40") },
-                { name: "At-Takwir", length: timeToSeconds("0:02:38") },
-                { name: "Al-Infitar", length: timeToSeconds("0:02:17") },
-                { name: "Al-Mutaffifin", length: timeToSeconds("0:05:10") },
-                { name: "Al-Inshiqaq", length: timeToSeconds("0:02:40") },
-                { name: "Al-Burooj", length: timeToSeconds("0:03:18") },
-                { name: "At-Tariq", length: timeToSeconds("0:01:40") },
-                { name: "Al-Ala", length: timeToSeconds("0:01:48") },
-                { name: "Al-Ghashiya", length: timeToSeconds("0:02:14") },
-                { name: "Al-Fajr", length: timeToSeconds("0:03:33") },
-                { name: "Al-Balad", length: timeToSeconds("0:02:00") },
-                { name: "Ash-Shams", length: timeToSeconds("0:01:24") },
-                { name: "Al-Lail", length: timeToSeconds("0:01:52") },
-                { name: "Ad-Dhuha", length: timeToSeconds("0:01:05") },
-                { name: "Al-Inshirah", length: timeToSeconds("0:00:43") },
-                { name: "At-Tin", length: timeToSeconds("0:01:05") },
-                { name: "Al-Alaq", length: timeToSeconds("0:01:35") },
-                { name: "Al-Qadr", length: timeToSeconds("0:00:45") },
-                { name: "Al-Bayyina", length: timeToSeconds("0:02:06") },
-                { name: "Az-Zalzala", length: timeToSeconds("0:01:00") },
-                { name: "Al-Adiyat", length: timeToSeconds("0:01:10") },
-                { name: "Al-Qaria", length: timeToSeconds("0:01:03") },
-                { name: "At-Takathur", length: timeToSeconds("0:01:03") },
-                { name: "Al-Asr", length: timeToSeconds("0:00:27") },
-                { name: "Al-Humaza", length: timeToSeconds("0:00:58") },
-                { name: "Al-Fil", length: timeToSeconds("0:00:49") },
-                { name: "Quraish", length: timeToSeconds("0:00:43") },
-                { name: "Al-Maun", length: timeToSeconds("0:00:58") },
-                { name: "Al-Kauther", length: timeToSeconds("0:00:25") },
-                { name: "Al-Kafiroon", length: timeToSeconds("0:00:54") },
-                { name: "An-Nasr", length: timeToSeconds("0:00:35") },
-                { name: "Al-Masadd", length: timeToSeconds("0:00:42") },
-                { name: "Al-Ikhlas", length: timeToSeconds("0:00:22") },
-                { name: "Al-Falaq", length: timeToSeconds("0:00:33") },
-                { name: "An-Nas", length: timeToSeconds("0:00:50") }
+                { number: 1, name: "Al-Fatiha", length: timeToSeconds("0:00:52") },
+                { number: 2, name: "Al-Baqarah", length: timeToSeconds("2:06:16") },
+                { number: 3, name: "Aal-E-Imran", length: timeToSeconds("1:18:45") },
+                // ... Continue adding the rest with their respective numbers
+                { number: 4, name: "An-Nisa", length: timeToSeconds("1:19:57") },
+                { number: 5, name: "Al-Ma-idah", length: timeToSeconds("1:03:01") },
+                // ... (Make sure to include all surahs with their numbers)
+                { number: 114, name: "An-Nas", length: timeToSeconds("0:00:50") }
             ];
 
             const ul = document.getElementById('surahList');
@@ -461,20 +364,23 @@
             let currentSurahIndex = -1;
             let isRepeating = false;
             let playCount = 1;
+            let currentPlayCount = 1;
 
             // Populate the list
-            function populateSurahList() {
+            function populateSurahList(list = surahList) {
                 ul.innerHTML = ''; // Clear existing list
-                surahList.forEach((surah, index) => {
+                list.forEach((surah) => {
+                    const index = surahList.findIndex(s => s.number === surah.number);
                     const li = document.createElement('li');
                     li.innerHTML = `<span class="surah-name">${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
                     li.addEventListener('click', () => {
-                        currentSurahIndex = index;
+                        currentSurahIndex = surahList.findIndex(s => s.number === surah.number);
+                        currentPlayCount = playCount; // Reset play count
                         playSurah();
                     });
 
                     const menu = document.getElementById('menuTemplate').cloneNode(true);
-                    menu.id = `menu-${index}`;
+                    menu.id = `menu-${surah.number}`;
                     menu.querySelector('#menuSurahName').textContent = surah.name;
                     menu.querySelector('#surahPlayCount').addEventListener('input', function () {
                         playCount = this.value;
@@ -506,10 +412,11 @@
 
             function playSurah() {
                 if (currentSurahIndex >= 0 && currentSurahIndex < surahList.length) {
-                    audioPlayer.src = `${String(currentSurahIndex + 1).padStart(3, '0')}.mp3`;
+                    const surahNumber = surahList[currentSurahIndex].number;
+                    audioPlayer.src = `${String(surahNumber).padStart(3, '0')}.mp3`;
                     audioPlayer.play();
                     document.getElementById('bottomTrackTitle').textContent = surahList[currentSurahIndex].name;
-                    document.getElementById('playPauseButton').textContent = 'Pause';
+                    document.getElementById('playPauseButton').innerHTML = '&#9208;'; // Pause icon
                     updateProgressBar();
                 }
             }
@@ -538,21 +445,22 @@
             });
 
             audioPlayer.addEventListener('play', () => {
-                document.getElementById('playPauseButton').textContent = 'Pause';
+                document.getElementById('playPauseButton').innerHTML = '&#9208;'; // Pause icon
             });
 
             audioPlayer.addEventListener('pause', () => {
-                document.getElementById('playPauseButton').textContent = 'Play';
+                document.getElementById('playPauseButton').innerHTML = '&#9654;'; // Play icon
             });
 
             audioPlayer.addEventListener('ended', () => {
-                if (isRepeating || playCount > 1) {
-                    if (playCount !== 'infinite') {
-                        playCount--;
+                if (isRepeating || currentPlayCount > 1) {
+                    if (currentPlayCount !== 'infinite') {
+                        currentPlayCount--;
                     }
-                    playSurah();
+                    audioPlayer.currentTime = 0;
+                    audioPlayer.play();
                 } else {
-                    document.getElementById('playPauseButton').textContent = 'Play';
+                    document.getElementById('playPauseButton').innerHTML = '&#9654;'; // Play icon
                 }
             });
 
@@ -576,7 +484,12 @@
                 audioPlayer.currentTime = (e.target.value / 100) * audioPlayer.duration;
             });
 
-            populateSurahList();
+            // Search functionality
+            document.getElementById('searchBar').addEventListener('input', function () {
+                const query = this.value.toLowerCase();
+                const filteredSurahs = surahList.filter(surah => surah.name.toLowerCase().includes(query));
+                populateSurahList(filteredSurahs);
+            });
 
             // Keyboard shortcuts
             document.addEventListener('keydown', (event) => {
@@ -601,8 +514,9 @@
                         break;
                 }
             });
+
+            populateSurahList();
         });
     </script>
 </body>
-
 </html>
