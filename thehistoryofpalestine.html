@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History of Palestine Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&display=swap" rel="stylesheet">
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Include Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --background-color: #212529;
+            --text-color: #f8f9fa;
+            --light-color: #343a40;
+            --dark-color: #000000;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            margin-top: 10px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        .timeline-container {
+            padding: 20px 30px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-container.left {
+            left: 0;
+        }
+
+        .timeline-container.right {
+            left: 50%;
+        }
+
+        .timeline-container::before {
+            content: "";
+            position: absolute;
+            top: 22px;
+            right: -15px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent var(--light-color);
+        }
+
+        .timeline-container.right::before {
+            left: -15px;
+            border-color: transparent var(--light-color) transparent transparent;
+        }
+
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--primary-color);
+            border: 3px solid var(--light-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-container.right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: var(--light-color);
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content:hover {
+            background-color: var(--light-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-content h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 1.75rem;
+        }
+
+        .timeline-content p {
+            margin-bottom: 0;
+            line-height: 1.8;
+            font-weight: 400;
+            color: var(--text-color);
+        }
+
+        .timeline-content .date {
+            position: absolute;
+            display: inline-block;
+            top: -25px;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .timeline-container.left .timeline-content .date {
+            right: 15px;
+        }
+
+        .timeline-container.right .timeline-content .date {
+            left: 15px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid var(--light-color);
+                border-width: 10px 10px 10px 0;
+                border-color: transparent var(--light-color) transparent transparent;
+            }
+
+            .timeline-container.left::after, .timeline-container.right::after {
+                left: 15px;
+            }
+
+            .timeline-container.right {
+                left: 0%;
+            }
+
+            .timeline-container.left .timeline-content .date,
+            .timeline-container.right .timeline-content .date {
+                right: auto;
+                left: 15px;
+            }
+        }
+
+        /* Tooltip Styles */
+        .tooltip-inner {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            border-radius: 4px;
+        }
+
+        .tooltip-arrow {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <h1 data-aos="zoom-in">History of Palestine Timeline</h1>
+        <p data-aos="fade-up">A comprehensive journey through significant events in the history of Palestine and the Israeli-Palestinian conflict.</p>
+    </div>
+
+    <!-- Timeline Section -->
+    <div class="timeline" id="timeline">
+        <!-- Event 1 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(1)">
+                <span class="date">1897 CE</span>
+                <h2>First Zionist Congress</h2>
+                <p>
+                    The First Zionist Congress is held in Basel, Switzerland, promoting the establishment of a Jewish homeland in Palestine.
+                </p>
+            </div>
+        </div>
+        <!-- Event 2 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(2)">
+                <span class="date">1915-1916 CE</span>
+                <h2>McMahon-Hussein Correspondence</h2>
+                <p>
+                    Letters exchanged between British High Commissioner McMahon and Sharif Hussein of Mecca discuss Arab independence in exchange for support against the Ottoman Empire.
+                </p>
+            </div>
+        </div>
+        <!-- Event 3 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(3)">
+                <span class="date">1916 CE</span>
+                <h2>Sykes-Picot Agreement</h2>
+                <p>
+                    Secret agreement between Britain and France outlining proposed spheres of influence in the Middle East after World War I.
+                </p>
+            </div>
+        </div>
+        <!-- Event 4 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(4)">
+                <span class="date">1917 CE</span>
+                <h2>Balfour Declaration</h2>
+                <p>
+                    British government issues a statement supporting the establishment of a "national home for the Jewish people" in Palestine.
+                </p>
+            </div>
+        </div>
+        <!-- Event 5 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(5)">
+                <span class="date">1920 CE</span>
+                <h2>San Remo Conference</h2>
+                <p>
+                    Allied Powers allocate former Ottoman territories, assigning the Mandate for Palestine to Britain.
+                </p>
+            </div>
+        </div>
+        <!-- Event 6 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(6)">
+                <span class="date">1922 CE</span>
+                <h2>British Mandate for Palestine Begins</h2>
+                <p>
+                    The League of Nations formalizes British administration over Palestine, incorporating the Balfour Declaration.
+                </p>
+            </div>
+        </div>
+        <!-- Event 7 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(7)">
+                <span class="date">1936-1939 CE</span>
+                <h2>Arab Revolt in Palestine</h2>
+                <p>
+                    Widespread Arab uprising against British colonial rule and mass Jewish immigration.
+                </p>
+            </div>
+        </div>
+        <!-- Event 8 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(8)">
+                <span class="date">1947 CE</span>
+                <h2>UN Partition Plan</h2>
+                <p>
+                    United Nations proposes partitioning Palestine into separate Jewish and Arab states, with Jerusalem under international control.
+                </p>
+            </div>
+        </div>
+        <!-- Event 9 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(9)">
+                <span class="date">1948 CE</span>
+                <h2>Establishment of Israel and Nakba</h2>
+                <p>
+                    State of Israel declares independence; ensuing war leads to displacement of many Palestinians, known as the Nakba ("catastrophe").
+                </p>
+            </div>
+        </div>
+        <!-- Event 10 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(10)">
+                <span class="date">1956 CE</span>
+                <h2>Suez Crisis</h2>
+                <p>
+                    Israel, the UK, and France attack Egypt following nationalization of the Suez Canal; conflict impacts regional dynamics.
+                </p>
+            </div>
+        </div>
+        <!-- Event 11 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(11)">
+                <span class="date">1964 CE</span>
+                <h2>Formation of the PLO</h2>
+                <p>
+                    The Palestine Liberation Organization is established to represent the Palestinian people and their national interests.
+                </p>
+            </div>
+        </div>
+        <!-- Event 12 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(12)">
+                <span class="date">1967 CE</span>
+                <h2>Six-Day War</h2>
+                <p>
+                    Israel fights neighboring Arab countries; gains control of the West Bank, Gaza Strip, East Jerusalem, Sinai Peninsula, and Golan Heights.
+                </p>
+            </div>
+        </div>
+        <!-- Event 13 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(13)">
+                <span class="date">1973 CE</span>
+                <h2>Yom Kippur War</h2>
+                <p>
+                    Egypt and Syria launch a surprise attack on Israel during Yom Kippur; leads to changes in territorial control and diplomacy.
+                </p>
+            </div>
+        </div>
+        <!-- Event 14 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(14)">
+                <span class="date">1974 CE</span>
+                <h2>PLO Recognized by UN</h2>
+                <p>
+                    The United Nations grants the PLO observer status, acknowledging it as the representative of the Palestinian people.
+                </p>
+            </div>
+        </div>
+        <!-- Event 15 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(15)">
+                <span class="date">1987 CE</span>
+                <h2>First Intifada</h2>
+                <p>
+                    Palestinian uprising against Israeli occupation begins in the West Bank and Gaza Strip.
+                </p>
+            </div>
+        </div>
+        <!-- Event 16 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(16)">
+                <span class="date">1993 CE</span>
+                <h2>Oslo Accords</h2>
+                <p>
+                    Israel and the PLO sign a peace agreement aiming for a two-state solution; establishes the Palestinian Authority.
+                </p>
+            </div>
+        </div>
+        <!-- Event 17 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(17)">
+                <span class="date">2000-2005 CE</span>
+                <h2>Second Intifada</h2>
+                <p>
+                    Renewed Palestinian uprising leads to increased violence and tension in the region.
+                </p>
+            </div>
+        </div>
+        <!-- Event 18 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(18)">
+                <span class="date">2005 CE</span>
+                <h2>Israel's Disengagement from Gaza</h2>
+                <p>
+                    Israel unilaterally withdraws its settlers and military from the Gaza Strip.
+                </p>
+            </div>
+        </div>
+        <!-- Event 19 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(19)">
+                <span class="date">2006 CE</span>
+                <h2>Hamas Wins Elections</h2>
+                <p>
+                    Hamas wins the Palestinian legislative elections, leading to internal political divisions.
+                </p>
+            </div>
+        </div>
+        <!-- Event 20 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(20)">
+                <span class="date">2008-2009 CE</span>
+                <h2>Gaza War</h2>
+                <p>
+                    Conflict between Israel and Hamas in Gaza results in significant casualties and infrastructure damage.
+                </p>
+            </div>
+        </div>
+        <!-- Event 21 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(21)">
+                <span class="date">2012 CE</span>
+                <h2>UN Grants Palestine Non-Member Observer State Status</h2>
+                <p>
+                    United Nations General Assembly votes to recognize Palestine as a non-member observer state.
+                </p>
+            </div>
+        </div>
+        <!-- Event 22 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(22)">
+                <span class="date">2014 CE</span>
+                <h2>Gaza Conflict</h2>
+                <p>
+                    Another escalation between Israel and Hamas leads to Operation Protective Edge in Gaza.
+                </p>
+            </div>
+        </div>
+        <!-- Event 23 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(23)">
+                <span class="date">2017 CE</span>
+                <h2>US Recognizes Jerusalem as Israel's Capital</h2>
+                <p>
+                    The United States announces recognition of Jerusalem as Israel's capital, leading to international reactions.
+                </p>
+            </div>
+        </div>
+        <!-- Event 24 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(24)">
+                <span class="date">2018 CE</span>
+                <h2>US Embassy Moves to Jerusalem</h2>
+                <p>
+                    The United States relocates its embassy from Tel Aviv to Jerusalem.
+                </p>
+            </div>
+        </div>
+        <!-- Event 25 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(25)">
+                <span class="date">2018-2019 CE</span>
+                <h2>Great March of Return</h2>
+                <p>
+                    Mass protests by Palestinians at the Gaza-Israel border demand the right of return and an end to the blockade.
+                </p>
+            </div>
+        </div>
+        <!-- Event 26 -->
+        <div class="timeline-container right" data-aos="fade-left">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(26)">
+                <span class="date">2020 CE</span>
+                <h2>Abraham Accords</h2>
+                <p>
+                    Israel normalizes relations with UAE, Bahrain, Sudan, and Morocco; impacts regional alliances.
+                </p>
+            </div>
+        </div>
+        <!-- Event 27 -->
+        <div class="timeline-container left" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(27)">
+                <span class="date">2021 CE</span>
+                <h2>Gaza-Israel Clashes</h2>
+                <p>
+                    Escalation of violence following tensions in Jerusalem leads to widespread conflict in Gaza.
+                </p>
+            </div>
+        </div>
+        <!-- Event 28 -->
+        <div class="timeline-container right" data-aos="fade-right">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(28)">
+                <span class="date">2022 CE</span>
+                <h2>Renewed Peace Efforts</h2>
+                <p>
+                    International community calls for renewed negotiations between Israelis and Palestinians.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals for Event Details -->
+    <!-- Event 1 Modal -->
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modalLabel1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-light">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel1">First Zionist Congress - 1897 CE</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>
+                The First Zionist Congress, convened by Theodor Herzl in Basel, Switzerland, marked a pivotal moment in the Zionist movement. Delegates from various countries gathered to discuss the establishment of a Jewish homeland in Palestine. The congress adopted the Basel Program, which outlined the goal of creating "a home for the Jewish people in Palestine secured by public law."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Continue adding modals for each event -->
+    <!-- ... -->
+
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include AOS Library for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Include GSAP Library for Advanced Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/ScrollTrigger.min.js"></script>
+    <!-- Initialize AOS and GSAP -->
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from(".header h1", {
+            duration: 1.5,
+            y: -50,
+            opacity: 0,
+            ease: "power4.out"
+        });
+
+        gsap.from(".header p", {
+            duration: 1.5,
+            y: 50,
+            opacity: 0,
+            ease: "power4.out",
+            delay: 0.5
+        });
+
+        gsap.utils.toArray('.timeline-container').forEach(function(elem) {
+            gsap.from(elem, {
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 80%"
+                },
+                duration: 1,
+                y: 100,
+                opacity: 0,
+                ease: "power4.out"
+            });
+        });
+
+        // Initialize Tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        // Function to Show Modals
+        function showModal(eventId) {
+            var modal = new bootstrap.Modal(document.getElementById('modal' + eventId));
+            modal.show();
+        }
+    </script>
+</body>
+</html>
