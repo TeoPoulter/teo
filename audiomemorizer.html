@@ -6,6 +6,7 @@
     <title>Audio Memorizer</title>
     <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
     <style>
+        /* Existing CSS styles */
         body {
             background-color: #121212;
             color: #ffffff;
@@ -246,6 +247,68 @@
             font-size: 14px;
         }
 
+        /* Styles for the overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(18, 18, 18, 0.95);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            padding-top: 50px;
+        }
+
+        .overlay h2 {
+            color: #1db954;
+            margin-bottom: 20px;
+        }
+
+        .file-list {
+            width: 80%;
+            max-width: 600px;
+            margin-bottom: 50px;
+        }
+
+        .file-list button {
+            width: 100%;
+            background-color: #1db954;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .file-list button:hover {
+            background-color: #1ed760;
+        }
+
+        .close-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff3d00;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .close-overlay:hover {
+            background-color: #ff6333;
+        }
+
         @media (max-width: 600px) {
             .button {
                 padding: 10px 20px;
@@ -269,6 +332,7 @@
     <div class="background"></div>
     <button class="button" id="fileButton">Upload Audio File</button>
     <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+    <button class="button" id="teosButton">Teo's Regular Plays</button>
     <button class="button" id="playButton" style="display: none;">Play</button>
     <div class="repeat-options" id="repeatOptions" style="display: none;">
         <button class="repeat-button" data-repeat="10">Play 10x</button>
@@ -298,6 +362,15 @@
         <div class="progress-bar-fill" id="progressBarFill"></div>
     </div>
 
+    <!-- Overlay for Preloaded Files -->
+    <div class="overlay" id="overlay">
+        <button class="close-overlay" id="closeOverlay">Close</button>
+        <h2>Preloaded Files</h2>
+        <div class="file-list" id="fileList">
+            <!-- File buttons will be generated here -->
+        </div>
+    </div>
+
     <audio id="audio">
         <source id="audioSource" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -320,10 +393,59 @@
         const currentTimeEl = document.getElementById('currentTime');
         const durationEl = document.getElementById('duration');
         const timeDisplay = document.getElementById('timeDisplay');
+        const teosButton = document.getElementById('teosButton');
+        const overlay = document.getElementById('overlay');
+        const closeOverlay = document.getElementById('closeOverlay');
+        const fileList = document.getElementById('fileList');
 
         let isPlaying = false;
         let repeatCount = Infinity;
         let playCounter = 0;
+
+        // Generate the list of preloaded files
+        const preloadedFiles = [];
+        for (let i = 1; i <= 114; i++) {
+            const num = i.toString().padStart(3, '0');
+            preloadedFiles.push({ name: `Surah ${i}`, file: `${num}.mp3` });
+        }
+        preloadedFiles.push({ name: 'Khutbah Al Haja', file: 'khutbah.mp3' });
+
+        // Populate the file list in the overlay
+        preloadedFiles.forEach(file => {
+            const button = document.createElement('button');
+            button.textContent = file.name;
+            button.dataset.file = file.file;
+            button.addEventListener('click', () => {
+                loadPreloadedFile(file.file, file.name);
+                overlay.style.display = 'none';
+            });
+            fileList.appendChild(button);
+        });
+
+        function loadPreloadedFile(filePath, fileName) {
+            audioSource.src = `https://teopoulter.github.io/teo/${filePath}`;
+            audio.load();
+            playButton.style.display = 'inline-block';
+            repeatOptions.style.display = 'flex';
+            controls.style.display = 'flex';
+            timeDisplay.style.display = 'block';
+            notification.textContent = `Loaded ${fileName}`;
+            notification.style.display = 'block';
+            progressBarContainer.style.display = 'block';
+            playCounter = 0;
+            isPlaying = false;
+            playButton.textContent = 'Play';
+            currentTimeEl.textContent = '0:00';
+            durationEl.textContent = '0:00';
+        }
+
+        teosButton.addEventListener('click', () => {
+            overlay.style.display = 'flex';
+        });
+
+        closeOverlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+        });
 
         fileButton.addEventListener('click', () => {
             audioFile.click();
@@ -382,7 +504,7 @@
             } else {
                 isPlaying = false;
                 playButton.textContent = 'Play';
-                notification.textContent = `Finished playing ${audioFile.files[0].name} ${repeatCount} times`;
+                notification.textContent = `Finished playing ${repeatCount} times`;
             }
         });
 
@@ -413,28 +535,30 @@
             if (isPlaying) {
                 audio.pause();
                 playButton.textContent = 'Play';
-                notification.textContent = `Paused ${audioFile.files[0].name}`;
+                notification.textContent = `Paused`;
             } else {
                 audio.play();
                 playButton.textContent = 'Pause';
-                notification.textContent = `Playing ${audioFile.files[0].name}`;
+                notification.textContent = `Playing`;
             }
+            notification.style.display = 'block';
             isPlaying = !isPlaying;
         });
 
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space') {
                 event.preventDefault();
-                if (audioFile.files.length > 0) {
+                if (audioSource.src) {
                     if (isPlaying) {
                         audio.pause();
                         playButton.textContent = 'Play';
-                        notification.textContent = `Paused ${audioFile.files[0].name}`;
+                        notification.textContent = `Paused`;
                     } else {
                         audio.play();
                         playButton.textContent = 'Pause';
-                        notification.textContent = `Playing ${audioFile.files[0].name}`;
+                        notification.textContent = `Playing`;
                     }
+                    notification.style.display = 'block';
                     isPlaying = !isPlaying;
                 }
             }
