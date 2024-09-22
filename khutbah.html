@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Meta Tags -->
     <meta charset="UTF-8">
+    <meta name="description" content="Jumu'ah Khutbah - A comprehensive presentation of the Friday sermon in Islam.">
+    <meta name="keywords" content="Jumu'ah, Khutbah, Friday Sermon, Islam, Arabic, Quran">
+    <meta name="author" content="Your Name">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Jumu'ah Khutbah</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
     <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --accent-color: #bb86fc;
+            --highlight-color: #cf6679;
+            --arabic-color: #ff9800;
+            --secondary-text-color: #b0bec5;
+            --container-bg-color: #1e1e1e;
+            --tooltip-bg-color: #2e2e2e;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
         /* General Reset */
         * {
             margin: 0;
@@ -13,238 +38,408 @@
             box-sizing: border-box;
         }
 
+        /* Dark Mode Styling */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1e1e1e;
-            color: #f0f0f0;
-            line-height: 1.7;
-            padding: 20px;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            padding: 30px 15px;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        h1, h2, h3 {
-            font-family: 'Georgia', serif;
-            color: #ffd700;
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-family: 'Lato', sans-serif;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeInDown 1s ease-in-out;
         }
 
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            text-align: center;
+            font-size: 3.2rem;
+            margin-top: 40px;
         }
 
         h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 50px;
         }
 
         h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-top: 30px;
         }
 
         p {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-color);
         }
 
+        /* Arabic and Transliteration */
         .arabic {
-            font-size: 1.5rem;
-            color: #ffd700;
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            color: var(--arabic-color);
             text-align: center;
-            margin: 15px 0;
-        }
-
-        .highlight {
-            color: #ffd700;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 25px;
-            border-radius: 12px;
-            background-color: #292929;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .dynamic-button {
-            background-color: #ffd700;
-            color: #1e1e1e;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .dynamic-button:hover {
-            background-color: #ffe14d;
-        }
-
-        .section-divider {
-            border: 1px solid #ffd700;
             margin: 25px 0;
         }
 
-        /* Verse and Translation Styling */
-        .verse {
-            font-weight: bold;
-            font-size: 1.3rem;
-            color: #f5d800;
+        .transliteration {
+            font-style: italic;
+            color: var(--secondary-text-color);
+            text-align: center;
+            margin-bottom: 10px;
         }
 
         .translation {
-            font-size: 1rem;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            font-style: italic;
-            color: #d0d0d0;
+            font-size: 1.2rem;
+            color: var(--secondary-text-color);
+            text-align: center;
+            margin-bottom: 25px;
         }
 
-        /* Tooltip for verses */
+        /* Highlights */
+        .highlight {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        /* Container and Section Styling */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px;
+            border-radius: 15px;
+            background-color: var(--container-bg-color);
+            box-shadow: 0 6px 25px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .section-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--accent-color), rgba(255, 255, 255, 0));
+            margin: 50px 0;
+        }
+
+        /* Verse Styling */
+        .verse {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Tooltip for deeper meaning explanations */
         .tooltip {
-            display: none;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            color: var(--arabic-color);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 380px;
+            background-color: var(--tooltip-bg-color);
+            color: var(--text-color);
+            text-align: left;
+            border-radius: 10px;
+            padding: 15px;
             position: absolute;
-            background-color: #444;
-            color: #fff;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            top: -30px;
+            z-index: 1;
+            bottom: 130%;
             left: 50%;
-            transform: translateX(-50%);
+            margin-left: -190px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
         }
 
-        .verse:hover .tooltip {
-            display: block;
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
 
-        /* Fade-in transitions */
+        /* Fade-in Animation */
         .fade-in {
-            animation: fadeIn 1.5s ease-in-out;
+            animation: fadeIn 2s ease-in-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
         }
 
-        /* Icon animation */
-        .icon {
-            display: inline-block;
-            transition: transform 0.3s ease;
+        /* Heading Animation */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .icon:hover {
-            transform: scale(1.2);
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .arabic {
+                font-size: 1.8rem;
+            }
+
+            .verse {
+                font-size: 1.3rem;
+            }
         }
 
-        /* Arabic-specific */
-        .arabic-section {
+        /* Scroll to Top Button */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            cursor: pointer;
             padding: 15px;
-            background-color: #343434;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            text-align: center;
+            border-radius: 50%;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
         }
 
-        .arabic-section p {
-            font-size: 1.3rem;
+        #scrollTopBtn:hover {
+            background-color: var(--highlight-color);
         }
-
-        /* Subtle hover animations for text */
-        p:hover {
-            color: #e6c700;
-        }
-
     </style>
 </head>
+
 <body>
 
+    <!-- Scroll to Top Button -->
+    <button onclick="topFunction()" id="scrollTopBtn" title="Go to top">↑</button>
+
+    <!-- Main Content Container -->
     <div class="container fade-in">
-        <h1>Jumu'ah Khutbah</h1>
+        <!-- Title -->
+        <h1>جُمُعَة خُطْبَة<br>Jumu'ah Khutbah</h1>
 
         <!-- Salam Section -->
-        <h2>Salam (Greeting to the Congregation)</h2>
-        <div class="arabic-section">
-            <p class="arabic">As-salamu ‘alaykum wa rahmatullahi wa barakatuh</p>
-            <p class="translation">"Peace be upon you and the mercy and blessings of Allah."</p>
-        </div>
+        <h2>1. Salām (Peace and Greetings)</h2>
+        <p class="arabic">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</p>
+        <p class="transliteration">As-salamu 'alaykum wa rahmatullahi wa barakatuh</p>
+        <p class="translation">"May the peace, mercy, and blessings of Allah be upon you all."</p>
 
         <!-- Adhan Section -->
-        <h2>Adhan (Call to Prayer)</h2>
-        <p>The Adhan is given by the Mu'adhdhin <span class="icon">🕌</span></p>
-        <p class="translation">A powerful reminder to gather for the Friday prayer.</p>
+        <hr class="section-divider">
+        <h2>2. Adhān (Call to Prayer)</h2>
+        <p class="verse">Given by the Mu'adhdhin (caller to prayer).</p>
 
-        <div class="section-divider"></div>
+        <!-- Khutbah al-Haajah -->
+        <hr class="section-divider">
+        <h2>3. Khutbah Al-Haajah (Sermon of Necessity)</h2>
 
-        <!-- Khutbah Al-Haajah -->
-        <h2>Khutbah Al-Haajah (Opening Sermon)</h2>
-        <p class="arabic">Innal hamda lillahi, nahmaduhu wa nasta'inuhu wa nastaghfiruhu...</p>
-        <p class="translation">"All praise is for Allah, we seek His help and forgiveness..."</p>
-        
-        <!-- Quranic Verse Section -->
-        <p class="verse">Ya ayyuhal-ladhina amanu ittaqu Allah haqqa tuqatihi wa la tamutunna illa wa antum Muslimoon
-            <span class="tooltip">[Quran 3:102] "O you who have believed, fear Allah as He should be feared and do not die except as Muslims."</span>
+        <p class="arabic">
+            إِنَّ الْحَمْدَ لِلَّهِ، نَحْمَدُهُ، وَنَسْتَعِينُهُ، وَنَسْتَغْفِرُهُ، وَنَعُوذُ بِاللَّهِ مِنْ
+            شُرُورِ أَنْفُسِنَا وَمِنْ سَيِّئَاتِ أَعْمَالِنَا. مَنْ يَهْدِهِ اللَّهُ فَلَا مُضِلَّ لَهُ، وَمَنْ
+            يُضْلِلْ فَلَا هَادِيَ لَهُ. وَأَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ،
+            وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ.
+        </p>
+        <p class="transliteration">
+            Innal hamda lillahi, nahmaduhu wa nasta'inuhu wa nastaghfiruhu, wa na'udhu billahi min shururi anfusina wa min sayyi'ati a'malina. Man yahdihi Allah fala mudhilla lah, wa man yudlil fala hadiya lah. Wa ashhadu an la ilaha illallah wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluhu.
+        </p>
+        <p class="translation">
+            "Indeed, all praise is due to Allah. We praise Him, seek His help, and ask His forgiveness. We seek refuge in Allah from the evils of ourselves and from the bad deeds of our actions. Whomsoever Allah guides, none can misguide; and whomsoever He leaves astray, none can guide. I bear witness that there is no deity worthy of worship except Allah, alone without any partners, and I bear witness that Muhammad is His servant and Messenger."
         </p>
 
-        <p class="verse">Ya ayyuhan-nasu ittaqu rabbakum allathee khalaqakum min nafsin wahidah...
-            <span class="tooltip">[Quran 4:1] "O mankind, fear your Lord, who created you from one soul and created from it its mate..."</span>
+        <!-- Quranic Verses -->
+        <p class="verse tooltip">
+            <span class="arabic">يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ حَقَّ تُقَاتِهِ وَلَا تَمُوتُنَّ
+                إِلَّا وَأَنْتُمْ مُسْلِمُونَ</span>
+            <span class="tooltiptext">This verse emphasizes the importance of fearing Allah and remaining steadfast in faith until death.</span>
+            <br>
+            <span class="transliteration">Ya ayyuhal-ladhina amanu ittaqu Allah haqqa tuqatihi wa la tamutunna illa wa antum Muslimoon</span>
+            <span class="translation">"O you who have believed, fear Allah as He should be feared and do not die except as Muslims [in submission to Him]." [Quran 3:102]</span>
         </p>
 
-        <p class="verse">Ya ayyuhal-ladhina amanu ittaqu Allah wa qulu qawlan sadeedan...
-            <span class="tooltip">[Quran 33:70-71] "O you who have believed, fear Allah and speak words of appropriate justice..."</span>
+        <p class="verse tooltip">
+            <span class="arabic">يَا أَيُّهَا النَّاسُ اتَّقُوا رَبَّكُمُ الَّذِي خَلَقَكُمْ مِنْ نَفْسٍ
+                وَاحِدَةٍ وَخَلَقَ مِنْهَا زَوْجَهَا وَبَثَّ مِنْهُمَا رِجَالًا كَثِيرًا وَنِسَاءً ۚ
+                وَاتَّقُوا اللَّهَ الَّذِي تَسَاءَلُونَ بِهِ وَالْأَرْحَامَ ۚ إِنَّ اللَّهَ كَانَ عَلَيْكُمْ
+                رَقِيبًا</span>
+            <span class="tooltiptext">This verse reminds humanity of their common origin and the importance of maintaining family ties.</span>
+            <br>
+            <span class="transliteration">Ya ayyuhan-nasu ittaqu rabbakum allathee khalaqakum min nafsin wahidah wa khalaqa minha zawjaha wa baththa minhuma rijalan katheeran wa nisaa’an, wattaqu Allah allathee tasa'aluna bihi wal-arhaam, inna Allaha kana 'alaykum raqeeba</span>
+            <span class="translation">"O mankind, fear your Lord, who created you from one soul and created from it its mate and dispersed from both of them many men and women. And fear Allah, through whom you ask one another, and the wombs. Indeed, Allah is ever, over you, an Observer." [Quran 4:1]</span>
         </p>
 
-        <p class="arabic">Amma ba’du, fa inna asdaqal hadithi Kitabullah...</p>
-        <p class="translation">"The best speech is the Book of Allah, and the best guidance is the guidance of Muhammad..."</p>
+        <p class="verse tooltip">
+            <span class="arabic">يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَقُولُوا قَوْلًا
+                سَدِيدًا يُصْلِحْ لَكُمْ أَعْمَالَكُمْ وَيَغْفِرْ لَكُمْ ذُنُوبَكُمْ ۗ وَمَنْ يُطِعِ
+                اللَّهَ وَرَسُولَهُ فَقَدْ فَازَ فَوْزًا عَظِيمًا</span>
+            <span class="tooltiptext">This verse highlights the importance of speaking justly and the rewards of obedience to Allah and His Messenger.</span>
+            <br>
+            <span class="transliteration">Ya ayyuhal-ladhina amanu ittaqu Allah wa qulu qawlan sadeedan yuslih lakum a'malakum wa yaghfir lakum dhunubakum, wa man yuti'illaha wa rasulahu faqad faza fawzan 'aziman</span>
+            <span class="translation">"O you who have believed, fear Allah and speak words of appropriate justice. He will amend for you your deeds and forgive you your sins. And whoever obeys Allah and His Messenger has certainly attained a great attainment." [Quran 33:70-71]</span>
+        </p>
 
-        <div class="section-divider"></div>
+        <p class="arabic">
+            أَمَّا بَعْدُ، فَإِنَّ أَصْدَقَ الْحَدِيثِ كِتَابُ اللَّهِ، وَخَيْرَ الْهَدْيِ هَدْيُ
+            مُحَمَّدٍ ﷺ، وَشَرَّ الْأُمُورِ مُحْدَثَاتُهَا، وَكُلَّ مُحْدَثَةٍ بِدْعَةٌ، وَكُلَّ
+            بِدْعَةٍ ضَلَالَةٌ، وَكُلَّ ضَلَالَةٍ فِي النَّارِ.
+        </p>
+        <p class="transliteration">
+            Amma ba’du, fa inna asdaqal hadithi Kitabullah, wa khayral-hadyi hadyu Muhammadin, sallallahu 'alayhi wa sallam, wa sharra-l-umuri muhdathatuha, wa kulla muhdathatin bid’ah, wa kulla bid’atin dalalah, wa kulla dalalatin finnaari.
+        </p>
+        <p class="translation">
+            "To proceed: the best of speech is the Book of Allah, and the best guidance is the guidance of Muhammad ﷺ. The worst of affairs are newly invented matters, and every innovation is a misguidance, and every misguidance leads to the Fire."
+        </p>
 
         <!-- Conclusion of First Khutbah -->
-        <h2>Aqoolu Qawli Hadha (Conclusion of First Khutbah)</h2>
-        <p class="arabic">Aqoolu qawli hadha wa astaghfirullah li wa lakum...</p>
-        <p class="translation">"I say this and seek Allah's forgiveness for myself and for you..."</p>
-
-        <div class="section-divider"></div>
-
-        <!-- Second Khutbah Start -->
-        <h2>Bismillah Al-Rahman Al-Raheem & Alhamdulillah (Start of Second Khutbah)</h2>
-        <p class="arabic">Bismillah Al-Rahman Al-Raheem. Alhamdulillahi rabbil ‘alameen...</p>
-        <p class="translation">"In the name of Allah, the Most Gracious, the Most Merciful. Praise be to Allah, the Lord of the Worlds..."</p>
-
-        <!-- Sending Blessings Section -->
-        <h3>Sending Blessings Upon the Prophet</h3>
-        <p class="verse">Inna Allaha wa mala'ikatahu yusalloona ‘ala an-nabi...
-            <span class="tooltip">[Quran 33:56] "Indeed, Allah and His angels send blessings upon the Prophet..."</span>
+        <hr class="section-divider">
+        <h2>4. Conclusion of the First Khutbah</h2>
+        <p class="arabic">
+            أَقُولُ قَوْلِي هَذَا وَأَسْتَغْفِرُ اللَّهَ لِي وَلَكُمْ فَاسْتَغْفِرُوهُ، إِنَّهُ هُوَ
+            الْغَفُورُ الرَّحِيمُ.
+        </p>
+        <p class="transliteration">
+            Aqoolu qawli hadha wa astaghfirullah li wa lakum fa astaghfiruhu innahu huwal-ghafooru-raheem.
+        </p>
+        <p class="translation">
+            "I say this statement of mine, and I seek forgiveness from Allah for myself and for you; so seek His forgiveness. Indeed, He is the Most Forgiving, the Most Merciful."
         </p>
 
-        <!-- Peace Upon the Prophet -->
-        <h2>Allahumma Salli ‘Ala Muhammad (Peace upon the Prophet)</h2>
-        <p class="arabic">Allahumma salli ‘ala Muhammad wa ‘ala ali Muhammad...</p>
-        <p class="translation">"O Allah, send Your peace and blessings upon Muhammad and the family of Muhammad..."</p>
+        <!-- Short Pause -->
+        <p class="highlight" style="text-align: center; margin-top: 40px;">[Brief pause as the Khatib sits]</p>
 
-        <div class="section-divider"></div>
+        <!-- Second Khutbah -->
+        <hr class="section-divider">
+        <h2>5. Start of the Second Khutbah</h2>
+        <p class="arabic">
+            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ،
+            وَالصَّلَاةُ وَالسَّلَامُ عَلَى رَسُولِ اللَّهِ، وَعَلَى آلِهِ وَصَحْبِهِ أَجْمَعِينَ.
+        </p>
+        <p class="transliteration">
+            Bismillah Al-Rahman Al-Raheem. Alhamdulillahi rabbil ‘alameen, wassalatu wassalamu ‘ala rasulillah, wa ‘ala alihi wa sahbihi ajma'een.
+        </p>
+        <p class="translation">
+            "In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah, Lord of all the worlds. May peace and blessings be upon the Messenger of Allah, and upon his family and all his companions."
+        </p>
+
+        <!-- Sending Blessings Upon the Prophet -->
+        <hr class="section-divider">
+        <h2>6. Sending Blessings Upon the Prophet ﷺ</h2>
+        <p class="arabic">
+            إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ، يَا أَيُّهَا الَّذِينَ
+            آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا.
+        </p>
+        <p class="transliteration">
+            Inna Allaha wa mala'ikatahu yusalloona ‘ala an-nabi, ya ayyuhal-ladhina amanu sallu ‘alayhi wa sallimu taslima
+        </p>
+        <p class="translation">
+            "Indeed, Allah confers blessing upon the Prophet, and His angels [ask Him to do so]. O you who have believed, send blessings upon him and salute him with all respect." [Quran 33:56]
+        </p>
+
+        <!-- Peace upon the Prophet -->
+        <hr class="section-divider">
+        <h2>7. Peace upon the Prophet ﷺ</h2>
+        <p class="arabic">
+            اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى
+            إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ.
+        </p>
+        <p class="transliteration">
+            Allahumma salli ‘ala Muhammad wa ‘ala ali Muhammad, kama sallayta ‘ala Ibrahim wa ‘ala ali Ibrahim, innaka hamidun majid.
+        </p>
+        <p class="translation">
+            "O Allah, send your blessings upon Muhammad and upon the family of Muhammad, as You sent blessings upon Ibrahim and upon the family of Ibrahim. Indeed, You are Praiseworthy and Glorious."
+        </p>
 
         <!-- Supplication at the End -->
-        <h2>Rabbana Atina (Supplication at the End)</h2>
-        <p class="verse">Rabbana atina fid-dunya hasanah wa fil-akhirati hasanah...
-            <span class="tooltip">[Quran 2:201] "Our Lord, give us in this world good and in the Hereafter good and protect us from the punishment of the Fire."</span>
+        <hr class="section-divider">
+        <h2>8. Supplication at the End</h2>
+        <p class="arabic">
+            رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ
+            النَّارِ
+        </p>
+        <p class="transliteration">
+            Rabbana atina fid-dunya hasanah wa fil-akhirati hasanah wa qina ‘adhab an-nar
+        </p>
+        <p class="translation">
+            "Our Lord! Grant us good in this world and good in the Hereafter, and protect us from the punishment of the Fire." [Quran 2:201]
         </p>
 
         <!-- Command to Establish Prayer -->
-        <h2>Wa Aqim as-Salah (Command to Establish the Prayer)</h2>
-        <p class="highlight">Wa aqim as-salah.</p>
-        <button class="dynamic-button">Establish Prayer</button>
+        <hr class="section-divider">
+        <h2>9. Command to Establish the Prayer</h2>
+        <p class="arabic">
+            وَأَقِمِ الصَّلَاةَ
+        </p>
+        <p class="transliteration">
+            Wa aqim as-salah
+        </p>
+        <p class="translation">
+            "And establish the prayer."
+        </p>
+
     </div>
 
+    <!-- JavaScript for Scroll to Top Button -->
+    <script>
+        //Get the button
+        var scrollTopBtn = document.getElementById("scrollTopBtn");
+
+        // When the user scrolls down 500px from the top, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top
+        function topFunction() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
 </body>
+
 </html>
