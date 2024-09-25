@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Islamic Phrases</title>
+    <style>
+        body {
+            background-color: #0e0b16;
+            color: #e7dfdd;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #4717f6;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #e7dfdd;
+            animation: slideInFromLeft 1s ease-out;
+        }
+
+        header a {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #e7dfdd;
+            text-decoration: none;
+            font-size: 1.2em;
+            background-color: rgba(71, 23, 246, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        header a:hover {
+            background-color: rgba(71, 23, 246, 0.5);
+        }
+
+        .header-bg-animation {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, #a239ca, transparent);
+            animation: rotateBg 10s linear infinite;
+            z-index: -1;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-top: 50px;
+            color: #a239ca;
+            animation: fadeIn 1s ease-out;
+            cursor: pointer;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            margin-bottom: 0;
+        }
+
+        .section-title:hover {
+            background-color: #222222;
+        }
+
+        .phrase-container {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 50px 20px;
+            background-color: #0d0d0d;
+        }
+
+        .phrase-card {
+            background: linear-gradient(145deg, #1a1a1a, #222222);
+            border-radius: 15px;
+            margin: 20px;
+            padding: 30px;
+            width: 320px;
+            transition: transform 0.5s, box-shadow 0.5s;
+            position: relative;
+            overflow: hidden;
+            color: #e7dfdd;
+        }
+
+        .phrase-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .phrase-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(162, 57, 202, 0.2), transparent);
+            transform: rotate(0deg);
+            animation: rotateCard 6s linear infinite;
+            z-index: -1;
+        }
+
+        .phrase-card h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #a239ca;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .phrase-card h3 {
+            font-size: 1.5em;
+            color: #4717f6;
+            margin-bottom: 15px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .phrase-card p {
+            margin-bottom: 15px;
+            animation: fadeIn 1.4s ease-out;
+        }
+
+        /* Scroll to top button */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: #a239ca;
+            color: #e7dfdd;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 24px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #scrollTopBtn:hover {
+            background-color: #4717f6;
+            transform: scale(1.1);
+        }
+
+        /* Keyframe Animations */
+        @keyframes rotateBg {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateCard {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .phrase-card {
+                width: 90%;
+            }
+
+            header h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-bg-animation"></div>
+    <a href="https://teopoulter.github.io/teo">Home</a>
+    <h1>Islamic Phrases</h1>
+</header>
+
+<!-- JavaScript for Collapsible Sections -->
+<script>
+    function toggleSection(id) {
+        const section = document.getElementById(id);
+        const displayStyle = section.style.display;
+        section.style.display = displayStyle === 'flex' ? 'none' : 'flex';
+    }
+</script>
+
+<!-- Islamic Phrases Section -->
+<h2 class="section-title" onclick="toggleSection('islamicPhrases')">Common Islamic Phrases</h2>
+<div class="phrase-container" id="islamicPhrases">
+
+    <!-- Phrases sorted by relevance -->
+    <div class="phrase-card">
+        <h2>As-salamu alaykum</h2>
+        <h3>السلام عليكم</h3>
+        <p><strong>Meaning:</strong> "Peace be upon you."</p>
+        <p><strong>Usage:</strong> A common greeting among Muslims.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Wa alaykum as-salam</h2>
+        <h3>وعليكم السلام</h3>
+        <p><strong>Meaning:</strong> "And peace be upon you."</p>
+        <p><strong>Usage:</strong> Response to "As-salamu alaykum."</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Alhamdulillah</h2>
+        <h3>الحمد لله</h3>
+        <p><strong>Meaning:</strong> "All praise is due to Allah."</p>
+        <p><strong>Usage:</strong> Expressing gratitude for blessings or good news.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Insha'Allah</h2>
+        <h3>إن شاء الله</h3>
+        <p><strong>Meaning:</strong> "If Allah wills."</p>
+        <p><strong>Usage:</strong> Mentioned when referring to future events.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Allahu Akbar</h2>
+        <h3>الله أكبر</h3>
+        <p><strong>Meaning:</strong> "Allah is the Greatest."</p>
+        <p><strong>Usage:</strong> Proclaiming the greatness of Allah.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Bismillah</h2>
+        <h3>بسم الله</h3>
+        <p><strong>Meaning:</strong> "In the name of Allah."</p>
+        <p><strong>Usage:</strong> Said before starting any important task.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>SubhanAllah</h2>
+        <h3>سبحان الله</h3>
+        <p><strong>Meaning:</strong> "Glory be to Allah."</p>
+        <p><strong>Usage:</strong> Expressing awe or amazement.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Masha'Allah</h2>
+        <h3>ما شاء الله</h3>
+        <p><strong>Meaning:</strong> "What Allah has willed."</p>
+        <p><strong>Usage:</strong> Appreciating something good, acknowledging Allah's will.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Astaghfirullah</h2>
+        <h3>أستغفر الله</h3>
+        <p><strong>Meaning:</strong> "I seek forgiveness from Allah."</p>
+        <p><strong>Usage:</strong> Seeking forgiveness for sins or mistakes.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>La ilaha illa Allah</h2>
+        <h3>لا إله إلا الله</h3>
+        <p><strong>Meaning:</strong> "There is no deity except Allah."</p>
+        <p><strong>Usage:</strong> Central declaration of faith in Islam.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>JazakAllahu khayran</h2>
+        <h3>جزاك الله خيراً</h3>
+        <p><strong>Meaning:</strong> "May Allah reward you with goodness."</p>
+        <p><strong>Usage:</strong> A heartfelt way of thanking someone.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>La hawla wa la quwwata illa billah</h2>
+        <h3>لا حول ولا قوة إلا بالله</h3>
+        <p><strong>Meaning:</strong> "There is no power nor strength except by Allah."</p>
+        <p><strong>Usage:</strong> Expressing reliance on Allah during difficulties.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Inna lillahi wa inna ilayhi raji'un</h2>
+        <h3>إنا لله وإنا إليه راجعون</h3>
+        <p><strong>Meaning:</strong> "Indeed, we belong to Allah, and to Him we shall return."</p>
+        <p><strong>Usage:</strong> Said upon hearing about a death or calamity.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>BarakAllahu feek</h2>
+        <h3>بارك الله فيك</h3>
+        <p><strong>Meaning:</strong> "May Allah bless you."</p>
+        <p><strong>Usage:</strong> Expressing thanks or gratitude.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Assalamu alaykum wa rahmatullahi wa barakatuh</h2>
+        <h3>السلام عليكم ورحمة الله وبركاته</h3>
+        <p><strong>Meaning:</strong> "Peace be upon you, and Allah's mercy and blessings."</p>
+        <p><strong>Usage:</strong> An extended Islamic greeting.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Ma sha'Allah la quwwata illa billah</h2>
+        <h3>ما شاء الله لا قوة إلا بالله</h3>
+        <p><strong>Meaning:</strong> "What Allah has willed; there is no power except by Allah."</p>
+        <p><strong>Usage:</strong> Acknowledging Allah's will and seeking His strength.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Hasbunallahu wa ni'mal wakeel</h2>
+        <h3>حسبنا الله ونعم الوكيل</h3>
+        <p><strong>Meaning:</strong> "Allah is sufficient for us, and He is the best disposer of affairs."</p>
+        <p><strong>Usage:</strong> Expressing trust in Allah during hardship.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Sallallahu alayhi wa sallam</h2>
+        <h3>صلى الله عليه وسلم</h3>
+        <p><strong>Meaning:</strong> "May Allah send blessings and peace upon him."</p>
+        <p><strong>Usage:</strong> After mentioning Prophet Muhammad.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Shukran</h2>
+        <h3>شكراً</h3>
+        <p><strong>Meaning:</strong> "Thank you."</p>
+        <p><strong>Usage:</strong> Expressing gratitude.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Yallah</h2>
+        <h3>يلا</h3>
+        <p><strong>Meaning:</strong> "Let's go" or "Come on."</p>
+        <p><strong>Usage:</strong> Urging someone to hurry up or start moving.</p>
+    </div>
+
+</div>
+
+<!-- Common Quranic Phrases Section -->
+<h2 class="section-title" onclick="toggleSection('quranicPhrases')">Common Quranic Phrases</h2>
+<div class="phrase-container" id="quranicPhrases">
+
+    <!-- Quranic phrases sorted by relevance -->
+    <div class="phrase-card">
+        <h2>Ya ayyuhal ladheena amanu</h2>
+        <h3>يَا أَيُّهَا الَّذِينَ آمَنُوا</h3>
+        <p><strong>Meaning:</strong> "O you who have believed."</p>
+        <p><strong>Usage:</strong> An address to believers in the Quran.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Alhamdulillahi Rabbil 'alameen</h2>
+        <h3>الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</h3>
+        <p><strong>Meaning:</strong> "All praise is due to Allah, Lord of the worlds."</p>
+        <p><strong>Usage:</strong> Opening of Surah Al-Fatiha, praising Allah.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Ar-Rahman Ar-Raheem</h2>
+        <h3>الرَّحْمَٰنِ الرَّحِيمِ</h3>
+        <p><strong>Meaning:</strong> "The Most Gracious, the Most Merciful."</p>
+        <p><strong>Usage:</strong> Describing Allah's attributes.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>La ilaha illa Anta</h2>
+        <h3>لا إله إلا أنت</h3>
+        <p><strong>Meaning:</strong> "There is no deity except You."</p>
+        <p><strong>Usage:</strong> Affirmation of monotheism in supplication.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Inna Allaha ala kulli shay’in Qadeer</h2>
+        <h3>إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ</h3>
+        <p><strong>Meaning:</strong> "Indeed, Allah is over all things competent."</p>
+        <p><strong>Usage:</strong> Affirming Allah's omnipotence.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Inna Allaha Ghafurur Raheem</h2>
+        <h3>إِنَّ اللَّهَ غَفُورٌ رَحِيمٌ</h3>
+        <p><strong>Meaning:</strong> "Indeed, Allah is Forgiving and Merciful."</p>
+        <p><strong>Usage:</strong> Emphasizing Allah's forgiveness and mercy.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Bismillahir Rahmanir Raheem</h2>
+        <h3>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h3>
+        <p><strong>Meaning:</strong> "In the name of Allah, the Most Gracious, the Most Merciful."</p>
+        <p><strong>Usage:</strong> Opening phrase of most Surahs; said before actions.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Subhanallahi amma yushrikoon</h2>
+        <h3>سُبْحَانَ اللَّهِ عَمَّا يُشْرِكُونَ</h3>
+        <p><strong>Meaning:</strong> "Glory be to Allah above what they associate with Him."</p>
+        <p><strong>Usage:</strong> Declaring Allah's transcendence above shirk.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Wa ma adraka ma</h2>
+        <h3>وَمَا أَدْرَاكَ مَا</h3>
+        <p><strong>Meaning:</strong> "And what will make you know what...?"</p>
+        <p><strong>Usage:</strong> Introducing something significant in the Quran.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Kullun Nafsin dha'iqatul mawt</h2>
+        <h3>كُلُّ نَفْسٍ ذَائِقَةُ الْمَوْتِ</h3>
+        <p><strong>Meaning:</strong> "Every soul shall taste death."</p>
+        <p><strong>Usage:</strong> Reminder of mortality.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Wa tawakkal 'ala Allah</h2>
+        <h3>وَتَوَكَّلْ عَلَى اللَّهِ</h3>
+        <p><strong>Meaning:</strong> "And put your trust in Allah."</p>
+        <p><strong>Usage:</strong> Encouraging reliance on Allah.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Inna ma'al 'usri yusra</h2>
+        <h3>إِنَّ مَعَ الْعُسْرِ يُسْرًا</h3>
+        <p><strong>Meaning:</strong> "Indeed, with hardship [will be] ease."</p>
+        <p><strong>Usage:</strong> Offering comfort during difficulties.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Rabbana atina fid-dunya hasanatan</h2>
+        <h3>رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً</h3>
+        <p><strong>Meaning:</strong> "Our Lord, give us in this world [that which is] good..."</p>
+        <p><strong>Usage:</strong> Part of a supplication for good in this life and the hereafter.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Fabi ayyi ala'i Rabbikuma tukadhiban</h2>
+        <h3>فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ</h3>
+        <p><strong>Meaning:</strong> "So which of the favors of your Lord would you deny?"</p>
+        <p><strong>Usage:</strong> Refrain in Surah Ar-Rahman emphasizing gratitude.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Inna Allaha yuhibbul muhsineen</h2>
+        <h3>إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ</h3>
+        <p><strong>Meaning:</strong> "Indeed, Allah loves the doers of good."</p>
+        <p><strong>Usage:</strong> Encouraging excellence in deeds.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Wa qaala Rabbukum ud'ooni astajib lakum</h2>
+        <h3>وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ</h3>
+        <p><strong>Meaning:</strong> "And your Lord says, 'Call upon Me; I will respond to you.'"</p>
+        <p><strong>Usage:</strong> Encouraging supplication to Allah.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Wa ma khalaqtul jinna wal insa illa liya'budoon</h2>
+        <h3>وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ</h3>
+        <p><strong>Meaning:</strong> "And I did not create the jinn and mankind except to worship Me."</p>
+        <p><strong>Usage:</strong> Stating the purpose of creation.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Allahu la ilaha illa Hu</h2>
+        <h3>اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ</h3>
+        <p><strong>Meaning:</strong> "Allah—there is no deity except Him."</p>
+        <p><strong>Usage:</strong> Affirmation of monotheism.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Inna Allaha ma'as sabireen</h2>
+        <h3>إِنَّ اللَّهَ مَعَ الصَّابِرِينَ</h3>
+        <p><strong>Meaning:</strong> "Indeed, Allah is with the patient."</p>
+        <p><strong>Usage:</strong> Encouraging patience and perseverance.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>Wa'bud Rabbaka hatta ya'tiyakal yaqeen</h2>
+        <h3>وَاعْبُدْ رَبَّكَ حَتَّىٰ يَأْتِيَكَ الْيَقِينُ</h3>
+        <p><strong>Meaning:</strong> "And worship your Lord until there comes to you the certainty (death)."</p>
+        <p><strong>Usage:</strong> Command to persist in worship.</p>
+    </div>
+
+</div>
+
+<!-- Most Common Quranic Words Section -->
+<h2 class="section-title" onclick="toggleSection('quranicWords')">Most Common Quranic Words</h2>
+<div class="phrase-container" id="quranicWords">
+
+    <!-- List of words with meanings -->
+
+    <div class="phrase-card">
+        <h2>هَذَا (Hatha)</h2>
+        <h3>هَذَا</h3>
+        <p><strong>Meaning:</strong> "This" (masculine).</p>
+        <p><strong>Usage:</strong> Demonstrative pronoun used to refer to a masculine noun.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>هَذِهِ (Hadhihi)</h2>
+        <h3>هَذِهِ</h3>
+        <p><strong>Meaning:</strong> "This" (feminine).</p>
+        <p><strong>Usage:</strong> Demonstrative pronoun used to refer to a feminine noun.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>ذَلِكَ (Thalika)</h2>
+        <h3>ذَلِكَ</h3>
+        <p><strong>Meaning:</strong> "That" (masculine).</p>
+        <p><strong>Usage:</strong> Demonstrative pronoun used to refer to a distant masculine noun.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>تِلْكَ (Tilka)</h2>
+        <h3>تِلْكَ</h3>
+        <p><strong>Meaning:</strong> "That" (feminine).</p>
+        <p><strong>Usage:</strong> Demonstrative pronoun used to refer to a distant feminine noun.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>هَؤُلَاءِ (Ha'ulaa')</h2>
+        <h3>هَؤُلَاءِ</h3>
+        <p><strong>Meaning:</strong> "These" (plural).</p>
+        <p><strong>Usage:</strong> Demonstrative pronoun for plural nouns.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>أُولَٰئِكَ (Ulaa'ika)</h2>
+        <h3>أُولَٰئِكَ</h3>
+        <p><strong>Meaning:</strong> "Those" (plural).</p>
+        <p><strong>Usage:</strong> Demonstrative pronoun for distant plural nouns.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>الَّذِي (Alladhi)</h2>
+        <h3>الَّذِي</h3>
+        <p><strong>Meaning:</strong> "He who" or "that which" (masculine singular).</p>
+        <p><strong>Usage:</strong> Relative pronoun for masculine singular nouns.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>الَّتِي (Allati)</h2>
+        <h3>الَّتِي</h3>
+        <p><strong>Meaning:</strong> "She who" or "that which" (feminine singular).</p>
+        <p><strong>Usage:</strong> Relative pronoun for feminine singular nouns.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>الَّذِينَ (Alladheena)</h2>
+        <h3>الَّذِينَ</h3>
+        <p><strong>Meaning:</strong> "Those who" (masculine plural).</p>
+        <p><strong>Usage:</strong> Relative pronoun for masculine plural nouns.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>كُلُّ (Kullu)</h2>
+        <h3>كُلُّ</h3>
+        <p><strong>Meaning:</strong> "All" or "every".</p>
+        <p><strong>Usage:</strong> Denotes entirety or totality.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>مَنْ (Man)</h2>
+        <h3>مَنْ</h3>
+        <p><strong>Meaning:</strong> "Who".</p>
+        <p><strong>Usage:</strong> Interrogative pronoun used for asking about people.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>مَا (Ma)</h2>
+        <h3>مَا</h3>
+        <p><strong>Meaning:</strong> "What".</p>
+        <p><strong>Usage:</strong> Interrogative pronoun used for asking about things.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>أَيْنَ (Ayna)</h2>
+        <h3>أَيْنَ</h3>
+        <p><strong>Meaning:</strong> "Where".</p>
+        <p><strong>Usage:</strong> Interrogative adverb asking about location.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>كَيْفَ (Kayfa)</h2>
+        <h3>كَيْفَ</h3>
+        <p><strong>Meaning:</strong> "How".</p>
+        <p><strong>Usage:</strong> Interrogative adverb asking about manner or condition.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>لِمَ (Lima)</h2>
+        <h3>لِمَ</h3>
+        <p><strong>Meaning:</strong> "Why".</p>
+        <p><strong>Usage:</strong> Interrogative adverb asking for reason.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>مَتَى (Mata)</h2>
+        <h3>مَتَى</h3>
+        <p><strong>Meaning:</strong> "When".</p>
+        <p><strong>Usage:</strong> Interrogative adverb asking about time.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>أَيُّ (Ayyu)</h2>
+        <h3>أَيُّ</h3>
+        <p><strong>Meaning:</strong> "Which".</p>
+        <p><strong>Usage:</strong> Interrogative pronoun used to specify.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>إِنَّ (Inna)</h2>
+        <h3>إِنَّ</h3>
+        <p><strong>Meaning:</strong> "Indeed" or "verily".</p>
+        <p><strong>Usage:</strong> Particle used for emphasis.</p>
+    </div>
+
+    <div class="phrase-card">
+        <h2>لَا (La)</h2>
+        <h3>لَا</h3>
+        <p><strong>Meaning:</strong> "No" or "not".</p>
+        <p><strong>Usage:</strong> Negation particle.</p>
+    </div>
+
+</div>
+
+<button onclick="topFunction()" id="scrollTopBtn" title="Go to top">↑</button>
+
+<script>
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+    window.onscroll = function() { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
