@@ -20,7 +20,7 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            /* Removed overflow: hidden to allow scrolling */
         }
 
         @keyframes gradientBG {
@@ -275,7 +275,7 @@
 
         document.getElementById('tools').addEventListener('mouseenter', () => {
             showLinks('tools');
-        }); 
+        });
 
         document.getElementById('islamic').addEventListener('mouseenter', () => {
             showLinks('islamic');
