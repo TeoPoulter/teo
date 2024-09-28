@@ -6,265 +6,220 @@
     <title>Teo's Tools</title>
     <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
     <style>
+        /* Base Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(-45deg, #282828, #1a1a1a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #ffffff;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scrollbars */
         }
 
-        .container {
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        h1 {
+            font-size: 2.5rem;
             text-align: center;
-            animation: fadeIn 1.5s ease-out; /* Added fadeIn animation */
-            width: 100%;
-            position: absolute;
-            top: 5%;
-        }
-
-        .logo {
-            font-size: 48px;
-            margin-bottom: 20px;
-            animation: slideInDown 1s ease-in; /* Slide animation for the title */
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         .category-container {
             display: flex;
-            justify-content: space-between;
-            width: 80%;
-            margin: 0 auto;
-            animation: slideInUp 1s ease-in-out; /* Slide in for categories */
+            gap: 50px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
         }
 
         .category {
-            font-size: 150px;
+            font-size: 3rem;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            animation: bounceIn 1s ease-in-out; /* Bounce effect */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: rgba(31, 31, 31, 0.8);
+            border-radius: 50%;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
         .category:hover {
-            transform: scale(1.1);
-            animation: pulse 1.5s infinite; /* Added pulse effect on hover */
+            transform: scale(1.2);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
-        .side-menu {
-            position: absolute;
-            top: 30%;
-            transform: translateY(-50%);
-            background-color: transparent;
-            padding: 10px 20px;
-            border-radius: 8px;
+        /* Container to limit width */
+        .display-area-wrapper {
+            max-width: 900px; /* Set a max width so items don't exceed the yellow lines */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .display-area {
+            position: relative;
+            width: 100%;
+            margin-top: 50px;
             display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Added fade and slide effect */
+            flex-wrap: wrap;
+            justify-content: center; /* Center items in each row */
+            align-items: center;
+            animation: fadeIn 0.5s forwards;
         }
 
-        .islamic-menu {
-            left: 450px;
-            top: 350px;
-        }
-
-        .tools-menu {
-            right: 450px;
-            top: 350px;
-        }
-
-        .menu-item {
-            margin-bottom: 20px;
-            list-style: none;
-            animation: fadeInLeft 1s ease; /* Added fade-in from left */
-        }
-
-        .menu-link {
-            text-decoration: none;
+        .page-link {
+            background-color: rgba(255, 255, 255, 0.1);
             color: #ffffff;
-            font-size: 24px;
-            transition: color 0.3s ease;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            width: calc(33.333% - 20px);  /* Limit to 3 items per row */
+            height: 80px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .menu-link:hover {
-            color: #1da1f2;
-            animation: jello 0.9s ease; /* Added fun hover animation for links */
+        .page-link span {
+            margin-left: 10px; /* Space between emoji and text */
+        }
+
+        .page-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .page-link {
+                font-size: 1.2rem;
+                width: calc(50% - 20px);  /* Adjust for smaller screens */
+                height: 60px;
             }
         }
 
-        @keyframes slideInDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
+        @media (max-width: 768px) {
+            .category-container {
+                flex-direction: column;
+                gap: 30px;
             }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
 
-        @keyframes slideInUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes bounceIn {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-30px);
-            }
-            60% {
-                transform: translateY(-15px);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes jello {
-            0%, 11.1%, 100% {
-                transform: none;
-            }
-            22.2% {
-                transform: skewX(-12.5deg) skewY(-12.5deg);
-            }
-            33.3% {
-                transform: skewX(6.25deg) skewY(6.25deg);
-            }
-            44.4% {
-                transform: skewX(-3.125deg) skewY(-3.125deg);
-            }
-            55.5% {
-                transform: skewX(1.5625deg) skewY(1.5625deg);
-            }
-            66.6% {
-                transform: skewX(-0.78125deg) skewY(-0.78125deg);
-            }
-            77.7% {
-                transform: skewX(0.390625deg) skewY(0.390625deg);
-            }
-            88.8% {
-                transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
+            .page-link {
+                font-size: 1rem;
+                width: calc(100% - 20px);  /* Full width for mobile */
+                height: 60px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="logo">Teo's Tools</h1>
-    <h2 class="logo">(intended for PC)</h2>
-    
+    <h1>Teo's Tools</h1>
+
     <div class="category-container">
-        <div class="category" id="islamic">🕋</div>
-        <div class="category" id="tools">🛠️</div>
-    </div>
-    
-    <div class="side-menu islamic-menu" id="islamicMenu">
-        <div class="menu-item"><a href="Quran" class="menu-link">The Holy Qur'an</a></div>
-        <div class="menu-item"><a href="jannah" class="menu-link">Jannatul Firdaus</a></div>
-        <div class="menu-item"><a href="thehistoryofislam" class="menu-link">Islam's History</a></div>
-        <div class="menu-item"><a href="thehistoryofpalestine" class="menu-link">Palestine's History</a></div>
-        <div class="menu-item"><a href="khutbah" class="menu-link">Khutbah Guidance</a></div>
-        <div class="menu-item"><a href="islamicphrases" class="menu-link">Islamic Phrases</a></div>
+        <!-- Tools Category -->
+        <div class="category" id="tools" aria-label="Tools Section">
+            🛠️
+        </div>
+
+        <!-- Islamic Category -->
+        <div class="category" id="islamic" aria-label="Islamic Section">
+            🕋
+        </div>
     </div>
 
-    <div class="side-menu tools-menu" id="toolsMenu">
-        <div class="menu-item"><a href="memorization" class="menu-link">Memorization</a></div>
-        <div class="menu-item"><a href="audiomemorizer" class="menu-link">Playback Master</a></div>
-        <div class="menu-item"><a href="whiteboard" class="menu-link">Infinite Whiteboard</a></div>
-        <div class="menu-item"><a href="exercise" class="menu-link">Interval Timer</a></div>
+    <!-- Display Area Wrapper to ensure content stays within limits -->
+    <div class="display-area-wrapper">
+        <div class="display-area" id="display-area">
+            <a href="memorization" class="page-link" aria-label="Memorization Tool">🧠 <span>Memorization</span></a>
+            <a href="audiomemorizer" class="page-link" aria-label="Playback Master Tool">🎧 <span>Playback Master</span></a>
+            <a href="whiteboard" class="page-link" aria-label="Infinite Whiteboard Tool">📝 <span>Infinite Whiteboard</span></a>
+            <a href="exercise" class="page-link" aria-label="Interval Timer Tool">⏱️ <span>Interval Timer</span></a>
+            <a href="Quran" class="page-link" aria-label="The Holy Qur'an">📖 <span>The Holy Qur'an</span></a>
+            <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Jannatul Firdaus</span></a>
+            <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
+            <a href="thehistoryofpalestine" class="page-link" aria-label="History of Palestine">🌍 <span>Palestine's History</span></a>
+            <a href="khutbah" class="page-link" aria-label="Khutbah Guidance">🕌 <span>Khutbah Guidance</span></a>
+            <a href="islamicphrases" class="page-link" aria-label="Islamic Phrases">💬 <span>Islamic Phrases</span></a>
+        </div>
     </div>
-</div>
 
-<script>
-    const islamic = document.getElementById('islamic');
-    const tools = document.getElementById('tools');
-    const islamicMenu = document.getElementById('islamicMenu');
-    const toolsMenu = document.getElementById('toolsMenu');
-    let islamicTimeout, toolsTimeout;
+    <script>
+        const toolsPages = [
+            "Memorization", "Playback Master", "Infinite Whiteboard", "Interval Timer"
+        ];
 
-    // Function to show a menu and clear the timeout if it exists
-    function showMenu(menu) {
-        menu.style.display = 'block';
-        menu.style.opacity = '1';
-        menu.style.transform = 'translateY(0)'; // Added smooth entrance animation
-        clearTimeout(islamicTimeout);
-        clearTimeout(toolsTimeout);
-    }
+        const islamicPages = [
+            "The Holy Qur'an", "Jannatul Firdaus", "Islam's History", "Palestine's History", "Khutbah Guidance", "Islamic Phrases"
+        ];
 
-    // Function to hide a menu after 5 seconds with fade-out effect
-    function hideMenuAfterDelay(menu, timeoutVar) {
-        timeoutVar = setTimeout(() => {
-            menu.style.opacity = '0';
-            menu.style.transform = 'translateY(-20px)'; // Slide out with fade-out
+        const displayArea = document.getElementById('display-area');
+        const pageLinks = document.querySelectorAll('.page-link');
+        let timeout;
+
+        function showLinks(emojiType) {
+            clearTimeout(timeout);
+            displayArea.style.display = 'flex';
+            displayArea.style.animation = 'fadeIn 0.5s forwards'; // Reset fade-in animation
+            pageLinks.forEach(link => link.style.display = 'none');  // Hide all links
+
+            if (emojiType === 'tools') {
+                toolsPages.forEach((page, index) => pageLinks[index].style.display = 'flex');
+            } else if (emojiType === 'islamic') {
+                islamicPages.forEach((page, index) => pageLinks[toolsPages.length + index].style.display = 'flex');
+            }
+
+            timeout = setTimeout(() => {
+                fadeOutLinks();
+            }, 10000);  // 10 seconds before fading
+        }
+
+        function fadeOutLinks() {
+            displayArea.style.animation = 'fadeOut 0.5s forwards';
             setTimeout(() => {
-                menu.style.display = 'none';
+                displayArea.style.display = 'none';
+                displayArea.style.animation = '';  // Reset animation
             }, 500);
-        }, 10000);
-    }
+        }
 
-    // Hover over Islamic emoji
-    islamic.addEventListener('mouseover', () => {
-        showMenu(islamicMenu);
-        hideMenuAfterDelay(toolsMenu, toolsTimeout); // Hide tools menu if it's visible
-    });
+        document.getElementById('tools').addEventListener('mouseenter', () => {
+            showLinks('tools');
+        });
 
-    // Hover out of Islamic emoji
-    islamic.addEventListener('mouseleave', () => {
-        hideMenuAfterDelay(islamicMenu, islamicTimeout);
-    });
-
-    // Hover over Tools emoji
-    tools.addEventListener('mouseover', () => {
-        showMenu(toolsMenu);
-        hideMenuAfterDelay(islamicMenu, islamicTimeout); // Hide islamic menu if it's visible
-    });
-
-    // Hover out of Tools emoji
-    tools.addEventListener('mouseleave', () => {
-        hideMenuAfterDelay(toolsMenu, toolsTimeout);
-    });
-</script>
+        document.getElementById('islamic').addEventListener('mouseenter', () => {
+            showLinks('islamic');
+        });
+    </script>
 
 </body>
 </html>
