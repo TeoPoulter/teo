@@ -20,7 +20,6 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            /* Removed overflow: hidden to allow scrolling */
         }
 
         @keyframes gradientBG {
@@ -273,13 +272,18 @@
             }, 500);
         }
 
-        document.getElementById('tools').addEventListener('mouseenter', () => {
-            showLinks('tools');
-        });
+        // Add event listeners for both hover and touch/click events
+        const toolsIcon = document.getElementById('tools');
+        const islamicIcon = document.getElementById('islamic');
 
-        document.getElementById('islamic').addEventListener('mouseenter', () => {
-            showLinks('islamic');
-        });
+        toolsIcon.addEventListener('mouseenter', () => showLinks('tools'));
+        islamicIcon.addEventListener('mouseenter', () => showLinks('islamic'));
+
+        // Add touch and click event listeners to ensure functionality on mobile and tablets
+        toolsIcon.addEventListener('click', () => showLinks('tools'));
+        toolsIcon.addEventListener('touchstart', () => showLinks('tools'));
+        islamicIcon.addEventListener('click', () => showLinks('islamic'));
+        islamicIcon.addEventListener('touchstart', () => showLinks('islamic'));
     </script>
 
 </body>
