@@ -180,6 +180,17 @@
             100% { opacity: 0; }
         }
 
+        /* Special Styling for "The Truth" */
+        .page-link.truth {
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .page-link.truth:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .page-link {
@@ -221,10 +232,14 @@
 
     <div class="display-area-wrapper">
         <div class="display-area" id="display-area">
+            <!-- Tools Submenu Links -->
             <a href="memorization" class="page-link" aria-label="Memorization Tool">🧠 <span>Memorization</span></a>
             <a href="audiomemorizer" class="page-link" aria-label="Playback Master Tool">🎧 <span>Playback Master</span></a>
             <a href="whiteboard" class="page-link" aria-label="Infinite Whiteboard Tool">📝 <span>Infinite Whiteboard</span></a>
             <a href="exercise" class="page-link" aria-label="Interval Timer Tool">⏱️ <span>Interval Timer</span></a>
+
+            <!-- Islamic Submenu Links -->
+            <a href="/thetruth" class="page-link truth" aria-label="The Truth">🔑 <span>The Truth</span></a>
             <a href="Quran" class="page-link" aria-label="The Holy Qur'an">📖 <span>The Holy Qur'an</span></a>
             <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Jannatul Firdaus</span></a>
             <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
@@ -240,7 +255,7 @@
         ];
 
         const islamicPages = [
-            "The Holy Qur'an", "Jannatul Firdaus", "Islam's History", "Palestine's History", "Khutbah Guidance", "Islamic Phrases"
+            "The Truth", "The Holy Qur'an", "Jannatul Firdaus", "Islam's History", "Palestine's History", "Khutbah Guidance", "Islamic Phrases"
         ];
 
         const displayArea = document.getElementById('display-area');
@@ -254,9 +269,19 @@
             pageLinks.forEach(link => link.style.display = 'none');
 
             if (emojiType === 'tools') {
-                toolsPages.forEach((page, index) => pageLinks[index].style.display = 'flex');
+                toolsPages.forEach((page, index) => {
+                    const link = pageLinks[index];
+                    if (link) {
+                        link.style.display = 'flex';
+                    }
+                });
             } else if (emojiType === 'islamic') {
-                islamicPages.forEach((page, index) => pageLinks[toolsPages.length + index].style.display = 'flex');
+                islamicPages.forEach((page, index) => {
+                    const link = pageLinks[toolsPages.length + index];
+                    if (link) {
+                        link.style.display = 'flex';
+                    }
+                });
             }
 
             timeout = setTimeout(() => {
