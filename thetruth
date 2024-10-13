@@ -1,1 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Why Islam Is The Truth - A comprehensive guide derived from Dr. Zakir Naik's lecture.">
+    <meta name="keywords" content="Islam, Truth, Quran, Dr. Zakir Naik, Lecture">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Islam Is The Truth</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://static-00.iconduck.com/assets.00/kaaba-emoji-2048x2048-h4jreeuv.png" type="image/png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        /* Variables for Dark Theme */
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #f5f5f5;
+            --accent-color: #1abc9c;
+            --nav-bg: #1e1e1e;
+            --card-bg: #1e1e1e;
+            --link-color: #3498db;
+            --hover-color: #16a085;
+            --error-color: #e74c3c;
+            --special-blue: #3246a8;
+        }
+
+        /* Body Styles */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            text-align: center;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--nav-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        nav .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-left: 2rem;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--hover-color);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 140px;
+            padding: 3rem;
+        }
+
+        /* Grand Title */
+        .grand-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Section Styles */
+        .section {
+            background-color: var(--card-bg);
+            margin: 3rem auto;
+            padding: 3rem;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background-color 0.3s;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .section h2 {
+            font-size: 2.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            font-family: 'Georgia', serif;
+        }
+
+        .section h3 {
+            font-size: 2.8rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .section p {
+            font-size: 1.4rem;
+            line-height: 2;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section p.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            background-color: #2c2c2c;
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 1.5rem;
+            width: 80%;
+            max-width: 800px;
+            margin: 2rem auto;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .collapsible.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .collapsible:hover {
+            background-color: #333;
+        }
+
+        .active {
+            background-color: var(--hover-color);
+        }
+
+        .content {
+            padding: 1.5rem 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background-color: var(--card-bg);
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 2rem;
+            width: 80%;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .content p {
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 2;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .content p.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .content h3 {
+            font-size: 2.8rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        /* Arabic Text Styling */
+        .arabic {
+            font-size: 2rem;
+            font-weight: bold;
+            direction: rtl;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #ffdd00;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .arabic.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .big-point {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .big-point.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .timestamp {
+            color: #888;
+            font-size: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Profound Line Styling */
+        .profound-line {
+            background: linear-gradient(-45deg, #282828, #1a1a1a);
+            color: #fff;
+            font-size: 2rem;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background-color: var(--nav-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Link Styles */
+        a {
+            color: var(--link-color);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #ffdd00; /* same yellow as Arabic text */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section, .collapsible, .content {
+                width: 95%;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav .logo {
+                margin-bottom: 1rem;
+                font-size: 2rem;
+            }
+
+            .grand-title {
+                font-size: 3rem;
+            }
+
+            .section h2 {
+                font-size: 2.5rem;
+            }
+
+            .collapsible {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">The Truth</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="grand-title animate-title">Why Islam Is The Truth</div>
+
+        <!-- Credit to Dr. Zakir Naik -->
+        <section class="section">
+            <p>
+                <em>
+                    The content of this page is derived from <a href="https://youtu.be/9RuQMD4yYWg?si=Wmw3KciwerIfl-Up" target="_blank">the insightful lecture by Dr. Zakir Naik</a>, a renowned Islamic orator. His wisdom and knowledge have been instrumental in compiling these points to help convey the truth of Islam.
+                </em>
+            </p>
+        </section>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2 class="animate-title">Introduction</h2>
+            <p>
+                Many people have misconceptions that Islam is a new religion that came into existence 1,400 years ago, and that Prophet Muhammad <span>&#xFDFA;</span> is the founder of the religion.
+            </p>
+            <p>
+                <strong>In fact, Islam has existed since the beginning of time, since man set foot on this earth.</strong>
+            </p>
+            <p>
+                <strong><span style="color: #3246a8;">Prophet Muhammad <span>&#xFDFA;</span> is not the founder of this religion;</span></strong><br> he is the last and final messenger of Almighty God, to whom was revealed the last and final message—the glorious Qur'an.
+            </p>
+            <p>
+                All the other messengers that came before the last and final messenger, Prophet Muhammad <span>&#xFDFA;</span>, were <strong>only sent for a particular group of people</strong>, and their message was only meant to be followed by that group for a limited time period.
+            </p>
+            <p>
+                Since all the other revelations were meant for a particular group of people and for a particular time period, the miracles performed by the earlier messengers satisfied the people of that time.
+            </p>
+            <p>
+                Today, we cannot go back in time to examine and verify these miracles.
+            </p>
+            <p>
+                But Prophet Muhammad <span>&#xFDFA;</span> was not sent only for the Muslims or only for the Arabs. The glorious Qur'an says in <a href="https://quran.com/21/107" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 107</a>:
+            </p>
+            <div class="arabic">
+                وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ
+            </div>
+            <p>
+                <em>"We have not sent you, [O Muhammad], except as a mercy to the worlds."</em>
+            </p>
+            <p>
+                Since Prophet Muhammad <span>&#xFDFA;</span> was sent for the whole of humanity and he was the last messenger, the miracle given to him is not time-bound.
+            </p>
+            <p class="big-point">
+                <strong>The miracle given to him should satisfy the people at that time and even today, as well as to eternity.</strong>
+            </p>
+            <p>
+                It should be examinable and satisfy till eternity.
+            </p>
+            <p>
+                <span style="color: #3246a8;">It is a miracle of all times.</span>
+            </p>
+            <p>
+                It could satisfy the people of that time, it can even satisfy people today, and it can be verified and examined <em>even till the last day.</em>
+            </p>
+        </section>
+
+        <!-- The Origin of the Qur'an -->
+        <button class="collapsible animate-title">The Origin of the Qur'an</button>
+        <div class="content">
+            <p>
+                As far as the Qur'an is concerned, any human being who has the slightest knowledge of the Qur'an, irrespective of whether he is a Muslim or non-Muslim, can have various allegations or replies—right or wrong—about its origin.
+            </p>
+            <p>
+                All of them can be broadly classified into three categories:
+            </p>
+            <ol style="text-align: left; margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li style="color: var(--error-color); font-size: 1.2rem; margin-bottom: 1.5rem;">
+                    That Prophet Muhammad <span>&#xFDFA;</span> was consciously, subconsciously, or unconsciously the author of the Qur'an.
+                </li>
+                <br>
+                <li style="color: var(--error-color); font-size: 1.2rem; margin-bottom: 1.5rem;">
+                    That the Qur'an was written by Prophet Muhammad <span>&#xFDFA;</span> who learned it from other sources or he copied or plagiarized from other religious scriptures.
+                </li>
+                <br>
+                <li style="color: var(--accent-color); font-size: 1.2rem; margin-bottom: 1.5rem;">
+                    That the Qur'an has no human origin, no human source, and it is word by word the revelation from Almighty God.
+                </li>
+            </ol>
+            <p class="big-point">
+                <strong>Any answers you have for the origin of the Qur'an can be broadly classified into these three categories.</strong>
+            </p>
+            <p>
+                Today, let's examine and verify the various answers given by different human beings.
+            </p>
+        </div>
+
+        <!-- Could Prophet Muhammad ﷺ Be the Author? -->
+        <button class="collapsible animate-title">Could Prophet Muhammad <span>&#xFDFA;</span> Be the Author?</button>
+        <div class="content">
+            <p>
+                First, we will discuss: Can Muhammad <span>&#xFDFA;</span> be the author of the Qur'an, whether consciously, subconsciously, or unconsciously?
+            </p>
+            <p>
+                It is unfortunate when an individual disputes another person's modest claim of not being responsible for a significant work, whether in literature or science.
+            </p>
+            <p>
+                But this is exactly what the critics of Islam do when they say that Prophet Muhammad <span>&#xFDFA;</span> was the author of the Qur'an.
+            </p>
+            <p>
+                Never has the Prophet <span>&#xFDFA;</span> ever claimed that he was the author of the Qur'an, <strong>not even a single word of it</strong>.
+            </p>
+            <p>
+                Yet, when he disclaimed that he was not the author, and the Qur'an happens to be a masterpiece of Arabic literature, why would a person disclaim the responsibility of a work which is a masterpiece?
+            </p>
+            <p>
+                <strong>Why should he lie?</strong>
+            </p>
+            <p>
+                From his youth till the day he claimed prophethood at the age of forty, never has a single lie been reported to have been said by Muhammad <span>&#xFDFA;</span>.
+            </p>
+            <p>
+                He was known for his truthfulness, honesty, and chastity, and he was given the title "Al-Amin" (the trustworthy) by friends and foes alike.
+            </p>
+            <p>
+                Even after he claimed prophethood, his enemies kept their valuables with him for safekeeping.
+            </p>
+            <p>
+                When the Prophet <span>&#xFDFA;</span> migrated from Mecca to Medina, we have the example of Abu Sufyan, who was the chief of one of the tribes of Mecca.
+            </p>
+            <p>
+                When he went to Emperor Heraclius and asked him for support against the Prophet <span>&#xFDFA;</span>, the Emperor asked him, <em>"Do you know of any instance where the Prophet lied or committed any injustice?"</em>
+            </p>
+            <p>
+                Abu Sufyan, even though he was an enemy of the Prophet <span>&#xFDFA;</span> at that time, had to reply, "No."
+            </p>
+            <p>
+                <strong>So why should a person with such honesty, trust, and chastity lie?</strong>
+            </p>
+        </div>
+
+        <!-- Allegations Against the Prophet ﷺ -->
+        <button class="collapsible animate-title">Allegations Against the Prophet <span>&#xFDFA;</span></button>
+        <div class="content">
+            <br><br>
+            <p>
+                Let's analyze the various claims made by critics of Islam against Prophet Muhammad <span>&#xFDFA;</span>.
+            </p>
+
+            <h3 class="animate-title">Material Gains</h3>
+            <p>
+                One of the claims made by the critics of Islam is that the Prophet <span>&#xFDFA;</span> lied that he was not the author of the Qur'an and said it was from Almighty God for material gains.
+            </p>
+            <p>
+                We know that there are many men who claim to be prophets, preachers, or saints in order to lead a luxurious life, and we have hundreds and thousands of examples in the world today.
+            </p>
+            <p>
+                But if we see the lifestyle of the Prophet <span>&#xFDFA;</span>, he led a more luxurious life before he claimed prophethood than after.
+            </p>
+            <p>
+                If he did it for money, his life should have been better after claiming prophethood, like we see today with those who claim to be prophets and saints.
+            </p>
+            <p>
+                Furthermore, we have records in several Sahih Hadith, including the Hadith narrated by <a href="https://sunnah.com/bukhari:2567" target="_blank">Urwa ibn al-Zubayr, Sahih al-Bukhari 2567</a>, that one of his wives, Aisha (may Allah be pleased with her), said that there were times when fire was not lit in the house for a month or two, indicating that food was not cooked for a month or two, and they only survived on dates and water, and sometimes milk given by the neighbors.
+            </p>
+
+            <h3 class="animate-title">Desire for Fame and Leadership</h3>
+            <p>
+                Some critics say that Prophet Muhammad <span>&#xFDFA;</span> attributed the Qur'an to Almighty God because he wanted fame, status, glory, and leadership.
+            </p>
+            <p>
+                According to Michael H. Hart, who wrote <em>"The 100: A Ranking of the Most Influential Persons in History,"</em> he analyzes all the human beings from Adam (peace be upon him) till the present time and undeniably puts Prophet Muhammad <span>&#xFDFA;</span> as number one as being the most influential person in the history of humankind.
+            </p>
+            <p>
+                Prophet Muhammad <span>&#xFDFA;</span>, if he wanted glory, fame, power, or leadership, he was so eloquent; he had all the qualities; he did not have to falsely attribute the Qur'an to Almighty God.
+            </p>
+            <p>
+                If we analyze logically, any person who wants power, glory, leadership, fame, status, along with it is attached good food, fancy clothes, magnificent, monumental palaces, guards, etc.
+            </p>
+            <p>
+                But if we see the lifestyle of Prophet Muhammad <span>&#xFDFA;</span>, he mended his own clothes; he repaired his own shoes; he milked the goat and did his own household work.
+            </p>
+            <p>
+                He sat on the floor and ate.
+            </p>
+            <p>
+                When he went to the marketplace, he didn't have any colorful guards.
+            </p>
+            <p>
+                He was an example of simplicity and humbleness.
+            </p>
+            <p>
+                Anyone who invited him, even the poor, he would accept their invitation and eat whatever was served to him.
+            </p>
+            <p>
+                So much so that his enemies passed remarks, which are mentioned in the Qur'an in <a href="https://quran.com/9/61" target="_blank">Surah At-Tawbah, Chapter 9, Verse 61</a>:
+            </p>
+            <div class="arabic">
+                وَيَقُولُونَ هُوَ أُذُنٌ ۚ
+            </div>
+            <p>
+                <em>"And among them are those who abuse the Prophet and say, 'He is an ear.'" [i.e., he listens to everyone]</em>
+            </p>
+
+            <h3 class="animate-title">Unifying the Arabs</h3>
+            <p>
+                Some critics say that the Prophet <span>&#xFDFA;</span> attributed the Qur'an to Almighty God because he wanted to unite the Arabs.
+            </p>
+            <p>
+                This is known as the <em>Arab Unity and Liberation Theory.</em>
+            </p>
+            <p>
+                There is not a single verse in the Qur'an which singles out and speaks exclusively of Arab unity.
+            </p>
+            <p>
+                The Qur'an has the concept of "Ummah," which is the nation of the whole of humankind.
+            </p>
+            <p>
+                The criteria for any human being to be superior to any other human being is not caste, color, wealth, or sex, but it is piety and righteousness.
+            </p>
+            <p>
+                This is mentioned in the Qur'an in <a href="https://quran.com/49/13" target="_blank">Surah Al-Hujurat, Chapter 49, Verse 13</a>:
+            </p>
+            <div class="arabic">
+                يَا أَيُّهَا النَّاسُ إِنَّا خَلَقْنَاكُم مِّن ذَكَرٍ وَأُنثَىٰ
+                وَجَعَلْنَاكُمْ شُعُوبًا وَقَبَائِلَ لِتَعَارَفُوا ۚ
+                إِنَّ أَكْرَمَكُمْ عِندَ اللَّهِ أَتْقَاكُمْ ۚ
+                إِنَّ اللَّهُ عَلِيمٌ خَبِيرٌ
+            </div>
+            <p>
+                <em>"O mankind, indeed We have created you from male and female and made you peoples and tribes that you may know one another.
+                Indeed, the most noble of you in the sight of Allah is the most righteous of you.
+                Indeed, Allah is Knowing and Acquainted."</em>
+            </p>
+            <p>
+                If the Prophet <span>&#xFDFA;</span> wanted unity among the Arabs, he could have easily taken the leadership and become the leader and the king and united the Arabs easily.
+            </p>
+
+            <h3 class="animate-title">Moral Reformation</h3>
+            <p>
+                Another allegation is known as the <em>Theory for Moral Reformation.</em>
+            </p>
+            <p>
+                Critics say the Prophet <span>&#xFDFA;</span> attributed the Qur'an to Almighty God because he wanted to reform the people.
+            </p>
+            <p>
+                <strong>Why should a person lie to reform the people morally?</strong>
+            </p>
+            <p>
+                If you want to be truthful, you cannot lie to be truthful.
+            </p>
+            <p>
+                The means should match with the goal.
+            </p>
+            <p>
+                And the Qur'an says in <a href="https://quran.com/6/93" target="_blank">Surah Al-An'am, Chapter 6, Verse 93</a>:
+            </p>
+            <div class="arabic">
+                وَمَنْ أَظْلَمُ مِمَّنِ افْتَرَىٰ عَلَى اللَّهِ كَذِبًا
+            </div>
+            <p>
+                <em>"And who is more unjust than one who invents a lie about Allah..."</em>
+            </p>
+            <p>
+                There were chances that one day later on the Prophet <span>&#xFDFA;</span> would have been exposed, and he would be cursing himself in the same book.
+            </p>
+        </div>
+
+        <!-- Was the Qur'an Plagiarized? -->
+        <button class="collapsible animate-title">Was the Qur'an Plagiarized?</button>
+        <div class="content">
+            <p>
+                Let's discuss the second category: that the Prophet <span>&#xFDFA;</span> learned it from other sources or he copied or plagiarized from other religious scriptures.
+            </p>
+            <p>
+                There are various allegations made by non-Muslims and the critics of Islam that the Prophet <span>&#xFDFA;</span> learned the Qur'an from a Roman blacksmith who was living on the outskirts of Mecca.
+            </p>
+            <p>
+                Allah responds to this allegation in the Qur'an in <a href="https://quran.com/16/103" target="_blank">Surah An-Nahl, Chapter 16, Verse 103</a>:
+            </p>
+            <div class="arabic">
+                وَلَقَدْ نَعْلَمُ أَنَّهُمْ يَقُولُونَ
+                إِنَّمَا يُعَلِّمُهُ بَشَرٌ ۗ
+                لِسَانُ الَّذِي يُلْحِدُونَ إِلَيْهِ
+                أَعْجَمِيٌّ وَهَٰذَا
+                لِسَانٌ عَرَبِيٌّ مُّبِينٌ
+            </div>
+            <p>
+                <em>"And We certainly know that they say, 'It is only a human being who teaches him.'
+                The tongue of the one they refer to is foreign, and this [Qur'an] is [in] a clear Arabic language."</em>
+            </p>
+            <p>
+                The Roman blacksmith could hardly speak Arabic; he was a foreigner.
+            </p>
+            <p>
+                <strong>How could the Prophet <span>&#xFDFA;</span> learn from him?</strong>
+            </p>
+            <p>
+                Some people say that the Prophet <span>&#xFDFA;</span> learned from Waraqah ibn Nawfal, the relative of his wife Khadijah (may Allah be pleased with her).
+            </p>
+            <p>
+                But historical records show that the Prophet <span>&#xFDFA;</span> met Waraqah only twice in his life: once before he claimed prophethood, and the second time immediately after the first revelation.
+            </p>
+            <p>
+                Waraqah died three years later, and the Qur'an continued to be revealed for 22 years after that.
+            </p>
+            <p>
+                Some say he learned from the Jews and Christians.
+            </p>
+            <p>
+                But the Prophet <span>&#xFDFA;</span> had limited interactions with them, and it was the Prophet <span>&#xFDFA;</span> who was teaching them about the true message of God, not the other way around.
+            </p>
+            <p>
+                Furthermore, we know that the Prophet <span>&#xFDFA;</span> was illiterate.
+            </p>
+            <p>
+                Allah says in the Qur'an in <a href="https://quran.com/29/48" target="_blank">Surah Al-Ankabut, Chapter 29, Verse 48</a>:
+            </p>
+            <div class="arabic">
+                وَمَا كُنتَ تَتْلُو مِن قَبْلِهِ
+                مِن كِتَابٍ وَلَا تَخُطُّهُ بِيَمِينِكَ
+                إِذًا لَّارْتَابَ الْمُبْطِلُونَ
+            </div>
+            <p>
+                <em>"And you did not recite before it any scripture, nor did you inscribe one with your right hand.
+                Otherwise the falsifiers would have had [cause for] doubt."</em>
+            </p>
+            <p>
+                This verse points out that the Prophet <span>&#xFDFA;</span> was unlettered and could not read or write.
+            </p>
+            <p>
+                Therefore, the question of copying from previous scriptures does not arise.
+            </p>
+        </div>
+
+        <!-- Scientific Miracles of the Qur'an -->
+        <button class="collapsible animate-title">Scientific Miracles of the Qur'an</button>
+        <div class="content">
+            <p>
+                The Qur'an contains numerous scientific facts that were unknown at the time of its revelation and have only been discovered recently.
+            </p>
+
+            <h3 class="animate-title">The Big Bang</h3>
+            <p>
+                The Qur'an mentions the Big Bang in <a href="https://quran.com/21/30" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 30</a>:
+            </p>
+            <div class="arabic">
+                أَوَلَمْ يَرَ الَّذِينَ كَفَرُوا
+                أَنَّ السَّمَاوَاتِ وَالْأَرْضَ
+                كَانَتَا رَتْقًا فَفَتَقْنَاهُمَا
+            </div>
+            <p>
+                <em>"Have those who disbelieved not considered that the heavens and the earth were a joined entity, and We separated them..."</em>
+            </p>
+            <p>
+                This verse accurately describes the Big Bang theory, which scientists discovered only about 50 years ago.
+            </p>
+
+            <h3 class="animate-title">Shape of the Earth</h3>
+            <p>
+                The Qur'an describes the Earth's shape in <a href="https://quran.com/79/30" target="_blank">Surah An-Nazi'at, Chapter 79, Verse 30</a>:
+            </p>
+            <div class="arabic">
+                وَالْأَرْضَ بَعْدَ ذَٰلِكَ دَحَاهَا
+            </div>
+            <p>
+                <em>"And after that He spread the earth."</em>
+            </p>
+            <p>
+                The word "dahaha" means to make the earth egg-shaped, specifically like the ostrich egg, which is geospherical in shape.
+            </p>
+            <p>
+                Modern science has confirmed that the Earth is not completely round like a ball but is flattened at the poles and bulging at the equator.
+            </p>
+
+            <h3 class="animate-title">Light of the Moon</h3>
+            <p>
+                The Qur'an mentions that the light of the moon is reflected light in <a href="https://quran.com/25/61" target="_blank">Surah Al-Furqan, Chapter 25, Verse 61</a>:
+            </p>
+            <div class="arabic">
+                تَبَارَكَ الَّذِي جَعَلَ فِي السَّمَاءِ
+                بُرُوجًا وَجَعَلَ فِيهَا
+                سِرَاجًا وَقَمَرًا مُّنِيرًا
+            </div>
+            <p>
+                <em>"Blessed is He who has placed in the sky great stars and placed therein a [burning] lamp and luminous moon."</em>
+            </p>
+            <p>
+                The Arabic words used distinguish between the sun (Siraj) as a lamp emitting its own light and the moon (Qamar) as Munir, which means borrowed or reflected light.
+            </p>
+
+            <h3 class="animate-title">Sun's Rotation</h3>
+            <p>
+                The Qur'an mentions the sun's rotation in <a href="https://quran.com/21/33" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 33</a>:
+            </p>
+            <div class="arabic">
+                وَهُوَ الَّذِي خَلَقَ اللَّيْلَ وَالنَّهَارَ
+                وَالشَّمْسَ وَالْقَمَرَ ۖ
+                كُلٌّ فِي فَلَكٍ يَسْبَحُونَ
+            </div>
+            <p>
+                <em>"And it is He who created the night and the day and the sun and the moon; all [heavenly bodies] in an orbit are swimming."</em>
+            </p>
+            <p>
+                Modern science tells us that the sun rotates on its axis, taking approximately 25 days to complete one rotation.
+            </p>
+
+            <h3 class="animate-title">The Water Cycle</h3>
+            <p>
+                The Qur'an describes the water cycle in great detail in several verses, including <a href="https://quran.com/39/21" target="_blank">Surah Az-Zumar, Chapter 39, Verse 21</a>:
+            </p>
+            <div class="arabic">
+                أَلَمْ تَرَ أَنَّ اللَّهَ
+                أَنْزَلَ مِنَ السَّمَاءِ مَاءً
+                فَسَلَكَهُ يَنَابِيعَ فِي الْأَرْضِ
+                ثُمَّ يُخْرِجُ بِهِ زَرْعًا
+                مُخْتَلِفًا أَلْوَانُهُ
+            </div>
+            <p>
+                <em>"Do you not see that Allah sends down rain from the sky and makes it flow as springs in the earth; then He produces thereby crops of varying colors..."</em>
+            </p>
+            <p>
+                The water cycle was first described by Bernard Palissy in 1580, but the Qur'an mentioned it 1,400 years ago.
+            </p>
+
+            <h3 class="animate-title">Mountains as Pegs</h3>
+            <p>
+                The Qur'an describes mountains as pegs in <a href="https://quran.com/78/6-7" target="_blank">Surah An-Naba, Chapter 78, Verses 6-7</a>:
+            </p>
+            <div class="arabic">
+                أَلَمْ نَجْعَلِ الْأَرْضَ مِهَادًا
+                وَالْجِبَالَ أَوْتَادًا
+            </div>
+            <p>
+                <em>"Have We not made the earth a resting place? And the mountains as stakes?"</em>
+            </p>
+            <p>
+                Modern geology has confirmed that mountains have deep roots and act like stakes or pegs stabilizing the Earth's crust.
+            </p>
+
+            <h3 class="animate-title">Barrier Between Seas</h3>
+            <p>
+                The Qur'an mentions the barrier between seas in <a href="https://quran.com/25/53" target="_blank">Surah Al-Furqan, Chapter 25, Verse 53</a>:
+            </p>
+            <div class="arabic">
+                وَهُوَ الَّذِي مَرَجَ الْبَحْرَيْنِ
+                هَٰذَا عَذْبٌ فُرَاتٌ
+                وَهَٰذَا مِلْحٌ أُجَاجٌ
+                وَجَعَلَ بَيْنَهُمَا بَرْزَخًا
+                وَحِجْرًا مَّحْجُورًا
+            </div>
+            <p>
+                <em>"And it is He who has released [simultaneously] the two seas, one fresh and sweet and one salty and bitter, and He placed between them a barrier and prohibiting partition."</em>
+            </p>
+            <p>
+                Modern science has discovered that in places where two different seas meet, there is a barrier between them.
+            </p>
+
+            <h3 class="animate-title">Creation from Water</h3>
+            <p>
+                The Qur'an states that all living things are made of water in <a href="https://quran.com/21/30" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 30</a>:
+            </p>
+            <div class="arabic">
+                وَجَعَلْنَا مِنَ الْمَاءِ كُلَّ شَيْءٍ حَيٍّ ۖ
+                أَفَلَا يُؤْمِنُونَ
+            </div>
+            <p>
+                <em>"...and We made from water every living thing. Then will they not believe?"</em>
+            </p>
+            <p>
+                Science has confirmed that all living organisms consist mostly of water.
+            </p>
+
+            <h3 class="animate-title">Fingerprints</h3>
+            <p>
+                The Qur'an mentions in <a href="https://quran.com/75/3-4" target="_blank">Surah Al-Qiyamah, Chapter 75, Verses 3-4</a>:
+            </p>
+            <div class="arabic">
+                أَيَحْسَبُ الْإِنسَانُ أَلَّن نَّجْمَعَ عِظَامَهُ
+                بَلَىٰ قَادِرِينَ عَلَىٰ أَن نُّسَوِّيَ بَنَانَهُ
+            </div>
+            <p>
+                <em>"Does man think that We will not assemble his bones? Yes. [We are] Able [even] to proportion his fingertips."</em>
+            </p>
+            <p>
+                It was in 1880 that Sir Francis Galton discovered the fingerprinting method.
+            </p>
+            <p>
+                The Qur'an mentioned this fact 1,400 years ago.
+            </p>
+
+            <h3 class="animate-title">Pain Receptors</h3>
+            <p>
+                The Qur'an mentions in <a href="https://quran.com/4/56" target="_blank">Surah An-Nisa, Chapter 4, Verse 56</a>:
+            </p>
+            <div class="arabic">
+                إِنَّ الَّذِينَ كَفَرُوا بِآيَاتِنَا
+                سَوْفَ نُصْلِيهِمْ نَارًا
+                كُلَّمَا نَضِجَتْ جُلُودُهُمْ
+                بَدَّلْنَاهُمْ جُلُودًا غَيْرَهَا
+                لِيَذُوقُوا الْعَذَابَ
+            </div>
+            <p>
+                <em>"Indeed, those who disbelieve in Our verses—We will drive them into a Fire. Every time their skins are roasted through We will replace them with other skins so they may taste the punishment..."</em>
+            </p>
+            <p>
+                Modern science has discovered that pain receptors are present in the skin.
+            </p>
+            <p>
+                This knowledge was only discovered recently, yet the Qur'an mentioned it 1,400 years ago.
+            </p>
+        </div>
+
+        <!-- Conclusion -->
+        <section class="section">
+            <h2 class="animate-title">Conclusion</h2>
+            <p>
+                The Qur'an contains numerous such scientific facts and miracles that were impossible for any human being to know 1,400 years ago.
+            </p>
+            <p>
+                <strong>The only plausible explanation is that the Qur'an is the word of Almighty God.</strong>
+            </p>
+            <p>
+                As Allah says in the Qur'an in <a href="https://quran.com/41/53" target="_blank">Surah Fussilat, Chapter 41, Verse 53</a>:
+            </p>
+            <div class="arabic">
+                سَنُرِيهِمْ آيَاتِنَا فِي الْآفَاقِ
+                وَفِي أَنفُسِهِمْ
+                حَتَّىٰ يَتَبَيَّنَ لَهُمْ
+                أَنَّهُ الْحَقُّ ۗ
+                أَوَلَمْ يَكْفِ بِرَبِّكَ
+                أَنَّهُ عَلَىٰ كُلِّ شَيْءٍ شَهِيدٌ
+            </div>
+            <p>
+                <em>"We will show them Our signs in the horizons and within themselves until it becomes clear to them that it is the truth.
+                But is it not sufficient concerning your Lord that He is, over all things, a Witness?"</em>
+            </p>
+        </section>
+
+        <!-- Profound Line -->
+        <div class="profound-line">
+            We invite you to reflect upon these signs and discover the truth of Islam.
+        </div>
+
+    </main>
+
+    <!-- JavaScript for Animations and Collapsible Sections -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Animate titles
+            var titles = document.querySelectorAll(".animate-title");
+            titles.forEach(function(title) {
+                var words = title.textContent.split(' ');
+                title.textContent = '';
+                words.forEach(function(word, index) {
+                    var span = document.createElement('span');
+                    span.textContent = word + ' ';
+                    span.style.opacity = 0;
+                    span.style.transition = 'opacity 0.5s ease-in-out';
+                    span.style.transitionDelay = (index * 0.3) + 's';
+                    title.appendChild(span);
+                    setTimeout(function() {
+                        span.style.opacity = 1;
+                    }, 50);
+                });
+            });
+
+            // Animate sections on scroll
+            var sections = document.querySelectorAll('.section, .collapsible, .content, .arabic, .big-point');
+            var options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            var callback = function(entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        var paragraphs = entry.target.querySelectorAll('p, .arabic, .big-point');
+                        paragraphs.forEach(function(p, index) {
+                            setTimeout(function() {
+                                p.classList.add('visible');
+                            }, index * 300);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            var observer = new IntersectionObserver(callback, options);
+            sections.forEach(function(section) {
+                observer.observe(section);
+            });
+
+            // Collapsible Sections
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].nextElementSibling.style.maxHeight = null; // Ensure they are collapsed by default
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight){
+                      content.style.maxHeight = null;
+                    } else {
+                      content.style.maxHeight = content.scrollHeight + "px";
+                    } 
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
