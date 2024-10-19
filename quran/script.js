@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const [hours = 0, minutes = 0, seconds = 0] = time.split(':').map(Number);
         return (hours * 3600) + (minutes * 60) + seconds;
     }
-
+ 
     // Surah data with lengths in seconds and revelation orders
     const surahList = [
         { number: 1, name: "Al-Fatiha", length: timeToSeconds("0:00:52"), revelationOrder: 5 },
