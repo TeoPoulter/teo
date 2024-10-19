@@ -284,81 +284,6 @@
             white-space: nowrap;
         }
 
-        /* Adjustments for smaller screens */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            #searchBar {
-                width: 90%;
-            }
-
-            .filter-buttons {
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .filter-buttons button {
-                width: 100%;
-            }
-
-            ul {
-                max-width: 100%;
-            }
-
-            li {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 15px;
-            }
-
-            .surah-name {
-                text-align: left;
-                padding-right: 0;
-            }
-
-            .three-dots {
-                margin-left: 0;
-                margin-top: 10px;
-                align-self: flex-end;
-            }
-
-            #bottomBar {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-                bottom: 10px;
-            }
-
-            #bottomBar .track-info {
-                margin-bottom: 5px;
-                width: 100%;
-                text-align: center;
-            }
-
-            #bottomBar .controls {
-                margin-bottom: 5px;
-            }
-
-            #bottomBar .progress-container {
-                margin: 0;
-                width: 100%;
-            }
-
-            #bottomBar .progress-container input[type="range"] {
-                width: 90%;
-            }
-
-            #playlistModalContent {
-                max-width: 90%;
-            }
-
-            .juz-header {
-                font-size: 1em;
-            }
-        }
-
         /* Repeat Menu Styles */
         #repeatMenu {
             display: none;
@@ -489,6 +414,145 @@
 
         .close-modal:hover {
             background: #e57373;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            body {
+                padding-bottom: 150px;
+            }
+
+            h1 {
+                font-size: 5em;
+            }
+
+            #searchBar {
+                width: 90%;
+                font-size: 1.5em;
+                padding: 15px 20px;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .filter-buttons button {
+                width: 100%;
+                font-size: 1.5em;
+                padding: 15px;
+            }
+
+            ul {
+                max-width: 100%;
+            }
+
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 25px;
+            }
+
+            .surah-name {
+                text-align: left;
+                padding-right: 0;
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+
+            .three-dots {
+                margin-left: 0;
+                margin-top: 10px;
+                align-self: flex-end;
+                font-size: 2em;
+            }
+
+            #bottomBar {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                bottom: 0;
+            }
+
+            #bottomBar .track-info {
+                margin-bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            #bottomBar .track-info .title {
+                font-size: 1.5em;
+            }
+
+            #bottomBar .controls {
+                margin-bottom: 10px;
+            }
+
+            #bottomBar .controls button {
+                font-size: 2em;
+            }
+
+            #bottomBar .progress-container {
+                margin: 0;
+                width: 100%;
+            }
+
+            #bottomBar .progress-container input[type="range"] {
+                width: 100%;
+            }
+
+            #bottomBar .progress-time {
+                font-size: 1.2em;
+            }
+
+            #playlistModalContent {
+                max-width: 95%;
+            }
+
+            .juz-header {
+                font-size: 1.5em;
+                padding: 20px;
+            }
+
+            .juz-content {
+                padding-left: 0;
+            }
+
+            .menu {
+                width: 90%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .menu p {
+                font-size: 1.5em;
+            }
+
+            .menu-slider {
+                width: 80%;
+            }
+
+            .add-button {
+                font-size: 1.2em;
+                padding: 10px 15px;
+            }
+
+            .close-modal {
+                font-size: 1.2em;
+                padding: 15px 20px;
+            }
+
+            button {
+                font-size: 1.5em;
+            }
+
+            #playlistDisplay h2 {
+                font-size: 2em;
+            }
+
+            #playlistItems .playlist-item {
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
@@ -680,7 +744,6 @@ const surahList = [
     { number: 113, name: "Al-Falaq", length: timeToSeconds("0:00:33"), revelationOrder: 20 },
     { number: 114, name: "An-Nas", length: timeToSeconds("0:00:50"), revelationOrder: 21 }
 ];
-
 
 
 
