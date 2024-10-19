@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quran Memorization</title>
+    <!-- Viewport meta tag for responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Link to Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+</head>
+<body>
+    <h1>Quran Memorization</h1>
+    <!-- Playlist Display -->
+    <div id="playlistDisplay" style="display: none;">
+        <h2>Your Playlist</h2>
+        <div id="playlistItems"></div>
+        <button id="playPlaylistButton" class="blue-button">Play Playlist</button>
+    </div>
+    <input type="text" id="searchBar" placeholder="Search Surah..." />
+    <div class="filter-buttons">
+        <button id="sortDefaultOrder">Qur'anic Order</button>
+        <button id="sortShortestToLongest">Shortest to Longest</button>
+        <button id="sortLongestToShortest">Longest to Shortest</button>
+        <button id="sortRevelationOrder">Revelation Order</button>
+        <button id="sortByJuz">Juz</button>
+        <button id="createPlaylistButton">Create Playlist</button>
+    </div>
+    <ul id="surahList"></ul>
+    <div id="juzList" class="juz-container" style="display: none;"></div>
 
+    <div id="bottomBar">
+        <div class="track-info">
+            <p id="bottomTrackTitle" class="title"></p>
+        </div>
+        <div class="controls">
+            <button id="playPauseButton">&#9654;</button>
+            <button id="repeatButton">&#128257;</button>
+        </div>
+        <div class="progress-container">
+            <input type="range" id="progressBar" value="0" step="0.1" min="0" max="100">
+            <div class="progress-time">
+                <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="menuTemplate" class="menu">
+        <p>How many times should Surah <span id="menuSurahName"></span> be played?</p>
+        <input type="range" id="surahPlayCount" class="menu-slider" min="1" max="31" step="1" value="1">
+        <span id="surahPlayCountValue">1</span> times
+        <br>
+        <button id="closeMenuButton">Close</button>
+    </div>
+
+    <!-- Repeat Menu -->
+    <div id="repeatMenu" class="menu">
+        <p>Repeat No.</p>
+        <input type="range" id="repeatCountSlider" class="menu-slider" min="1" max="31" step="1" value="1">
+        <span id="repeatCountValue">1</span> times
+        <br>
+        <button id="closeRepeatMenuButton">Close</button>
+    </div>
+
+    <!-- Playlist Modal -->
+    <div id="playlistModal">
+        <div id="playlistModalContent">
+            <h2>Choose Surahs to Add to the Playlist</h2>
+            <ul id="playlistSurahList"></ul>
+            <button class="close-modal" id="finishPlaylistButton">Finish</button>
+        </div>
+    </div>
+
+    <!-- Include the external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
