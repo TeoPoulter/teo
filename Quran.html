@@ -284,7 +284,46 @@
             white-space: nowrap;
         }
 
+        /* Adjustments for smaller screens */
         @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            #searchBar {
+                width: 90%;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .filter-buttons button {
+                width: 100%;
+            }
+
+            ul {
+                max-width: 100%;
+            }
+
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .surah-name {
+                text-align: left;
+                padding-right: 0;
+            }
+
+            .three-dots {
+                margin-left: 0;
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+
             #bottomBar {
                 flex-direction: column;
                 align-items: center;
@@ -294,6 +333,8 @@
 
             #bottomBar .track-info {
                 margin-bottom: 5px;
+                width: 100%;
+                text-align: center;
             }
 
             #bottomBar .controls {
@@ -302,6 +343,19 @@
 
             #bottomBar .progress-container {
                 margin: 0;
+                width: 100%;
+            }
+
+            #bottomBar .progress-container input[type="range"] {
+                width: 90%;
+            }
+
+            #playlistModalContent {
+                max-width: 90%;
+            }
+
+            .juz-header {
+                font-size: 1em;
             }
         }
 
@@ -631,7 +685,6 @@ const surahList = [
 
 
 
-
 // Juz data mapping juz number to surah numbers
 const juzData = [
     { juzNumber: 1, surahs: [1, 2] },
@@ -665,8 +718,6 @@ const juzData = [
     { juzNumber: 29, surahs: [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77] },
     { juzNumber: 30, surahs: [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114] }
 ];
-
-
 
             const ul = document.getElementById('surahList');
             const juzContainer = document.getElementById('juzList');
