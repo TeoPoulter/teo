@@ -23,7 +23,7 @@
         background: radial-gradient(circle at center, #000000, #000000 50%, #b49f5e 100%);
     }
 
-    /* Rotating geometric pattern with your provided image */
+    /* Rotating geometric pattern */
     .pattern {
         position: absolute;
         top: -50%;
@@ -105,6 +105,7 @@
     /* Button Container */
     .button-container {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
     }
@@ -121,8 +122,8 @@
     }
 
     .control-button img {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
     }
 
     .control-button:active {
@@ -191,6 +192,10 @@
             <button id="speedButton" class="control-button" aria-label="Speed Control">
                 <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
             </button>
+            <!-- Volume Control Button -->
+            <button id="volumeButton" class="control-button" aria-label="Volume Control">
+                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
+            </button>
         </div>
         <!-- Hidden audio player -->
         <audio id="audioPlayer"></audio>
@@ -205,6 +210,7 @@
         const playPauseButton = document.getElementById('playPauseButton');
         const shuffleButton = document.getElementById('shuffleButton');
         const speedButton = document.getElementById('speedButton');
+        const volumeButton = document.getElementById('volumeButton');
         const progressBar = document.getElementById('progress');
 
         // Audio files 001 to 010
@@ -231,9 +237,23 @@
             { rate: 1.25, img: 'https://i.imgur.com/56ibCLP.png', alt: 'Speed 1.25x' },
             { rate: 1.5, img: 'https://i.imgur.com/QrgfxD1.png', alt: 'Speed 1.5x' },
             { rate: 1.75, img: 'https://i.imgur.com/AJUMmXp.png', alt: 'Speed 1.75x' },
-            { rate: 2.0, img: 'https://i.imgur.com/PzKnwfo.png', alt: 'Speed 2x' }
+            { rate: 2.0, img: 'https://i.imgur.com/PzKnwfo.png', alt: 'Speed 2x' },
+            { rate: 0.5, img: 'https://i.imgur.com/rQqbvso.png', alt: 'Speed 0.5x' },
+            { rate: 0.75, img: 'https://i.imgur.com/JymFl6p.png', alt: 'Speed 0.75x' }
         ];
         let currentSpeedIndex = 0;
+
+        // Volume settings
+        const volumes = [
+            { level: 1.0, img: 'https://i.imgur.com/YHeXLfV.png', alt: 'Volume 100%' },
+            { level: 0.33, img: 'https://i.imgur.com/7tPoTem.png', alt: 'Volume 33%' },
+            { level: 0.67, img: 'https://i.imgur.com/3eYgm5a.png', alt: 'Volume 67%' }
+        ];
+        let currentVolumeIndex = 0;
+
+        // Set initial audio properties
+        audioPlayer.volume = volumes[currentVolumeIndex].level;
+        audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
 
         // Function to start playing a surah from the beginning
         function playSurah(surah) {
@@ -247,6 +267,7 @@
             if (currentPart < currentSurah.length) {
                 audioPlayer.src = currentSurah[currentPart];
                 audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
+                audioPlayer.volume = volumes[currentVolumeIndex].level;
                 audioPlayer.play();
                 isPlaying = true;
                 updatePlayPauseIcon();
@@ -304,6 +325,16 @@
             const speedIcon = speedButton.querySelector('img');
             speedIcon.src = speeds[currentSpeedIndex].img;
             speedIcon.alt = speeds[currentSpeedIndex].alt;
+        });
+
+        // Volume button functionality
+        volumeButton.addEventListener('click', () => {
+            currentVolumeIndex = (currentVolumeIndex + 1) % volumes.length;
+            audioPlayer.volume = volumes[currentVolumeIndex].level;
+            // Update the button image
+            const volumeIcon = volumeButton.querySelector('img');
+            volumeIcon.src = volumes[currentVolumeIndex].img;
+            volumeIcon.alt = volumes[currentVolumeIndex].alt;
         });
 
         // Update play/pause icon
