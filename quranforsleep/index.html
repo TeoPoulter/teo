@@ -111,12 +111,13 @@
         margin-bottom: 20px;
         /* Animation */
         transition: transform 0.2s;
+        border-radius: 15px; /* Added rounded edges */
+        overflow: hidden; /* Ensure image stays within rounded edges */
     }
 
     #sleepTimerButton img {
-        width: 600px; /* Increased size */
+        width: 600px; /* Made twice as large */
         height: 100px;
-        border-radius: 25px; /* Rounded edges */
     }
 
     #sleepTimerButton:active {
@@ -231,8 +232,227 @@
     </div>
 
     <script>
-        // [JavaScript code remains the same as before]
-        // Please refer to the previous code for the JavaScript section.
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const shuffleButton = document.getElementById('shuffleButton');
+        const speedButton = document.getElementById('speedButton');
+        const volumeButton = document.getElementById('volumeButton');
+        const sleepTimerButton = document.getElementById('sleepTimerButton');
+        const progressBar = document.getElementById('progress');
+
+        // Audio files 001 to 010
+        const surahs = {
+            'surah_001': ['assets/001.mp3'],
+            'surah_002': ['assets/002.mp3'],
+            'surah_003': ['assets/003.mp3'],
+            'surah_004': ['assets/004.mp3'],
+            'surah_005': ['assets/005.mp3'],
+            'surah_006': ['assets/006.mp3'],
+            'surah_007': ['assets/007.mp3'],
+            'surah_008': ['assets/008.mp3'],
+            'surah_009': ['assets/009.mp3'],
+            'surah_010': ['assets/010.mp3']
+        };
+
+        let currentSurah = [];
+        let currentPart = 0;
+        let isPlaying = false;
+
+        // Sleep Timer settings
+        const sleepTimes = [
+            { time: null, img: 'https://i.imgur.com/kiX7AoN.png', alt: 'Sleep Timer' },
+            { time: 10 * 60, img: 'https://i.imgur.com/2i3xjzP.png', alt: 'Sleep Timer: 10 Minutes' },
+            { time: 15 * 60, img: 'https://i.imgur.com/8C92a9F.png', alt: 'Sleep Timer: 15 Minutes' },
+            { time: 20 * 60, img: 'https://i.imgur.com/ZkhlFd4.png', alt: 'Sleep Timer: 20 Minutes' },
+            { time: 30 * 60, img: 'https://i.imgur.com/dlYk6kr.png', alt: 'Sleep Timer: 30 Minutes' },
+            { time: 60 * 60, img: 'https://i.imgur.com/T8qc0tX.png', alt: 'Sleep Timer: 1 Hour' },
+            { time: 120 * 60, img: 'https://i.imgur.com/mj64RF8.png', alt: 'Sleep Timer: 2 Hours' }
+        ];
+        let currentSleepIndex = 0;
+        let sleepTimerTimeout = null;
+
+        // Speed settings
+        const speeds = [
+            { rate: 1.0, img: 'https://i.imgur.com/wDDwzEi.png', alt: 'Speed 1x' },
+            { rate: 1.25, img: 'https://i.imgur.com/56ibCLP.png', alt: 'Speed 1.25x' },
+            { rate: 1.5, img: 'https://i.imgur.com/QrgfxD1.png', alt: 'Speed 1.5x' },
+            { rate: 1.75, img: 'https://i.imgur.com/AJUMmXp.png', alt: 'Speed 1.75x' },
+            { rate: 2.0, img: 'https://i.imgur.com/PzKnwfo.png', alt: 'Speed 2x' },
+            { rate: 0.5, img: 'https://i.imgur.com/rQqbvso.png', alt: 'Speed 0.5x' },
+            { rate: 0.75, img: 'https://i.imgur.com/JymFl6p.png', alt: 'Speed 0.75x' }
+        ];
+        let currentSpeedIndex = 0;
+
+        // Volume settings
+        const volumes = [
+            { level: 1.0, img: 'https://i.imgur.com/YHeXLfV.png', alt: 'Volume 100%' },
+            { level: 0.33, img: 'https://i.imgur.com/7tPoTem.png', alt: 'Volume 33%' },
+            { level: 0.67, img: 'https://i.imgur.com/3eYgm5a.png', alt: 'Volume 67%' }
+        ];
+        let currentVolumeIndex = 0;
+
+        // Set initial audio properties
+        audioPlayer.volume = volumes[currentVolumeIndex].level;
+        audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
+
+        // Function to start playing a surah from the beginning
+        function playSurah(surah) {
+            currentSurah = surahs[surah];
+            currentPart = 0;
+            playCurrentPart();
+        }
+
+        // Play the current part of the selected surah
+        function playCurrentPart() {
+            if (currentPart < currentSurah.length) {
+                audioPlayer.src = currentSurah[currentPart];
+                audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
+                audioPlayer.volume = volumes[currentVolumeIndex].level;
+                audioPlayer.play();
+                isPlaying = true;
+                updatePlayPauseIcon();
+            }
+        }
+
+        // When one part ends, go to the next
+        audioPlayer.addEventListener('ended', () => {
+            currentPart++;
+            if (currentPart < currentSurah.length) {
+                playCurrentPart(); // Play the next part
+            } else {
+                isPlaying = false;
+                updatePlayPauseIcon();
+            }
+        });
+
+        // Play/Pause button functionality
+        playPauseButton.addEventListener('click', () => {
+            if (!isPlaying) {
+                if (!currentSurah.length) {
+                    const keys = Object.keys(surahs);
+                    const randomSurah = keys[Math.floor(Math.random() * keys.length)];
+                    playSurah(randomSurah); // Play a random surah on first play
+                } else {
+                    audioPlayer.play();
+                    isPlaying = true;
+                    updatePlayPauseIcon();
+                }
+                startSleepTimer(); // Start or restart sleep timer if set
+            } else {
+                audioPlayer.pause();
+                isPlaying = false;
+                updatePlayPauseIcon();
+                clearSleepTimer();
+            }
+        });
+
+        // Shuffle button functionality
+        shuffleButton.addEventListener('click', () => {
+            // Rotate the shuffle button
+            shuffleButton.style.animation = 'rotateButton 0.5s';
+            shuffleButton.addEventListener('animationend', () => {
+                shuffleButton.style.animation = '';
+            });
+
+            const keys = Object.keys(surahs);
+            const randomSurah = keys[Math.floor(Math.random() * keys.length)];
+            playSurah(randomSurah); // Shuffle to a random surah
+            isPlaying = true;
+            updatePlayPauseIcon();
+            startSleepTimer(); // Restart sleep timer if set
+        });
+
+        // Speed button functionality
+        speedButton.addEventListener('click', () => {
+            currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+            audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
+            // Update the button image
+            const speedIcon = speedButton.querySelector('img');
+            speedIcon.src = speeds[currentSpeedIndex].img;
+            speedIcon.alt = speeds[currentSpeedIndex].alt;
+        });
+
+        // Volume button functionality
+        volumeButton.addEventListener('click', () => {
+            currentVolumeIndex = (currentVolumeIndex + 1) % volumes.length;
+            audioPlayer.volume = volumes[currentVolumeIndex].level;
+            // Update the button image
+            const volumeIcon = volumeButton.querySelector('img');
+            volumeIcon.src = volumes[currentVolumeIndex].img;
+            volumeIcon.alt = volumes[currentVolumeIndex].alt;
+        });
+
+        // Sleep Timer button functionality
+        sleepTimerButton.addEventListener('click', () => {
+            currentSleepIndex = (currentSleepIndex + 1) % sleepTimes.length;
+            // Update the button image
+            const sleepIcon = sleepTimerButton.querySelector('img');
+            sleepIcon.src = sleepTimes[currentSleepIndex].img;
+            sleepIcon.alt = sleepTimes[currentSleepIndex].alt;
+            // Restart the sleep timer if playing
+            if (isPlaying) {
+                startSleepTimer();
+            }
+        });
+
+        // Start or restart the sleep timer
+        function startSleepTimer() {
+            clearSleepTimer();
+            const sleepTime = sleepTimes[currentSleepIndex].time;
+            if (sleepTime !== null) {
+                const fadeOutTime = 10; // Fade out over 10 seconds
+                const stopTime = sleepTime - fadeOutTime;
+
+                sleepTimerTimeout = setTimeout(() => {
+                    // Fade out the volume
+                    let fadeInterval = setInterval(() => {
+                        if (audioPlayer.volume > 0.01) {
+                            audioPlayer.volume -= 0.01;
+                        } else {
+                            clearInterval(fadeInterval);
+                            audioPlayer.pause();
+                            isPlaying = false;
+                            updatePlayPauseIcon();
+                            // Reset volume to original level
+                            audioPlayer.volume = volumes[currentVolumeIndex].level;
+                        }
+                    }, (fadeOutTime * 1000) / 100); // Adjust interval to fade over 10 seconds
+                }, stopTime * 1000);
+            }
+        }
+
+        // Clear the sleep timer
+        function clearSleepTimer() {
+            if (sleepTimerTimeout) {
+                clearTimeout(sleepTimerTimeout);
+                sleepTimerTimeout = null;
+            }
+        }
+
+        // Update play/pause icon
+        function updatePlayPauseIcon() {
+            const icon = playPauseButton.querySelector('img');
+            if (isPlaying) {
+                icon.src = 'https://i.imgur.com/iAyh3qN.png'; // Pause icon
+                icon.alt = 'Pause Button';
+            } else {
+                icon.src = 'https://i.imgur.com/rfSFOWK.png'; // Play icon
+                icon.alt = 'Play Button';
+            }
+        }
+
+        // Update progress bar
+        audioPlayer.addEventListener('timeupdate', () => {
+            const duration = audioPlayer.duration;
+            const currentTime = audioPlayer.currentTime;
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = progressPercent + '%';
+        });
+
+        // When audio source changes, reset progress bar
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            progressBar.style.width = '0%';
+        });
     </script>
 </body>
 </html>
