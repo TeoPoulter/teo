@@ -106,36 +106,17 @@
         z-index: 3;
     }
 
-    /* Sleep Timer Button */
-    #sleepTimerButton {
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        margin-bottom: 20px;
-        /* Animation */
-        transition: transform 0.2s;
-        border-radius: 15px; /* Rounded edges */
-        overflow: hidden; /* Ensure image stays within rounded edges */
-    }
-
-    #sleepTimerButton img {
-        width: 600px; /* Made twice as large */
-        height: 100px;
-        border-radius: 25px; /* Rounded corners for images */
-    }
-
-    #sleepTimerButton:active {
-        transform: scale(0.98);
-    }
-
     /* Button Container */
     .button-container {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        position: relative;
+    }
+
+    .control-buttons-row {
+        display: flex;
+        justify-content: center;
+        margin: 10px;
     }
 
     /* Button Styles */
@@ -151,9 +132,15 @@
     }
 
     .control-button img {
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%; /* Make buttons circular */
+    }
+
+    /* Play/Pause Button Styles */
+    #playPauseButton img {
+        width: 150px; /* Bigger size */
+        height: 150px;
     }
 
     .control-button:active {
@@ -218,25 +205,8 @@
         background-color: #b49f5e;
     }
 
-    /* Help Button */
-    #helpButton {
-        position: absolute;
-        top: -220px;
-        left: 330px; /* Adjusted position */
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        z-index: 5;
-    }
-
-    #helpButton img {
-        width: 50px;
-        height: 50px;
-    }
-
     /* Modal Overlay */
-    .modal-overlay {
+    .modal-overlay, .filter-modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -250,7 +220,7 @@
     }
 
     /* Modal Content */
-    .modal-content {
+    .modal-content, .filter-modal-content {
         background-color: #1a1a1a;
         color: #fff;
         padding: 20px;
@@ -274,30 +244,30 @@
     }
 
     /* Button Descriptions in Modal */
-    .modal-content img {
+    .modal-content img, .filter-modal-content img {
         width: 50px;
         height: 50px;
         vertical-align: middle;
         margin-right: 10px;
     }
 
-    .modal-content h2 {
+    .modal-content h2, .filter-modal-content h2 {
         font-size: 24px;
         margin-top: 0;
         text-align: center;
     }
 
-    .modal-content p {
+    .modal-content p, .filter-modal-content p {
         font-size: 18px;
         line-height: 1.5;
     }
 
     /* Scrollbar Styling */
-    .modal-content::-webkit-scrollbar {
+    .modal-content::-webkit-scrollbar, .filter-modal-content::-webkit-scrollbar {
         width: 8px;
     }
 
-    .modal-content::-webkit-scrollbar-thumb {
+    .modal-content::-webkit-scrollbar-thumb, .filter-modal-content::-webkit-scrollbar-thumb {
         background-color: #b49f5e;
         border-radius: 5px;
     }
@@ -331,6 +301,51 @@
         height: 50px;
     }
 
+    /* Juz List Styles */
+    .juz-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .juz-item {
+        background-color: #333;
+        color: #fff;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        width: 80px;
+        text-align: center;
+    }
+
+    .juz-item:hover {
+        background-color: #b49f5e;
+    }
+
+    .juz-item.selected {
+        background-color: #b49f5e;
+    }
+
+    /* Reset Filter Button */
+    .reset-filter-button {
+        background-color: #b49f5e;
+        color: #fff;
+        padding: 10px 20px;
+        margin: 20px auto 0;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        display: block;
+    }
+
+    .reset-filter-button:hover {
+        background-color: #a18f57;
+    }
+
 </style>
 </head>
 <body>
@@ -347,35 +362,46 @@
 
     <!-- Radio Player Interface -->
     <div id="radio">
-        <!-- Sleep Timer Button -->
-        <button id="sleepTimerButton" aria-label="Sleep Timer">
-            <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
-        </button>
         <div class="button-container">
+            <div class="control-buttons-row">
+                <!-- Sleep Timer Button -->
+                <button id="sleepTimerButton" class="control-button" aria-label="Sleep Timer">
+                    <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
+                    <div class="tooltip">Sleep Timer</div>
+                </button>
+                <!-- Shuffle Button -->
+                <button id="shuffleButton" class="control-button" aria-label="Shuffle">
+                    <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
+                    <div class="tooltip">Shuffle</div>
+                </button>
+                <!-- Speed Control Button -->
+                <button id="speedButton" class="control-button" aria-label="Speed Control">
+                    <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
+                    <div class="tooltip">Speed Control</div>
+                </button>
+            </div>
             <!-- Play/Pause Button -->
             <button id="playPauseButton" class="control-button" aria-label="Play/Pause">
                 <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
                 <div class="tooltip">Play/Pause</div>
             </button>
-            <!-- Shuffle Button -->
-            <button id="shuffleButton" class="control-button" aria-label="Shuffle">
-                <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
-                <div class="tooltip">Shuffle</div>
-            </button>
-            <!-- Speed Control Button -->
-            <button id="speedButton" class="control-button" aria-label="Speed Control">
-                <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
-                <div class="tooltip">Speed Control</div>
-            </button>
-            <!-- Volume Control Button -->
-            <button id="volumeButton" class="control-button" aria-label="Volume Control">
-                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
-                <div class="tooltip">Volume Control</div>
-            </button>
-            <!-- Help Button -->
-            <button id="helpButton" aria-label="Help">
-                <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
-            </button>
+            <div class="control-buttons-row">
+                <!-- Volume Control Button -->
+                <button id="volumeButton" class="control-button" aria-label="Volume Control">
+                    <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
+                    <div class="tooltip">Volume Control</div>
+                </button>
+                <!-- Filter Button -->
+                <button id="filterButton" class="control-button" aria-label="Filter">
+                    <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
+                    <div class="tooltip">Filter</div>
+                </button>
+                <!-- Help Button -->
+                <button id="helpButton" class="control-button" aria-label="Help">
+                    <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
+                    <div class="tooltip">Help</div>
+                </button>
+            </div>
         </div>
         <!-- Hidden audio player -->
         <audio id="audioPlayer"></audio>
@@ -417,6 +443,21 @@
             <p>
                 <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
             </p>
+            <p>
+                <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
+            </p>
+        </div>
+    </div>
+
+    <!-- Filter Modal Overlay -->
+    <div class="modal-overlay" id="filterModalOverlay">
+        <div class="modal-content" id="filterModalContent">
+            <button class="close-button" id="filterCloseButton">&times;</button>
+            <h2>Filter by Juz</h2>
+            <div class="juz-list" id="juzList">
+                <!-- Juz items will be dynamically added here -->
+            </div>
+            <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
         </div>
     </div>
 
@@ -428,13 +469,18 @@
         const volumeButton = document.getElementById('volumeButton');
         const sleepTimerButton = document.getElementById('sleepTimerButton');
         const helpButton = document.getElementById('helpButton');
+        const filterButton = document.getElementById('filterButton');
         const progressBar = document.querySelector('.progress-bar');
         const progress = document.getElementById('progress');
         const modalOverlay = document.getElementById('modalOverlay');
         const closeButton = document.getElementById('closeButton');
+        const filterModalOverlay = document.getElementById('filterModalOverlay');
+        const filterCloseButton = document.getElementById('filterCloseButton');
         const surahNameDisplay = document.getElementById('surahName');
         const reciterNameDisplay = document.getElementById('reciterName');
         const downloadButton = document.getElementById('downloadButton');
+        const juzList = document.getElementById('juzList');
+        const resetFilterButton = document.getElementById('resetFilterButton');
 
 
 
@@ -456,563 +502,1159 @@
 
 
 
+        // AUDIO
 
-
-
-
-
-
-
-        // Audio files
-
-
-
-
-        const surahs = {
+const surahs = {
     'surah_001': {
         name: 'Al-Fatihah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/001.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/001.mp3']
+            },
+            // Add more recitations
+        ],
+        juz: [1]
+    },
+    'surah_002': {
+        name: 'Al-Baqarah',
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/002_part1.mp3', 'assets/002_part2.mp3']
+            },
+        ],
+        juz: [1, 2, 3]
+    },
+    'surah_003': {
+        name: 'Ali Imran',
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/003.mp3']
+            },
+        ],
+        juz: [3, 4]
+    },
+    'surah_004': {
+        name: 'An-Nisa',
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/004.mp3']
+            },
+        ],
+        juz: [4, 5, 6]
+    },
+    'surah_005': {
+        name: "Al-Ma'idah",
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/005.mp3']
+            },
+        ],
+        juz: [6, 7]
+    },
+    'surah_006': {
+        name: "Al-An'am",
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/006.mp3']
+            },
+        ],
+        juz: [7, 8]
+    },
+    'surah_007': {
+        name: "Al-A'raf",
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/007.mp3']
+            },
+        ],
+        juz: [8, 9]
+    },
+    'surah_008': {
+        name: 'Al-Anfal',
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/008.mp3']
+            },
+        ],
+        juz: [9, 10]
+    },
+    'surah_009': {
+        name: 'At-Tawbah',
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/009.mp3']
+            },
+        ],
+        juz: [10, 11]
     },
     'surah_010': {
         name: 'Yunus',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/010.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/010.mp3']
+            },
+        ],
+        juz: [11]
     },
     'surah_011': {
         name: 'Hud',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/011.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/011.mp3']
+            },
+        ],
+        juz: [11, 12]
     },
     'surah_012': {
         name: 'Yusuf',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/012.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/012.mp3']
+            },
+        ],
+        juz: [12, 13]
     },
     'surah_013': {
         name: "Ar-Ra'd",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/013.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/013.mp3']
+            },
+        ],
+        juz: [13]
     },
     'surah_014': {
         name: 'Ibrahim',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/014.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/014.mp3']
+            },
+        ],
+        juz: [13]
     },
     'surah_015': {
         name: 'Al-Hijr',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/015.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/015.mp3']
+            },
+        ],
+        juz: [14]
     },
     'surah_016': {
         name: 'An-Nahl',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/016.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/016.mp3']
+            },
+        ],
+        juz: [14]
     },
     'surah_017': {
         name: 'Al-Isra',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/017.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/017.mp3']
+            },
+        ],
+        juz: [15]
     },
     'surah_018': {
         name: 'Al-Kahf',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/018.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/018.mp3']
+            },
+        ],
+        juz: [15, 16]
     },
     'surah_019': {
         name: 'Maryam',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/019.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/019.mp3']
+            },
+        ],
+        juz: [16]
     },
     'surah_020': {
         name: 'Ta-Ha',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/020.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/020.mp3']
+            },
+        ],
+        juz: [16]
     },
     'surah_021': {
         name: 'Al-Anbiya',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/021.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/021.mp3']
+            },
+        ],
+        juz: [17]
     },
     'surah_022': {
         name: 'Al-Hajj',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/022.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/022.mp3']
+            },
+        ],
+        juz: [17]
     },
     'surah_023': {
         name: "Al-Mu'minun",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/023.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/023.mp3']
+            },
+        ],
+        juz: [18]
     },
     'surah_024': {
         name: 'An-Nur',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/024.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/024.mp3']
+            },
+        ],
+        juz: [18]
     },
     'surah_025': {
         name: 'Al-Furqan',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/025.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/025.mp3']
+            },
+        ],
+        juz: [18, 19]
     },
     'surah_026': {
         name: "Ash-Shu'ara",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/026.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/026.mp3']
+            },
+        ],
+        juz: [19]
     },
     'surah_027': {
         name: 'An-Naml',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/027.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/027.mp3']
+            },
+        ],
+        juz: [19, 20]
     },
     'surah_028': {
         name: 'Al-Qasas',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/028.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/028.mp3']
+            },
+        ],
+        juz: [20]
     },
     'surah_029': {
         name: 'Al-Ankabut',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/029.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/029.mp3']
+            },
+        ],
+        juz: [20, 21]
     },
     'surah_030': {
         name: 'Ar-Rum',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/030.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/030.mp3']
+            },
+        ],
+        juz: [21]
     },
     'surah_031': {
         name: 'Luqman',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/031.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/031.mp3']
+            },
+        ],
+        juz: [21]
     },
     'surah_032': {
         name: 'As-Sajdah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/032.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/032.mp3']
+            },
+        ],
+        juz: [21]
     },
     'surah_033': {
         name: 'Al-Ahzab',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/033.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/033.mp3']
+            },
+        ],
+        juz: [21, 22]
     },
     'surah_034': {
         name: 'Saba',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/034.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/034.mp3']
+            },
+        ],
+        juz: [22]
     },
     'surah_035': {
         name: 'Fatir',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/035.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/035.mp3']
+            },
+        ],
+        juz: [22]
     },
     'surah_036': {
         name: 'Ya-Sin',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/036.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/036.mp3']
+            },
+        ],
+        juz: [22, 23]
     },
     'surah_037': {
         name: 'As-Saffat',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/037.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/037.mp3']
+            },
+        ],
+        juz: [23]
     },
     'surah_038': {
         name: 'Sad',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/038.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/038.mp3']
+            },
+        ],
+        juz: [23]
     },
     'surah_039': {
         name: 'Az-Zumar',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/039.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/039.mp3']
+            },
+        ],
+        juz: [23, 24]
     },
     'surah_040': {
         name: 'Ghafir',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/040.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/040.mp3']
+            },
+        ],
+        juz: [24]
     },
     'surah_041': {
         name: 'Fussilat',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/041.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/041.mp3']
+            },
+        ],
+        juz: [24, 25]
     },
     'surah_042': {
         name: 'Ash-Shura',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/042.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/042.mp3']
+            },
+        ],
+        juz: [25]
     },
     'surah_043': {
         name: 'Az-Zukhruf',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/043.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/043.mp3']
+            },
+        ],
+        juz: [25]
     },
     'surah_044': {
         name: 'Ad-Dukhan',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/044.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/044.mp3']
+            },
+        ],
+        juz: [25]
     },
     'surah_045': {
         name: 'Al-Jathiyah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/045.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/045.mp3']
+            },
+        ],
+        juz: [25]
     },
     'surah_046': {
         name: 'Al-Ahqaf',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/046.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/046.mp3']
+            },
+        ],
+        juz: [26]
     },
     'surah_047': {
         name: 'Muhammad',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/047.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/047.mp3']
+            },
+        ],
+        juz: [26]
     },
     'surah_048': {
         name: 'Al-Fath',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/048.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/048.mp3']
+            },
+        ],
+        juz: [26]
     },
     'surah_049': {
         name: 'Al-Hujurat',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/049.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/049.mp3']
+            },
+        ],
+        juz: [26]
     },
     'surah_050': {
         name: 'Qaf',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/050.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/050.mp3']
+            },
+        ],
+        juz: [26]
     },
     'surah_051': {
         name: 'Adh-Dhariyat',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/051.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/051.mp3']
+            },
+        ],
+        juz: [26, 27]
     },
     'surah_052': {
         name: 'At-Tur',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/052.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/052.mp3']
+            },
+        ],
+        juz: [27]
     },
     'surah_053': {
         name: 'An-Najm',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/053.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/053.mp3']
+            },
+        ],
+        juz: [27]
     },
     'surah_054': {
         name: 'Al-Qamar',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/054.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/054.mp3']
+            },
+        ],
+        juz: [27]
     },
     'surah_055': {
         name: 'Ar-Rahman',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/055.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/055.mp3']
+            },
+        ],
+        juz: [27]
     },
     'surah_056': {
         name: "Al-Waqi'ah",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/056.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/056.mp3']
+            },
+        ],
+        juz: [27]
     },
     'surah_057': {
         name: 'Al-Hadid',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/057.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/057.mp3']
+            },
+        ],
+        juz: [27]
     },
     'surah_058': {
         name: 'Al-Mujadilah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/058.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/058.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_059': {
         name: 'Al-Hashr',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/059.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/059.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_060': {
         name: 'Al-Mumtahanah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/060.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/060.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_061': {
         name: 'As-Saf',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/061.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/061.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_062': {
         name: "Al-Jumu'ah",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/062.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/062.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_063': {
         name: 'Al-Munafiqun',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/063.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/063.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_064': {
         name: 'At-Taghabun',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/064.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/064.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_065': {
         name: 'At-Talaq',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/065.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/065.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_066': {
         name: 'At-Tahrim',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/066.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/066.mp3']
+            },
+        ],
+        juz: [28]
     },
     'surah_067': {
         name: 'Al-Mulk',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/067.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/067.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_068': {
         name: 'Al-Qalam',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/068.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/068.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_069': {
         name: 'Al-Haqqah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/069.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/069.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_070': {
         name: "Al-Ma'arij",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/070.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/070.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_071': {
         name: 'Nuh',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/071.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/071.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_072': {
         name: 'Al-Jinn',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/072.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/072.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_073': {
         name: 'Al-Muzzammil',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/073.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/073.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_074': {
         name: 'Al-Muddaththir',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/074.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/074.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_075': {
         name: 'Al-Qiyamah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/075.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/075.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_076': {
         name: 'Al-Insan',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/076.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/076.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_077': {
         name: 'Al-Mursalat',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/077.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/077.mp3']
+            },
+        ],
+        juz: [29]
     },
     'surah_078': {
         name: 'An-Naba',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/078.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/078.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_079': {
         name: "An-Nazi'at",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/079.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/079.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_080': {
         name: 'Abasa',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/080.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/080.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_081': {
         name: 'At-Takwir',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/081.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/081.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_082': {
         name: 'Al-Infitar',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/082.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/082.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_083': {
         name: 'Al-Mutaffifin',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/083.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/083.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_084': {
         name: 'Al-Inshiqaq',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/084.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/084.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_085': {
         name: 'Al-Buruj',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/085.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/085.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_086': {
         name: 'At-Tariq',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/086.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/086.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_087': {
         name: "Al-A'la",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/087.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/087.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_088': {
         name: 'Al-Ghashiyah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/088.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/088.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_089': {
         name: 'Al-Fajr',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/089.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/089.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_090': {
         name: 'Al-Balad',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/090.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/090.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_091': {
         name: 'Ash-Shams',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/091.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/091.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_092': {
         name: 'Al-Layl',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/092.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/092.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_093': {
         name: 'Ad-Duha',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/093.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/093.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_094': {
         name: 'Ash-Sharh',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/094.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/094.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_095': {
         name: 'At-Tin',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/095.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/095.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_096': {
         name: 'Al-Alaq',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/096.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/096.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_097': {
         name: 'Al-Qadr',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/097.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/097.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_098': {
         name: 'Al-Bayyinah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/098.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/098.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_099': {
         name: 'Az-Zalzalah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/099.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/099.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_100': {
         name: 'Al-Adiyat',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/100.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/100.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_101': {
         name: "Al-Qari'ah",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/101.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/101.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_102': {
         name: 'At-Takathur',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/102.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/102.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_103': {
         name: 'Al-Asr',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/103.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/103.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_104': {
         name: 'Al-Humazah',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/104.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/104.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_105': {
         name: 'Al-Fil',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/105.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/105.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_106': {
         name: 'Quraysh',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/106.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/106.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_107': {
         name: "Al-Ma'un",
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/107.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/107.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_108': {
         name: 'Al-Kawthar',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/108.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/108.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_109': {
         name: 'Al-Kafirun',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/109.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/109.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_110': {
         name: 'An-Nasr',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/110.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/110.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_111': {
         name: 'Al-Masad',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/111.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/111.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_112': {
         name: 'Al-Ikhlas',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/112.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/112.mp3']
+            },
+            {
+                reciter: 'Abdul Basit',
+                files: ['assets/112_abdulbasit.mp3']
+            },
+            {
+                reciter: 'Saad Al Ghamdi',
+                files: ['assets/112_saadalghamdi.mp3']
+            }
+        ],
+        juz: [30]
     },
     'surah_113': {
         name: 'Al-Falaq',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/113.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/113.mp3']
+            },
+        ],
+        juz: [30]
     },
     'surah_114': {
         name: 'An-Nas',
-        reciter: 'Mishary Rashid Alafasy',
-        files: ['assets/114.mp3']
+        recitations: [
+            {
+                reciter: 'Mishary Rashid Alafasy',
+                files: ['assets/114.mp3']
+            },
+        ],
+        juz: [30]
     }
-
-            // Add more surahs as needed
-
-
-
-
-        };
-
-
-
-
-
-
-
+};
 
 
 
@@ -1055,6 +1697,7 @@
 
         let currentSurahKey = null;
         let currentSurah = null;
+        let currentRecitation = null;
         let currentPart = 0;
         let isPlaying = false;
 
@@ -1091,6 +1734,9 @@
         ];
         let currentVolumeIndex = 0;
 
+        // Filter settings
+        let selectedJuz = null; // null means no filter
+
         // Set initial audio properties
         audioPlayer.volume = volumes[currentVolumeIndex].level;
         audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
@@ -1099,6 +1745,9 @@
         function playSurah(surahKey) {
             currentSurahKey = surahKey;
             currentSurah = surahs[surahKey];
+            // Select a random recitation
+            const recitations = currentSurah.recitations || [{ reciter: currentSurah.reciter, files: currentSurah.files }];
+            currentRecitation = recitations[Math.floor(Math.random() * recitations.length)];
             currentPart = 0;
             updateSurahInfo();
             playCurrentPart();
@@ -1106,8 +1755,8 @@
 
         // Play the current part of the selected surah
         function playCurrentPart() {
-            if (currentPart < currentSurah.files.length) {
-                audioPlayer.src = currentSurah.files[currentPart];
+            if (currentPart < currentRecitation.files.length) {
+                audioPlayer.src = currentRecitation.files[currentPart];
                 audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
                 audioPlayer.volume = volumes[currentVolumeIndex].level;
                 audioPlayer.play();
@@ -1120,11 +1769,12 @@
         // When one part ends, go to the next
         audioPlayer.addEventListener('ended', () => {
             currentPart++;
-            if (currentPart < currentSurah.files.length) {
+            if (currentPart < currentRecitation.files.length) {
                 playCurrentPart(); // Play the next part
             } else {
-                isPlaying = false;
-                updatePlayPauseIcon();
+                if (isPlaying) {
+                    playRandomSurah(); // Play a new random surah
+                }
             }
         });
 
@@ -1132,9 +1782,7 @@
         playPauseButton.addEventListener('click', () => {
             if (!isPlaying) {
                 if (!currentSurah) {
-                    const keys = Object.keys(surahs);
-                    const randomSurahKey = keys[Math.floor(Math.random() * keys.length)];
-                    playSurah(randomSurahKey); // Play a random surah on first play
+                    playRandomSurah(); // Play a random surah on first play
                 } else {
                     audioPlayer.play();
                     isPlaying = true;
@@ -1158,13 +1806,25 @@
                 shuffleButton.style.animation = '';
             });
 
-            const keys = Object.keys(surahs);
-            const randomSurahKey = keys[Math.floor(Math.random() * keys.length)];
-            playSurah(randomSurahKey); // Shuffle to a random surah
+            playRandomSurah(); // Shuffle to a random surah
             isPlaying = true;
             updatePlayPauseIcon();
             startSleepTimer(); // Restart sleep timer if set
         });
+
+        // Function to play a random surah, considering the filter
+        function playRandomSurah() {
+            let keys = Object.keys(surahs);
+            if (selectedJuz) {
+                keys = keys.filter(key => surahs[key].juz.includes(selectedJuz));
+            }
+            if (keys.length > 0) {
+                const randomSurahKey = keys[Math.floor(Math.random() * keys.length)];
+                playSurah(randomSurahKey);
+            } else {
+                alert('No Surahs available for the selected Juz.');
+            }
+        }
 
         // Speed button functionality
         speedButton.addEventListener('click', () => {
@@ -1279,16 +1939,61 @@
             }
         });
 
+        // Filter button functionality
+        filterButton.addEventListener('click', () => {
+            filterModalOverlay.style.display = 'flex';
+        });
+
+        // Close filter modal
+        filterCloseButton.addEventListener('click', () => {
+            filterModalOverlay.style.display = 'none';
+        });
+
+        // Close filter modal when clicking outside
+        filterModalOverlay.addEventListener('click', (e) => {
+            if (e.target === filterModalOverlay) {
+                filterModalOverlay.style.display = 'none';
+            }
+        });
+
+        // Populate Juz list
+        for (let i = 1; i <= 30; i++) {
+            const juzItem = document.createElement('div');
+            juzItem.classList.add('juz-item');
+            juzItem.textContent = `Juz ${i}`;
+            juzItem.dataset.juzNumber = i;
+            juzList.appendChild(juzItem);
+
+            juzItem.addEventListener('click', () => {
+                selectedJuz = parseInt(juzItem.dataset.juzNumber);
+                // Highlight selected Juz
+                document.querySelectorAll('.juz-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                juzItem.classList.add('selected');
+                filterModalOverlay.style.display = 'none';
+            });
+        }
+
+        // Reset filter functionality
+        resetFilterButton.addEventListener('click', () => {
+            selectedJuz = null;
+            document.querySelectorAll('.juz-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            filterModalOverlay.style.display = 'none';
+        });
+
         // Update Surah Info Display
         function updateSurahInfo() {
             surahNameDisplay.textContent = currentSurah.name;
-            reciterNameDisplay.textContent = currentSurah.reciter;
+            reciterNameDisplay.textContent = currentRecitation.reciter;
         }
 
         // Download button functionality
         downloadButton.addEventListener('click', () => {
-            if (currentSurah) {
-                currentSurah.files.forEach((file) => {
+            if (currentRecitation) {
+                currentRecitation.files.forEach((file) => {
                     const link = document.createElement('a');
                     link.href = file;
                     link.download = file.substring(file.lastIndexOf('/') + 1);
@@ -1304,10 +2009,10 @@
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: `${currentSurah.name} | Teo's Tools`,
-                    artist: currentSurah.reciter,
+                    artist: currentRecitation.reciter,
                     album: "Qur'an Sleep Radio",
                     artwork: [
-                        { src: 'https://i.imgur.com/bpvQPj6.png', sizes: '512x512', type: 'image/png' }
+                        { src: 'https://i.imgur.com/pwoq2EB.png', sizes: '512x512', type: 'image/png' }
                     ]
                 });
 
