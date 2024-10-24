@@ -106,48 +106,85 @@
         z-index: 3;
     }
 
-    /* Button Container */
-    .button-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    /* Sleep Timer Button */
+    .sleep-timer-container {
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    .control-buttons-row {
-        display: flex;
-        justify-content: center;
-        margin: 10px;
-    }
-
-    /* Button Styles */
-    .control-button {
+    #sleepTimerButton {
         background: none;
         border: none;
         cursor: pointer;
         outline: none;
-        margin: 10px;
-        /* Animation */
-        transition: transform 0.2s;
         position: relative;
     }
 
+    #sleepTimerButton img {
+        width: 400px; /* Adjust width for landscape orientation */
+        height: 80px;
+        border-radius: 20px;
+    }
+
+    /* Main Controls */
+    .main-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .control-button,
+    .play-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        margin: 0 10px;
+        position: relative;
+        transition: transform 0.2s;
+    }
+
     .control-button img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%; /* Make buttons circular */
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
     }
 
-    /* Play/Pause Button Styles */
-    #playPauseButton img {
-        width: 150px; /* Bigger size */
-        height: 150px;
+    .play-button img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
     }
 
-    .control-button:active {
+    .control-button:active,
+    .play-button:active,
+    #sleepTimerButton:active,
+    #helpButton:active {
         transform: scale(0.95);
     }
 
-    /* Hover Tooltip */
+    /* Help Button */
+    .help-button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #helpButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        position: relative;
+    }
+
+    #helpButton img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+    }
+
+    /* Tooltip */
     .tooltip {
         position: absolute;
         bottom: 110%;
@@ -155,7 +192,7 @@
         transform: translateX(-50%);
         background-color: rgba(180, 159, 94, 0.9);
         color: #fff;
-        padding: 10px;
+        padding: 8px;
         border-radius: 10px;
         white-space: nowrap;
         opacity: 0;
@@ -166,7 +203,10 @@
         text-align: center;
     }
 
-    .control-button:hover .tooltip {
+    .control-button:hover .tooltip,
+    .play-button:hover .tooltip,
+    #sleepTimerButton:hover .tooltip,
+    #helpButton:hover .tooltip {
         opacity: 1;
     }
 
@@ -362,47 +402,51 @@
 
     <!-- Radio Player Interface -->
     <div id="radio">
-        <div class="button-container">
-            <div class="control-buttons-row">
-                <!-- Sleep Timer Button -->
-                <button id="sleepTimerButton" class="control-button" aria-label="Sleep Timer">
-                    <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
-                    <div class="tooltip">Sleep Timer</div>
-                </button>
-                <!-- Shuffle Button -->
-                <button id="shuffleButton" class="control-button" aria-label="Shuffle">
-                    <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
-                    <div class="tooltip">Shuffle</div>
-                </button>
-                <!-- Speed Control Button -->
-                <button id="speedButton" class="control-button" aria-label="Speed Control">
-                    <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
-                    <div class="tooltip">Speed Control</div>
-                </button>
-            </div>
+        <!-- Sleep Timer Button -->
+        <div class="sleep-timer-container">
+            <button id="sleepTimerButton" aria-label="Sleep Timer">
+                <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
+                <div class="tooltip">Sleep Timer</div>
+            </button>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="main-controls">
+            <!-- Volume Control Button -->
+            <button id="volumeButton" class="control-button" aria-label="Volume Control">
+                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
+                <div class="tooltip">Volume Control</div>
+            </button>
+            <!-- Speed Control Button -->
+            <button id="speedButton" class="control-button" aria-label="Speed Control">
+                <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
+                <div class="tooltip">Speed Control</div>
+            </button>
             <!-- Play/Pause Button -->
-            <button id="playPauseButton" class="control-button" aria-label="Play/Pause">
+            <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
                 <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
                 <div class="tooltip">Play/Pause</div>
             </button>
-            <div class="control-buttons-row">
-                <!-- Volume Control Button -->
-                <button id="volumeButton" class="control-button" aria-label="Volume Control">
-                    <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
-                    <div class="tooltip">Volume Control</div>
-                </button>
-                <!-- Filter Button -->
-                <button id="filterButton" class="control-button" aria-label="Filter">
-                    <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
-                    <div class="tooltip">Filter</div>
-                </button>
-                <!-- Help Button -->
-                <button id="helpButton" class="control-button" aria-label="Help">
-                    <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
-                    <div class="tooltip">Help</div>
-                </button>
-            </div>
+            <!-- Filter Button -->
+            <button id="filterButton" class="control-button" aria-label="Filter">
+                <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
+                <div class="tooltip">Filter</div>
+            </button>
+            <!-- Shuffle Button -->
+            <button id="shuffleButton" class="control-button" aria-label="Shuffle">
+                <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
+                <div class="tooltip">Shuffle</div>
+            </button>
         </div>
+
+        <!-- Help Button -->
+        <div class="help-button-container">
+            <button id="helpButton" aria-label="Help">
+                <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
+                <div class="tooltip">Help</div>
+            </button>
+        </div>
+
         <!-- Hidden audio player -->
         <audio id="audioPlayer"></audio>
         <!-- Custom progress bar -->
@@ -432,19 +476,19 @@
                 <img src="https://i.imgur.com/rfSFOWK.png" alt="Play/Pause Button"> <strong>Play/Pause:</strong> Start or pause the recitation.
             </p>
             <p>
-                <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
+                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
             </p>
             <p>
                 <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed Control Button"> <strong>Speed Control:</strong> Adjust the playback speed.
             </p>
             <p>
-                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
+                <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
+            </p>
+            <p>
+                <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
             </p>
             <p>
                 <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
-            </p>
-            <p>
-                <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
             </p>
         </div>
     </div>
@@ -481,9 +525,6 @@
         const downloadButton = document.getElementById('downloadButton');
         const juzList = document.getElementById('juzList');
         const resetFilterButton = document.getElementById('resetFilterButton');
-
-
-
 
 
 
@@ -1694,7 +1735,6 @@ const surahs = {
 
 
 
-
         let currentSurahKey = null;
         let currentSurah = null;
         let currentRecitation = null;
@@ -2008,7 +2048,7 @@ const surahs = {
         function updateMediaSession() {
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
-                    title: `${currentSurah.name} | Teo's Tools`,
+                    title: `${currentSurah.name} | Qur'an Sleep Radio`,
                     artist: currentRecitation.reciter,
                     album: "Qur'an Sleep Radio",
                     artwork: [
