@@ -2,8 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Qur'an Sleep Radio</title>
+<title>Qur'an Sleep Radio and Memorization</title>
 <style>
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Reset default margins and paddings */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
 /* Full-screen wipe overlay with dark, rich, golden-silver gradient and opacity */
 #goldenWipe {
     position: fixed;
@@ -69,19 +82,6 @@
 /* Temporarily hide scrollbars during animation */
 body.no-scroll {
     overflow: hidden;
-}
-
-/* Import Poppins font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-/* Reset default margins and paddings */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
 }
 
 /* Background container */
@@ -227,25 +227,32 @@ body, html {
 .control-button:active,
 .play-button:active,
 #sleepTimerButton:active,
-#helpButton:active {
+#helpButton:active,
+#switchModeButton:active {
     transform: scale(0.95);
 }
 
-/* Help Button */
+/* Help and Switch Mode Buttons Container */
 .help-button-container {
     text-align: center;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#helpButton {
+#helpButton,
+#switchModeButton {
     background: none;
     border: none;
     cursor: pointer;
     outline: none;
     position: relative;
+    margin: 0 10px;
 }
 
-#helpButton img {
+#helpButton img,
+#switchModeButton img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -273,7 +280,8 @@ body, html {
 .control-button:hover .tooltip,
 .play-button:hover .tooltip,
 #sleepTimerButton:hover .tooltip,
-#helpButton:hover .tooltip {
+#helpButton:hover .tooltip,
+#switchModeButton:hover .tooltip {
     opacity: 1;
 }
 
@@ -458,10 +466,462 @@ body, html {
 .reset-filter-button:hover {
     background-color: #a18f57;
 }
+
+/* Memorization Mode Styles */
+#memorizationMode {
+    display: none;
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* Title using Almalik font */
+@font-face {
+    font-family: 'Almalik';
+    src: url('fonts/Almalik.otf') format('opentype'),
+         url('fonts/Almalik.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+h1 {
+    font-family: 'Almalik', sans-serif;
+    color: #4caf50;
+    margin-top: 40px;
+    font-size: 3em;
+    letter-spacing: 0.1em;
+    transition: color 0.4s ease;
+}
+
+h1:hover {
+    color: #81c784;
+}
+
+/* Styling for the search bar */
+#searchBar {
+    margin-top: 20px;
+    width: 80%;
+    max-width: 600px;
+    padding: 10px 45px 10px 15px;
+    font-size: 1em;
+    border: 2px solid #b49f5e;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #b49f5e;
+    outline: none;
+    transition: background 0.3s ease;
+    animation: goldPulse 4s infinite ease-in-out;
+    background: url('https://i.imgur.com/PUZam8g.png') no-repeat right 15px center;
+    background-size: 20px;
+    font-family: 'Almalik', sans-serif;
+    letter-spacing: 0.1em;
+}
+
+@keyframes goldPulse {
+    0% {
+        border-color: #b49f5e;
+        box-shadow: 0 0 5px #b49f5e;
+    }
+    50% {
+        border-color: #e6c365;
+        box-shadow: 0 0 10px #e6c365;
+    }
+    100% {
+        border-color: #b49f5e;
+        box-shadow: 0 0 5px #b49f5e;
+    }
+}
+
+#searchBar::placeholder {
+    color: #b49f5e;
+    animation: goldPulse 4s infinite ease-in-out;
+    font-family: 'Almalik', sans-serif;
+    letter-spacing: 0.1em;
+}
+
+#searchBar:focus {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    transition: transform 0.6s ease;
+}
+
+li {
+    background: rgba(0, 0, 0, 0.8);
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    letter-spacing: 0.15em;
+}
+
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.surah-name {
+    flex-grow: 1;
+    text-align: left;
+    padding-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+}
+
+.three-dots {
+    cursor: pointer;
+    font-size: 1.5em;
+    margin-left: 10px;
+    color: #bbb;
+    transition: color 0.3s ease;
+}
+
+.three-dots:hover {
+    color: #fff;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    text-align: center;
+    z-index: 200;
+}
+
+.menu-slider {
+    width: 150px;
+    margin: 15px 0;
+}
+
+button {
+    background: linear-gradient(45deg, #4caf50, #81c784);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1.1em;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #81c784, #4caf50);
+    transform: scale(1.05);
+}
+
+button:active {
+    background: linear-gradient(45deg, #66bb6a, #43a047);
+    transform: scale(0.95);
+}
+
+button.playing {
+    background: #43a047;
+}
+
+/* Blue Button Style */
+.blue-button {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+}
+
+.blue-button:hover {
+    background: linear-gradient(45deg, #2a5298, #1e3c72);
+}
+
+.blue-button:active {
+    background: linear-gradient(45deg, #16335b, #1e3c72);
+}
+
+/* Bottom Bar */
+#bottomBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #181818, #282828);
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    z-index: 100;
+}
+
+#bottomBar .track-info {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#bottomBar .track-info .title {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1em;
+}
+
+#bottomBar .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+#bottomBar .controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#bottomBar .controls button img {
+    width: 24px;
+    height: 24px;
+}
+
+#bottomBar .controls button:hover {
+    color: #4caf50;
+}
+
+/* Progress Bar inside the track-info */
+#bottomBar .progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-left: 50px;
+    padding-right: -20px;
+}
+
+#bottomBar .progress-container input[type="range"] {
+    width: 85%;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#bottomBar .progress-container input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: #666;
+    border-radius: 3px;
+}
+
+#bottomBar .progress-container input[type="range"]::-webkit-slider-thumb {
+    width: 12px;
+    height: 12px;
+    background: #4caf50;
+    border-radius: 50%;
+    -webkit-appearance: none;
+    margin-top: -3px;
+}
+
+#bottomBar .progress-time {
+    font-size: 0.8em;
+    color: #fff;
+    white-space: nowrap;
+}
+
+#currentTime {
+    position: absolute;
+    left: 0;
+}
+
+#duration {
+    position: absolute;
+    right: 0;
+}
+
+/* Filter Icons Section */
+.filter-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.filter-item img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.filter-item span {
+    font-size: 14px;
+    color: #fff;
+}
+
+.filter-item:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Repeat Menu Styles */
+#repeatMenu {
+    display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    text-align: center;
+    z-index: 200;
+}
+
+/* Mobile Styles */
+@media (max-width: 800px) {
+    body {
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+        letter-spacing: 0.2em;
+    }
+
+    #searchBar {
+        width: 90%;
+        font-size: 1em;
+        padding: 12px 18px;
+    }
+
+    ul {
+        max-width: 100%;
+    }
+
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .surah-name {
+        text-align: left;
+        padding-right: 0;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .three-dots {
+        margin-left: 0;
+        margin-top: 10px;
+        align-self: flex-end;
+        font-size: 1.8em;
+    }
+
+    #bottomBar {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        bottom: 0;
+    }
+
+    #bottomBar .track-info {
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    #bottomBar .track-info .title {
+        font-size: 1.2em;
+    }
+
+    #bottomBar .controls {
+        margin-bottom: 10px;
+    }
+
+    #bottomBar .controls button {
+        font-size: 2em;
+    }
+
+    #bottomBar .progress-container {
+        margin: 0;
+        width: 100%;
+    }
+
+    #bottomBar .progress-container input[type="range"] {
+        width: 100%;
+    }
+
+    #bottomBar .progress-time {
+        font-size: 1em;
+        right: -40px;
+    }
+
+    .menu {
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .menu p {
+        font-size: 1.2em;
+    }
+
+    .menu-slider {
+        width: 80%;
+    }
+
+    .add-button {
+        font-size: 1em;
+        padding: 8px 12px;
+    }
+
+    .close-modal {
+        font-size: 1em;
+        padding: 12px 18px;
+    }
+
+    button {
+        font-size: 1.2em;
+    }
+}
 </style>
 </head>
 
-<body>    
+<body>
 
 <!-- Wipe animation overlay -->
 <div id="goldenWipe">
@@ -479,112 +939,220 @@ body, html {
     <div class="corner bottom-right"></div>
 </div>
 
-<!-- Radio Player Interface -->
-<div id="radio">
-    <!-- Sleep Timer Button -->
-    <div class="sleep-timer-container">
-        <button id="sleepTimerButton" aria-label="Sleep Timer">
-            <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
-            <div class="tooltip">Sleep Timer</div>
-        </button>
+<!-- Page Content -->
+<div id="pageContent">
+
+    <!-- Radio Mode -->
+    <div id="radioMode">
+
+        <!-- Radio Player Interface -->
+        <div id="radio">
+            <!-- Sleep Timer Button -->
+            <div class="sleep-timer-container">
+                <button id="sleepTimerButton" aria-label="Sleep Timer">
+                    <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
+                    <div class="tooltip">Sleep Timer</div>
+                </button>
+            </div>
+
+            <!-- Main Controls -->
+            <div class="main-controls">
+                <!-- Volume Control Button -->
+                <button id="volumeButton" class="control-button" aria-label="Volume Control">
+                    <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
+                    <div class="tooltip">Volume Control</div>
+                </button>
+                <!-- Speed Control Button -->
+                <button id="speedButton" class="control-button" aria-label="Speed Control">
+                    <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
+                    <div class="tooltip">Speed Control</div>
+                </button>
+                <!-- Play/Pause Button -->
+                <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
+                    <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
+                    <div class="tooltip">Play/Pause</div>
+                </button>
+                <!-- Filter Button -->
+                <button id="filterButton" class="control-button" aria-label="Filter">
+                    <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
+                    <div class="tooltip">Filter</div>
+                </button>
+                <!-- Shuffle Button -->
+                <button id="shuffleButton" class="control-button" aria-label="Shuffle">
+                    <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
+                    <div class="tooltip">Shuffle</div>
+                </button>
+            </div>
+
+            <!-- Help and Switch Mode Buttons -->
+            <div class="help-button-container">
+                <!-- Mode Switch Button -->
+                <button id="switchModeButton" aria-label="Switch Mode">
+                    <img src="https://i.imgur.com/FiKtOLw.png" alt="Switch Mode Button">
+                    <div class="tooltip">Switch Mode</div>
+                </button>
+                <!-- Help Button -->
+                <button id="helpButton" aria-label="Help">
+                    <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
+                    <div class="tooltip">Help</div>
+                </button>
+            </div>
+
+            <!-- Hidden audio player -->
+            <audio id="audioPlayer"></audio>
+            <!-- Custom progress bar -->
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <!-- Surah Info -->
+            <div id="surahInfoContainer" class="surah-info">
+                <div class="surah-name" id="surahName">Surah Name</div>
+                <div class="reciter-name" id="reciterName">Reciter Name</div>
+                <button id="downloadButton" class="download-button" aria-label="Download">
+                    <img src="https://i.imgur.com/V1Hw6TW.png" alt="Download Button">
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal Overlay -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-content">
+                <button class="close-button" id="closeButton">&times;</button>
+                <h2>Qur'an Sleep Radio</h2>
+                <h2>‏اَلسَلامُ عَلَيْكُمْ وَرَحْمَةُ اَللهِ وَبَرَكاتُهُ</h2>
+                <p>This page serves as an archive of my favourite recitations from around the world, all in one place.</p>
+                <p>You can control the playback using the buttons below.</p>
+                <h3>Controls:</h3>
+                <p>
+                    <img src="https://i.imgur.com/rfSFOWK.png" alt="Play/Pause Button"> <strong>Play/Pause:</strong> Start or pause the recitation.
+                </p>
+                <p>
+                    <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
+                </p>
+                <p>
+                    <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed Control Button"> <strong>Speed Control:</strong> Adjust the playback speed.
+                </p>
+                <p>
+                    <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
+                </p>
+                <p>
+                    <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
+                </p>
+                <p>
+                    <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
+                </p>
+            </div>
+        </div>
+
+        <!-- Filter Modal Overlay -->
+        <div class="modal-overlay" id="filterModalOverlay">
+            <div class="modal-content" id="filterModalContent">
+                <button class="close-button" id="filterCloseButton">&times;</button>
+                <h2>Filter by Juz</h2>
+                <div class="juz-list" id="juzList">
+                    <!-- Juz items will be dynamically added here -->
+                </div>
+                <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Main Controls -->
-    <div class="main-controls">
-        <!-- Volume Control Button -->
-        <button id="volumeButton" class="control-button" aria-label="Volume Control">
-            <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
-            <div class="tooltip">Volume Control</div>
-        </button>
-        <!-- Speed Control Button -->
-        <button id="speedButton" class="control-button" aria-label="Speed Control">
-            <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
-            <div class="tooltip">Speed Control</div>
-        </button>
-        <!-- Play/Pause Button -->
-        <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
-            <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
-            <div class="tooltip">Play/Pause</div>
-        </button>
-        <!-- Filter Button -->
-        <button id="filterButton" class="control-button" aria-label="Filter">
-            <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
-            <div class="tooltip">Filter</div>
-        </button>
-        <!-- Shuffle Button -->
-        <button id="shuffleButton" class="control-button" aria-label="Shuffle">
-            <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
-            <div class="tooltip">Shuffle</div>
-        </button>
-    </div>
+    <!-- Memorization Mode -->
+    <div id="memorizationMode">
+        <!-- Title -->
+        <h1>Qur'an Memorisation</h1>
 
-    <!-- Help Button -->
-    <div class="help-button-container">
-        <button id="helpButton" aria-label="Help">
-            <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
-            <div class="tooltip">Help</div>
-        </button>
-    </div>
+        <!-- Search Bar -->
+        <input type="text" id="searchBar" placeholder="Search Surah..." />
 
-    <!-- Hidden audio player -->
-    <audio id="audioPlayer"></audio>
-    <!-- Custom progress bar -->
-    <div class="progress-bar">
-        <div class="progress" id="progress"></div>
-    </div>
+        <!-- Filter Icons -->
+        <div class="filter-icons">
+            <div class="filter-item" id="sortDefaultOrder">
+                <img src="https://i.imgur.com/4g0zAcn.png" alt="Qur'anic Order Icon">
+                <span>Qur'anic Order</span>
+            </div>
+            <div class="filter-item" id="sortRevelationOrder">
+                <img src="https://i.imgur.com/pN1nyEg.png" alt="Revelation Order Icon">
+                <span>Revelation Order</span>
+            </div>
+            <div class="filter-item" id="sortShortestToLongest">
+                <img src="https://i.imgur.com/LsUPh5n.png" alt="Shortest to Longest Icon">
+                <span>Shortest to Longest</span>
+            </div>
+            <div class="filter-item" id="sortLongestToShortest">
+                <img src="https://i.imgur.com/lv82H0O.png" alt="Longest to Shortest Icon">
+                <span>Longest to Shortest</span>
+            </div>
+            <div class="filter-item" id="juzButton">
+                <img src="https://i.imgur.com/CKUpN9x.png" alt="Juz Icon">
+                <span>Juz</span>
+            </div>
+            <div class="filter-item" id="createPlaylistButton">
+                <img src="https://i.imgur.com/CKUpN9x.png" alt="Create Playlist Icon">
+                <span>Create Playlist</span>
+            </div>
+        </div>
 
-    <!-- Surah Info -->
-    <div id="surahInfoContainer" class="surah-info">
-        <div class="surah-name" id="surahName">Surah Name</div>
-        <div class="reciter-name" id="reciterName">Reciter Name</div>
-        <button id="downloadButton" class="download-button" aria-label="Download">
-            <img src="https://i.imgur.com/V1Hw6TW.png" alt="Download Button">
-        </button>
-    </div>
-</div>
+        <!-- Surah List -->
+        <ul id="surahList"></ul>
 
-<!-- Modal Overlay -->
-<div class="modal-overlay" id="modalOverlay">
-    <div class="modal-content">
-        <button class="close-button" id="closeButton">&times;</button>
-        <h2>Qur'an Sleep Radio</h2>
-        <h2>‏اَلسَلامُ عَلَيْكُمْ وَرَحْمَةُ اَللهِ وَبَرَكاتُهُ</h2>
-        <p>This page serves as an archive of my favourite recitations from around the world, all in one place.</p>
-        <p>You can control the playback using the buttons below.</p>
-        <h3>Controls:</h3>
-        <p>
-            <img src="https://i.imgur.com/rfSFOWK.png" alt="Play/Pause Button"> <strong>Play/Pause:</strong> Start or pause the recitation.
-        </p>
-        <p>
-            <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
-        </p>
-        <p>
-            <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed Control Button"> <strong>Speed Control:</strong> Adjust the playback speed.
-        </p>
-        <p>
-            <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
-        </p>
-        <p>
-            <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
-        </p>
-        <p>
-            <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
-        </p>
-    </div>
-</div>
-
-<!-- Filter Modal Overlay -->
-<div class="modal-overlay" id="filterModalOverlay">
-    <div class="modal-content" id="filterModalContent">
-        <button class="close-button" id="filterCloseButton">&times;</button>
-        <h2>Filter by Juz</h2>
-        <div class="juz-list" id="juzList">
+        <!-- Juz List -->
+        <div id="juzListContainer" class="juz-container" style="display: none;">
             <!-- Juz items will be dynamically added here -->
         </div>
-        <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
+
+        <!-- Playlist Display -->
+        <div id="playlistDisplay" style="display: none;">
+            <h2>Your Playlist</h2>
+            <div id="playlistItems"></div>
+            <button id="playPlaylistButton" class="blue-button">Play Playlist</button>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div id="bottomBar">
+            <div class="track-info">
+                <p id="bottomTrackTitle" class="title"></p>
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <input type="range" id="progressBar" min="0" max="100" value="0">
+                    <span class="progress-time" id="currentTime">00:00</span>
+                    <span class="progress-time" id="duration">00:00</span>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="controls">
+                <button id="memPlayPauseButton"><img src="https://i.imgur.com/HgqMt1K.png" alt="Play"></button>
+                <button id="repeatButton"><img src="https://i.imgur.com/dXw6ybJ.png" alt="Repeat"></button>
+            </div>
+        </div>
+
+        <!-- Repeat Menu -->
+        <div id="repeatMenu" class="menu">
+            <p>Repeat No.</p>
+            <input type="range" id="repeatCountSlider" class="menu-slider" min="1" max="31" step="1" value="1">
+            <span id="repeatCountValue">1</span> times
+            <br>
+            <button id="closeRepeatMenuButton">Close</button>
+        </div>
+
+        <!-- Playlist Modal -->
+        <div id="playlistModal" style="display: none;">
+            <div id="playlistModalContent">
+                <h2>Choose Surahs to Add to the Playlist</h2>
+                <ul id="playlistSurahList"></ul>
+                <button class="close-modal" id="finishPlaylistButton">Finish</button>
+            </div>
+        </div>
+
     </div>
+
 </div>
 
+<!-- Include JS -->
 <script>
 // Ensure Surah information is hidden on page load
 document.addEventListener("DOMContentLoaded", function () {
@@ -593,6 +1161,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
         document.getElementById('goldenWipe').style.display = 'none';
         document.body.classList.remove('no-scroll');
+        document.getElementById('pageContent').style.opacity = '1'; // Show page content
     }, 4000);
 });
 
@@ -615,6 +1184,7 @@ const reciterNameDisplay = document.getElementById('reciterName');
 const downloadButton = document.getElementById('downloadButton');
 const juzList = document.getElementById('juzList');
 const resetFilterButton = document.getElementById('resetFilterButton');
+const switchModeButton = document.getElementById('switchModeButton');
 
 // AUDIO
 const surahs = {
@@ -893,6 +1463,322 @@ audioPlayer.addEventListener('pause', function () {
 audioPlayer.addEventListener('ended', function () {
     surahInfoContainer.style.display = 'none';
 });
+
+// Switch Mode Button Functionality
+switchModeButton.addEventListener('click', () => {
+    const radioMode = document.getElementById('radioMode');
+    const memorizationMode = document.getElementById('memorizationMode');
+    if (radioMode.style.display !== 'none') {
+        radioMode.style.display = 'none';
+        memorizationMode.style.display = 'block';
+    } else {
+        memorizationMode.style.display = 'none';
+        radioMode.style.display = 'block';
+    }
+});
+
+/* Memorization Mode JavaScript */
+// Initialize variables
+const surahListData = [
+    { number: 1, name: "Al-Fatihah", length: 52, revelationOrder: 5 },
+    { number: 2, name: "Al-Baqarah", length: 7560, revelationOrder: 87 },
+    { number: 3, name: "Aal-E-Imran", length: 4725, revelationOrder: 89 },
+    // Add more surahs here...
+];
+
+const surahUl = document.getElementById('surahList');
+const searchBar = document.getElementById('searchBar');
+const memPlayPauseButton = document.getElementById('memPlayPauseButton');
+const bottomTrackTitle = document.getElementById('bottomTrackTitle');
+const memProgressBar = document.getElementById('progressBar');
+const memCurrentTime = document.getElementById('currentTime');
+const memDuration = document.getElementById('duration');
+const repeatButton = document.getElementById('repeatButton');
+const repeatMenu = document.getElementById('repeatMenu');
+const repeatCountSlider = document.getElementById('repeatCountSlider');
+const repeatCountValue = document.getElementById('repeatCountValue');
+const closeRepeatMenuButton = document.getElementById('closeRepeatMenuButton');
+const playlistModal = document.getElementById('playlistModal');
+const createPlaylistButton = document.getElementById('createPlaylistButton');
+const playlistSurahList = document.getElementById('playlistSurahList');
+const finishPlaylistButton = document.getElementById('finishPlaylistButton');
+const playlistDisplay = document.getElementById('playlistDisplay');
+const playlistItems = document.getElementById('playlistItems');
+const playPlaylistButton = document.getElementById('playPlaylistButton');
+
+let memAudioPlayer = new Audio();
+let currentMemSurahIndex = -1;
+let playCount = 1;
+let currentPlayCount = 1;
+let repeatCount = 1;
+let currentRepeatCount = 1;
+let memIsPlaying = false;
+
+// Playlist variables
+let playlist = [];
+let currentPlaylistIndex = 0;
+let isPlaylistPlaying = false;
+
+// Populate the surah list
+function populateSurahList(list = surahListData) {
+    surahUl.style.display = 'block';
+    surahUl.innerHTML = ''; // Clear existing list
+    list.forEach((surah) => {
+        const li = createSurahListItem(surah);
+        surahUl.appendChild(li);
+    });
+}
+
+// Create Surah List Item
+function createSurahListItem(surah) {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="surah-name">${surah.number}. ${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
+    li.addEventListener('click', () => {
+        currentMemSurahIndex = surahListData.findIndex(s => s.number === surah.number);
+        currentPlayCount = playCount; // Reset play count
+        currentRepeatCount = repeatCount; // Reset repeat count
+        isPlaylistPlaying = false; // Not playing from playlist
+        playMemSurah();
+    });
+
+    const menu = document.getElementById('menuTemplate') ? document.getElementById('menuTemplate').cloneNode(true) : document.createElement('div');
+    menu.id = `menu-${surah.number}`;
+    menu.classList.add('menu');
+    menu.querySelector('#menuSurahName').textContent = surah.name;
+    const playCountSlider = menu.querySelector('#surahPlayCount');
+    const playCountValue = menu.querySelector('#surahPlayCountValue');
+
+    playCountSlider.max = 31; // Set max to 31 (30 + infinite)
+    playCountSlider.addEventListener('input', function () {
+        playCount = parseInt(this.value);
+        if (playCount == 31) {
+            playCountValue.textContent = 'infinite';
+        } else {
+            playCountValue.textContent = playCount;
+        }
+    });
+    menu.querySelector('#closeMenuButton').addEventListener('click', () => {
+        menu.style.display = 'none';
+    });
+
+    li.querySelector('.three-dots').addEventListener('click', (event) => {
+        event.stopPropagation();
+        const rect = li.getBoundingClientRect();
+        menu.style.display = 'block';
+        menu.style.top = `${rect.bottom + window.scrollY}px`;
+        menu.style.left = `${rect.left + window.scrollX}px`;
+    });
+
+    document.body.appendChild(menu);
+    return li;
+}
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${hours > 0 ? String(hours).padStart(2, '0') + ':' : ''}${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
+function playMemSurah() {
+    if (currentMemSurahIndex >= 0 && currentMemSurahIndex < surahListData.length) {
+        const surahNumber = surahListData[currentMemSurahIndex].number;
+        memAudioPlayer.src = `assets/${String(surahNumber).padStart(3, '0')}.mp3`;
+        memAudioPlayer.play();
+        bottomTrackTitle.textContent = surahListData[currentMemSurahIndex].name;
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HGkqCfa.png" alt="Pause">`; // Pause icon
+        memIsPlaying = true;
+    }
+}
+
+memPlayPauseButton.addEventListener('click', () => {
+    if (memAudioPlayer.paused) {
+        memAudioPlayer.play();
+        memIsPlaying = true;
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HGkqCfa.png" alt="Pause">`; // Pause icon
+    } else {
+        memAudioPlayer.pause();
+        memIsPlaying = false;
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HgqMt1K.png" alt="Play">`; // Play icon
+    }
+});
+
+memAudioPlayer.addEventListener('ended', () => {
+    if (playCount === 31 || currentPlayCount < playCount) {
+        currentPlayCount++;
+        memAudioPlayer.currentTime = 0;
+        memAudioPlayer.play();
+    } else if (repeatCount === 31 || currentRepeatCount < repeatCount) {
+        currentRepeatCount++;
+        currentPlayCount = 1;
+        memAudioPlayer.currentTime = 0;
+        memAudioPlayer.play();
+    } else if (isPlaylistPlaying) {
+        currentPlaylistIndex++;
+        currentPlayCount = 1;
+        currentRepeatCount = 1;
+        playPlaylistSurah();
+    } else {
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HgqMt1K.png" alt="Play">`; // Play icon
+        memIsPlaying = false;
+    }
+});
+
+memAudioPlayer.addEventListener('timeupdate', () => {
+    if (memAudioPlayer.duration) {
+        memProgressBar.value = (memAudioPlayer.currentTime / memAudioPlayer.duration) * 100;
+        memCurrentTime.textContent = formatTime(memAudioPlayer.currentTime);
+        memDuration.textContent = formatTime(memAudioPlayer.duration);
+    }
+});
+
+memProgressBar.addEventListener('input', (e) => {
+    if (memAudioPlayer.duration) {
+        memAudioPlayer.currentTime = (e.target.value / 100) * memAudioPlayer.duration;
+    }
+});
+
+// Repeat Button Functionality
+repeatButton.addEventListener('click', () => {
+    if (repeatMenu.style.display === 'block') {
+        repeatMenu.style.display = 'none';
+    } else {
+        const rect = repeatButton.getBoundingClientRect();
+        repeatMenu.style.display = 'block';
+        repeatMenu.style.top = `${rect.top + window.scrollY - repeatMenu.offsetHeight}px`;
+        repeatMenu.style.left = `${rect.left + window.scrollX - repeatMenu.offsetWidth / 2 + repeatButton.offsetWidth / 2}px`;
+    }
+
+    // Update the repeat button image
+    repeatButton.innerHTML = `<img src="https://i.imgur.com/dXw6ybJ.png" alt="Repeat">`;
+});
+
+repeatCountSlider.addEventListener('input', function () {
+    repeatCount = parseInt(this.value);
+    if (repeatCount === 31) {
+        repeatCountValue.textContent = 'infinite';
+    } else {
+        repeatCountValue.textContent = repeatCount;
+    }
+});
+
+closeRepeatMenuButton.addEventListener('click', () => {
+    repeatMenu.style.display = 'none';
+});
+
+// Playlist Feature
+createPlaylistButton.addEventListener('click', () => {
+    openPlaylistModal();
+});
+
+function openPlaylistModal() {
+    playlistModal.style.display = 'block';
+    playlistSurahList.innerHTML = '';
+
+    surahListData.forEach(surah => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${surah.number}. ${surah.name}</span>`;
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.min = '1';
+        input.value = '1';
+        input.style.width = '50px';
+        input.style.marginRight = '10px';
+
+        const addButton = document.createElement('button');
+        addButton.textContent = 'Add';
+        addButton.className = 'add-button';
+        addButton.addEventListener('click', () => {
+            let count = parseInt(input.value);
+            if (!isNaN(count) && count > 0) {
+                for (let i = 0; i < count; i++) {
+                    playlist.push(surah);
+                }
+                alert(`${surah.name} added ${count} times to the playlist.`);
+            } else {
+                alert("Invalid number.");
+            }
+        });
+        li.appendChild(input);
+        li.appendChild(addButton);
+        playlistSurahList.appendChild(li);
+    });
+}
+
+finishPlaylistButton.addEventListener('click', () => {
+    playlistModal.style.display = 'none';
+    displayPlaylist();
+});
+
+function displayPlaylist() {
+    playlistItems.innerHTML = '';
+    if (playlist.length > 0) {
+        playlistDisplay.style.display = 'block';
+        playlist.forEach((surah, index) => {
+            const div = document.createElement('div');
+            div.className = 'playlist-item';
+            div.textContent = `${index + 1}. ${surah.name}`;
+            playlistItems.appendChild(div);
+        });
+    } else {
+        playlistDisplay.style.display = 'none';
+    }
+}
+
+playPlaylistButton.addEventListener('click', () => {
+    if (playlist.length > 0) {
+        currentPlaylistIndex = 0;
+        isPlaylistPlaying = true;
+        playPlaylistSurah();
+    }
+});
+
+function playPlaylistSurah() {
+    if (currentPlaylistIndex < playlist.length) {
+        const surah = playlist[currentPlaylistIndex];
+        currentMemSurahIndex = surahListData.findIndex(s => s.number === surah.number);
+        memAudioPlayer.src = `assets/${String(surah.number).padStart(3, '0')}.mp3`;
+        memAudioPlayer.play();
+        bottomTrackTitle.textContent = surah.name;
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HGkqCfa.png" alt="Pause">`; // Pause icon
+        memIsPlaying = true;
+    } else {
+        isPlaylistPlaying = false;
+        memIsPlaying = false;
+    }
+}
+
+// Search functionality
+searchBar.addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    const filteredSurahs = surahListData.filter(surah => surah.name.toLowerCase().includes(query));
+    populateSurahList(filteredSurahs);
+});
+
+// Sorting Functions
+document.getElementById('sortDefaultOrder').addEventListener('click', () => {
+    surahListData.sort((a, b) => a.number - b.number);
+    populateSurahList();
+});
+
+document.getElementById('sortShortestToLongest').addEventListener('click', () => {
+    surahListData.sort((a, b) => a.length - b.length);
+    populateSurahList();
+});
+
+document.getElementById('sortLongestToShortest').addEventListener('click', () => {
+    surahListData.sort((a, b) => b.length - a.length);
+    populateSurahList();
+});
+
+document.getElementById('sortRevelationOrder').addEventListener('click', () => {
+    surahListData.sort((a, b) => a.revelationOrder - b.revelationOrder);
+    populateSurahList();
+});
+
+// Initialize Surah List
+populateSurahList();
+
 </script>
 
 </body>
