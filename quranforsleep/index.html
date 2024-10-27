@@ -4,547 +4,619 @@
 <meta charset="UTF-8">
 <title>Qur'an Sleep Radio</title>
 <style>
-    /* Import Poppins font */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+/* Full-screen wipe overlay with dark, rich, golden-silver gradient and opacity */
+#goldenWipe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(139, 117, 0, 0.95),
+        rgba(169, 142, 25, 0.95),
+        rgba(200, 168, 55, 0.95),
+        rgba(139, 117, 0, 0.95)
+    );
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: smoothWipeWithPause 4s ease-in-out forwards, darkGoldenShimmer 4s ease-in-out infinite;
+    background-size: 400% 400%;
+    box-shadow: 0 0 50px rgba(255, 215, 155, 0.5);
+}
 
-    /* Reset default margins and paddings */
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background: #000; /* Black background */
-        overflow: hidden;
-        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+/* Slowed-down, luxurious wipe animation */
+@keyframes smoothWipeWithPause {
+    0% {
+        transform: translateX(-100%);
     }
-
-    /* Background container */
-    .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, #000000, #000000 50%, #b49f5e 100%);
+    50% {
+        transform: translateX(0);
     }
-
-    /* Rotating geometric pattern */
-    .pattern {
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: url('https://i.imgur.com/rxD6yFb.png');
-        background-size: 100px 100px;
-        opacity: 0.05;
-        animation: rotate 60s linear infinite;
+    100% {
+        transform: translateX(100%);
     }
+}
 
-    /* Rotation animation */
-    @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
+/* Shimmer effect for a rich, metallic gradient shift */
+@keyframes darkGoldenShimmer {
+    0% {
+        background-position: 0% 50%;
     }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
-    /* Corner images */
+/* Logo styling for dark luxurious animation */
+#wipeLogo {
+    width: 450px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+/* Page content fade-in */
+#pageContent {
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+/* Temporarily hide scrollbars during animation */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Reset default margins and paddings */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background container */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #000000, #000000 50%, #b49f5e 100%);
+}
+
+/* Rotating geometric pattern */
+.pattern {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: url('https://i.imgur.com/rxD6yFb.png');
+    background-size: 100px 100px;
+    opacity: 0.05;
+    animation: rotate 60s linear infinite;
+}
+
+/* Rotation animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Corner images */
+.corner {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20vw;
+    height: 20vw;
+    max-width: 250px;
+    max-height: 250px;
+    z-index: 2;
+    filter: grayscale(1) brightness(0.2);
+}
+
+/* Specific positions */
+.top-left {
+    top: 0;
+    left: 0;
+    background-image: url('https://i.imgur.com/8Fx9W9u.png');
+}
+
+.top-right {
+    top: 0;
+    right: 0;
+    background-image: url('https://i.imgur.com/kBZivxG.png');
+}
+
+.bottom-left {
+    bottom: 0;
+    left: 0;
+    background-image: url('https://i.imgur.com/V1z0fyO.png');
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+    background-image: url('https://i.imgur.com/YuU3nYm.png');
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
     .corner {
-        position: absolute;
-        background-size: contain;
-        background-repeat: no-repeat;
-        width: 20vw;
-        height: 20vw;
-        max-width: 250px;
-        max-height: 250px;
-        z-index: 2;
-        filter: grayscale(1) brightness(0.2);
+        width: 35vw;
+        height: 35vw;
     }
+}
 
-    /* Specific positions */
-    .top-left {
-        top: 0;
-        left: 0;
-        background-image: url('https://i.imgur.com/8Fx9W9u.png');
+/* Radio Player Interface */
+#radio {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 3;
+}
+
+/* Sleep Timer Button */
+.sleep-timer-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#sleepTimerButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+#sleepTimerButton img {
+    width: 400px;
+    height: 80px;
+    border-radius: 20px;
+}
+
+/* Main Controls */
+.main-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.control-button,
+.play-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin: 0 10px;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.control-button img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.play-button img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.control-button:active,
+.play-button:active,
+#sleepTimerButton:active,
+#helpButton:active {
+    transform: scale(0.95);
+}
+
+/* Help Button */
+.help-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#helpButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+#helpButton img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(180, 159, 94, 0.9);
+    color: #fff;
+    padding: 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 4;
+    font-size: 14px;
+    text-align: center;
+}
+
+.control-button:hover .tooltip,
+.play-button:hover .tooltip,
+#sleepTimerButton:hover .tooltip,
+#helpButton:hover .tooltip {
+    opacity: 1;
+}
+
+/* Shuffle Button Animation */
+@keyframes rotateButton {
+    from {
+        transform: rotate(0deg);
     }
-
-    .top-right {
-        top: 0;
-        right: 0;
-        background-image: url('https://i.imgur.com/kBZivxG.png');
+    to {
+        transform: rotate(360deg);
     }
+}
 
-    .bottom-left {
-        bottom: 0;
-        left: 0;
-        background-image: url('https://i.imgur.com/V1z0fyO.png');
-    }
+/* Audio Player Styles */
+#audioPlayer {
+    display: none;
+}
 
-    .bottom-right {
-        bottom: 0;
-        right: 0;
-        background-image: url('https://i.imgur.com/YuU3nYm.png');
-    }
+/* Custom progress bar */
+.progress-bar {
+    width: 80%;
+    max-width: 600px;
+    height: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
 
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-        .corner {
-            width: 35vw;
-            height: 35vw;
-        }
-    }
+/* Progress fill */
+.progress {
+    width: 0%;
+    height: 100%;
+    background-color: #b49f5e;
+}
 
-    /* Radio Player Interface */
-    #radio {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        z-index: 3;
-    }
+/* Modal Overlay */
+.modal-overlay, .filter-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
 
-    /* Sleep Timer Button */
-    .sleep-timer-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
+/* Modal Content */
+.modal-content, .filter-modal-content {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+}
 
-    #sleepTimerButton {
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        position: relative;
-    }
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+}
 
-    #sleepTimerButton img {
-        width: 400px; /* Adjust width for landscape orientation */
-        height: 80px;
-        border-radius: 20px;
-    }
+/* Button Descriptions in Modal */
+.modal-content img, .filter-modal-content img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
 
-    /* Main Controls */
-    .main-controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-    }
+.modal-content h2, .filter-modal-content h2 {
+    font-size: 24px;
+    margin-top: 0;
+    text-align: center;
+}
 
-    .control-button,
-    .play-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        margin: 0 10px;
-        position: relative;
-        transition: transform 0.2s;
-    }
+.modal-content p, .filter-modal-content p {
+    font-size: 18px;
+    line-height: 1.5;
+}
 
-    .control-button img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
+/* Scrollbar Styling */
+.modal-content::-webkit-scrollbar, .filter-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
 
-    .play-button img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-    }
+.modal-content::-webkit-scrollbar-thumb, .filter-modal-content::-webkit-scrollbar-thumb {
+    background-color: #b49f5e;
+    border-radius: 5px;
+}
 
-    .control-button:active,
-    .play-button:active,
-    #sleepTimerButton:active,
-    #helpButton:active {
-        transform: scale(0.95);
-    }
+/* Surah Info Styles */
+#surahInfoContainer {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
 
-    /* Help Button */
-    .help-button-container {
-        text-align: center;
-        margin-top: 20px;
-    }
+.surah-info {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+}
 
-    #helpButton {
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        position: relative;
-    }
+.surah-info .surah-name {
+    font-weight: bold;
+}
 
-    #helpButton img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
+.surah-info .reciter-name {
+    font-style: italic;
+}
 
-    /* Tooltip */
-    .tooltip {
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(180, 159, 94, 0.9);
-        color: #fff;
-        padding: 8px;
-        border-radius: 10px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.2s;
-        pointer-events: none;
-        z-index: 4;
-        font-size: 14px;
-        text-align: center;
-    }
+.download-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-top: 10px;
+}
 
-    .control-button:hover .tooltip,
-    .play-button:hover .tooltip,
-    #sleepTimerButton:hover .tooltip,
-    #helpButton:hover .tooltip {
-        opacity: 1;
-    }
+.download-button img {
+    width: 50px;
+    height: 50px;
+}
 
-    /* Shuffle Button Animation */
-    @keyframes rotateButton {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
+/* Juz List Styles */
+.juz-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
 
-    /* Audio Player Styles */
-    #audioPlayer {
-        display: none; /* Hide the default audio element */
-    }
+.juz-item {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 80px;
+    text-align: center;
+}
 
-    /* Custom progress bar */
-    .progress-bar {
-        width: 80%;
-        max-width: 600px;
-        height: 10px;
-        background-color: #333;
-        border-radius: 5px;
-        margin: 20px auto 0;
-        overflow: hidden;
-        cursor: pointer; /* Indicate clickable */
-        position: relative;
-    }
+.juz-item:hover {
+    background-color: #b49f5e;
+}
 
-    /* Progress fill */
-    .progress {
-        width: 0%;
-        height: 100%;
-        background-color: #b49f5e;
-    }
+.juz-item.selected {
+    background-color: #b49f5e;
+}
 
-    /* Modal Overlay */
-    .modal-overlay, .filter-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 10;
-        display: none;
-        align-items: center;
-        justify-content: center;
-    }
+/* Reset Filter Button */
+.reset-filter-button {
+    background-color: #b49f5e;
+    color: #fff;
+    padding: 10px 20px;
+    margin: 20px auto 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    display: block;
+}
 
-    /* Modal Content */
-    .modal-content, .filter-modal-content {
-        background-color: #1a1a1a;
-        color: #fff;
-        padding: 20px;
-        border-radius: 15px;
-        max-width: 90%;
-        max-height: 80%;
-        overflow-y: auto;
-        position: relative;
-    }
-
-    /* Close Button */
-    .close-button {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        background: none;
-        border: none;
-        font-size: 30px;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    /* Button Descriptions in Modal */
-    .modal-content img, .filter-modal-content img {
-        width: 50px;
-        height: 50px;
-        vertical-align: middle;
-        margin-right: 10px;
-    }
-
-    .modal-content h2, .filter-modal-content h2 {
-        font-size: 24px;
-        margin-top: 0;
-        text-align: center;
-    }
-
-    .modal-content p, .filter-modal-content p {
-        font-size: 18px;
-        line-height: 1.5;
-    }
-
-    /* Scrollbar Styling */
-    .modal-content::-webkit-scrollbar, .filter-modal-content::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .modal-content::-webkit-scrollbar-thumb, .filter-modal-content::-webkit-scrollbar-thumb {
-        background-color: #b49f5e;
-        border-radius: 5px;
-    }
-
-    /* Surah Info Styles */
-    .surah-info {
-        margin-top: 10px;
-        color: #fff;
-        font-size: 20px;
-        text-align: center;
-    }
-
-    .surah-info .surah-name {
-        font-weight: bold;
-    }
-
-    .surah-info .reciter-name {
-        font-style: italic;
-    }
-
-    .download-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        margin-top: 10px;
-    }
-
-    .download-button img {
-        width: 50px;
-        height: 50px;
-    }
-
-    /* Juz List Styles */
-    .juz-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    .juz-item {
-        background-color: #333;
-        color: #fff;
-        padding: 15px;
-        margin: 10px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        width: 80px;
-        text-align: center;
-    }
-
-    .juz-item:hover {
-        background-color: #b49f5e;
-    }
-
-    .juz-item.selected {
-        background-color: #b49f5e;
-    }
-
-    /* Reset Filter Button */
-    .reset-filter-button {
-        background-color: #b49f5e;
-        color: #fff;
-        padding: 10px 20px;
-        margin: 20px auto 0;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 18px;
-        display: block;
-    }
-
-    .reset-filter-button:hover {
-        background-color: #a18f57;
-    }
-
+.reset-filter-button:hover {
+    background-color: #a18f57;
+}
 </style>
 </head>
-<body>
-    <!-- Background layers -->
-    <div class="background">
-        <div class="pattern"></div>
 
-        <!-- Corner Patterns -->
-        <div class="corner top-left"></div>
-        <div class="corner top-right"></div>
-        <div class="corner bottom-left"></div>
-        <div class="corner bottom-right"></div>
+<body>    
+
+<!-- Wipe animation overlay -->
+<div id="goldenWipe">
+    <img src="https://i.imgur.com/QwjOZSH.png" alt="Logo" id="wipeLogo">
+</div>
+
+<!-- Background layers -->
+<div class="background">
+    <div class="pattern"></div>
+
+    <!-- Corner Patterns -->
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+</div>
+
+<!-- Radio Player Interface -->
+<div id="radio">
+    <!-- Sleep Timer Button -->
+    <div class="sleep-timer-container">
+        <button id="sleepTimerButton" aria-label="Sleep Timer">
+            <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
+            <div class="tooltip">Sleep Timer</div>
+        </button>
     </div>
 
-    <!-- Radio Player Interface -->
-    <div id="radio">
-        <!-- Sleep Timer Button -->
-        <div class="sleep-timer-container">
-            <button id="sleepTimerButton" aria-label="Sleep Timer">
-                <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
-                <div class="tooltip">Sleep Timer</div>
-            </button>
-        </div>
-
-        <!-- Main Controls -->
-        <div class="main-controls">
-            <!-- Volume Control Button -->
-            <button id="volumeButton" class="control-button" aria-label="Volume Control">
-                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
-                <div class="tooltip">Volume Control</div>
-            </button>
-            <!-- Speed Control Button -->
-            <button id="speedButton" class="control-button" aria-label="Speed Control">
-                <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
-                <div class="tooltip">Speed Control</div>
-            </button>
-            <!-- Play/Pause Button -->
-            <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
-                <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
-                <div class="tooltip">Play/Pause</div>
-            </button>
-            <!-- Filter Button -->
-            <button id="filterButton" class="control-button" aria-label="Filter">
-                <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
-                <div class="tooltip">Filter</div>
-            </button>
-            <!-- Shuffle Button -->
-            <button id="shuffleButton" class="control-button" aria-label="Shuffle">
-                <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
-                <div class="tooltip">Shuffle</div>
-            </button>
-        </div>
-
-        <!-- Help Button -->
-        <div class="help-button-container">
-            <button id="helpButton" aria-label="Help">
-                <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
-                <div class="tooltip">Help</div>
-            </button>
-        </div>
-
-        <!-- Hidden audio player -->
-        <audio id="audioPlayer"></audio>
-        <!-- Custom progress bar -->
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
-        <!-- Surah Info -->
-        <div class="surah-info">
-            <div class="surah-name" id="surahName">Surah Name</div>
-            <div class="reciter-name" id="reciterName">Reciter Name</div>
-            <button id="downloadButton" class="download-button" aria-label="Download">
-                <img src="https://i.imgur.com/V1Hw6TW.png" alt="Download Button">
-            </button>
-        </div>
+    <!-- Main Controls -->
+    <div class="main-controls">
+        <!-- Volume Control Button -->
+        <button id="volumeButton" class="control-button" aria-label="Volume Control">
+            <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
+            <div class="tooltip">Volume Control</div>
+        </button>
+        <!-- Speed Control Button -->
+        <button id="speedButton" class="control-button" aria-label="Speed Control">
+            <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
+            <div class="tooltip">Speed Control</div>
+        </button>
+        <!-- Play/Pause Button -->
+        <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
+            <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
+            <div class="tooltip">Play/Pause</div>
+        </button>
+        <!-- Filter Button -->
+        <button id="filterButton" class="control-button" aria-label="Filter">
+            <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
+            <div class="tooltip">Filter</div>
+        </button>
+        <!-- Shuffle Button -->
+        <button id="shuffleButton" class="control-button" aria-label="Shuffle">
+            <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
+            <div class="tooltip">Shuffle</div>
+        </button>
     </div>
 
-    <!-- Modal Overlay -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <button class="close-button" id="closeButton">&times;</button>
-            <h2>Qur'an Sleep Radio</h2>
-            <h2>‏اَلسَلامُ عَلَيْكُمْ وَرَحْمَةُ اَللهِ وَبَرَكاتُهُ</h2>
-            <p>This page serves as an archive of my favourite recitations from around the world, all in one place.</p>
-            <p>You can control the playback using the buttons below.</p>
-            <h3>Controls:</h3>
-            <p>
-                <img src="https://i.imgur.com/rfSFOWK.png" alt="Play/Pause Button"> <strong>Play/Pause:</strong> Start or pause the recitation.
-            </p>
-            <p>
-                <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
-            </p>
-            <p>
-                <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed Control Button"> <strong>Speed Control:</strong> Adjust the playback speed.
-            </p>
-            <p>
-                <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
-            </p>
-            <p>
-                <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
-            </p>
-            <p>
-                <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
-            </p>
-        </div>
+    <!-- Help Button -->
+    <div class="help-button-container">
+        <button id="helpButton" aria-label="Help">
+            <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
+            <div class="tooltip">Help</div>
+        </button>
     </div>
 
-    <!-- Filter Modal Overlay -->
-    <div class="modal-overlay" id="filterModalOverlay">
-        <div class="modal-content" id="filterModalContent">
-            <button class="close-button" id="filterCloseButton">&times;</button>
-            <h2>Filter by Juz</h2>
-            <div class="juz-list" id="juzList">
-                <!-- Juz items will be dynamically added here -->
-            </div>
-            <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
-        </div>
+    <!-- Hidden audio player -->
+    <audio id="audioPlayer"></audio>
+    <!-- Custom progress bar -->
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
     </div>
 
-    <script>
-        const audioPlayer = document.getElementById('audioPlayer');
-        const playPauseButton = document.getElementById('playPauseButton');
-        const shuffleButton = document.getElementById('shuffleButton');
-        const speedButton = document.getElementById('speedButton');
-        const volumeButton = document.getElementById('volumeButton');
-        const sleepTimerButton = document.getElementById('sleepTimerButton');
-        const helpButton = document.getElementById('helpButton');
-        const filterButton = document.getElementById('filterButton');
-        const progressBar = document.querySelector('.progress-bar');
-        const progress = document.getElementById('progress');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const closeButton = document.getElementById('closeButton');
-        const filterModalOverlay = document.getElementById('filterModalOverlay');
-        const filterCloseButton = document.getElementById('filterCloseButton');
-        const surahNameDisplay = document.getElementById('surahName');
-        const reciterNameDisplay = document.getElementById('reciterName');
-        const downloadButton = document.getElementById('downloadButton');
-        const juzList = document.getElementById('juzList');
-        const resetFilterButton = document.getElementById('resetFilterButton');
+    <!-- Surah Info -->
+    <div id="surahInfoContainer" class="surah-info">
+        <div class="surah-name" id="surahName">Surah Name</div>
+        <div class="reciter-name" id="reciterName">Reciter Name</div>
+        <button id="downloadButton" class="download-button" aria-label="Download">
+            <img src="https://i.imgur.com/V1Hw6TW.png" alt="Download Button">
+        </button>
+    </div>
+</div>
 
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <button class="close-button" id="closeButton">&times;</button>
+        <h2>Qur'an Sleep Radio</h2>
+        <h2>‏اَلسَلامُ عَلَيْكُمْ وَرَحْمَةُ اَللهِ وَبَرَكاتُهُ</h2>
+        <p>This page serves as an archive of my favourite recitations from around the world, all in one place.</p>
+        <p>You can control the playback using the buttons below.</p>
+        <h3>Controls:</h3>
+        <p>
+            <img src="https://i.imgur.com/rfSFOWK.png" alt="Play/Pause Button"> <strong>Play/Pause:</strong> Start or pause the recitation.
+        </p>
+        <p>
+            <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
+        </p>
+        <p>
+            <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed Control Button"> <strong>Speed Control:</strong> Adjust the playback speed.
+        </p>
+        <p>
+            <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
+        </p>
+        <p>
+            <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
+        </p>
+        <p>
+            <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
+        </p>
+    </div>
+</div>
 
+<!-- Filter Modal Overlay -->
+<div class="modal-overlay" id="filterModalOverlay">
+    <div class="modal-content" id="filterModalContent">
+        <button class="close-button" id="filterCloseButton">&times;</button>
+        <h2>Filter by Juz</h2>
+        <div class="juz-list" id="juzList">
+            <!-- Juz items will be dynamically added here -->
+        </div>
+        <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
+    </div>
+</div>
 
+<script>
+// Ensure Surah information is hidden on page load
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('surahInfoContainer').style.display = 'none';
+    document.body.classList.add('no-scroll');
+    setTimeout(function () {
+        document.getElementById('goldenWipe').style.display = 'none';
+        document.body.classList.remove('no-scroll');
+    }, 4000);
+});
 
+const audioPlayer = document.getElementById('audioPlayer');
+const playPauseButton = document.getElementById('playPauseButton');
+const shuffleButton = document.getElementById('shuffleButton');
+const speedButton = document.getElementById('speedButton');
+const volumeButton = document.getElementById('volumeButton');
+const sleepTimerButton = document.getElementById('sleepTimerButton');
+const helpButton = document.getElementById('helpButton');
+const filterButton = document.getElementById('filterButton');
+const progressBar = document.querySelector('.progress-bar');
+const progress = document.getElementById('progress');
+const modalOverlay = document.getElementById('modalOverlay');
+const closeButton = document.getElementById('closeButton');
+const filterModalOverlay = document.getElementById('filterModalOverlay');
+const filterCloseButton = document.getElementById('filterCloseButton');
+const surahNameDisplay = document.getElementById('surahName');
+const reciterNameDisplay = document.getElementById('reciterName');
+const downloadButton = document.getElementById('downloadButton');
+const juzList = document.getElementById('juzList');
+const resetFilterButton = document.getElementById('resetFilterButton');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // AUDIO
-
+// AUDIO
 const surahs = {
     'surah_001': {
         name: 'Al-Fatihah',
@@ -552,1525 +624,276 @@ const surahs = {
             {
                 reciter: 'Mishary Rashid Alafasy',
                 files: ['assets/001.mp3']
-            },
-            // Add more recitations
-        ],
-        juz: [1]
-    },
-    'surah_002': {
-        name: 'Al-Baqarah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/002_part1.mp3', 'assets/002_part2.mp3']
-            },
-        ],
-        juz: [1, 2, 3]
-    },
-    'surah_003': {
-        name: 'Ali Imran',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/003.mp3']
-            },
-        ],
-        juz: [3, 4]
-    },
-    'surah_004': {
-        name: 'An-Nisa',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/004.mp3']
-            },
-        ],
-        juz: [4, 5, 6]
-    },
-    'surah_005': {
-        name: "Al-Ma'idah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/005.mp3']
-            },
-        ],
-        juz: [6, 7]
-    },
-    'surah_006': {
-        name: "Al-An'am",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/006.mp3']
-            },
-        ],
-        juz: [7, 8]
-    },
-    'surah_007': {
-        name: "Al-A'raf",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/007.mp3']
-            },
-        ],
-        juz: [8, 9]
-    },
-    'surah_008': {
-        name: 'Al-Anfal',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/008.mp3']
-            },
-        ],
-        juz: [9, 10]
-    },
-    'surah_009': {
-        name: 'At-Tawbah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/009.mp3']
-            },
-        ],
-        juz: [10, 11]
-    },
-    'surah_010': {
-        name: 'Yunus',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/010.mp3']
-            },
-        ],
-        juz: [11]
-    },
-    'surah_011': {
-        name: 'Hud',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/011.mp3']
-            },
-        ],
-        juz: [11, 12]
-    },
-    'surah_012': {
-        name: 'Yusuf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/012.mp3']
-            },
-        ],
-        juz: [12, 13]
-    },
-    'surah_013': {
-        name: "Ar-Ra'd",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/013.mp3']
-            },
-        ],
-        juz: [13]
-    },
-    'surah_014': {
-        name: 'Ibrahim',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/014.mp3']
-            },
-        ],
-        juz: [13]
-    },
-    'surah_015': {
-        name: 'Al-Hijr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/015.mp3']
-            },
-        ],
-        juz: [14]
-    },
-    'surah_016': {
-        name: 'An-Nahl',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/016.mp3']
-            },
-        ],
-        juz: [14]
-    },
-    'surah_017': {
-        name: 'Al-Isra',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/017.mp3']
-            },
-        ],
-        juz: [15]
-    },
-    'surah_018': {
-        name: 'Al-Kahf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/018.mp3']
-            },
-        ],
-        juz: [15, 16]
-    },
-    'surah_019': {
-        name: 'Maryam',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/019.mp3']
-            },
-        ],
-        juz: [16]
-    },
-    'surah_020': {
-        name: 'Ta-Ha',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/020.mp3']
-            },
-        ],
-        juz: [16]
-    },
-    'surah_021': {
-        name: 'Al-Anbiya',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/021.mp3']
-            },
-        ],
-        juz: [17]
-    },
-    'surah_022': {
-        name: 'Al-Hajj',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/022.mp3']
-            },
-        ],
-        juz: [17]
-    },
-    'surah_023': {
-        name: "Al-Mu'minun",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/023.mp3']
-            },
-        ],
-        juz: [18]
-    },
-    'surah_024': {
-        name: 'An-Nur',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/024.mp3']
-            },
-        ],
-        juz: [18]
-    },
-    'surah_025': {
-        name: 'Al-Furqan',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/025.mp3']
-            },
-        ],
-        juz: [18, 19]
-    },
-    'surah_026': {
-        name: "Ash-Shu'ara",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/026.mp3']
-            },
-        ],
-        juz: [19]
-    },
-    'surah_027': {
-        name: 'An-Naml',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/027.mp3']
-            },
-        ],
-        juz: [19, 20]
-    },
-    'surah_028': {
-        name: 'Al-Qasas',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/028.mp3']
-            },
-        ],
-        juz: [20]
-    },
-    'surah_029': {
-        name: 'Al-Ankabut',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/029.mp3']
-            },
-        ],
-        juz: [20, 21]
-    },
-    'surah_030': {
-        name: 'Ar-Rum',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/030.mp3']
-            },
-        ],
-        juz: [21]
-    },
-    'surah_031': {
-        name: 'Luqman',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/031.mp3']
-            },
-        ],
-        juz: [21]
-    },
-    'surah_032': {
-        name: 'As-Sajdah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/032.mp3']
-            },
-        ],
-        juz: [21]
-    },
-    'surah_033': {
-        name: 'Al-Ahzab',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/033.mp3']
-            },
-        ],
-        juz: [21, 22]
-    },
-    'surah_034': {
-        name: 'Saba',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/034.mp3']
-            },
-        ],
-        juz: [22]
-    },
-    'surah_035': {
-        name: 'Fatir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/035.mp3']
-            },
-        ],
-        juz: [22]
-    },
-    'surah_036': {
-        name: 'Ya-Sin',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/036.mp3']
-            },
-        ],
-        juz: [22, 23]
-    },
-    'surah_037': {
-        name: 'As-Saffat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/037.mp3']
-            },
-        ],
-        juz: [23]
-    },
-    'surah_038': {
-        name: 'Sad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/038.mp3']
-            },
-        ],
-        juz: [23]
-    },
-    'surah_039': {
-        name: 'Az-Zumar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/039.mp3']
-            },
-        ],
-        juz: [23, 24]
-    },
-    'surah_040': {
-        name: 'Ghafir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/040.mp3']
-            },
-        ],
-        juz: [24]
-    },
-    'surah_041': {
-        name: 'Fussilat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/041.mp3']
-            },
-        ],
-        juz: [24, 25]
-    },
-    'surah_042': {
-        name: 'Ash-Shura',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/042.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_043': {
-        name: 'Az-Zukhruf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/043.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_044': {
-        name: 'Ad-Dukhan',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/044.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_045': {
-        name: 'Al-Jathiyah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/045.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_046': {
-        name: 'Al-Ahqaf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/046.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_047': {
-        name: 'Muhammad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/047.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_048': {
-        name: 'Al-Fath',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/048.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_049': {
-        name: 'Al-Hujurat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/049.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_050': {
-        name: 'Qaf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/050.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_051': {
-        name: 'Adh-Dhariyat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/051.mp3']
-            },
-        ],
-        juz: [26, 27]
-    },
-    'surah_052': {
-        name: 'At-Tur',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/052.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_053': {
-        name: 'An-Najm',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/053.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_054': {
-        name: 'Al-Qamar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/054.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_055': {
-        name: 'Ar-Rahman',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/055.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_056': {
-        name: "Al-Waqi'ah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/056.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_057': {
-        name: 'Al-Hadid',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/057.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_058': {
-        name: 'Al-Mujadilah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/058.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_059': {
-        name: 'Al-Hashr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/059.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_060': {
-        name: 'Al-Mumtahanah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/060.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_061': {
-        name: 'As-Saf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/061.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_062': {
-        name: "Al-Jumu'ah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/062.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_063': {
-        name: 'Al-Munafiqun',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/063.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_064': {
-        name: 'At-Taghabun',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/064.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_065': {
-        name: 'At-Talaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/065.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_066': {
-        name: 'At-Tahrim',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/066.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_067': {
-        name: 'Al-Mulk',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/067.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_068': {
-        name: 'Al-Qalam',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/068.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_069': {
-        name: 'Al-Haqqah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/069.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_070': {
-        name: "Al-Ma'arij",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/070.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_071': {
-        name: 'Nuh',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/071.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_072': {
-        name: 'Al-Jinn',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/072.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_073': {
-        name: 'Al-Muzzammil',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/073.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_074': {
-        name: 'Al-Muddaththir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/074.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_075': {
-        name: 'Al-Qiyamah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/075.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_076': {
-        name: 'Al-Insan',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/076.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_077': {
-        name: 'Al-Mursalat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/077.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_078': {
-        name: 'An-Naba',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/078.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_079': {
-        name: "An-Nazi'at",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/079.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_080': {
-        name: 'Abasa',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/080.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_081': {
-        name: 'At-Takwir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/081.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_082': {
-        name: 'Al-Infitar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/082.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_083': {
-        name: 'Al-Mutaffifin',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/083.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_084': {
-        name: 'Al-Inshiqaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/084.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_085': {
-        name: 'Al-Buruj',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/085.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_086': {
-        name: 'At-Tariq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/086.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_087': {
-        name: "Al-A'la",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/087.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_088': {
-        name: 'Al-Ghashiyah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/088.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_089': {
-        name: 'Al-Fajr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/089.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_090': {
-        name: 'Al-Balad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/090.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_091': {
-        name: 'Ash-Shams',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/091.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_092': {
-        name: 'Al-Layl',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/092.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_093': {
-        name: 'Ad-Duha',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/093.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_094': {
-        name: 'Ash-Sharh',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/094.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_095': {
-        name: 'At-Tin',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/095.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_096': {
-        name: 'Al-Alaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/096.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_097': {
-        name: 'Al-Qadr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/097.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_098': {
-        name: 'Al-Bayyinah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/098.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_099': {
-        name: 'Az-Zalzalah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/099.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_100': {
-        name: 'Al-Adiyat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/100.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_101': {
-        name: "Al-Qari'ah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/101.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_102': {
-        name: 'At-Takathur',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/102.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_103': {
-        name: 'Al-Asr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/103.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_104': {
-        name: 'Al-Humazah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/104.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_105': {
-        name: 'Al-Fil',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/105.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_106': {
-        name: 'Quraysh',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/106.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_107': {
-        name: "Al-Ma'un",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/107.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_108': {
-        name: 'Al-Kawthar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/108.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_109': {
-        name: 'Al-Kafirun',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/109.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_110': {
-        name: 'An-Nasr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/110.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_111': {
-        name: 'Al-Masad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/111.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_112': {
-        name: 'Al-Ikhlas',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/112.mp3']
-            },
-            {
-                reciter: 'Abdul Basit',
-                files: ['assets/112_abdulbasit.mp3']
-            },
-            {
-                reciter: 'Saad Al Ghamdi',
-                files: ['assets/112_saadalghamdi.mp3']
             }
         ],
-        juz: [30]
-    },
-    'surah_113': {
-        name: 'Al-Falaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/113.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_114': {
-        name: 'An-Nas',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['assets/114.mp3']
-            },
-        ],
-        juz: [30]
+        juz: [1]
     }
 };
 
+// Variables for Surah info and download button
+const surahInfoContainer = document.getElementById('surahInfoContainer');
 
+let currentSurahKey = null;
+let currentSurah = null;
+let currentRecitation = null;
+let currentPart = 0;
+let isPlaying = false;
 
+// Sleep Timer settings
+const sleepTimes = [
+    { time: null, img: 'https://i.imgur.com/6jVJpH5.png', alt: 'Sleep Timer' },
+    { time: 10 * 60, img: 'https://i.imgur.com/2i3xjzP.png', alt: 'Sleep Timer: 10 Minutes' },
+    { time: 15 * 60, img: 'https://i.imgur.com/8C92a9F.png', alt: 'Sleep Timer: 15 Minutes' },
+    { time: 20 * 60, img: 'https://i.imgur.com/ZkhlFd4.png', alt: 'Sleep Timer: 20 Minutes' },
+    { time: 30 * 60, img: 'https://i.imgur.com/dlYk6kr.png', alt: 'Sleep Timer: 30 Minutes' },
+    { time: 60 * 60, img: 'https://i.imgur.com/T8qc0tX.png', alt: 'Sleep Timer: 1 Hour' },
+    { time: 120 * 60, img: 'https://i.imgur.com/mj64RF8.png', alt: 'Sleep Timer: 2 Hours' }
+];
+let currentSleepIndex = 0;
+let sleepTimerTimeout = null;
 
+// Speed settings
+const speeds = [
+    { rate: 1.0, img: 'https://i.imgur.com/wDDwzEi.png', alt: 'Speed 1x' },
+    { rate: 1.25, img: 'https://i.imgur.com/56ibCLP.png', alt: 'Speed 1.25x' },
+    { rate: 1.5, img: 'https://i.imgur.com/QrgfxD1.png', alt: 'Speed 1.5x' },
+    { rate: 1.75, img: 'https://i.imgur.com/AJUMmXp.png', alt: 'Speed 1.75x' },
+    { rate: 2.0, img: 'https://i.imgur.com/PzKnwfo.png', alt: 'Speed 2x' },
+    { rate: 0.5, img: 'https://i.imgur.com/rQqbvso.png', alt: 'Speed 0.5x' },
+    { rate: 0.75, img: 'https://i.imgur.com/JymFl6p.png', alt: 'Speed 0.75x' }
+];
+let currentSpeedIndex = 0;
 
+// Volume settings
+const volumes = [
+    { level: 1.0, img: 'https://i.imgur.com/YHeXLfV.png', alt: 'Volume 100%' },
+    { level: 0.33, img: 'https://i.imgur.com/7tPoTem.png', alt: 'Volume 33%' },
+    { level: 0.67, img: 'https://i.imgur.com/3eYgm5a.png', alt: 'Volume 67%' }
+];
+let currentVolumeIndex = 0;
 
+// Filter settings
+let selectedJuz = null;
 
+audioPlayer.volume = volumes[currentVolumeIndex].level;
+audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
 
+function playSurah(surahKey) {
+    currentSurahKey = surahKey;
+    currentSurah = surahs[surahKey];
+    const recitations = currentSurah.recitations || [{ reciter: currentSurah.reciter, files: currentSurah.files }];
+    currentRecitation = recitations[Math.floor(Math.random() * recitations.length)];
+    currentPart = 0;
+    updateSurahInfo();
+    playCurrentPart();
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        let currentSurahKey = null;
-        let currentSurah = null;
-        let currentRecitation = null;
-        let currentPart = 0;
-        let isPlaying = false;
-
-        // Sleep Timer settings
-        const sleepTimes = [
-            { time: null, img: 'https://i.imgur.com/6jVJpH5.png', alt: 'Sleep Timer' },
-            { time: 10 * 60, img: 'https://i.imgur.com/2i3xjzP.png', alt: 'Sleep Timer: 10 Minutes' },
-            { time: 15 * 60, img: 'https://i.imgur.com/8C92a9F.png', alt: 'Sleep Timer: 15 Minutes' },
-            { time: 20 * 60, img: 'https://i.imgur.com/ZkhlFd4.png', alt: 'Sleep Timer: 20 Minutes' },
-            { time: 30 * 60, img: 'https://i.imgur.com/dlYk6kr.png', alt: 'Sleep Timer: 30 Minutes' },
-            { time: 60 * 60, img: 'https://i.imgur.com/T8qc0tX.png', alt: 'Sleep Timer: 1 Hour' },
-            { time: 120 * 60, img: 'https://i.imgur.com/mj64RF8.png', alt: 'Sleep Timer: 2 Hours' }
-        ];
-        let currentSleepIndex = 0;
-        let sleepTimerTimeout = null;
-
-        // Speed settings
-        const speeds = [
-            { rate: 1.0, img: 'https://i.imgur.com/wDDwzEi.png', alt: 'Speed 1x' },
-            { rate: 1.25, img: 'https://i.imgur.com/56ibCLP.png', alt: 'Speed 1.25x' },
-            { rate: 1.5, img: 'https://i.imgur.com/QrgfxD1.png', alt: 'Speed 1.5x' },
-            { rate: 1.75, img: 'https://i.imgur.com/AJUMmXp.png', alt: 'Speed 1.75x' },
-            { rate: 2.0, img: 'https://i.imgur.com/PzKnwfo.png', alt: 'Speed 2x' },
-            { rate: 0.5, img: 'https://i.imgur.com/rQqbvso.png', alt: 'Speed 0.5x' },
-            { rate: 0.75, img: 'https://i.imgur.com/JymFl6p.png', alt: 'Speed 0.75x' }
-        ];
-        let currentSpeedIndex = 0;
-
-        // Volume settings
-        const volumes = [
-            { level: 1.0, img: 'https://i.imgur.com/YHeXLfV.png', alt: 'Volume 100%' },
-            { level: 0.33, img: 'https://i.imgur.com/7tPoTem.png', alt: 'Volume 33%' },
-            { level: 0.67, img: 'https://i.imgur.com/3eYgm5a.png', alt: 'Volume 67%' }
-        ];
-        let currentVolumeIndex = 0;
-
-        // Filter settings
-        let selectedJuz = null; // null means no filter
-
-        // Set initial audio properties
-        audioPlayer.volume = volumes[currentVolumeIndex].level;
+function playCurrentPart() {
+    if (currentPart < currentRecitation.files.length) {
+        audioPlayer.src = currentRecitation.files[currentPart];
         audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
+        audioPlayer.volume = volumes[currentVolumeIndex].level;
+        audioPlayer.play();
+        isPlaying = true;
+        updatePlayPauseIcon();
+        updateMediaSession();
+    }
+}
 
-        // Function to start playing a surah from the beginning
-        function playSurah(surahKey) {
-            currentSurahKey = surahKey;
-            currentSurah = surahs[surahKey];
-            // Select a random recitation
-            const recitations = currentSurah.recitations || [{ reciter: currentSurah.reciter, files: currentSurah.files }];
-            currentRecitation = recitations[Math.floor(Math.random() * recitations.length)];
-            currentPart = 0;
-            updateSurahInfo();
-            playCurrentPart();
+audioPlayer.addEventListener('ended', () => {
+    currentPart++;
+    if (currentPart < currentRecitation.files.length) {
+        playCurrentPart();
+    } else {
+        if (isPlaying) {
+            playRandomSurah();
         }
+    }
+});
 
-        // Play the current part of the selected surah
-        function playCurrentPart() {
-            if (currentPart < currentRecitation.files.length) {
-                audioPlayer.src = currentRecitation.files[currentPart];
-                audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
-                audioPlayer.volume = volumes[currentVolumeIndex].level;
-                audioPlayer.play();
-                isPlaying = true;
-                updatePlayPauseIcon();
-                updateMediaSession(); // Update media session info
-            }
-        }
-
-        // When one part ends, go to the next
-        audioPlayer.addEventListener('ended', () => {
-            currentPart++;
-            if (currentPart < currentRecitation.files.length) {
-                playCurrentPart(); // Play the next part
-            } else {
-                if (isPlaying) {
-                    playRandomSurah(); // Play a new random surah
-                }
-            }
-        });
-
-        // Play/Pause button functionality
-        playPauseButton.addEventListener('click', () => {
-            if (!isPlaying) {
-                if (!currentSurah) {
-                    playRandomSurah(); // Play a random surah on first play
-                } else {
-                    audioPlayer.play();
-                    isPlaying = true;
-                    updatePlayPauseIcon();
-                    updateMediaSession(); // Update media session info
-                }
-                startSleepTimer(); // Start or restart sleep timer if set
-            } else {
-                audioPlayer.pause();
-                isPlaying = false;
-                updatePlayPauseIcon();
-                clearSleepTimer();
-            }
-        });
-
-        // Shuffle button functionality
-        shuffleButton.addEventListener('click', () => {
-            // Rotate the shuffle button
-            shuffleButton.style.animation = 'rotateButton 0.5s';
-            shuffleButton.addEventListener('animationend', () => {
-                shuffleButton.style.animation = '';
-            });
-
-            playRandomSurah(); // Shuffle to a random surah
+playPauseButton.addEventListener('click', () => {
+    if (!isPlaying) {
+        if (!currentSurah) {
+            playRandomSurah();
+        } else {
+            audioPlayer.play();
             isPlaying = true;
             updatePlayPauseIcon();
-            startSleepTimer(); // Restart sleep timer if set
-        });
-
-        // Function to play a random surah, considering the filter
-        function playRandomSurah() {
-            let keys = Object.keys(surahs);
-            if (selectedJuz) {
-                keys = keys.filter(key => surahs[key].juz.includes(selectedJuz));
-            }
-            if (keys.length > 0) {
-                const randomSurahKey = keys[Math.floor(Math.random() * keys.length)];
-                playSurah(randomSurahKey);
-            } else {
-                alert('No Surahs available for the selected Juz.');
-            }
+            updateMediaSession();
         }
+        startSleepTimer();
+    } else {
+        audioPlayer.pause();
+        isPlaying = false;
+        updatePlayPauseIcon();
+        clearSleepTimer();
+    }
+});
 
-        // Speed button functionality
-        speedButton.addEventListener('click', () => {
-            currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
-            audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
-            // Update the button image
-            const speedIcon = speedButton.querySelector('img');
-            speedIcon.src = speeds[currentSpeedIndex].img;
-            speedIcon.alt = speeds[currentSpeedIndex].alt;
-        });
+shuffleButton.addEventListener('click', () => {
+    shuffleButton.style.animation = 'rotateButton 0.5s';
+    shuffleButton.addEventListener('animationend', () => {
+        shuffleButton.style.animation = '';
+    });
+    playRandomSurah();
+    isPlaying = true;
+    updatePlayPauseIcon();
+    startSleepTimer();
+});
 
-        // Volume button functionality
-        volumeButton.addEventListener('click', () => {
-            currentVolumeIndex = (currentVolumeIndex + 1) % volumes.length;
-            audioPlayer.volume = volumes[currentVolumeIndex].level;
-            // Update the button image
-            const volumeIcon = volumeButton.querySelector('img');
-            volumeIcon.src = volumes[currentVolumeIndex].img;
-            volumeIcon.alt = volumes[currentVolumeIndex].alt;
-        });
+function playRandomSurah() {
+    let keys = Object.keys(surahs);
+    if (selectedJuz) {
+        keys = keys.filter(key => surahs[key].juz.includes(selectedJuz));
+    }
+    if (keys.length > 0) {
+        const randomSurahKey = keys[Math.floor(Math.random() * keys.length)];
+        playSurah(randomSurahKey);
+    } else {
+        alert('No Surahs available for the selected Juz.');
+    }
+}
 
-        // Sleep Timer button functionality
-        sleepTimerButton.addEventListener('click', () => {
-            currentSleepIndex = (currentSleepIndex + 1) % sleepTimes.length;
-            // Update the button image
-            const sleepIcon = sleepTimerButton.querySelector('img');
-            sleepIcon.src = sleepTimes[currentSleepIndex].img;
-            sleepIcon.alt = sleepTimes[currentSleepIndex].alt;
-            // Restart the sleep timer if playing
-            if (isPlaying) {
-                startSleepTimer();
-            }
-        });
+speedButton.addEventListener('click', () => {
+    currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+    audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
+    const speedIcon = speedButton.querySelector('img');
+    speedIcon.src = speeds[currentSpeedIndex].img;
+    speedIcon.alt = speeds[currentSpeedIndex].alt;
+});
 
-        // Start or restart the sleep timer
-        function startSleepTimer() {
-            clearSleepTimer();
-            const sleepTime = sleepTimes[currentSleepIndex].time;
-            if (sleepTime !== null) {
-                const fadeOutTime = 10; // Fade out over 10 seconds
-                const stopTime = sleepTime - fadeOutTime;
+volumeButton.addEventListener('click', () => {
+    currentVolumeIndex = (currentVolumeIndex + 1) % volumes.length;
+    audioPlayer.volume = volumes[currentVolumeIndex].level;
+    const volumeIcon = volumeButton.querySelector('img');
+    volumeIcon.src = volumes[currentVolumeIndex].img;
+    volumeIcon.alt = volumes[currentVolumeIndex].alt;
+});
 
-                sleepTimerTimeout = setTimeout(() => {
-                    // Fade out the volume
-                    let fadeInterval = setInterval(() => {
-                        if (audioPlayer.volume > 0.01) {
-                            audioPlayer.volume -= 0.01;
-                        } else {
-                            clearInterval(fadeInterval);
-                            audioPlayer.pause();
-                            isPlaying = false;
-                            updatePlayPauseIcon();
-                            // Reset volume to original level
-                            audioPlayer.volume = volumes[currentVolumeIndex].level;
-                        }
-                    }, (fadeOutTime * 1000) / 100); // Adjust interval to fade over 10 seconds
-                }, stopTime * 1000);
-            }
-        }
+sleepTimerButton.addEventListener('click', () => {
+    currentSleepIndex = (currentSleepIndex + 1) % sleepTimes.length;
+    const sleepIcon = sleepTimerButton.querySelector('img');
+    sleepIcon.src = sleepTimes[currentSleepIndex].img;
+    sleepIcon.alt = sleepTimes[currentSleepIndex].alt;
+    if (isPlaying) {
+        startSleepTimer();
+    }
+});
 
-        // Clear the sleep timer
-        function clearSleepTimer() {
-            if (sleepTimerTimeout) {
-                clearTimeout(sleepTimerTimeout);
-                sleepTimerTimeout = null;
-            }
-        }
+function startSleepTimer() {
+    clearSleepTimer();
+    const sleepTime = sleepTimes[currentSleepIndex].time;
+    if (sleepTime !== null) {
+        const fadeOutTime = 10;
+        const stopTime = sleepTime - fadeOutTime;
 
-        // Update play/pause icon
-        function updatePlayPauseIcon() {
-            const icon = playPauseButton.querySelector('img');
-            if (isPlaying) {
-                icon.src = 'https://i.imgur.com/iAyh3qN.png'; // Pause icon
-                icon.alt = 'Pause Button';
-            } else {
-                icon.src = 'https://i.imgur.com/rfSFOWK.png'; // Play icon
-                icon.alt = 'Play Button';
-            }
-        }
-
-        // Update progress bar
-        audioPlayer.addEventListener('timeupdate', () => {
-            const duration = audioPlayer.duration;
-            const currentTime = audioPlayer.currentTime;
-            const progressPercent = (currentTime / duration) * 100;
-            progress.style.width = progressPercent + '%';
-        });
-
-        // Clickable progress bar
-        progressBar.addEventListener('click', (e) => {
-            const rect = progressBar.getBoundingClientRect();
-            const offsetX = e.clientX - rect.left;
-            const width = rect.width;
-            const clickPosition = offsetX / width;
-            audioPlayer.currentTime = clickPosition * audioPlayer.duration;
-        });
-
-        // Help button functionality
-        helpButton.addEventListener('click', () => {
-            modalOverlay.style.display = 'flex';
-        });
-
-        // Close modal when clicking the 'X' button
-        closeButton.addEventListener('click', () => {
-            modalOverlay.style.display = 'none';
-        });
-
-        // Close modal when clicking outside the modal content
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                modalOverlay.style.display = 'none';
-            }
-        });
-
-        // Filter button functionality
-        filterButton.addEventListener('click', () => {
-            filterModalOverlay.style.display = 'flex';
-        });
-
-        // Close filter modal
-        filterCloseButton.addEventListener('click', () => {
-            filterModalOverlay.style.display = 'none';
-        });
-
-        // Close filter modal when clicking outside
-        filterModalOverlay.addEventListener('click', (e) => {
-            if (e.target === filterModalOverlay) {
-                filterModalOverlay.style.display = 'none';
-            }
-        });
-
-        // Populate Juz list
-        for (let i = 1; i <= 30; i++) {
-            const juzItem = document.createElement('div');
-            juzItem.classList.add('juz-item');
-            juzItem.textContent = `Juz ${i}`;
-            juzItem.dataset.juzNumber = i;
-            juzList.appendChild(juzItem);
-
-            juzItem.addEventListener('click', () => {
-                selectedJuz = parseInt(juzItem.dataset.juzNumber);
-                // Highlight selected Juz
-                document.querySelectorAll('.juz-item').forEach(item => {
-                    item.classList.remove('selected');
-                });
-                juzItem.classList.add('selected');
-                filterModalOverlay.style.display = 'none';
-            });
-        }
-
-        // Reset filter functionality
-        resetFilterButton.addEventListener('click', () => {
-            selectedJuz = null;
-            document.querySelectorAll('.juz-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-            filterModalOverlay.style.display = 'none';
-        });
-
-        // Update Surah Info Display
-        function updateSurahInfo() {
-            surahNameDisplay.textContent = currentSurah.name;
-            reciterNameDisplay.textContent = currentRecitation.reciter;
-        }
-
-        // Download button functionality
-        downloadButton.addEventListener('click', () => {
-            if (currentRecitation) {
-                currentRecitation.files.forEach((file) => {
-                    const link = document.createElement('a');
-                    link.href = file;
-                    link.download = file.substring(file.lastIndexOf('/') + 1);
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                });
-            }
-        });
-
-        // Media Session API for lock screen info
-        function updateMediaSession() {
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: `${currentSurah.name} | Qur'an Sleep Radio`,
-                    artist: currentRecitation.reciter,
-                    album: "Qur'an Sleep Radio",
-                    artwork: [
-                        { src: 'https://i.imgur.com/pwoq2EB.png', sizes: '512x512', type: 'image/png' }
-                    ]
-                });
-
-                // Optional: Handle media session actions (play, pause, next, previous)
-                navigator.mediaSession.setActionHandler('play', () => {
-                    audioPlayer.play();
-                    isPlaying = true;
-                    updatePlayPauseIcon();
-                });
-                navigator.mediaSession.setActionHandler('pause', () => {
+        sleepTimerTimeout = setTimeout(() => {
+            let fadeInterval = setInterval(() => {
+                if (audioPlayer.volume > 0.01) {
+                    audioPlayer.volume -= 0.01;
+                } else {
+                    clearInterval(fadeInterval);
                     audioPlayer.pause();
                     isPlaying = false;
                     updatePlayPauseIcon();
-                });
-                // You can add handlers for 'previoustrack', 'nexttrack', etc. if desired
-            }
-        }
+                    audioPlayer.volume = volumes[currentVolumeIndex].level;
+                }
+            }, 1000 * fadeOutTime / 100);
+        }, 1000 * stopTime);
+    }
+}
 
-    </script>
+function clearSleepTimer() {
+    if (sleepTimerTimeout) {
+        clearTimeout(sleepTimerTimeout);
+        sleepTimerTimeout = null;
+    }
+}
+
+function updateSurahInfo() {
+    surahNameDisplay.textContent = currentSurah.name;
+    reciterNameDisplay.textContent = currentRecitation.reciter;
+    surahInfoContainer.style.display = 'block'; // Ensure the container is shown
+}
+
+function updatePlayPauseIcon() {
+    const icon = playPauseButton.querySelector('img');
+    icon.src = isPlaying ? 'https://i.imgur.com/iAyh3qN.png' : 'https://i.imgur.com/rfSFOWK.png';
+}
+
+function updateMediaSession() {
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: currentSurah.name,
+            artist: currentRecitation.reciter,
+            album: 'Qur\'an Sleep Radio',
+        });
+    }
+}
+
+helpButton.addEventListener('click', () => {
+    modalOverlay.style.display = 'flex';
+});
+
+closeButton.addEventListener('click', () => {
+    modalOverlay.style.display = 'none';
+});
+
+filterButton.addEventListener('click', () => {
+    filterModalOverlay.style.display = 'flex';
+});
+
+filterCloseButton.addEventListener('click', () => {
+    filterModalOverlay.style.display = 'none';
+});
+
+juzList.innerHTML = Array.from({ length: 30 }, (_, i) => {
+    const juzNumber = i + 1;
+    return `<div class="juz-item" data-juz="${juzNumber}">Juz ${juzNumber}</div>`;
+}).join('');
+
+juzList.addEventListener('click', event => {
+    if (event.target.classList.contains('juz-item')) {
+        const selected = event.target;
+        selectedJuz = parseInt(selected.getAttribute('data-juz'), 10);
+        document.querySelectorAll('.juz-item').forEach(item => item.classList.remove('selected'));
+        selected.classList.add('selected');
+    }
+});
+
+resetFilterButton.addEventListener('click', () => {
+    selectedJuz = null;
+    document.querySelectorAll('.juz-item').forEach(item => item.classList.remove('selected'));
+});
+
+progressBar.addEventListener('click', event => {
+    const clickX = event.offsetX;
+    const width = progressBar.offsetWidth;
+    const duration = audioPlayer.duration;
+    audioPlayer.currentTime = (clickX / width) * duration;
+});
+
+audioPlayer.addEventListener('timeupdate', () => {
+    const duration = audioPlayer.duration;
+    const currentTime = audioPlayer.currentTime;
+    const progressPercent = (currentTime / duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+});
+
+// Function to show Surah info and download button when audio starts playing
+audioPlayer.addEventListener('play', function () {
+    updateSurahInfo();
+});
+
+// Hide the info again when audio is paused or ended
+audioPlayer.addEventListener('pause', function () {
+    surahInfoContainer.style.display = 'none';
+});
+
+audioPlayer.addEventListener('ended', function () {
+    surahInfoContainer.style.display = 'none';
+});
+</script>
+
 </body>
 </html>
