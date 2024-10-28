@@ -226,6 +226,76 @@ body.no-scroll {
     border-radius: 20px;
 }
 
+
+
+
+/* Juz Header (collapsible header for each Juz) */
+.juz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #b49f5e;
+    box-shadow: 0 0 5px #b49f5e;
+    cursor: pointer;
+    animation: goldPulse 4s infinite ease-in-out;
+}
+
+.juz-header:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px #e6c365;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.juz-title {
+    font-size: 1.1em;
+    color: #fff;
+}
+
+.juz-play-button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.juz-content {
+    margin-left: 20px;
+    display: none; /* Collapsed by default */
+}
+
+.juz-content li {
+    margin: 5px 0;
+}
+
+/* Gold Pulse Animation */
+@keyframes goldPulse {
+    0% {
+        border-color: #b49f5e;
+        box-shadow: 0 0 5px #b49f5e;
+    }
+    50% {
+        border-color: #e6c365;
+        box-shadow: 0 0 10px #e6c365;
+    }
+    100% {
+        border-color: #b49f5e;
+        box-shadow: 0 0 5px #b49f5e;
+    }
+}
+
+
+
+
+
+
+
 /* Main Controls */
 .main-controls {
     display: flex;
@@ -1122,6 +1192,11 @@ button.playing {
     <button id="closeMenuButton">Close</button>
 </div>
 
+<!-- Juz List Container -->
+<div id="juzListContainer" class="juz-container" style="display: none;">
+    <!-- Juz items will be dynamically added here -->
+</div>
+
 
 
         <!-- Title -->
@@ -1217,6 +1292,52 @@ button.playing {
 
 <!-- Include JS -->
 <script>
+
+
+
+
+
+
+
+
+const juzData = [
+    { number: 1, name: "Alif Lam Meem", surahs: [1, 2] },
+    { number: 2, name: "Sayaqool", surahs: [2] },
+    { number: 3, name: "Tilkal Rusull", surahs: [2, 3] },
+    { number: 4, name: "Lan Tana Loo", surahs: [3, 4] },
+    { number: 5, name: "Wal Mohsanat", surahs: [4, 5] },
+    { number: 6, name: "La Yuhibbullah", surahs: [5, 6] },
+    { number: 7, name: "Wa Iza Samiu", surahs: [6, 7] },
+    { number: 8, name: "Wa Lau Annana", surahs: [7, 8] },
+    { number: 9, name: "Qalal Malao", surahs: [8, 9] },
+    { number: 10, name: "Wa A'lamu", surahs: [9, 10, 11] },
+    { number: 11, name: "Yatazeroon", surahs: [11, 12] },
+    { number: 12, name: "Wa Mamin Da'abat", surahs: [12, 13, 14] },
+    { number: 13, name: "Wa Ma Ubarri'u", surahs: [15, 16] },
+    { number: 14, name: "Rubama", surahs: [15, 16] },
+    { number: 15, name: "Subhanallazi", surahs: [17, 18] },
+    { number: 16, name: "Qal Alam", surahs: [18, 19, 20] },
+    { number: 17, name: "Iqtaraba", surahs: [21, 22] },
+    { number: 18, name: "Qadd Aflaha", surahs: [23, 24] },
+    { number: 19, name: "Wa Qalallazina", surahs: [25, 26, 27] },
+    { number: 20, name: "A'man Khalaq", surahs: [27, 28, 29] },
+    { number: 21, name: "Utlu Ma Oohi", surahs: [29, 30, 31] },
+    { number: 22, name: "Wa Manyaqnut", surahs: [32, 33, 34, 35] },
+    { number: 23, name: "Wa Mali", surahs: [36, 37, 38, 39] },
+    { number: 24, name: "Faman Azlam", surahs: [39, 40, 41, 42, 43] },
+    { number: 25, name: "Elahe Yuruddo", surahs: [42, 43, 44, 45, 46] },
+    { number: 26, name: "Ha'a Meem", surahs: [46, 47, 48, 49, 50, 51] },
+    { number: 27, name: "Qala Fama Khatbukum", surahs: [51, 52, 53, 54, 55, 56, 57] },
+    { number: 28, name: "Qadd Sami Allah", surahs: [58, 59, 60, 61, 62, 63, 64, 65, 66] },
+    { number: 29, name: "Tabarakallazi", surahs: [67, 68, 69, 70, 71, 72, 73] },
+    { number: 30, name: "Amma", surahs: [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114] }
+];
+
+
+
+
+
+
 // Ensure Surah information is hidden on page load
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('surahInfoContainer').style.display = 'none';
@@ -1246,7 +1367,71 @@ const surahNameDisplay = document.getElementById('surahName');
 const reciterNameDisplay = document.getElementById('reciterName');
 document.getElementById('downloadButton').addEventListener('click', setDownloadUrl);
 
-const juzList = document.getElementById('juzList');
+document.getElementById('juzButton').addEventListener('click', () => {
+    displayJuzList();
+});
+
+function displayJuzList() {
+    // Hide the existing Surah list and playlist display
+    surahUl.style.display = 'none';
+    playlistDisplay.style.display = 'none';
+
+    // Clear existing Juz content
+    const juzListContainer = document.getElementById('juzListContainer');
+    juzListContainer.innerHTML = '';
+    juzListContainer.style.display = 'block';
+
+    juzData.forEach(juz => {
+        // Juz Header
+        const juzHeader = document.createElement('div');
+        juzHeader.classList.add('juz-header');
+
+        // Juz Title
+        const juzTitle = document.createElement('div');
+        juzTitle.classList.add('juz-title');
+        juzTitle.textContent = `Juz ${juz.number} - ${juz.name}`;
+
+        // Juz Play Button
+        const juzPlayButton = document.createElement('button');
+        juzPlayButton.classList.add('juz-play-button');
+        juzPlayButton.textContent = 'Play Juz';
+        juzPlayButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent collapsing when clicking play
+            playJuzSurahs(juz);
+        });
+
+        // Append Title and Play Button to Header
+        juzHeader.appendChild(juzTitle);
+        juzHeader.appendChild(juzPlayButton);
+
+        // Juz Content (Surah List)
+        const juzContent = document.createElement('div');
+        juzContent.classList.add('juz-content');
+
+        // Add Surahs to Juz Content
+        juz.surahs.forEach(surahNumber => {
+            const surah = surahListData.find(s => s.number === surahNumber);
+            if (surah) {
+                const surahItem = createSurahListItem(surah);
+                juzContent.appendChild(surahItem);
+            }
+        });
+
+        // Toggle Juz Content on Header Click
+        juzHeader.addEventListener('click', () => {
+            if (juzContent.style.display === 'none') {
+                juzContent.style.display = 'block';
+            } else {
+                juzContent.style.display = 'none';
+            }
+        });
+
+        // Append Header and Content to Container
+        juzListContainer.appendChild(juzHeader);
+        juzListContainer.appendChild(juzContent);
+    });
+}
+
 const resetFilterButton = document.getElementById('resetFilterButton');
 const switchModeButton = document.getElementById('switchModeButton');
 
@@ -2508,6 +2693,41 @@ function playSurah(surahKey) {
     playCurrentPart();
 }
 
+
+
+
+
+
+
+
+function playJuzSurahs(juz) {
+    // Set the playlist to the Surahs in the Juz
+    playlist = juz.surahs.map(surahNumber => {
+        return surahListData.find(s => s.number === surahNumber);
+    }).filter(surah => surah !== undefined);
+
+    if (playlist.length > 0) {
+        currentPlaylistIndex = 0;
+        isPlaylistPlaying = true;
+        currentPlayCount = 1; // Reset play count
+        currentRepeatCount = 1; // Reset repeat count
+        playPlaylistSurah();
+    } else {
+        alert("No Surahs available in this Juz.");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 function playCurrentPart() {
     if (currentPart < currentRecitation.files.length) {
         audioPlayer.src = currentRecitation.files[currentPart];
@@ -2904,13 +3124,21 @@ let playlist = [];
 let currentPlaylistIndex = 0;
 let isPlaylistPlaying = false;
 
-function populateSurahList(list = surahListData) {
-    console.log("Surah list data:", list); // Check data
-    surahUl.style.display = 'block';
-    surahUl.innerHTML = ''; // Clear existing list
-    list.forEach((surah) => {
-        const li = createSurahListItem(surah);
-        surahUl.appendChild(li);
+function populateSurahList() {
+    const surahList = document.getElementById('surahList');
+    surahList.innerHTML = ''; // Clear list
+
+    surahListData.forEach(surah => {
+        const surahItem = document.createElement('li');
+        surahItem.classList.add('surah-item');
+        surahItem.textContent = `${surah.number}. ${surah.name}`;
+        
+        surahItem.addEventListener('click', () => {
+            currentMemSurahIndex = surahListData.findIndex(s => s.number === surah.number);
+            playMemSurah();
+        });
+
+        surahList.appendChild(surahItem);
     });
 }
 
@@ -3141,11 +3369,15 @@ searchBar.addEventListener('input', function () {
     populateSurahList(filteredSurahs);
 });
 
-// Sorting Functions
 document.getElementById('sortDefaultOrder').addEventListener('click', () => {
     surahListData.sort((a, b) => a.number - b.number);
     populateSurahList();
 });
+
+
+
+
+
 
 document.getElementById('sortShortestToLongest').addEventListener('click', () => {
     surahListData.sort((a, b) => a.length - b.length);
