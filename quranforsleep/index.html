@@ -25,6 +25,16 @@ body, html {
 }
 
 
+
+
+
+
+
+
+
+
+
+
 /* Full-screen wipe overlay with dark, rich, golden-silver gradient and opacity */
 #goldenWipe {
     position: fixed;
@@ -32,21 +42,16 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        120deg,
-        rgba(139, 117, 0, 0.95),
-        rgba(169, 142, 25, 0.95),
-        rgba(200, 168, 55, 0.95),
-        rgba(139, 117, 0, 0.95)
-    );
+    background: url('https://i.imgur.com/PXsFRVy.png') no-repeat center;
+    background-size: cover;
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: smoothWipeWithPause 4s ease-in-out forwards, darkGoldenShimmer 4s ease-in-out infinite;
-    background-size: 400% 400%;
+    animation: smoothWipeWithPause 4s ease-in-out forwards;
     box-shadow: 0 0 50px rgba(255, 215, 155, 0.5);
 }
+
 
 /* Slowed-down, luxurious wipe animation */
 @keyframes smoothWipeWithPause {
@@ -296,13 +301,7 @@ body.no-scroll {
 
 
 
-/* Main Controls */
-.main-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-}
+
 
 .control-button,
 .play-button {
@@ -344,8 +343,59 @@ body.no-scroll {
     align-items: center;
 }
 
+
+
+
+
+/* Controls Container Styles */
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px; /* Adjust padding as needed */
+    box-sizing: border-box;
+}
+
+.main-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adjust the new button's styles */
+#newSwitchModeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    margin-left: auto;
+}
+
+#newSwitchModeButton img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+#newSwitchModeButton:active {
+    transform: scale(0.95);
+}
+
+
+
+
+
+
+
+
+
+
+/* Help, Switch Mode, and Statistics Buttons */
 #helpButton,
-#switchModeButton {
+#switchModeButton,
+#statsButton {
     background: none;
     border: none;
     cursor: pointer;
@@ -355,11 +405,13 @@ body.no-scroll {
 }
 
 #helpButton img,
-#switchModeButton img {
+#switchModeButton img,
+#statsButton img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
 }
+
 
 /* Tooltip */
 .tooltip {
@@ -768,6 +820,7 @@ button.playing {
     background: linear-gradient(45deg, #16335b, #1e3c72);
 }
 
+
 /* Bottom Bar */
 #bottomBar {
     display: flex;
@@ -1093,21 +1146,34 @@ button.playing {
                     <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
                     <div class="tooltip">Shuffle</div>
                 </button>
+
+    <button id="newSwitchModeButton" aria-label="Switch Mode" class="control-button">
+        <img src="https://i.imgur.com/jtZXCvn.png" alt="Switch Mode Button">
+        <div class="tooltip">Switch Mode</div>
+    </button>
+
             </div>
 
             <!-- Help and Switch Mode Buttons -->
-            <div class="help-button-container">
-                <!-- Mode Switch Button -->
-                <button id="switchModeButton" aria-label="Switch Mode">
-                    <img src="https://i.imgur.com/FiKtOLw.png" alt="Switch Mode Button">
-                    <div class="tooltip">Switch Mode</div>
-                </button>
-                <!-- Help Button -->
-                <button id="helpButton" aria-label="Help">
-                    <img src="https://i.imgur.com/i9FtS2l.png" alt="Help Button">
-                    <div class="tooltip">Help</div>
-                </button>
-            </div>
+<!-- Help and Switch Mode Buttons -->
+<div class="help-button-container">
+    <!-- Mode Switch Button -->
+    <button id="switchModeButton" aria-label="Switch Mode">
+        <img src="https://i.imgur.com/FiKtOLw.png" alt="Switch Mode Button">
+        <div class="tooltip">Switch Mode</div>
+    </button>
+    <!-- Statistics Button -->
+    <button id="statsButton" aria-label="Statistics">
+        <img src="https://i.imgur.com/BILlrut.png" alt="Statistics Button">
+        <div class="tooltip">Statistics</div>
+    </button>
+    <!-- Help Button -->
+    <button id="helpButton" aria-label="Help">
+        <img src="https://i.imgur.com/DokWy7J.png" alt="Help Button">
+        <div class="tooltip">Help</div>
+    </button>
+</div>
+
 
             <!-- Hidden audio player -->
             <audio id="audioPlayer"></audio>
@@ -1115,6 +1181,27 @@ button.playing {
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
+
+
+
+
+
+<!-- Statistics Modal Overlay -->
+<div class="modal-overlay" id="statsModalOverlay">
+    <div class="modal-content">
+        <button class="close-button" id="statsCloseButton">&times;</button>
+        <h2>Your Listening Statistics</h2>
+        <p><strong>Surahs Played:</strong> <span id="surahsPlayedCount">0</span></p>
+        <p><strong>Minutes Listened:</strong> <span id="minutesListened">0</span> minutes</p>
+    </div>
+</div>
+
+
+
+
+
+
+
 
             <!-- Surah Info -->
             <div id="surahInfoContainer" class="surah-info">
@@ -1263,8 +1350,8 @@ button.playing {
 
             <!-- Control Buttons -->
             <div class="controls">
-                <button id="memPlayPauseButton"><img src="https://i.imgur.com/HgqMt1K.png" alt="Play"></button>
-                <button id="repeatButton"><img src="https://i.imgur.com/dXw6ybJ.png" alt="Repeat"></button>
+                <button id="memPlayPauseButton"><img src="https://i.imgur.com/rfSFOWK.png" alt="Play"></button>
+                <button id="repeatButton"><img src="https://i.imgur.com/FiKtOLw.png" alt="Repeat"></button>
             </div>
         </div>
 
@@ -1347,7 +1434,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.remove('no-scroll');
         document.getElementById('pageContent').style.opacity = '1'; // Show page content
     }, 4000);
-});
 
 const audioPlayer = document.getElementById('audioPlayer');
 const playPauseButton = document.getElementById('playPauseButton');
@@ -1431,6 +1517,17 @@ function displayJuzList() {
         juzListContainer.appendChild(juzContent);
     });
 }
+
+
+
+
+
+
+
+
+
+
+
 
 const resetFilterButton = document.getElementById('resetFilterButton');
 const switchModeButton = document.getElementById('switchModeButton');
@@ -2600,7 +2697,7 @@ const surahs = {
 
 
 
-
+let memAudioPlayer = new Audio();
 
 
 
@@ -2638,11 +2735,94 @@ function setDownloadUrl() {
 }
 
 
+
+
+
+
+
+
+
+// Initialize statistics variables
+let surahsPlayedCount = parseInt(localStorage.getItem('surahsPlayedCount')) || 0;
+let totalListeningTime = parseInt(localStorage.getItem('totalListeningTime')) || 0; // in seconds
+
+
+
+// Variables to store interval IDs
+let radioListeningInterval;
+let memListeningInterval;
+
+// For Radio Mode
+audioPlayer.addEventListener('pause', () => {
+    clearInterval(radioListeningInterval);
+    localStorage.setItem('totalListeningTime', totalListeningTime);
+});
+
+audioPlayer.addEventListener('ended', () => {
+    clearInterval(radioListeningInterval);
+    localStorage.setItem('totalListeningTime', totalListeningTime);
+});
+
+// For Memorization Mode
+memAudioPlayer.addEventListener('pause', () => {
+    clearInterval(memListeningInterval);
+    localStorage.setItem('totalListeningTime', totalListeningTime);
+});
+
+memAudioPlayer.addEventListener('ended', () => {
+    clearInterval(memListeningInterval);
+    localStorage.setItem('totalListeningTime', totalListeningTime);
+});
+
+
+
+
+
+
+
+const statsButton = document.getElementById('statsButton');
+console.log('statsButton:', statsButton);
+
+const statsModalOverlay = document.getElementById('statsModalOverlay');
+const statsCloseButton = document.getElementById('statsCloseButton');
+const surahsPlayedCountDisplay = document.getElementById('surahsPlayedCount');
+const minutesListenedDisplay = document.getElementById('minutesListened');
+
+// Event listener for stats button
+statsButton.addEventListener('click', () => {
+    // Update the statistics in the modal
+    surahsPlayedCountDisplay.textContent = surahsPlayedCount;
+
+    // Convert totalListeningTime from seconds to minutes
+    const minutesListened = Math.floor(totalListeningTime / 60);
+    minutesListenedDisplay.textContent = minutesListened;
+
+    statsModalOverlay.style.display = 'flex';
+});
+
+// Event listener for closing the stats modal when clicking outside
+statsModalOverlay.addEventListener('click', (event) => {
+    if (event.target === statsModalOverlay) {
+        statsModalOverlay.style.display = 'none';
+    }
+});
+
+// Event listener for the close button inside the stats modal
+statsCloseButton.addEventListener('click', () => {
+    statsModalOverlay.style.display = 'none';
+});
+
+
+
+
+
+
+
+
 let currentSurahKey = null;
 let currentSurah = null;
 let currentRecitation = null;
 let currentPart = 0;
-let isPlaying = false;
 
 // Sleep Timer settings
 const sleepTimes = [
@@ -2691,7 +2871,12 @@ function playSurah(surahKey) {
     currentPart = 0;
     updateSurahInfo();
     playCurrentPart();
+// Increment surahs played count
+surahsPlayedCount++;
+
 }
+
+
 
 
 
@@ -2740,16 +2925,52 @@ function playCurrentPart() {
     }
 }
 
+
+
+// For Radio Mode
 audioPlayer.addEventListener('ended', () => {
     currentPart++;
     if (currentPart < currentRecitation.files.length) {
         playCurrentPart();
     } else {
+        // Surah has completed playing
+        surahsPlayedCount++;
+        localStorage.setItem('surahsPlayedCount', surahsPlayedCount);
         if (isPlaying) {
             playRandomSurah();
         }
     }
 });
+
+// For Memorization Mode
+memAudioPlayer.addEventListener('ended', () => {
+    // Surah has completed playing
+    surahsPlayedCount++;
+    localStorage.setItem('surahsPlayedCount', surahsPlayedCount);
+
+    // Existing logic
+    if (playCount === 31 || currentPlayCount < playCount) {
+        currentPlayCount++;
+        memAudioPlayer.currentTime = 0;
+        memAudioPlayer.play();
+    } else if (repeatCount === 31 || currentRepeatCount < repeatCount) {
+        currentRepeatCount++;
+        currentPlayCount = 1;
+        memAudioPlayer.currentTime = 0;
+        memAudioPlayer.play();
+    } else if (isPlaylistPlaying) {
+        currentPlaylistIndex++;
+        currentPlayCount = 1;
+        currentRepeatCount = 1;
+        playPlaylistSurah();
+    } else {
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/rfSFOWK.png" alt="Play">`; // Play icon
+        memIsPlaying = false;
+    }
+});
+
+
+
 
 playPauseButton.addEventListener('click', () => {
     if (!isPlaying) {
@@ -2882,6 +3103,15 @@ closeButton.addEventListener('click', () => {
 filterButton.addEventListener('click', () => {
     filterModalOverlay.style.display = 'flex';
 });
+
+
+// Ensure Juz Filter menu overlay closes when clicking outside
+filterModalOverlay.addEventListener('click', (event) => {
+    if (event.target === filterModalOverlay) {
+        filterModalOverlay.style.display = 'none';
+    }
+});
+
 
 filterCloseButton.addEventListener('click', () => {
     filterModalOverlay.style.display = 'none';
@@ -3111,7 +3341,8 @@ const playlistDisplay = document.getElementById('playlistDisplay');
 const playlistItems = document.getElementById('playlistItems');
 const playPlaylistButton = document.getElementById('playPlaylistButton');
 
-let memAudioPlayer = new Audio();
+
+let isPlaying = false; // Add this at the top-level scope where other variables are declared
 let currentMemSurahIndex = -1;
 let playCount = 1;
 let currentPlayCount = 1;
@@ -3200,8 +3431,11 @@ function playMemSurah() {
         memAudioPlayer.src = `assets/${String(surahNumber).padStart(3, '0')}.mp3`;
         memAudioPlayer.play();
         bottomTrackTitle.textContent = surahListData[currentMemSurahIndex].name;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HGkqCfa.png" alt="Pause">`; // Pause icon
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/iAyh3qN.png" alt="Pause">`; // Pause icon
         memIsPlaying = true;
+// Increment surahs played count
+surahsPlayedCount++;
+
     }
 }
 
@@ -3209,11 +3443,11 @@ memPlayPauseButton.addEventListener('click', () => {
     if (memAudioPlayer.paused) {
         memAudioPlayer.play();
         memIsPlaying = true;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HGkqCfa.png" alt="Pause">`; // Pause icon
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/iAyh3qN.png" alt="Pause">`; // Pause icon
     } else {
         memAudioPlayer.pause();
         memIsPlaying = false;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HgqMt1K.png" alt="Play">`; // Play icon
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/rfSFOWK.png" alt="Play">`; // Play icon
     }
 });
 
@@ -3233,7 +3467,7 @@ memAudioPlayer.addEventListener('ended', () => {
         currentRepeatCount = 1;
         playPlaylistSurah();
     } else {
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HgqMt1K.png" alt="Play">`; // Play icon
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/rfSFOWK.png" alt="Play">`; // Play icon
         memIsPlaying = false;
     }
 });
@@ -3264,7 +3498,7 @@ repeatButton.addEventListener('click', () => {
     }
 
     // Update the repeat button image
-    repeatButton.innerHTML = `<img src="https://i.imgur.com/dXw6ybJ.png" alt="Repeat">`;
+    repeatButton.innerHTML = `<img src="https://i.imgur.com/FiKtOLw.png" alt="Repeat">`;
 });
 
 repeatCountSlider.addEventListener('input', function () {
@@ -3354,7 +3588,7 @@ function playPlaylistSurah() {
         memAudioPlayer.src = `assets/${String(surah.number).padStart(3, '0')}.mp3`;
         memAudioPlayer.play();
         bottomTrackTitle.textContent = surah.name;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/HGkqCfa.png" alt="Pause">`; // Pause icon
+        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/iAyh3qN.png" alt="Pause">`; // Pause icon
         memIsPlaying = true;
     } else {
         isPlaylistPlaying = false;
@@ -3376,6 +3610,20 @@ document.getElementById('sortDefaultOrder').addEventListener('click', () => {
 
 
 
+// For Memorization Mode
+memAudioPlayer.addEventListener('play', () => {
+    memListeningInterval = setInterval(() => {
+        totalListeningTime++;
+    }, 1000);
+});
+
+memAudioPlayer.addEventListener('pause', () => {
+    clearInterval(memListeningInterval);
+});
+
+memAudioPlayer.addEventListener('ended', () => {
+    clearInterval(memListeningInterval);
+});
 
 
 
@@ -3396,6 +3644,38 @@ document.getElementById('sortRevelationOrder').addEventListener('click', () => {
 
 // Initialize Surah List
 populateSurahList();
+
+});
+
+
+
+
+// Get reference to the new switch mode button
+const newSwitchModeButton = document.getElementById('newSwitchModeButton');
+
+// Function to toggle modes
+function toggleModes() {
+    const radioMode = document.getElementById('radioMode');
+    const memorizationMode = document.getElementById('memorizationMode');
+
+    if (radioMode.style.display !== 'none') {
+        radioMode.style.display = 'none';
+        memorizationMode.style.display = 'block';
+
+        // Ensure surahs are populated when switching to memorization mode
+        populateSurahList();
+    } else {
+        memorizationMode.style.display = 'none';
+        radioMode.style.display = 'block';
+    }
+}
+
+// Attach the toggle function to both switch mode buttons
+switchModeButton.addEventListener('click', toggleModes);
+newSwitchModeButton.addEventListener('click', toggleModes);
+
+
+
 
 </script>
 
