@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <!--
-        Teodle - A Wordle Clone with Levels
-        Description: A complete standalone HTML file that replicates Wordle exactly, named "Teodle", with levels.
+        Teodle - A Wordle Clone with Multiple Word Lengths
+        Author: OpenAI's ChatGPT
+        Description: A complete standalone HTML file that replicates Wordle exactly, named "Teodle", with options for 4-letter, 5-letter, and 6-letter words.
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,14 +68,12 @@
         /* Grid Styles */
         #game {
             display: grid;
-            grid-template-rows: repeat(6, 1fr);
             grid-gap: 5px;
             margin-bottom: 20px;
         }
 
         .row {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
             grid-gap: 5px;
         }
 
@@ -264,15 +263,27 @@
             background-color: #6AAA64;
         }
 
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .level-grid::-webkit-scrollbar {
-            display: none;
+        .level-button.failed {
+            background-color: #C9B458;
         }
 
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .level-grid {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+        /* Word Length Menu Styles */
+        #word-length-menu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .word-length-button {
+            padding: 15px 30px;
+            margin: 10px;
+            background-color: #6AAA64;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 24px;
         }
 
         /* Responsive Design */
@@ -312,6 +323,10 @@
                 padding: 15px;
                 font-size: 16px;
             }
+
+            .word-length-button {
+                font-size: 20px;
+            }
         }
 
         /* Notification Styles */
@@ -341,6 +356,14 @@
         </div>
     </div>
 
+    <!-- Word Length Menu -->
+    <div id="word-length-menu">
+        <h2>Select Word Length</h2>
+        <button class="word-length-button" data-length="4">4-Letter Words</button>
+        <button class="word-length-button" data-length="5">5-Letter Words</button>
+        <button class="word-length-button" data-length="6">6-Letter Words</button>
+    </div>
+
     <!-- Level Menu -->
     <div id="level-menu">
         <h2>Select a Level</h2>
@@ -363,20 +386,69 @@
         </div>
     </div>
 
-    <script>
-        // Embedded JavaScript
+<script>
+    // Embedded JavaScript
 
-        /* ================== Global Variables ================== */
-        const NUMBER_OF_GUESSES = 6;
-        const WORD_LENGTH = 5;
-        let guessesRemaining = NUMBER_OF_GUESSES;
-        let currentGuess = '';
-        let nextTile = 0;
-        let rightGuessString = '';
-        let gameActive = false;
-        let guessedWords = [[]];
-        let currentLevel = null;
-        const wordList = [
+    /* ================== Global Variables ================== */
+    let NUMBER_OF_GUESSES = 6;
+    let WORD_LENGTH = 5;
+    let guessesRemaining = NUMBER_OF_GUESSES;
+    let currentGuess = '';
+    let nextTile = 0;
+    let rightGuessString = '';
+    let gameActive = false;
+    let guessedWords = [[]];
+    let currentLevel = null;
+    let currentWordLength = 5;
+    const wordLists = {
+            4: [
+       "able", "acid", "aged", "also", "area", "army", "away", "baby", "back", "bake", "ball", "band", 
+        "bank", "base", "bath", "beam", "bean", "bear", "beat", "been", "beer", "bell", "belt", "bend", 
+        "best", "bill", "bind", "bird", "bite", "blow", "blue", "boat", "body", "boil", "bomb", "bond", 
+        "bone", "book", "boom", "born", "boss", "both", "bowl", "bulb", "bulk", "burn", "bush", "busy", 
+        "cafe", "cage", "cake", "call", "calm", "came", "camp", "card", "care", "cart", "case", "cash", 
+        "cast", "cell", "chat", "chip", "city", "clay", "club", "coal", "coat", "code", "cold", "come", 
+        "cook", "cool", "cope", "copy", "core", "cost", "crew", "crop", "cure", "cute", "damn", "dare", 
+        "dark", "data", "date", "dawn", "days", "dead", "deal", "dean", "dear", "debt", "deep", "deny", 
+        "desk", "dial", "diet", "disc", "dish", "disk", "does", "done", "door", "dose", "down", "draw", 
+        "drop", "drug", "dual", "duck", "duke", "dust", "duty", "each", "earn", "ease", "east", "easy", 
+        "echo", "edge", "else", "even", "ever", "evil", "exit", "face", "fact", "fail", "fair", "fall", 
+        "farm", "fast", "fate", "fear", "feed", "feel", "feet", "fell", "felt", "file", "fill", "film", 
+        "find", "fine", "fire", "firm", "fish", "five", "flat", "flow", "food", "foot", "ford", "form", 
+        "fort", "four", "free", "frog", "from", "fuel", "full", "fund", "gain", "game", "gang", "gate", 
+        "gave", "gear", "gene", "gift", "girl", "give", "glad", "goal", "goat", "goes", "gold", "golf", 
+        "gone", "good", "gray", "grew", "grey", "grow", "gulf", "hair", "half", "hall", "hand", "hang", 
+        "hard", "harm", "hate", "have", "head", "hear", "heat", "heel", "held", "help", "here", "hero", 
+        "hide", "high", "hill", "hire", "hold", "hole", "holy", "home", "hope", "host", "hour", "huge", 
+        "hung", "hunt", "hurt", "idea", "inch", "into", "iron", "item", "jack", "jane", "jean", "john", 
+        "join", "jump", "jury", "just", "keen", "keep", "kent", "kick", "kill", "kind", "king", "knee", 
+        "knew", "know", "lack", "lady", "laid", "lake", "land", "lane", "last", "late", "lead", "leaf", 
+        "left", "less", "life", "lift", "like", "line", "link", "list", "live", "load", "loan", "lock", 
+        "logo", "long", "look", "lord", "lose", "loss", "lost", "love", "luck", "made", "mail", "main", 
+        "make", "male", "many", "mark", "mass", "matt", "meal", "mean", "meat", "meet", "menu", "mere", 
+        "mike", "mile", "milk", "mill", "mind", "mine", "miss", "mode", "mood", "moon", "more", "most", 
+        "move", "much", "must", "name", "navy", "near", "neck", "need", "news", "next", "nice", "nick", 
+        "nine", "none", "nose", "note", "okay", "once", "only", "onto", "open", "oral", "over", "pace", 
+        "pack", "page", "paid", "pain", "pair", "palm", "park", "part", "pass", "past", "path", "peak", 
+        "pick", "pink", "pipe", "plan", "play", "plot", "plug", "plus", "poll", "pool", "poor", "port", 
+        "post", "pull", "pure", "push", "race", "rail", "rain", "rank", "rare", "rate", "read", "real", 
+        "rear", "rely", "rent", "rest", "rice", "rich", "ride", "ring", "rise", "risk", "road", "rock", 
+        "role", "roll", "roof", "room", "root", "rope", "rose", "rule", "rush", "safe", "said", "sake", 
+        "sale", "salt", "same", "sand", "save", "seat", "seed", "seek", "seem", "seen", "self", "sell", 
+        "send", "sent", "sept", "ship", "shop", "shot", "show", "shut", "sick", "side", "sign", "site", 
+        "size", "skin", "slip", "slow", "snow", "soap", "soft", "soil", "sold", "sole", "some", "song", 
+        "soon", "sort", "soul", "spot", "star", "stay", "step", "stop", "such", "suit", "sure", "swim", 
+        "take", "tale", "talk", "tall", "tank", "tape", "task", "team", "tech", "tell", "tend", "term", 
+        "test", "text", "than", "that", "them", "then", "they", "thin", "this", "thus", "tide", "till", 
+        "time", "tiny", "told", "toll", "tone", "tony", "took", "tool", "tour", "town", "tree", "trip", 
+        "true", "tube", "tune", "turn", "twin", "type", "unit", "upon", "used", "user", "vary", "vast", 
+        "very", "vice", "view", "vote", "wage", "wait", "wake", "walk", "wall", "want", "ward", "warm", 
+        "wash", "wave", "ways", "weak", "wear", "week", "well", "went", "were", "west", "what", "when", 
+        "whom", "wide", "wife", "wild", "will", "wind", "wine", "wing", "wipe", "wire", "wise", "wish", 
+        "with", "wood", "word", "wore", "work", "yard", "yeah", "year", "your", "zero", "zone"
+    ],
+           
+            5: [
 "aback",
 "abaft",
 "abase",
@@ -3479,211 +3551,348 @@
 "youth",
 "zebra",
 "zones"
-            // ... continue until all 3102 words are listed
-        ];
+            ],
+            6: [
+                // [Insert your 6-letter words here]
+       "abroad", "absent", "abused", "accent", "access", "across", "acting", "action", "active", "actual",
+        "admire", "advise", "affect", "afford", "against", "almost", "always", "amount", "animal", "annual",
+        "answer", "anyone", "appeal", "appear", "arrive", "artist", "aspect", "assign", "assist", "assume",
+        "assure", "attack", "attempt", "attend", "august", "author", "avenue", "backed", "barely", "battle",
+        "beauty", "became", "become", "before", "behalf", "behave", "behind", "belief", "belong", "berlin",
+        "beside", "better", "beyond", "bishop", "border", "bother", "bottle", "bottom", "bought", "branch",
+        "breath", "bridge", "bright", "broken", "budget", "burden", "butter", "camera", "cannot", "carbon",
+        "career", "castle", "casual", "caught", "center", "chance", "change", "charge", "choice", "choose",
+        "chosen", "church", "circle", "client", "climate", "closed", "closer", "coffee", "collar", "colony",
+        "column", "combat", "comedy", "coming", "common", "comply", "copper", "corner", "costly", "county",
+        "couple", "course", "cousin", "covers", "create", "credit", "crisis", "custom", "damage", "danger",
+        "dealer", "debate", "decade", "decide", "defeat", "defend", "define", "degree", "demand", "depend",
+        "deputy", "desert", "design", "desire", "detail", "detect", "device", "differ", "dinner", "direct",
+        "doctor", "dollar", "domain", "donate", "double", "driven", "driver", "during", "easily", "eating",
+        "editor", "effect", "effort", "either", "eleven", "emerge", "empire", "employ", "enable", "ending",
+        "energy", "engage", "engine", "enough", "ensure", "entire", "entity", "equity", "escape", "estate",
+        "ethics", "evening", "exceed", "except", "excess", "expand", "expect", "expert", "export", "extend",
+        "extent", "fabric", "facing", "factor", "failed", "fairly", "fallen", "family", "famous", "father",
+        "fellow", "female", "figure", "filing", "finger", "finish", "fiscal", "flight", "flower", "follow",
+        "forest", "forget", "formal", "format", "former", "foster", "fought", "fourth", "French", "friend",
+        "future", "garden", "gather", "gender", "gently", "german", "global", "golden", "ground", "growth",
+        "guilty", "handed", "handle", "happen", "hardly", "health", "height", "hidden", "holder", "honest",
+        "impact", "import", "income", "indeed", "injury", "inside", "intend", "intent", "invest", "island",
+        "itself", "jersey", "junior", "killed", "labour", "latest", "latter", "launch", "lawyer", "leader",
+        "league", "leaves", "legacy", "length", "lesson", "letter", "lights", "likely", "linked", "liquid",
+        "listen", "little", "living", "losing", "lucent", "luxury", "mainly", "making", "manage", "manner",
+        "manual", "margin", "marine", "marked", "market", "master", "matter", "mature", "medium", "member",
+        "memory", "mental", "merely", "merger", "method", "middle", "miller", "mining", "minute", "mirror",
+        "mobile", "modern", "modest", "moment", "monday", "money", "mostly", "mother", "motion", "moving",
+        "murder", "museum", "mutual", "myself", "narrow", "nation", "native", "nature", "nearby", "nearly",
+        "nights", "nobody", "normal", "notice", "notion", "number", "object", "obtain", "occupy", "office",
+        "online", "option", "orange", "origin", "output", "oxford", "packed", "palace", "parent", "partly",
+        "patent", "people", "period", "permit", "person", "phrase", "picked", "planet", "player", "please",
+        "plenty", "pocket", "police", "policy", "prefer", "pretty", "prince", "prison", "profit", "proper",
+        "proven", "public", "purely", "purple", "pursue", "quaint", "rabbit", "random", "rarely", "rather",
+        "reader", "really", "reason", "recall", "recent", "recipe", "record", "reduce", "reform", "regard",
+        "regime", "region", "relate", "relief", "remain", "remote", "remove", "repair", "repeat", "report",
+        "rescue", "resort", "result", "retail", "retain", "return", "reveal", "review", "reward", "riding",
+        "rising", "ritual", "rocket", "rolled", "runner", "rushed", "safety", "salary", "sample", "saving",
+        "saying", "scheme", "school", "screen", "search", "season", "second", "secret", "sector", "secure",
+        "seeing", "select", "seller", "senior", "settle", "severe", "sexual", "should", "signal", "signed",
+        "silent", "silver", "sister", "sixth", "slight", "smooth", "social", "solely", "source", "speech",
+        "spirit", "spread", "spring", "square", "stable", "status", "steady", "stolen", "strain", "stream",
+        "street", "stress", "strict", "strike", "string", "strong", "struck", "studio", "submit", "sudden",
+        "suffer", "summer", "summit", "supply", "surely", "survey", "switch", "symbol", "system", "taking",
+        "talent", "target", "taught", "tenant", "tender", "tennis", "thanks", "theory", "thirty", "though",
+        "threat", "thrive", "ticket", "timely", "timing", "tissue", "toward", "travel", "treaty", "trying",
+        "tunnel", "twelve", "twenty", "unable", "unique", "united", "unless", "unlike", "update", "useful",
+        "valley", "valued", "varied", "vastly", "vector", "verbal", "versus", "victim", "viewer", "voting",
+        "walker", "wealth", "weekly", "weight", "wholly", "window", "winner", "winter", "within", "wonder",
+        "worker", "writer", "yellow", "yogurt", "youths", "zionist"
+            ]
+    };
 
-        /* ================== Statistics ================== */
-        let stats = JSON.parse(localStorage.getItem('teodleStats')) || {
-            played: 0,
-            wins: 0,
-            currentStreak: 0,
-            maxStreak: 0,
-            guesses: []
-        };
+    /* ================== Statistics ================== */
+    let stats = JSON.parse(localStorage.getItem('teodleStats')) || {
+        played: 0,
+        wins: 0,
+        currentStreak: 0,
+        maxStreak: 0,
+        guesses: []
+    };
 
-        function updateLocalStorage() {
-            localStorage.setItem('teodleStats', JSON.stringify(stats));
+    function updateLocalStorage() {
+        localStorage.setItem('teodleStats', JSON.stringify(stats));
+    }
+
+    /* ================== Level Completion Data ================== */
+    let completedLevelsRaw = JSON.parse(localStorage.getItem('teodleCompletedLevels')) || {};
+
+    // Ensure the completedLevels object has the keys for 4, 5, and 6-letter words
+    let completedLevels = {
+        4: completedLevelsRaw[4] || {},
+        5: completedLevelsRaw[5] || {},
+        6: completedLevelsRaw[6] || {}
+    };
+
+    function updateCompletedLevels() {
+        localStorage.setItem('teodleCompletedLevels', JSON.stringify(completedLevels));
+    }
+
+    /* ================== Level to Word Mapping ================== */
+    let levelWordMapRaw = JSON.parse(localStorage.getItem('teodleLevelWordMap')) || {};
+
+    let levelWordMap = {
+        4: levelWordMapRaw[4] || [],
+        5: levelWordMapRaw[5] || [],
+        6: levelWordMapRaw[6] || []
+    };
+
+    function generateLevelWordMap() {
+        for (let length of [4, 5, 6]) {
+            if (levelWordMap[length].length === wordLists[length].length) continue;
+            levelWordMap[length] = shuffleArray([...wordLists[length]]);
+        }
+        localStorage.setItem('teodleLevelWordMap', JSON.stringify(levelWordMap));
+    }
+
+    /* Utility function to shuffle an array */
+    function shuffleArray(array) {
+        let currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+
+    /* ================== Initialize Game ================== */
+    document.addEventListener("DOMContentLoaded", () => {
+        initGame();
+    });
+
+    function initGame() {
+        generateLevelWordMap();
+
+        // Hide game elements initially
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('keyboard').style.display = 'none';
+        document.getElementById('level-menu').style.display = 'none';
+
+        // Show the word length menu
+        showWordLengthMenu();
+
+        // Show instructions on first load
+        if (!localStorage.getItem('teodlePlayed')) {
+            showModal("Welcome to Teodle! Select a word length to start playing.");
+            localStorage.setItem('teodlePlayed', 'true');
         }
 
-        /* ================== Level Completion Data ================== */
-        let completedLevels = JSON.parse(localStorage.getItem('teodleCompletedLevels')) || [];
+        // Add event listener for statistics button
+        const statsButton = document.getElementById('stats-button');
+        statsButton.addEventListener('click', showStatistics);
 
-        function updateCompletedLevels() {
-            localStorage.setItem('teodleCompletedLevels', JSON.stringify(completedLevels));
-        }
+        // Add event listener for menu button
+        const menuButton = document.getElementById('menu-button');
+        menuButton.addEventListener('click', showWordLengthMenu);
 
-        /* ================== Initialize Game ================== */
-        document.addEventListener("DOMContentLoaded", () => {
-            initGame();
+        // Hide modal on click outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         });
 
-        function initGame() {
-            // Hide game elements initially
-            document.getElementById('game').style.display = 'none';
-            document.getElementById('keyboard').style.display = 'none';
-
-            // Show the level menu
-            showLevelMenu();
-
-            // Show instructions on first load
-            if (!localStorage.getItem('teodlePlayed')) {
-                showModal("Welcome to Teodle! Select a level to start playing.");
-                localStorage.setItem('teodlePlayed', 'true');
-            }
-
-            // Add event listener for statistics button
-            const statsButton = document.getElementById('stats-button');
-            statsButton.addEventListener('click', showStatistics);
-
-            // Add event listener for menu button
-            const menuButton = document.getElementById('menu-button');
-            menuButton.addEventListener('click', showLevelMenu);
-
-            // Hide modal on click outside
-            window.addEventListener('click', function(event) {
-                const modal = document.getElementById('modal');
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
+        // Add event listener for word length buttons
+        const wordLengthButtons = document.querySelectorAll('.word-length-button');
+        wordLengthButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentWordLength = parseInt(button.getAttribute('data-length'));
+                WORD_LENGTH = currentWordLength;
+                showLevelMenu();
             });
+        });
+    }
+
+    /* ================== Word Length Menu ================== */
+    function showWordLengthMenu() {
+        gameActive = false;
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('keyboard').style.display = 'none';
+        document.getElementById('level-menu').style.display = 'none';
+        document.getElementById('word-length-menu').style.display = 'flex';
+    }
+
+    /* ================== Level Menu ================== */
+    function showLevelMenu() {
+        gameActive = false;
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('keyboard').style.display = 'none';
+        document.getElementById('word-length-menu').style.display = 'none';
+        document.getElementById('level-menu').style.display = 'flex';
+        generateLevelButtons();
+    }
+
+    function generateLevelButtons() {
+        const levelsContainer = document.getElementById('levels');
+        levelsContainer.innerHTML = '';
+        const totalLevels = wordLists[currentWordLength].length;
+
+        // Ensure that completedLevels[currentWordLength] exists
+        if (!completedLevels[currentWordLength]) {
+            completedLevels[currentWordLength] = {};
         }
 
-        /* ================== Level Menu ================== */
-        function showLevelMenu() {
-            gameActive = false;
-            document.getElementById('game').style.display = 'none';
-            document.getElementById('keyboard').style.display = 'none';
-            document.getElementById('level-menu').style.display = 'flex';
-            generateLevelButtons();
-        }
-
-        function generateLevelButtons() {
-            const levelsContainer = document.getElementById('levels');
-            levelsContainer.innerHTML = '';
-            const totalLevels = wordList.length;
-            for (let i = 1; i <= totalLevels; i++) {
-                const levelButton = document.createElement('button');
-                levelButton.textContent = `Level ${i}`;
-                levelButton.classList.add('level-button');
-                if (completedLevels.includes(i)) {
+        for (let i = 1; i <= totalLevels; i++) {
+            const levelButton = document.createElement('button');
+            levelButton.textContent = `Level ${i}`;
+            levelButton.classList.add('level-button');
+            if (completedLevels[currentWordLength][i]) {
+                if (completedLevels[currentWordLength][i].won) {
                     levelButton.classList.add('completed');
+                } else {
+                    levelButton.classList.add('failed');
                 }
-                levelButton.addEventListener('click', () => startLevel(i));
-                levelsContainer.appendChild(levelButton);
             }
+            levelButton.addEventListener('click', () => startLevel(i));
+            levelsContainer.appendChild(levelButton);
         }
+    }
 
-        /* ================== Start Level ================== */
-        function startLevel(levelNumber) {
-            currentLevel = levelNumber;
+    /* ================== Start Level ================== */
+    function startLevel(levelNumber) {
+        currentLevel = levelNumber;
+        guessesRemaining = NUMBER_OF_GUESSES;
+        currentGuess = '';
+        nextTile = 0;
+        guessedWords = [[]];
+
+        // Generate a word for this level based on the level number
+        rightGuessString = getWordForLevel(levelNumber);
+
+        // Create the game grid
+        createGrid();
+
+        // Show game elements
+        document.getElementById('game').style.display = 'grid';
+        document.getElementById('keyboard').style.display = 'flex';
+        document.getElementById('level-menu').style.display = 'none';
+
+        // Reset the keyboard colors
+        resetKeyboard();
+
+        // Adjust grid and tiles based on word length
+        adjustGrid();
+
+        // Check if level has been completed before
+        if (completedLevels[currentWordLength][currentLevel]) {
+            gameActive = false;
+            loadCompletedGame();
+        } else {
             gameActive = true;
-            guessesRemaining = NUMBER_OF_GUESSES;
-            currentGuess = '';
-            nextTile = 0;
-            guessedWords = [[]];
-
-            // Generate a word for this level based on the level number
-            rightGuessString = generateWordForLevel(levelNumber);
-
-            // Create the game grid
-            createGrid();
-
-            // Show game elements
-            document.getElementById('game').style.display = 'grid';
-            document.getElementById('keyboard').style.display = 'flex';
-            document.getElementById('level-menu').style.display = 'none';
-
             // Add event listeners for keyboard input
             document.addEventListener("keydown", handleKeyDown);
         }
+    }
 
-        /* ================== Generate Word for Level ================== */
-        function generateWordForLevel(levelNumber) {
-            // Use a Linear Congruential Generator for consistent pseudo-randomness
-            const a = 1664525;
-            const c = 1013904223;
-            const m = wordList.length;
+    /* ================== Get Word for Level ================== */
+    function getWordForLevel(levelNumber) {
+        return levelWordMap[currentWordLength][levelNumber - 1];
+    }
 
-            let seed = levelNumber;
-            let randomIndex = (a * seed + c) % m;
-
-            return wordList[randomIndex];
-        }
-
-        /* ================== Create Game Grid ================== */
-        function createGrid() {
-            const gameBoard = document.getElementById('game');
-            gameBoard.innerHTML = '';
-            for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
-                const row = document.createElement('div');
-                row.classList.add('row');
-                for (let j = 0; j < WORD_LENGTH; j++) {
-                    const tile = document.createElement('div');
-                    tile.classList.add('tile');
-                    tile.setAttribute('aria-label', 'Empty tile');
-                    tile.textContent = ''; // Ensure the tile is empty
-                    row.appendChild(tile);
-                }
-                gameBoard.appendChild(row);
+    /* ================== Create Game Grid ================== */
+    function createGrid() {
+        const gameBoard = document.getElementById('game');
+        gameBoard.innerHTML = '';
+        for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
+            const row = document.createElement('div');
+            row.classList.add('row');
+            for (let j = 0; j < WORD_LENGTH; j++) {
+                const tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.setAttribute('aria-label', 'Empty tile');
+                tile.textContent = ''; // Ensure the tile is empty
+                row.appendChild(tile);
             }
-
-            // Reset the keyboard colors
-            resetKeyboard();
+            gameBoard.appendChild(row);
         }
+    }
 
-        /* ================== Reset Keyboard Colors ================== */
-        function resetKeyboard() {
-            const keys = document.querySelectorAll('.key');
-            keys.forEach(key => {
-                key.classList.remove('correct', 'present', 'absent');
-                key.removeAttribute('data-color');
-            });
-        }
+    /* ================== Adjust Grid and Tiles ================== */
+    function adjustGrid() {
+        const gameBoard = document.getElementById('game');
+        gameBoard.style.gridTemplateRows = `repeat(${NUMBER_OF_GUESSES}, 1fr)`;
+        const rows = gameBoard.querySelectorAll('.row');
+        rows.forEach(row => {
+            row.style.gridTemplateColumns = `repeat(${WORD_LENGTH}, 1fr)`;
+        });
+    }
 
-        /* ================== Handle Keyboard Input ================== */
-        function handleKeyDown(e) {
-            if (!gameActive) return;
-            const pressedKey = String(e.key).toUpperCase();
-            if (pressedKey === 'BACKSPACE' || pressedKey === 'DELETE') {
-                e.preventDefault(); // Prevent default backspace behavior
-                deleteLetter();
-                return;
-            }
-            if (pressedKey === 'ENTER') {
-                checkGuess();
-                return;
-            }
-            if (/^[A-Z]$/.test(pressedKey) && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                insertLetter(pressedKey);
-            }
-        }
+    /* ================== Reset Keyboard Colors ================== */
+    function resetKeyboard() {
+        const keys = document.querySelectorAll('.key');
+        keys.forEach(key => {
+            key.classList.remove('correct', 'present', 'absent');
+            key.removeAttribute('data-color');
+        });
+    }
 
-        function handleClick(e) {
-            if (!gameActive) return;
-            const key = e.target.getAttribute('data-key');
-            if (key === 'ENTER') {
-                checkGuess();
-                return;
-            }
-            if (key === 'DELETE') {
-                deleteLetter();
-                return;
-            }
-            insertLetter(key);
+    /* ================== Handle Keyboard Input ================== */
+    function handleKeyDown(e) {
+        if (!gameActive) return;
+        const pressedKey = String(e.key).toUpperCase();
+        if (pressedKey === 'BACKSPACE' || pressedKey === 'DELETE') {
+            e.preventDefault(); // Prevent default backspace behavior
+            deleteLetter();
+            return;
         }
+        if (pressedKey === 'ENTER') {
+            checkGuess();
+            return;
+        }
+        if (/^[A-Z]$/.test(pressedKey) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            insertLetter(pressedKey);
+        }
+    }
 
-        /* ================== Insert and Delete Letters ================== */
-        function insertLetter(letter) {
-            if (nextTile === WORD_LENGTH) return;
-            const row = document.querySelectorAll('.row')[NUMBER_OF_GUESSES - guessesRemaining];
-            const tile = row.children[nextTile];
-            tile.textContent = letter;
-            tile.classList.add('pop');
-            currentGuess += letter;
-            guessedWords[guessedWords.length - 1].push(letter);
-            nextTile++;
+    function handleClick(e) {
+        if (!gameActive) return;
+        const key = e.target.getAttribute('data-key');
+        if (key === 'ENTER') {
+            checkGuess();
+            return;
         }
+        if (key === 'DELETE') {
+            deleteLetter();
+            return;
+        }
+        insertLetter(key);
+    }
 
-        function deleteLetter() {
-            if (nextTile === 0) return;
-            nextTile--;
-            const row = document.querySelectorAll('.row')[NUMBER_OF_GUESSES - guessesRemaining];
-            const tile = row.children[nextTile];
-            tile.textContent = '';
-            tile.classList.remove('pop');
-            currentGuess = currentGuess.slice(0, -1);
-            guessedWords[guessedWords.length - 1].pop();
-        }
+    /* ================== Insert and Delete Letters ================== */
+    function insertLetter(letter) {
+        if (nextTile === WORD_LENGTH) return;
+        const row = document.querySelectorAll('.row')[NUMBER_OF_GUESSES - guessesRemaining];
+        const tile = row.children[nextTile];
+        tile.textContent = letter;
+        tile.classList.add('pop');
+        currentGuess += letter;
+        guessedWords[guessedWords.length - 1].push(letter);
+        nextTile++;
+    }
+
+    function deleteLetter() {
+        if (nextTile === 0) return;
+        nextTile--;
+        const row = document.querySelectorAll('.row')[NUMBER_OF_GUESSES - guessesRemaining];
+        const tile = row.children[nextTile];
+        tile.textContent = '';
+        tile.classList.remove('pop');
+        currentGuess = currentGuess.slice(0, -1);
+        guessedWords[guessedWords.length - 1].pop();
+    }
+
+
 
         /* ================== Check the Guess ================== */
         function checkGuess() {
@@ -3695,7 +3904,7 @@
                 return;
             }
 
-            if (!wordList.includes(guess)) {
+            if (!wordLists[currentWordLength].includes(guess)) {
                 showNotification('Word not in list!');
                 return;
             }
@@ -3748,8 +3957,11 @@
                     updateLocalStorage();
 
                     // Mark level as completed
-                    if (!completedLevels.includes(currentLevel)) {
-                        completedLevels.push(currentLevel);
+                    if (!completedLevels[currentWordLength][currentLevel]) {
+                        completedLevels[currentWordLength][currentLevel] = {
+                            won: true,
+                            guesses: guessedWords
+                        };
                         updateCompletedLevels();
                     }
 
@@ -3765,6 +3977,17 @@
                         stats.currentStreak = 0;
                         stats.guesses.push(NUMBER_OF_GUESSES);
                         updateLocalStorage();
+
+                        // Mark level as failed
+                        if (!completedLevels[currentWordLength][currentLevel]) {
+                            completedLevels[currentWordLength][currentLevel] = {
+                                won: false,
+                                guesses: guessedWords,
+                                answer: rightGuessString
+                            };
+                            updateCompletedLevels();
+                        }
+
                         showEndGameModal(false);
                     }
                 }
@@ -3850,9 +4073,63 @@
             shareButton.onclick = shareResults;
         }
 
+        /* ================== Load Completed Game ================== */
+        function loadCompletedGame() {
+            const savedData = completedLevels[currentWordLength][currentLevel];
+            const gameBoard = document.getElementById('game');
+            const rows = gameBoard.querySelectorAll('.row');
+
+            for (let i = 0; i < savedData.guesses.length; i++) {
+                const guess = savedData.guesses[i];
+                const row = rows[i];
+
+                for (let j = 0; j < guess.length; j++) {
+                    const tile = row.children[j];
+                    const letter = guess[j];
+                    tile.textContent = letter;
+                    tile.classList.add('pop');
+
+                    // Determine color
+                    let colorClass = 'absent';
+                    if (rightGuessString[j] === letter.toLowerCase()) {
+                        colorClass = 'correct';
+                    } else if (rightGuessString.includes(letter.toLowerCase())) {
+                        colorClass = 'present';
+                    }
+
+                    tile.classList.add('flip');
+                    tile.classList.add(colorClass);
+                }
+            }
+
+            // Disable keyboard input
+            document.removeEventListener("keydown", handleKeyDown);
+
+            // Disable virtual keyboard
+            const keys = document.querySelectorAll('.key');
+            keys.forEach(key => {
+                key.removeEventListener('click', handleClick);
+            });
+
+            // Update keyboard colors
+            updateKeyboardFromCompletedGame(savedData.guesses);
+        }
+
+        function updateKeyboardFromCompletedGame(guesses) {
+            guesses.forEach(guess => {
+                guess.forEach(letter => {
+                    const lowerLetter = letter.toLowerCase();
+                    const colorClass = rightGuessString.includes(lowerLetter)
+                        ? (rightGuessString.indexOf(lowerLetter) === guess.indexOf(letter.toLowerCase()) ? 'correct' : 'present')
+                        : 'absent';
+                    updateKeyboardColor(letter.toUpperCase(), colorClass);
+                });
+            });
+        }
+
         /* ================== Share Results ================== */
         function shareResults() {
-            let result = `Teodle Level ${currentLevel} ${stats.guesses[stats.guesses.length - 1] <= NUMBER_OF_GUESSES ? stats.guesses[stats.guesses.length - 1] : 'X'}/${NUMBER_OF_GUESSES}\n`;
+            let result = `Teodle Level ${currentLevel} (${currentWordLength}-Letter) ${stats.guesses[stats.guesses.length - 1] <= NUMBER_OF_GUESSES ? stats.guesses[stats.guesses.length - 1] : 'X'}/${NUMBER_OF_GUESSES}\n`;
             guessedWords.forEach((guess, guessIndex) => {
                 guess.forEach((letter, index) => {
                     const tileColor = document.querySelectorAll('.row')[guessIndex].children[index].classList;
@@ -3887,7 +4164,8 @@
                 <p>Max Streak: ${stats.maxStreak}</p>
                 <button id="close-modal">Close</button>
             `;
-            
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
 
             const closeModal = document.getElementById('close-modal');
             closeModal.onclick = () => {
