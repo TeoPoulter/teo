@@ -3,8 +3,8 @@
 <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="description" content="Why Islam Is The Truth - A comprehensive guide.">
-    <meta name="keywords" content="Islam, Truth, Quran, Dr. Zakir Naik, Lecture">
+    <meta name="description" content="Why Islam Is The Truth - Objectively.">
+    <meta name="keywords" content="Islam, Truth, Quran, Dr. Zakir Naik, Muhammed Ali, Muslim Lantern, Muslim, Religion, Lecture">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Why Islam Is The Truth</title>
     <!-- Favicon -->
@@ -30,7 +30,7 @@
             --link-color: #3498db;
             --hover-color: #16a085;
             --error-color: #e74c3c;
-            --special-blue: #3246a8;
+            --special-blue: #3498db;
         }
 
         /* Body Styles */
@@ -270,6 +270,94 @@
             margin-top: 2rem;
         }
 
+        /* "I Still Don't Believe" Button */
+        .belief-button {
+            background-color: #333232;
+            color: #fff;
+            cursor: pointer;
+            padding: 1.5rem;
+            width: 80%;
+            max-width: 800px;
+            margin: 3rem auto;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .belief-button:hover {
+            background-color: #850101;
+        }
+
+        /* Overlay Styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(13, 13, 13, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Modal Content */
+        .modal {
+            background-color: var(--card-bg);
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .modal.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal h2 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal p {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+        }
+
+        .modal button {
+            background-color: var(--hover-color);
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: var(--accent-color);
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -299,7 +387,7 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .section, .collapsible, .content {
+            .section, .collapsible, .content, .belief-button {
                 width: 95%;
             }
 
@@ -321,7 +409,7 @@
                 font-size: 2.5rem;
             }
 
-            .collapsible {
+            .collapsible, .belief-button {
                 font-size: 1.8rem;
             }
         }
@@ -341,71 +429,99 @@
     <main>
         <div class="grand-title animate-title">Why Islam Is The Truth</div>
 
-        <!-- Credit to Dr. Zakir Naik -->
-        <section class="section">
-            <p>
-                <em>
-                    The content of this page is derived from <a href="https://youtu.be/9RuQMD4yYWg?si=Wmw3KciwerIfl-Up" target="_blank">the insightful lecture by Dr. Zakir Naik</a>, a renowned Islamic orator. His wisdom and knowledge have been instrumental in compiling these points to help convey the truth of Islam.
-                </em>
-            </p>
-        </section>
+<!-- Introduction -->
+<button class="collapsible animate-title">Introduction</button>
+<div class="content section">
+    <h3>Common Misconceptions</h3>
+    <p>
+        Many people have misconceptions that Islam is a new religion that came into existence 1,400 years ago, and that Prophet Muhammad <span>&#xFDFA;</span> is the founder of the religion.
+    </p>
+    <p>
+        <strong>In fact, Islam has existed since the beginning of time, since man set foot on this earth.</strong>
+    </p>
+    
+    <h3>Prophet Muhammad <span>&#xFDFA;</span></h3>
+    <p>
+        <strong><span style="color: #3498db;">Prophet Muhammad <span>&#xFDFA;</span> is not the founder of this religion;</span></strong> he is the last and final messenger of God, to whom was revealed the last and final message—the glorious Qur'an.
+    </p>
+    <p>
+        All the other messengers that came before the last and final messenger, Prophet Muhammad <span>&#xFDFA;</span>, were <strong>only sent for a particular group of people</strong>, and their message was only meant to be followed by that group for a limited time period.
+    </p>
+    <p>
+        Since all the other revelations were meant for a particular group of people and for a particular time period, the miracles performed by the earlier messengers satisfied the people of that time.
+    </p>
 
-        <!-- Introduction -->
-        <section class="section">
-            <h2 class="animate-title">Introduction</h2>
-            <p>
-                Many people have misconceptions that Islam is a new religion that came into existence 1,400 years ago, and that Prophet Muhammad <span>&#xFDFA;</span> is the founder of the religion.
-            </p>
-            <p>
-                <strong>In fact, Islam has existed since the beginning of time, since man set foot on this earth.</strong>
-            </p>
-            <p>
-                <strong><span style="color: #3246a8;">Prophet Muhammad <span>&#xFDFA;</span> is not the founder of this religion;</span></strong><br> he is the last and final messenger of Almighty God, to whom was revealed the last and final message—the glorious Qur'an.
-            </p>
-            <p>
-                All the other messengers that came before the last and final messenger, Prophet Muhammad <span>&#xFDFA;</span>, were <strong>only sent for a particular group of people</strong>, and their message was only meant to be followed by that group for a limited time period.
-            </p>
-            <p>
-                Since all the other revelations were meant for a particular group of people and for a particular time period, the miracles performed by the earlier messengers satisfied the people of that time.
-            </p>
-            <p>
-                Today, we cannot go back in time to examine and verify these miracles.
-            </p>
-            <p>
-                But Prophet Muhammad <span>&#xFDFA;</span> was not sent only for the Muslims or only for the Arabs. The glorious Qur'an says in <a href="https://quran.com/21/107" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 107</a>:
-            </p>
-            <div class="arabic">
-                وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ
-            </div>
-            <p>
-                <em>"We have not sent you, [O Muhammad], except as a mercy to the worlds."</em>
-            </p>
-            <p>
-                Since Prophet Muhammad <span>&#xFDFA;</span> was sent for the whole of humanity and he was the last messenger, the miracle given to him is not time-bound.
-            </p>
-            <p class="big-point">
-                <strong>The miracle given to him should satisfy the people at that time and even today, as well as to eternity.</strong>
-            </p>
-            <p>
-                It should be examinable and satisfy till eternity.
-            </p>
-            <p>
-                <span style="color: #3246a8;">It is a miracle of all times.</span>
-            </p>
-            <p>
-                It could satisfy the people of that time, it can even satisfy people today, and it can be verified and examined <em>even till the last day.</em>
-            </p>
-        </section>
+   
+    
+    <h3>The Universality of Islam</h3>
+    <p>
+        But Prophet Muhammad <span>&#xFDFA;</span> was not sent only for the Muslims or only for the Arabs. The glorious Qur'an says in <a href="https://quran.com/21/107" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 107</a>:
+    </p>
+    <blockquote class="arabic">
+        وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ
+    </blockquote>
+    <p>
+        <em>"We have not sent you, [O Muhammad], except as a mercy to the worlds."</em>
+    </p>
+    <p>
+        Since Prophet Muhammad <span>&#xFDFA;</span> was sent for the whole of humanity and he was the last messenger, the miracle given to him is not time-bound.
+    </p>
+    
+    <h3>Qur'an: The Eternal Miracle</h3>
+    <p class="big-point">
+        <strong>The miracle given to him should satisfy the people at that time and even today, as well as to eternity.</strong>
+    </p>
+    <p>
+        It should be examinable and satisfy till eternity.
+    </p>
+    <p>
+        <span style="color: #3498db;">It is a miracle of all times.</span>
+    </p>
+    <p>
+        It could satisfy the people of that time, it can even satisfy people today, and it can be verified and examined <em>even till the last day.</em>
+    </p>
+    
+    <h3>Islam's Emphasis on Evidence</h3>
+    <p>
+        Islam is unique because it doesn't just claim to be the truth; it provides evidence and proofs that can be examined and verified.
+    </p>
+    <p>
+        Allah says in the Qur'an in <a href="https://quran.com/2/111" target="_blank">Surah Al-Baqarah, Chapter 2, Verse 111</a>:
+    </p>
+    <blockquote class="arabic">
+        قُلْ هَاتُوا بُرْهَانَكُمْ إِن كُنتُمْ صَادِقِينَ
+    </blockquote>
+    <p>
+        <em>"Say, 'Produce your proof, if you should be truthful.'"</em>
+    </p>
+    <p>
+        Islam encourages seeking evidence and using reason to arrive at the truth.
+    </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!-- The Origin of the Qur'an -->
         <button class="collapsible animate-title">The Origin of the Qur'an</button>
-        <div class="content">
+        <div class="content section">
             <p>
                 As far as the Qur'an is concerned, any human being who has the slightest knowledge of the Qur'an, irrespective of whether he is a Muslim or non-Muslim, can have various allegations or replies—right or wrong—about its origin.
             </p>
             <p>
                 All of them can be broadly classified into three categories:
             </p>
+            <p>
+                            </p>
             <ol style="text-align: left; margin-left: 2rem; margin-bottom: 1.5rem;">
                 <li style="color: var(--error-color); font-size: 1.2rem; margin-bottom: 1.5rem;">
                     That Prophet Muhammad <span>&#xFDFA;</span> was consciously, subconsciously, or unconsciously the author of the Qur'an.
@@ -419,65 +535,148 @@
                     That the Qur'an has no human origin, no human source, and it is word by word the revelation from Almighty God.
                 </li>
             </ol>
+            <p>
+                 
+            </p>
+
             <p class="big-point">
                 <strong>Any answers you have for the origin of the Qur'an can be broadly classified into these three categories.</strong>
             </p>
             <p>
-                Today, let's examine and verify the various answers given by different human beings.
+
             </p>
         </div>
 
-        <!-- Could Prophet Muhammad ﷺ Be the Author? -->
-        <button class="collapsible animate-title">Could Prophet Muhammad <span>&#xFDFA;</span> Be the Author?</button>
-        <div class="content">
-            <p>
-                First, we will discuss: Can Muhammad <span>&#xFDFA;</span> be the author of the Qur'an, whether consciously, subconsciously, or unconsciously?
-            </p>
-            <p>
-                It is unfortunate when an individual disputes another person's modest claim of not being responsible for a significant work, whether in literature or science.
-            </p>
-            <p>
-                But this is exactly what the critics of Islam do when they say that Prophet Muhammad <span>&#xFDFA;</span> was the author of the Qur'an.
-            </p>
-            <p>
-                Never has the Prophet <span>&#xFDFA;</span> ever claimed that he was the author of the Qur'an, <strong>not even a single word of it</strong>.
-            </p>
-            <p>
-                Yet, when he disclaimed that he was not the author, and the Qur'an happens to be a masterpiece of Arabic literature, why would a person disclaim the responsibility of a work which is a masterpiece?
-            </p>
-            <p>
-                <strong>Why should he lie?</strong>
-            </p>
-            <p>
-                From his youth till the day he claimed prophethood at the age of forty, never has a single lie been reported to have been said by Muhammad <span>&#xFDFA;</span>.
-            </p>
-            <p>
-                He was known for his truthfulness, honesty, and chastity, and he was given the title "Al-Amin" (the trustworthy) by friends and foes alike.
-            </p>
-            <p>
-                Even after he claimed prophethood, his enemies kept their valuables with him for safekeeping.
-            </p>
-            <p>
-                When the Prophet <span>&#xFDFA;</span> migrated from Mecca to Medina, we have the example of Abu Sufyan, who was the chief of one of the tribes of Mecca.
-            </p>
-            <p>
-                When he went to Emperor Heraclius and asked him for support against the Prophet <span>&#xFDFA;</span>, the Emperor asked him, <em>"Do you know of any instance where the Prophet lied or committed any injustice?"</em>
-            </p>
-            <p>
-                Abu Sufyan, even though he was an enemy of the Prophet <span>&#xFDFA;</span> at that time, had to reply, "No."
-            </p>
-            <p>
-                <strong>So why should a person with such honesty, trust, and chastity lie?</strong>
-            </p>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Could Prophet Muhammad ﷺ Be the Author? -->
+<button class="collapsible animate-title">Could Prophet Muhammad <span>&#xFDFA;</span> Be the Author?</button>
+<div class="content section">
+    <h3>Authorship of the Qur'an</h3>
+    <p>
+        Can Muhammad <span>&#xFDFA;</span> be the author of the Qur'an, whether consciously, subconsciously, or unconsciously?
+    </p>
+    <p>
+        It is unfortunate when an individual disputes another person's modest claim of not being responsible for a significant work, whether in literature or science.
+    </p>
+    <p>
+        But this is exactly what the critics of Islam do when they say that Prophet Muhammad <span>&#xFDFA;</span> was the author of the Qur'an.
+    </p>
+
+    <h3>The Prophet's <span>&#xFDFA;</span> Denial</h3>
+    <p>
+        Never did the Prophet <span>&#xFDFA;</span> ever claim that he was the author of the Qur'an, <strong>not even a single word of it</strong>.
+    </p>
+    <p>
+        Yet, when he disclaimed that he was not the author, and the Qur'an happens to be a masterpiece of Arabic literature, why would a person disclaim the responsibility of a work which is a masterpiece?
+    </p>
+    <p>
+        <strong>Why should he lie?</strong>
+    </p>
+
+    <h3>The Prophet's <span>&#xFDFA;</span> Character</h3>
+    <p>
+        From his youth till the day he claimed prophethood at the age of forty, never has a single lie been reported to have been said by Muhammad <span>&#xFDFA;</span>.
+    </p>
+    <p>
+        He was known for his truthfulness, honesty, and chastity, and he was given the title "Al-Amin" (the trustworthy) by friends and foes alike.
+    </p>
+    <p>
+        Even after he claimed prophethood, his enemies kept their valuables with him for safekeeping.
+    </p>
+
+    <h3>The Testimony of Abu Sufyan</h3>
+    <p>
+        When the Prophet <span>&#xFDFA;</span> migrated from Mecca to Medina, we have the example of Abu Sufyan, who was the chief of one of the tribes of Mecca.
+    </p>
+    <p>
+        When he went to Emperor Heraclius and asked him for support against the Prophet <span>&#xFDFA;</span>, the Emperor asked him, <em>"Do you know of any instance where the Prophet lied or committed any injustice?"</em>
+    </p>
+    <p>
+        Abu Sufyan, even though he was an enemy of the Prophet <span>&#xFDFA;</span> at that time, had to reply, "No."
+    </p>
+    <p>
+        <strong>So why should a person with such honesty, trust, and chastity lie?</strong>
+    </p>
+
+    <h3>Refuting Claims of Delusion</h3>
+    <p>
+        Some critics say that the Prophet <span>&#xFDFA;</span> was deluded or possessed.
+    </p>
+    <p>
+        But a deluded person cannot produce a work of such magnitude and perfection as the Qur'an.
+    </p>
+    <p>
+        Allah says in the Qur'an in <a href="https://quran.com/68/2" target="_blank">Surah Al-Qalam, Chapter 68, Verse 2</a>:
+    </p>
+    <blockquote class="arabic">
+        مَا أَنتَ بِنِعْمَةِ رَبِّكَ بِمَجْنُونٍ
+    </blockquote>
+    <p>
+        <em>"You are not, [O Muhammad], by the favor of your Lord, a madman."</em>
+    </p>
+    <p>
+        The life of the Prophet <span>&#xFDFA;</span> is a testimony to his sound mind, wisdom, and excellent character.
+    </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!-- Allegations Against the Prophet ﷺ -->
         <button class="collapsible animate-title">Allegations Against the Prophet <span>&#xFDFA;</span></button>
-        <div class="content">
-            <br><br>
-            <p>
-                Let's analyze the various claims made by critics of Islam against Prophet Muhammad <span>&#xFDFA;</span>.
-            </p>
+        <div class="content section">
+
 
             <h3 class="animate-title">Material Gains</h3>
             <p>
@@ -493,15 +692,12 @@
                 If he did it for money, his life should have been better after claiming prophethood, like we see today with those who claim to be prophets and saints.
             </p>
             <p>
-                Furthermore, we have records in several Sahih Hadith, including the Hadith narrated by <a href="https://sunnah.com/bukhari:2567" target="_blank">Urwa ibn al-Zubayr, Sahih al-Bukhari 2567</a>, that one of his wives, Aisha (may Allah be pleased with her), said that there were times when fire was not lit in the house for a month or two, indicating that food was not cooked for a month or two, and they only survived on dates and water, and sometimes milk given by the neighbors.
+                Furthermore, we have records in several Authentic Hadith, including the Hadith narrated by <a href="https://sunnah.com/bukhari:2567" target="_blank">Urwa ibn al-Zubayr, Sahih al-Bukhari 2567</a>, that his wife Aisha (may God be pleased with her), said that there were times when fire was not lit in the house for a month or two, indicating that food was not cooked for this time, and that they only survived on dates and water, and sometimes milk given by the neighbors.
             </p>
 
-            <h3 class="animate-title">Desire for Fame and Leadership</h3>
+            <h3 class="animate-title">Desire: Fame and Leadership</h3>
             <p>
-                Some critics say that Prophet Muhammad <span>&#xFDFA;</span> attributed the Qur'an to Almighty God because he wanted fame, status, glory, and leadership.
-            </p>
-            <p>
-                According to Michael H. Hart, who wrote <em>"The 100: A Ranking of the Most Influential Persons in History,"</em> he analyzes all the human beings from Adam (peace be upon him) till the present time and undeniably puts Prophet Muhammad <span>&#xFDFA;</span> as number one as being the most influential person in the history of humankind.
+                Some critics say that Prophet Muhammad <span>&#xFDFA;</span> attributed the Qur'an to God because he wanted fame, status, glory, and leadership.
             </p>
             <p>
                 Prophet Muhammad <span>&#xFDFA;</span>, if he wanted glory, fame, power, or leadership, he was so eloquent; he had all the qualities; he did not have to falsely attribute the Qur'an to Almighty God.
@@ -598,12 +794,23 @@
             </p>
         </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Was the Qur'an Plagiarized? -->
         <button class="collapsible animate-title">Was the Qur'an Plagiarized?</button>
-        <div class="content">
-            <p>
-                Let's discuss the second category: that the Prophet <span>&#xFDFA;</span> learned it from other sources or he copied or plagiarized from other religious scriptures.
-            </p>
+        <div class="content section">
             <p>
                 There are various allegations made by non-Muslims and the critics of Islam that the Prophet <span>&#xFDFA;</span> learned the Qur'an from a Roman blacksmith who was living on the outskirts of Mecca.
             </p>
@@ -628,7 +835,7 @@
                 <strong>How could the Prophet <span>&#xFDFA;</span> learn from him?</strong>
             </p>
             <p>
-                Some people say that the Prophet <span>&#xFDFA;</span> learned from Waraqah ibn Nawfal, the relative of his wife Khadijah (may Allah be pleased with her).
+                Some people say that the Prophet <span>&#xFDFA;</span> learned from Waraqah ibn Nawfal, the relative of his wife Khadijah (may God be pleased with her).
             </p>
             <p>
                 But historical records show that the Prophet <span>&#xFDFA;</span> met Waraqah only twice in his life: once before he claimed prophethood, and the second time immediately after the first revelation.
@@ -654,8 +861,7 @@
                 إِذًا لَّارْتَابَ الْمُبْطِلُونَ
             </div>
             <p>
-                <em>"And you did not recite before it any scripture, nor did you inscribe one with your right hand.
-                Otherwise the falsifiers would have had [cause for] doubt."</em>
+                <em>"You ˹O Prophet˺ could not read any writing ˹even˺ before this ˹revelation˺, nor could you write at all. Otherwise, the people of falsehood would have been suspicious."</em>
             </p>
             <p>
                 This verse points out that the Prophet <span>&#xFDFA;</span> was unlettered and could not read or write.
@@ -663,11 +869,687 @@
             <p>
                 Therefore, the question of copying from previous scriptures does not arise.
             </p>
+            <p>
+                Moreover, if the Prophet <span>&#xFDFA;</span> had copied from the Bible or other scriptures, why did he correct them on matters where they had erred?
+            </p>
+            <p>
+                For example, the Bible mentions that the Pharaoh at the time of Joseph was called "Pharaoh," but the Qur'an correctly refers to him as "King," since the term "Pharaoh" was not used during Joseph's time.
+            </p>
+            <p>
+                How could an unlettered man in the desert know such historical details that were only discovered recently?
+            </p>
         </div>
+
+        <!-- The Linguistic Miracle of the Qur'an -->
+        <button class="collapsible animate-title">The Linguistic Miracle of the Qur'an</button>
+        <div class="content section">
+            <p>
+                The Qur'an is a linguistic miracle that cannot be replicated.
+            </p>
+            <p>
+                The Arabs at the time of the Prophet <span>&#xFDFA;</span> were masters of the Arabic language.
+            </p>
+            <p>
+                When the Qur'an was revealed, it challenged them in their own field of expertise.
+            </p>
+            <p>
+                Allah says in the Qur'an in <a href="https://quran.com/17/88" target="_blank">Surah Al-Isra, Chapter 17, Verse 88</a>:
+            </p>
+            <div class="arabic">
+                قُل لَّئِنِ اجْتَمَعَتِ الْإِنسُ وَالْجِنُّ
+                عَلَىٰ أَن يَأْتُوا بِمِثْلِ هَٰذَا الْقُرْآنِ
+                لَا يَأْتُونَ بِمِثْلِهِ
+                وَلَوْ كَانَ بَعْضُهُمْ لِبَعْضٍ ظَهِيرًا
+            </div>
+            <p>
+                <em>"Say, ˹O Prophet,˺ “If ˹all˺ humans and jinn were to come together to produce the equivalent of this Quran, they could not produce its equal, no matter how they supported each other.”" </em>
+            </p>
+            <p>
+                The Qur'an has a unique style that is neither poetry nor prose.
+            </p>
+            <p>
+                It introduced new linguistic structures, new words, and used existing words in ways that were unprecedented.
+            </p>
+            <p>
+                The eloquence and depth of the Qur'an amazed the Arabs, and many of them accepted Islam just by hearing its verses.
+            </p>
+            <p>
+                Some of the enemies of Islam accused the Prophet <span>&#xFDFA;</span> of being a magician because they could not explain the powerful effect the Qur'an had on people.
+            </p>
+            <p>
+                Despite their expertise, they could not produce even a single chapter like it.
+            </p>
+            <p>
+                Allah reduced the challenge in stages, first asking them to produce a Qur'an like it, then ten chapters, then even a single chapter.
+            </p>
+            <p>
+                In <a href="https://quran.com/2/23" target="_blank">Surah Al-Baqarah, Chapter 2, Verse 23</a>, Allah says:
+            </p>
+            <div class="arabic">
+                وَإِن كُنتُمْ فِي رَيْبٍ مِّمَّا نَزَّلْنَا
+                عَلَىٰ عَبْدِنَا فَأْتُوا بِسُورَةٍ مِّن مِّثْلِهِ
+                وَادْعُوا شُهَدَاءَكُم مِّن دُونِ اللَّهِ
+                إِن كُنتُمْ صَادِقِينَ
+            </div>
+            <p>
+                <em>"And if you are in doubt about what We have revealed to Our servant,1 then produce a sûrah like it and call your helpers other than Allah, if what you say is true."</em>
+            </p>
+            <p>
+                To this day, no one has been able to meet this challenge.
+            </p>
+        </div>
+
+        <!-- Preservation of the Qur'an -->
+        <button class="collapsible animate-title">Preservation of the Qur'an</button>
+        <div class="content section">
+            <p>
+                The Qur'an is the only religious scripture that has been preserved in its exact original form.
+            </p>
+            <p>
+                Allah promises in the Qur'an in <a href="https://quran.com/15/9" target="_blank">Surah Al-Hijr, Chapter 15, Verse 9</a>:
+            </p>
+            <div class="arabic">
+                إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ
+                وَإِنَّا لَهُ لَحَافِظُونَ
+            </div>
+            <p>
+                <em>"Indeed, it is We who sent down the Qur'an and indeed, We will be its guardian."</em>
+            </p>
+            <p>
+                Millions of people around the world have memorized the Qur'an in its entirety, including children as young as six years old.
+            </p>
+            <p>
+                The Qur'an has been transmitted through both oral and written means without any alteration.
+            </p>
+            <p>
+                No other religious text has this level of preservation.
+            </p>
+            <p>
+                The preservation of the Qur'an is a living miracle that we can witness today.
+            </p>
+        </div>
+
+
+
+
+
+<!-- Historical Miracles of the Qur'an -->
+<button class="collapsible animate-title">Historical Miracles of the Qur'an</button>
+<div class="content section">
+    <h3>Unknown Historical Facts Revealed</h3>
+    <p>
+        The Qur'an contains historical information that was unknown at the time and has been confirmed by modern discoveries.
+    </p>
+    <p>
+        For example, the Qur'an mentions in <a href="https://quran.com/44/29" target="_blank">Surah Ad-Dukhan, Chapter 44, Verse 29</a>:
+    </p>
+    <blockquote class="arabic">
+        فَمَا بَكَتْ عَلَيْهِمُ السَّمَاءُ وَالْأَرْضُ
+        وَمَا كَانُوا مُنظَرِينَ
+    </blockquote>
+    <p>
+        <em>"And the heaven and earth wept not for them, nor were they reprieved."</em>
+    </p>
+    
+    <h3>The Beliefs of Ancient Egyptians</h3>
+    <p>
+        It was discovered that the ancient Egyptians believed that the sky and earth wept when a great person died.
+    </p>
+    <p>
+        The Qur'an refutes this belief, stating that the sky and earth did not weep for Pharaoh and his people.
+    </p>
+    <p>
+        Such details were unknown at the time of the Prophet <span>&#xFDFA;</span>.
+    </p>
+    
+    <h3>Accurate Titles for Egyptian Rulers</h3>
+    <p>
+        Another example is the distinction the Qur'an makes between the titles used for the ruler of Egypt during the time of Joseph and Moses.
+    </p>
+    <p>
+        In the story of Joseph, the ruler is referred to as "King," while in Moses's story, he is called "Pharaoh."
+    </p>
+    <p>
+        Historical records confirm that the title "Pharaoh" was not used until the New Kingdom period in Egypt, which was after Joseph's time.
+    </p>
+    <p>
+        The Bible, however, uses "Pharaoh" in both stories, which is historically inaccurate.
+    </p>
+    
+    <h3>A Question of Knowledge</h3>
+    <p>
+        How could the Prophet <span>&#xFDFA;</span> have known such precise historical details?
+    </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Prophecies of the Prophet ﷺ -->
+<button class="collapsible animate-title">Qur'anic & Prophetic <span>&#xFDFA;</span> Prophecies</button>
+<div class="content section">
+    <h3>Foretelling Future Events</h3>
+    <p>
+        The Prophet Muhammad <span>&#xFDFA;</span> made numerous prophecies about future events, many of which have come to pass. The Qur'an also does this.
+    </p>
+    <p>
+        Here's a selection of some of these prophecies:
+    </p>
+
+    <!-- 1. The Byzantines Will Rebound -->
+    <h3>The Byzantines Will Rebound</h3>
+    <p>
+        During a time when the Byzantine Empire was on the verge of collapse, the Qur'an foretold their victory over the Persians within a few years.
+    </p>
+    <p>
+        Allah says in the Qur'an in <a href="https://quran.com/30/2-4" target="_blank">Surah Ar-Rum, Chapter 30, Verses 2-4</a>:
+    </p>
+    <blockquote class="arabic">
+        غُلِبَتِ الرُّومُ<br>
+        فِي أَدْنَى الْأَرْضِ وَهُم مِّن بَعْدِ غَلَبِهِمْ سَيَغْلِبُونَ<br>
+        فِي بِضْعِ سِنِينَ ۗ
+    </blockquote>
+    <p>
+        <em>"The Byzantines have been defeated in the nearest land. But they, after their defeat, will overcome within three to nine years."</em>
+    </p>
+    <p>
+        This prophecy came true when the Byzantines defeated the Persians several years later.
+    </p>
+
+
+    <!-- 2. The Fate of Abu Lahab -->
+    <h3>The Fate of Abu Lahab</h3>
+    <p>
+        The Qur'an predicted that Abu Lahab, an uncle of the Prophet who opposed him, would die a disbeliever.
+    </p>
+    <p>
+        Allah says in the Qur'an in <a href="https://quran.com/111" target="_blank">Surah Al-Masad, Chapter 111, Verses 1-3</a>:
+    </p>
+    <blockquote class="arabic">
+        تَبَّتْ يَدَا أَبِي لَهَبٍ وَتَبَّ<br>
+        مَا أَغْنَىٰ عَنْهُ مَالُهُ وَمَا كَسَبَ<br>
+        سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ
+    </blockquote>
+    <p>
+        <em>"May the hands of Abu Lahab be ruined, and ruined is he. His wealth will not avail him or that which he gained. He will burn in a Fire of blazing flame."</em>
+    </p>
+    <p>
+        Despite hearing this, Abu Lahab never embraced Islam and died as a disbeliever, fulfilling the prophecy.
+    </p>
+
+
+    <!-- 3. The Globalization of Islam -->
+    <h3>The Globalization of Islam</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> prophesied that Islam would spread across the globe.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"This matter will certainly reach every place touched by the night and day. Allah will not leave a house of mud or even fur except that He will cause this religion to enter it."</em>
+    </p>
+    <p>
+        <em>Reference:</em> Musnad Ahmad 16957
+    </p>
+    <p>
+        Today, Islam is practiced all over the world, fulfilling this prophecy.
+    </p>
+
+    <!-- 4. The Victory at Badr -->
+    <h3>Predicting the Victory at Badr</h3>
+    <p>
+        Before the Battle of Badr, the Prophet <span>&#xFDFA;</span> pointed out the exact locations where the enemy leaders would die.
+    </p>
+    <p>
+        'Umar ibn al-Khattab reported:
+    </p>
+    <blockquote>
+        <em>"He showed us where they would die, saying, 'This is where so-and-so will fall.' By the One who sent him with the truth, none of them fell elsewhere than where the Prophet's hand had touched."</em>
+    </p>
+    <p>
+        <em>Reference:</em> Sahih Muslim 2873
+    </p>
+
+    <!-- 5. The Conquest of Jerusalem -->
+    <h3>The Conquest of Jerusalem</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> predicted the Muslims would conquer Jerusalem.
+    </p>
+    <p>
+        This occurred five years after his death, during the caliphate of 'Umar ibn al-Khattab.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 3176
+    </p>
+
+    <!-- 6. The Conquests of Persia and Rome -->
+    <h3>The Conquests of Persia and Rome</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> foretold the conquest of Persia and Rome.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"When Chosroes is ruined, there will be no Chosroes after him; and when Caesar is ruined, there will be no Caesar after him."</em>
+    </p>
+    <p>
+        Both empires were defeated by the Muslims after his death.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 3618; Sahih Muslim 2918
+    </p>
+
+    <!-- 7. The Martyrdom of 'Umar and 'Uthman -->
+    <h3>The Martyrdom of 'Umar and 'Uthman</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> predicted that both 'Umar and 'Uthman would be martyred.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"Be firm, Uhud, for upon you are none other than a Prophet, a truthful one, and two martyrs."</em>
+    </p>
+    <p>
+        'Umar and 'Uthman were both assassinated during their caliphates.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 3675
+    </p>
+
+    <!-- 8. The Spread of Wealth -->
+    <h3>The Spread of Wealth</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> prophesied that wealth would become so abundant that people would struggle to find someone to accept charity.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"Wealth will be in such surplus that a man will be given a hundred gold coins and still be unsatisfied."</em>
+    </p>
+    <p>
+        This occurred during the caliphate of 'Uthman and continues in some societies today.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 1410
+    </p>
+
+    <!-- 9. Security Will Prevail -->
+    <h3>Security Will Prevail</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> predicted that security would become so widespread that a woman could travel alone without fear.
+    </p>
+    <p>
+        He told 'Adi ibn Hatim:
+    </p>
+    <blockquote>
+        <em>"If you live long enough, you will see a woman travel from Hira to perform Tawaf around the Kaaba, fearing none but Allah."</em>
+    </p>
+    <p>
+        This prophecy came true during the early Islamic period.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 3595
+    </p>
+
+    <!-- 10. The Martyrdom of 'Ammar -->
+    <h3>The Martyrdom of 'Ammar</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"'Ammar will be killed by a rebellious group."</em>
+    </p>
+    <p>
+        'Ammar ibn Yasir was later killed during the Battle of Siffin by the army opposing 'Ali ibn Abi Talib.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 2812; Sahih Muslim 2916
+    </p>
+
+    <!-- 11. The Emergence of the Khawarij -->
+    <h3>The Emergence of the Khawarij</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> foretold the rise of a group known for extremism.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"There will emerge a people who will recite the Qur'an but it will not go beyond their throats. They will exit the religion as an arrow passes through its target."</em>
+    </p>
+    <p>
+        This prophecy refers to the Khawarij, who appeared during 'Ali's caliphate.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 3610; Sahih Muslim 1064
+    </p>
+
+    <!-- 12. The Greening of Arabia -->
+    <h3>The Greening of Arabia</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until the land of Arabia returns to being meadows and rivers."</em>
+    </p>
+    <p>
+        Modern satellite imagery shows that parts of Arabia are becoming greener due to increased rainfall.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih Muslim 157
+    </p>
+
+    <!-- 13. Widespread Usury and Adultery -->
+    <h3>Widespread Usury and Adultery</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> predicted that usury (interest) and adultery would become widespread.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"A time will come over people when they will consume usury."</em>
+    </p>
+    <p>
+        Today, interest-based financial systems and immoral behaviors are common.
+    </p>
+    <p>
+        <em>Reference:</em> Musnad Ahmad 10410
+    </p>
+
+    <!-- 14. An Increase in Killing -->
+    <h3>An Increase in Killing</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until killing increases."</em>
+    </p>
+    <p>
+        The 20th and 21st centuries have seen unprecedented levels of warfare and violence.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 1036; Sahih Muslim 157
+    </p>
+
+    <!-- 15. Competition in Building Tall Structures -->
+    <h3>Competition in Building Tall Structures</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"You will see the barefoot, naked, destitute shepherds competing in constructing tall buildings."</em>
+    </p>
+    <p>
+        Today, the tallest buildings are found in the Arabian Peninsula, built by former Bedouins.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih Muslim 8
+    </p>
+
+    <!-- 16. The Spread of Literacy -->
+    <h3>The Spread of Literacy</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"Before the Hour comes, there will be much penmanship."</em>
+    </p>
+    <p>
+        Today, literacy rates have soared globally, and writing is more prevalent than ever.
+    </p>
+    <p>
+        <em>Reference:</em> Musnad Ahmad 22965
+    </p>
+
+    <!-- 17. Time Passing Quickly -->
+    <h3>Time Passing Quickly</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until time passes quickly."</em>
+    </p>
+    <p>
+        With modern technology and busy lifestyles, people feel that time is passing faster.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 1036
+    </p>
+
+    <!-- 18. The Prevalence of Musical Instruments -->
+    <h3>The Prevalence of Musical Instruments</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"There will be among my Ummah people who will make permissible illegal sexual intercourse, the wearing of silk for men, the drinking of alcohol, and the use of musical instruments."</em>
+    </p>
+    <p>
+        Music and immoral behaviors are widespread today.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 5590
+    </p>
+
+    <!-- 19. Nakedness in Public -->
+    <h3>Nakedness in Public</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"There will be women who are clothed yet naked, inviting to evil and inclined to it. They will not enter Paradise."</em>
+    </p>
+    <p>
+        This prophecy reflects modern fashion trends that promote revealing attire.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih Muslim 2128
+    </p>
+
+    <!-- 20. Wishing for Death -->
+    <h3>Wishing for Death</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until a man passes by a grave and says, 'Would that I were in his place.'"</em>
+    </p>
+    <p>
+        Due to the trials and tribulations of modern times, some people wish for death.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 7115
+    </p>
+
+
+
+    <!-- 22. The Consumption of Interest -->
+    <h3>The Consumption of Interest</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> said:
+    </p>
+    <blockquote>
+        <em>"A time will come over people when they will consume usury."</em>
+    </p>
+    <p>
+        Interest-based transactions are prevalent in today's financial systems.
+    </p>
+    <p>
+        <em>Reference:</em> Musnad Ahmad 10410
+    </p>
+
+    <!-- 23. The Spread of Alcohol -->
+    <h3>The Spread of Alcohol</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"Alcohol will be called by other names and will be made lawful."</em>
+    </p>
+    <p>
+        Today, alcohol is widespread and often referred to by various names.
+    </p>
+    <p>
+        <em>Reference:</em> Sunan Abu Dawud 3688
+    </p>
+
+    <!-- 24. The Abundance of Wealth -->
+    <h3>The Abundance of Wealth</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> predicted that wealth would become abundant.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until wealth increases among you and becomes abundant."</em>
+    </p>
+    <p>
+        Many societies today experience unprecedented wealth.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 1410
+    </p>
+
+    <!-- 25. Trustworthiness Disappearing -->
+    <h3>Trustworthiness Disappearing</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"When trust is lost, then wait for the Hour."</em>
+    </p>
+    <p>
+        Corruption and dishonesty are widespread issues globally.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 59
+    </p>
+
+    <!-- 26. Widespread Bloodshed -->
+    <h3>Widespread Bloodshed</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> foretold an increase in killing and bloodshed.
+    </p>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until there is much bloodshed."</em>
+    </p>
+    <p>
+        Recent times have seen unprecedented levels of violence and war.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 1036
+    </p>
+
+    <!-- 27. Arabia Returning to Meadows and Rivers -->
+    <h3>Arabia Returning to Meadows and Rivers</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"The Hour will not come until the land of Arabia returns to being meadows and rivers."</em>
+    </p>
+    <p>
+        There is evidence of increased rainfall and greening in parts of Arabia today.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih Muslim 157
+    </p>
+
+    <!-- 28. The Slave Woman Giving Birth to Her Master -->
+    <h3>The Slave Woman Giving Birth to Her Master</h3>
+    <p>
+        The Prophet <span>&#xFDFA;</span> mentioned that:
+    </p>
+    <blockquote>
+        <em>"The slave woman will give birth to her mistress."</em>
+    </p>
+    <p>
+        Scholars interpret this as children disrespecting their parents, which is prevalent today.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih Muslim 8
+    </p>
+
+    <!-- 29. The Decrease of Knowledge -->
+    <h3>The Decrease of Knowledge</h3>
+    <p>
+        He said:
+    </p>
+    <blockquote>
+        <em>"Knowledge will be taken away, ignorance will prevail."</em>
+    </p>
+    <p>
+        Despite access to information, true knowledge and understanding are diminishing.
+    </p>
+    <p>
+        <em>Reference:</em> Sahih al-Bukhari 80
+    </p>
+
+
+    <h3>Sign of His Prophethood</h3>
+    <p>
+        Such accurate predictions about future events are a sign of his prophethood.
+    </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!-- Scientific Miracles of the Qur'an -->
         <button class="collapsible animate-title">Scientific Miracles of the Qur'an</button>
-        <div class="content">
+        <div class="content section">
             <p>
                 The Qur'an contains numerous scientific facts that were unknown at the time of its revelation and have only been discovered recently.
             </p>
@@ -688,71 +1570,51 @@
                 This verse accurately describes the Big Bang theory, which scientists discovered only about 50 years ago.
             </p>
 
-            <h3 class="animate-title">Shape of the Earth</h3>
+            <h3 class="animate-title">Expansion of the Universe</h3>
             <p>
-                The Qur'an describes the Earth's shape in <a href="https://quran.com/79/30" target="_blank">Surah An-Nazi'at, Chapter 79, Verse 30</a>:
+                The Qur'an mentions the expansion of the universe in <a href="https://quran.com/51/47" target="_blank">Surah Adh-Dhariyat, Chapter 51, Verse 47</a>:
             </p>
             <div class="arabic">
-                وَالْأَرْضَ بَعْدَ ذَٰلِكَ دَحَاهَا
+                وَالسَّمَاءَ بَنَيْنَاهَا بِأَيْدٍ
+                وَإِنَّا لَمُوسِعُونَ
             </div>
             <p>
-                <em>"And after that He spread the earth."</em>
+                <em>"And the heaven We constructed with strength, and indeed, We are [its] expander."</em>
             </p>
             <p>
-                The word "dahaha" means to make the earth egg-shaped, specifically like the ostrich egg, which is geospherical in shape.
+                The discovery that the universe is expanding was made by Edwin Hubble in 1929.
             </p>
             <p>
-                Modern science has confirmed that the Earth is not completely round like a ball but is flattened at the poles and bulging at the equator.
+                How could this fact be mentioned in the Qur'an 1,400 years ago?
             </p>
 
-            <h3 class="animate-title">Light of the Moon</h3>
+            <h3 class="animate-title">Embryology</h3>
             <p>
-                The Qur'an mentions that the light of the moon is reflected light in <a href="https://quran.com/25/61" target="_blank">Surah Al-Furqan, Chapter 25, Verse 61</a>:
+                The Qur'an describes the stages of human embryonic development in detail.
+            </p>
+            <p>
+                In <a href="https://quran.com/23/12-14" target="_blank">Surah Al-Mu'minun, Chapter 23, Verses 12-14</a>, Allah says:
             </p>
             <div class="arabic">
-                تَبَارَكَ الَّذِي جَعَلَ فِي السَّمَاءِ
-                بُرُوجًا وَجَعَلَ فِيهَا
-                سِرَاجًا وَقَمَرًا مُّنِيرًا
+                وَلَقَدْ خَلَقْنَا الْإِنسَانَ
+                مِن سُلَالَةٍ مِّن طِينٍ
+                ثُمَّ جَعَلْنَاهُ نُطْفَةً
+                فِي قَرَارٍ مَّكِينٍ
+                ثُمَّ خَلَقْنَا النُّطْفَةَ عَلَقَةً
+                فَخَلَقْنَا الْعَلَقَةَ مُضْغَةً
+                فَخَلَقْنَا الْمُضْغَةَ عِظَامًا
+                فَكَسَوْنَا الْعِظَامَ لَحْمًا
+                ثُمَّ أَنشَأْنَاهُ خَلْقًا آخَرَ
+                فَتَبَارَكَ اللَّهُ أَحْسَنُ الْخَالِقِينَ
             </div>
             <p>
-                <em>"Blessed is He who has placed in the sky great stars and placed therein a [burning] lamp and luminous moon."</em>
+                <em>"And certainly did We create man from an extract of clay. Then We placed him as a sperm-drop in a firm lodging. Then We made the sperm-drop into a clinging clot, and We made the clot into a lump [of flesh], and We made [from] the lump, bones, and We covered the bones with flesh; then We developed him into another creation. So blessed is Allah, the best of creators."</em>
             </p>
             <p>
-                The Arabic words used distinguish between the sun (Siraj) as a lamp emitting its own light and the moon (Qamar) as Munir, which means borrowed or reflected light.
-            </p>
-
-            <h3 class="animate-title">Sun's Rotation</h3>
-            <p>
-                The Qur'an mentions the sun's rotation in <a href="https://quran.com/21/33" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 33</a>:
-            </p>
-            <div class="arabic">
-                وَهُوَ الَّذِي خَلَقَ اللَّيْلَ وَالنَّهَارَ
-                وَالشَّمْسَ وَالْقَمَرَ ۖ
-                كُلٌّ فِي فَلَكٍ يَسْبَحُونَ
-            </div>
-            <p>
-                <em>"And it is He who created the night and the day and the sun and the moon; all [heavenly bodies] in an orbit are swimming."</em>
+                These detailed descriptions correspond to modern embryological stages.
             </p>
             <p>
-                Modern science tells us that the sun rotates on its axis, taking approximately 25 days to complete one rotation.
-            </p>
-
-            <h3 class="animate-title">The Water Cycle</h3>
-            <p>
-                The Qur'an describes the water cycle in great detail in several verses, including <a href="https://quran.com/39/21" target="_blank">Surah Az-Zumar, Chapter 39, Verse 21</a>:
-            </p>
-            <div class="arabic">
-                أَلَمْ تَرَ أَنَّ اللَّهَ
-                أَنْزَلَ مِنَ السَّمَاءِ مَاءً
-                فَسَلَكَهُ يَنَابِيعَ فِي الْأَرْضِ
-                ثُمَّ يُخْرِجُ بِهِ زَرْعًا
-                مُخْتَلِفًا أَلْوَانُهُ
-            </div>
-            <p>
-                <em>"Do you not see that Allah sends down rain from the sky and makes it flow as springs in the earth; then He produces thereby crops of varying colors..."</em>
-            </p>
-            <p>
-                The water cycle was first described by Bernard Palissy in 1580, but the Qur'an mentioned it 1,400 years ago.
+                Dr. Keith Moore, a prominent embryologist, stated that such information could not have been known at that time and must have come from God.
             </p>
 
             <h3 class="animate-title">Mountains as Pegs</h3>
@@ -770,87 +1632,94 @@
                 Modern geology has confirmed that mountains have deep roots and act like stakes or pegs stabilizing the Earth's crust.
             </p>
 
-            <h3 class="animate-title">Barrier Between Seas</h3>
+            <h3 class="animate-title">Clouds and Heavy Clouds</h3>
             <p>
-                The Qur'an mentions the barrier between seas in <a href="https://quran.com/25/53" target="_blank">Surah Al-Furqan, Chapter 25, Verse 53</a>:
+                The Qur'an mentions in <a href="https://quran.com/13/12" target="_blank">Surah Ar-Ra'd, Chapter 13, Verse 12</a>:
             </p>
             <div class="arabic">
-                وَهُوَ الَّذِي مَرَجَ الْبَحْرَيْنِ
-                هَٰذَا عَذْبٌ فُرَاتٌ
-                وَهَٰذَا مِلْحٌ أُجَاجٌ
-                وَجَعَلَ بَيْنَهُمَا بَرْزَخًا
-                وَحِجْرًا مَّحْجُورًا
+                هُوَ الَّذِي يُرِيكُمُ الْبَرْقَ خَوْفًا وَطَمَعًا
+                وَيُنشِئُ السَّحَابَ الثِّقَالَ
             </div>
             <p>
-                <em>"And it is He who has released [simultaneously] the two seas, one fresh and sweet and one salty and bitter, and He placed between them a barrier and prohibiting partition."</em>
+                <em>"It is He who shows you lightning, [causing] fear and aspiration, and generates the heavy clouds."</em>
             </p>
             <p>
-                Modern science has discovered that in places where two different seas meet, there is a barrier between them.
-            </p>
-
-            <h3 class="animate-title">Creation from Water</h3>
-            <p>
-                The Qur'an states that all living things are made of water in <a href="https://quran.com/21/30" target="_blank">Surah Al-Anbiya, Chapter 21, Verse 30</a>:
-            </p>
-            <div class="arabic">
-                وَجَعَلْنَا مِنَ الْمَاءِ كُلَّ شَيْءٍ حَيٍّ ۖ
-                أَفَلَا يُؤْمِنُونَ
-            </div>
-            <p>
-                <em>"...and We made from water every living thing. Then will they not believe?"</em>
+                Modern science has discovered that clouds can weigh hundreds of thousands of tons.
             </p>
             <p>
-                Science has confirmed that all living organisms consist mostly of water.
-            </p>
-
-            <h3 class="animate-title">Fingerprints</h3>
-            <p>
-                The Qur'an mentions in <a href="https://quran.com/75/3-4" target="_blank">Surah Al-Qiyamah, Chapter 75, Verses 3-4</a>:
-            </p>
-            <div class="arabic">
-                أَيَحْسَبُ الْإِنسَانُ أَلَّن نَّجْمَعَ عِظَامَهُ
-                بَلَىٰ قَادِرِينَ عَلَىٰ أَن نُّسَوِّيَ بَنَانَهُ
-            </div>
-            <p>
-                <em>"Does man think that We will not assemble his bones? Yes. [We are] Able [even] to proportion his fingertips."</em>
-            </p>
-            <p>
-                It was in 1880 that Sir Francis Galton discovered the fingerprinting method.
-            </p>
-            <p>
-                The Qur'an mentioned this fact 1,400 years ago.
-            </p>
-
-            <h3 class="animate-title">Pain Receptors</h3>
-            <p>
-                The Qur'an mentions in <a href="https://quran.com/4/56" target="_blank">Surah An-Nisa, Chapter 4, Verse 56</a>:
-            </p>
-            <div class="arabic">
-                إِنَّ الَّذِينَ كَفَرُوا بِآيَاتِنَا
-                سَوْفَ نُصْلِيهِمْ نَارًا
-                كُلَّمَا نَضِجَتْ جُلُودُهُمْ
-                بَدَّلْنَاهُمْ جُلُودًا غَيْرَهَا
-                لِيَذُوقُوا الْعَذَابَ
-            </div>
-            <p>
-                <em>"Indeed, those who disbelieve in Our verses—We will drive them into a Fire. Every time their skins are roasted through We will replace them with other skins so they may taste the punishment..."</em>
-            </p>
-            <p>
-                Modern science has discovered that pain receptors are present in the skin.
-            </p>
-            <p>
-                This knowledge was only discovered recently, yet the Qur'an mentioned it 1,400 years ago.
+                This knowledge was not known 1,400 years ago.
             </p>
         </div>
 
+
+
+
+<!-- The Wisdom of Islamic Teachings -->
+<button class="collapsible animate-title">The Wisdom of Islamic Teachings</button>
+<div class="content section">
+    <h3>Comprehensive Life Guidance </h3>
+    <p>
+        Islamic teachings cover all aspects of life, providing guidance on personal conduct, social justice, economics, and governance.
+    </p>
+
+    <h3>Economic Justice</h3>
+    <p>
+        The prohibition of interest (usury) prevents exploitation and ensures economic fairness.
+    </p>
+
+    <h3>Social Harmony and Moral Values</h3>
+    <p>
+        Islamic laws promote social harmony, family values, and moral behavior.
+    </p>
+
+    <h3>Wisdom Evident in Society</h3>
+    <p>
+        The wisdom behind these teachings becomes evident when we see the problems in societies that do not follow them.
+    </p>
+
+    <h3>Prohibition of Alcohol</h3>
+    <p>
+        For example, the prohibition of alcohol eliminates many societal issues such as crime, health problems, and family breakdown.
+    </p>
+
+    <h3>Emphasis on Charity</h3>
+    <p>
+        The emphasis on charity helps reduce poverty and fosters a sense of community.
+    </p>
+
+    <h3>Protection of Family Rights</h3>
+    <p>
+        The laws related to marriage and family protect the rights of all members and promote stability.
+    </p>
+
+    <h3>A Proof of Islam's Truth</h3>
+    <p>
+        The comprehensive nature of Islamic teachings and their positive impact on individuals and societies is another proof of the truth of Islam.
+    </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Conclusion -->
-        <section class="section">
-            <h2 class="animate-title">Conclusion</h2>
+        <button class="collapsible animate-title">Conclusion</button>
+        <div class="content section">
             <p>
-                The Qur'an contains numerous such scientific facts and miracles that were impossible for any human being to know 1,400 years ago.
+                The Qur'an contains numerous such scientific facts, historical accuracies, prophecies, and miracles that were impossible for any human being to know 1,400 years ago.
             </p>
             <p>
-                <strong>The only plausible explanation is that the Qur'an is the word of Almighty God.</strong>
+                <strong>The only plausible explanation is that the Qur'an is the word of Almighty God, and that Prophet Muhammad <span>&#xFDFA;</span> is His messenger.</strong>
             </p>
             <p>
                 As Allah says in the Qur'an in <a href="https://quran.com/41/53" target="_blank">Surah Fussilat, Chapter 41, Verse 53</a>:
@@ -867,14 +1736,63 @@
                 <em>"We will show them Our signs in the horizons and within themselves until it becomes clear to them that it is the truth.
                 But is it not sufficient concerning your Lord that He is, over all things, a Witness?"</em>
             </p>
-        </section>
-
-        <!-- Profound Line -->
-        <div class="profound-line">
-            We invite you to reflect upon these signs and discover the truth of Islam.
         </div>
 
+        <!-- Final Thoughts -->
+        <button class="collapsible animate-title">Final Thoughts</button>
+        <div class="content section">
+            <div class="profound-line">
+                We invite you to reflect upon these signs and discover objective truth.
+            </div>
+        </div>
+
+        <!-- Credits -->
+        <button class="collapsible animate-title">Credits</button>
+        <div class="content section">
+            <p>
+                <em>
+                    Credits:
+                </em>
+            </p>
+            <p>
+                <em>
+                    <a href="https://youtu.be/9RuQMD4yYWg?si=Wmw3KciwerIfl-Up" target="_blank">Dr. Zakir Naik</a>  |  
+                    <a href="https://youtu.be/AUFsBco_CF0?si=jrjn_UTx7VNa2dyU" target="_blank">The Muslim Lantern</a> 
+                </em>
+            </p>
+        </div>
+
+        <!-- "I Still Don't Believe" Button -->
+        <button class="belief-button">I still don't believe</button>
+
     </main>
+
+    <!-- Overlay and Modal -->
+    <div class="overlay" id="overlay">
+        <div class="modal" id="modal">
+            <h2>Get In Touch</h2>
+            <p>+44 7474 089238</p>
+            <p>Ask any questions you have, and we can clear up misconceptions, God willing.</p>
+            <button id="close-modal">Close</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- JavaScript for Animations and Collapsible Sections -->
     <script>
@@ -898,7 +1816,7 @@
             });
 
             // Animate sections on scroll
-            var sections = document.querySelectorAll('.section, .collapsible, .content, .arabic, .big-point');
+            var sections = document.querySelectorAll('.section, .collapsible, .content, .arabic, .big-point, .belief-button');
             var options = {
                 root: null,
                 rootMargin: '0px',
@@ -941,6 +1859,36 @@
                     } 
                 });
             }
+
+            // "I Still Don't Believe" Button Functionality
+            var beliefButton = document.querySelector('.belief-button');
+            var overlay = document.getElementById('overlay');
+            var modal = document.getElementById('modal');
+            var closeModal = document.getElementById('close-modal');
+
+            beliefButton.addEventListener('click', function() {
+                overlay.classList.add('visible');
+                setTimeout(function() {
+                    modal.classList.add('visible');
+                }, 100);
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('visible');
+                setTimeout(function() {
+                    overlay.classList.remove('visible');
+                }, 500);
+            });
+
+            // Close modal when clicking outside of it
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    modal.classList.remove('visible');
+                    setTimeout(function() {
+                        overlay.classList.remove('visible');
+                    }, 500);
+                }
+            });
         });
     </script>
 
