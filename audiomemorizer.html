@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Memorizer</title>
+    <title>Playback Master</title>
     <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
     <style>
-        /* Existing CSS styles */
         body {
             background-color: #121212;
             color: #ffffff;
@@ -247,7 +246,6 @@
             font-size: 14px;
         }
 
-        /* Styles for the overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -362,13 +360,10 @@
         <div class="progress-bar-fill" id="progressBarFill"></div>
     </div>
 
-    <!-- Overlay for Preloaded Files -->
     <div class="overlay" id="overlay">
         <button class="close-overlay" id="closeOverlay">Close</button>
         <h2>Preloaded Files</h2>
-        <div class="file-list" id="fileList">
-            <!-- File buttons will be generated here -->
-        </div>
+        <div class="file-list" id="fileList"></div>
     </div>
 
     <audio id="audio">
@@ -377,6 +372,21 @@
     </audio>
 
     <script>
+        const surahNames = [
+            "Al-Fatihah", "Al-Baqarah", "Aal-Imran", "An-Nisa", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Taubah", "Yunus",
+            "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Ta-Ha",
+            "Al-Anbiya", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum",
+            "Luqman", "As-Sajdah", "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
+            "Fussilat", "Ash-Shuraa", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
+            "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadilah", "Al-Hashr", "Al-Mumtahanah",
+            "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij",
+            "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa",
+            "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad",
+            "Ash-Shams", "Al-Lail", "Ad-Duhaa", "Ash-Sharh", "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-Adiyat",
+            "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraysh", "Al-Ma'un", "Al-Kauthar", "Al-Kafirun", "An-Nasr",
+            "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+        ];
+
         const fileButton = document.getElementById('fileButton');
         const playButton = document.getElementById('playButton');
         const audioFile = document.getElementById('audioFile');
@@ -402,14 +412,24 @@
         let repeatCount = Infinity;
         let playCounter = 0;
 
-        // Generate the list of preloaded files
+        // Create the array of preloaded files including surah names
         const preloadedFiles = [];
         for (let i = 1; i <= 114; i++) {
             const num = i.toString().padStart(3, '0');
-            preloadedFiles.push({ name: `Surah ${i}`, file: `${num}.mp3` });
+            const surahName = surahNames[i-1];
+            preloadedFiles.push({ name: `Surah ${i} - ${surahName}`, file: `${num}.mp3` });
         }
+
+        // Add Khutbah Al Haja
         preloadedFiles.push({ name: 'Khutbah Al Haja', file: 'khutbah.mp3' });
- 
+
+        // Add the additional audios
+        preloadedFiles.push({ name: 'Ar-Rahman (first 10 ayahs)', file: 'Rahmanfirst10ayahs.mp3' });
+        preloadedFiles.push({ name: 'Al-Kahf (first 10 ayahs)', file: 'Kahffirst10ayahs.mp3' });
+        preloadedFiles.push({ name: 'Al-Baqarah (first 10 ayahs)', file: 'Baqarafirst10ayahs.mp3' });
+        preloadedFiles.push({ name: 'Ya-Sin (first 10 ayahs)', file: 'Yasinfirst10ayahs.mp3' });
+        preloadedFiles.push({ name: 'Al-Mulk (first 10 ayahs)', file: 'Mulkfirst10ayahs.mp3' });
+
         // Populate the file list in the overlay
         preloadedFiles.forEach(file => {
             const button = document.createElement('button');
