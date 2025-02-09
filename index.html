@@ -240,6 +240,9 @@
 
             <!-- Islamic Submenu Links -->
             <a href="/thetruth" class="page-link truth" aria-label="The Truth">🔑 <span>The Truth</span></a>
+            <!-- NEW LINK: Iman Hub -->
+            <a href="imanhub" class="page-link" aria-label="Iman Hub">🤲 <span>Iman Hub</span></a>
+            
             <a href="quran" class="page-link" aria-label="The Holy Qur'an">🕋 <span>The Holy Qur'an</span></a>
             <a href="aisha" class="page-link" aria-label="Aisha">💍 <span>Aisha</span></a>
             <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Heaven In Islam</span></a>
@@ -252,11 +255,23 @@
 
     <script>
         const toolsPages = [
-            "Memorization", "Playback Tools", "Whiteboard", "Interval Timer"
+            "Memorization", 
+            "Playback Tools", 
+            "Whiteboard", 
+            "Interval Timer"
         ];
- 
+
+        // Updated to include "Iman Hub" after "The Truth"
         const islamicPages = [
-            "The Truth", "The Holy Qur'an", "Jannatul Firdaus", "Islam's History", "Palestine's History", "Khutbah Guidance", "Islamic Phrases"
+            "The Truth",
+            "Iman Hub",
+            "The Holy Qur'an",
+            "Aisha",
+            "Heaven In Islam",
+            "Islam's History",
+            "Palestine's History",
+            "Khutbah Guidance",
+            "Islamic Phrases"
         ];
 
         const displayArea = document.getElementById('display-area');
@@ -305,7 +320,6 @@
         toolsIcon.addEventListener('mouseenter', () => showLinks('tools'));
         islamicIcon.addEventListener('mouseenter', () => showLinks('islamic'));
 
-        // Add touch and click event listeners to ensure functionality on mobile and tablets
         toolsIcon.addEventListener('click', () => showLinks('tools'));
         toolsIcon.addEventListener('touchstart', () => showLinks('tools'));
         islamicIcon.addEventListener('click', () => showLinks('islamic'));
