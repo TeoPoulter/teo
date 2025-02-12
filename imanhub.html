@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iman Hub</title>
+  <!-- Poppins font for consistent typography -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /*****************************************
+     * EXACT ANIMATED BACKGROUND SNIPPET
+     *****************************************/
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000; /* fallback background */
+      overflow-x: hidden; /* allow vertical scroll for content */
+      overflow-y: auto;
+      font-family: 'Poppins', sans-serif;
+    }
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #000000, #000000 50%, #b49f5e 100%);
+      z-index: 1;
+    }
+    .pattern {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: url('https://i.imgur.com/rxD6yFb.png');
+      background-size: 100px 100px;
+      opacity: 0.05;
+      animation: rotate 60s linear infinite;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .corner {
+      position: absolute;
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 20vw;
+      height: 20vw;
+      max-width: 250px;
+      max-height: 250px;
+      z-index: 2;
+      filter: grayscale(1) brightness(0.2);
+    }
+    .top-left {
+      top: 0;
+      left: 0;
+      background-image: url('https://i.imgur.com/8Fx9W9u.png');
+    }
+    .top-right {
+      top: 0;
+      right: 0;
+      background-image: url('https://i.imgur.com/kBZivxG.png');
+    }
+    .bottom-left {
+      bottom: 0;
+      left: 0;
+      background-image: url('https://i.imgur.com/V1z0fyO.png');
+    }
+    .bottom-right {
+      bottom: 0;
+      right: 0;
+      background-image: url('https://i.imgur.com/YuU3nYm.png');
+    }
+    @media (max-width: 600px) {
+      .corner {
+        width: 35vw;
+        height: 35vw;
+      }
+    }
+    /*****************************************
+     * END ANIMATED BACKGROUND SNIPPET
+     *****************************************/
+
+    body {
+      color: #f5f5f5; /* override text color to keep it visible */
+    }
+
+    /* Moved content further up to remove empty space */
+    .container {
+      position: relative;
+      z-index: 5;
+      max-width: 1200px;
+      margin: 40px auto 60px auto; /* reduced top margin */
+      padding: 20px;
+      background: none;
+      animation: fadeSlideIn 1.2s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+      text-align: center;
+    }
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Iman Hub heading - gold color scheme, centered */
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #9C824A, #b49f5e); /* gold-ish palette */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 8px rgba(180,159,94,0.4);
+      transition: transform 0.3s ease, letter-spacing 0.3s ease;
+      display: inline-block;
+    }
+    h1:hover {
+      transform: scale(1.04) translateY(-2px);
+      letter-spacing: 1px;
+    }
+
+    /* Menu (4 category buttons) */
+    .menu {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap; /* so buttons wrap on small screens */
+    }
+    .menu button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s, box-shadow 0.3s, letter-spacing 0.3s;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #7f6a35, #b49f5e);
+    }
+    .menu button:hover {
+      transform: scale(1.06);
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #b49f5e, #7f6a35);
+    }
+
+    /* Content sections (for multiple categories) */
+    .content {
+      display: none;
+    }
+    .content.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Grid for video thumbnails (5 columns) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+      justify-items: center; 
+    }
+    .grid-item {
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      /*
+        Use aspect-ratio for modern browsers, plus
+        a fallback width/height for older browsers.
+      */
+      aspect-ratio: 3 / 5;
+      width: 150px;  /* fallback */
+      height: 250px; /* fallback */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .grid-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .grid-item:hover::before {
+      opacity: 1;
+    }
+    .grid-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Full-page overlay for the video (no native UI) */
+    .video-overlay {
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      opacity: 0;
+      visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      z-index: 9999;
+    }
+    .video-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .video-overlay video {
+      border: 3px solid #fff;
+      max-width: 80vw; 
+      max-height: 80vh;
+      background-color: black;
+    }
+
+    /* 
+    =======================================
+    Voice Note Player Styles
+    =======================================
+    */
+    .voice-note-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .voice-note-player {
+      position: relative;
+      background: #1a1a1a;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    /* Top row with button, wave, and time all horizontally aligned */
+    .player-top-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+    .play-pause-btn {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #b49f5e, #7f6a35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .play-pause-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(180,159,94,0.6);
+    }
+    .icon {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+      position: absolute;
+      transition: opacity 0.2s;
+    }
+    .icon-pause {
+      opacity: 0; /* Start with pause icon hidden */
+    }
+    .waveform {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      /* fill up all horizontal space available */
+    }
+    .wave-bar {
+      /* narrower bars to fit more across the row */
+      width: 3px;
+      height: 20px; /* will be randomized by JS, but let's set default */
+      /* Always show gradient on the bars */
+      background: linear-gradient(135deg, #b49f5e, #7f6a35);
+      border-radius: 2px;
+      animation: wave-animation 1.2s infinite ease-in-out;
+      animation-delay: calc(0.08s * var(--i));
+    }
+    @keyframes wave-animation {
+      0% {
+        transform: scaleY(0.4);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scaleY(0.4);
+        opacity: 0.7;
+      }
+    }
+    /* If audio is paused, freeze the wave bars */
+    .voice-note-player.paused .wave-bar {
+      animation-play-state: paused;
+    }
+    .time-display {
+      flex-shrink: 0;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .recording-info {
+      font-size: 0.9rem;
+      color: #ccc;
+      opacity: 0.9;
+      margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="background">
+    <div class="pattern"></div>
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+  </div>
+
+  <!-- Main content (above background) -->
+  <div class="container">
+    <h1>Iman Hub</h1>
+
+    <!-- Menu with 4 category buttons -->
+    <div class="menu">
+      <button onclick="showCategory('reminders')">Reminders</button>
+      <button onclick="showCategory('education')">Education</button>
+      <button onclick="showCategory('favRecitations')">Favourite Recitations</button>
+      <button onclick="showCategory('salahRecordings')">Salah Recordings</button>
+    </div>
+
+    <!-- Reminders Section (5 videos) -->
+    <div id="reminders" class="content active">
+      <div class="grid">
+        <!-- Video #1 -->
+        <div 
+          class="grid-item"
+          style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+210429.png');"
+          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4')"
+        ></div>
+
+        <!-- Video #2 -->
+        <div 
+          class="grid-item"
+          style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+212649.png');"
+          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4')"
+        ></div>
+
+        <!-- Video #3 -->
+        <div 
+          class="grid-item"
+          style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+213005.png');"
+          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4')"
+        ></div>
+
+        <!-- Video #4 -->
+        <div 
+          class="grid-item"
+          style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+214019.png');"
+          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4')"
+        ></div>
+
+        <!-- Video #5 -->
+        <div 
+          class="grid-item"
+          style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+214028.png');"
+          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4')"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Education Section -->
+    <div id="education" class="content">
+      <p style="padding: 40px; font-size: 1.2rem; opacity: 0.8;">
+        Islamic learning videos / audios will go here...
+      </p>
+    </div>
+
+    <!-- Favourite Recitations Section -->
+    <div id="favRecitations" class="content">
+      <!-- Removed the placeholder text as requested -->
+
+      <!-- FIRST AUDIO PLAYER: Al-Qasas -->
+      <div class="voice-note-container">
+        <div class="voice-note-player paused" id="voiceNotePlayer1">
+          <div class="player-top-row">
+            <div class="play-pause-btn" onclick="togglePlay1()">
+              <svg class="icon icon-play" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              <svg class="icon icon-pause" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+              </svg>
+            </div>
+            <!-- 32 bars, each using a custom --i value for the wave animation delay -->
+            <div class="waveform">
+              <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
+              <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
+              <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
+              <div class="wave-bar" style="--i:7"></div><div class="wave-bar" style="--i:8"></div>
+              <div class="wave-bar" style="--i:9"></div><div class="wave-bar" style="--i:10"></div>
+              <div class="wave-bar" style="--i:11"></div><div class="wave-bar" style="--i:12"></div>
+              <div class="wave-bar" style="--i:13"></div><div class="wave-bar" style="--i:14"></div>
+              <div class="wave-bar" style="--i:15"></div><div class="wave-bar" style="--i:16"></div>
+              <div class="wave-bar" style="--i:17"></div><div class="wave-bar" style="--i:18"></div>
+              <div class="wave-bar" style="--i:19"></div><div class="wave-bar" style="--i:20"></div>
+              <div class="wave-bar" style="--i:21"></div><div class="wave-bar" style="--i:22"></div>
+              <div class="wave-bar" style="--i:23"></div><div class="wave-bar" style="--i:24"></div>
+              <div class="wave-bar" style="--i:25"></div><div class="wave-bar" style="--i:26"></div>
+              <div class="wave-bar" style="--i:27"></div><div class="wave-bar" style="--i:28"></div>
+              <div class="wave-bar" style="--i:29"></div><div class="wave-bar" style="--i:30"></div>
+              <div class="wave-bar" style="--i:31"></div><div class="wave-bar" style="--i:32"></div>
+            </div>
+            <div class="time-display" id="timeDisplay1">00:00 / 00:00</div>
+          </div>
+          <div class="recording-info">Surah 28 (Al-Qasas), Ayahs 71-83</div>
+          <audio id="voiceNoteAudio1" src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/AlQasas-28_71-83.mp3"></audio>
+        </div>
+      </div>
+
+      <!-- SECOND AUDIO PLAYER: Surah Dukhan -->
+      <div class="voice-note-container">
+        <div class="voice-note-player paused" id="voiceNotePlayer2">
+          <div class="player-top-row">
+            <div class="play-pause-btn" onclick="togglePlay2()">
+              <svg class="icon icon-play" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              <svg class="icon icon-pause" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+              </svg>
+            </div>
+            <div class="waveform">
+              <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
+              <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
+              <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
+              <div class="wave-bar" style="--i:7"></div><div class="wave-bar" style="--i:8"></div>
+              <div class="wave-bar" style="--i:9"></div><div class="wave-bar" style="--i:10"></div>
+              <div class="wave-bar" style="--i:11"></div><div class="wave-bar" style="--i:12"></div>
+              <div class="wave-bar" style="--i:13"></div><div class="wave-bar" style="--i:14"></div>
+              <div class="wave-bar" style="--i:15"></div><div class="wave-bar" style="--i:16"></div>
+              <div class="wave-bar" style="--i:17"></div><div class="wave-bar" style="--i:18"></div>
+              <div class="wave-bar" style="--i:19"></div><div class="wave-bar" style="--i:20"></div>
+              <div class="wave-bar" style="--i:21"></div><div class="wave-bar" style="--i:22"></div>
+              <div class="wave-bar" style="--i:23"></div><div class="wave-bar" style="--i:24"></div>
+              <div class="wave-bar" style="--i:25"></div><div class="wave-bar" style="--i:26"></div>
+              <div class="wave-bar" style="--i:27"></div><div class="wave-bar" style="--i:28"></div>
+              <div class="wave-bar" style="--i:29"></div><div class="wave-bar" style="--i:30"></div>
+              <div class="wave-bar" style="--i:31"></div><div class="wave-bar" style="--i:32"></div>
+            </div>
+            <div class="time-display" id="timeDisplay2">00:00 / 00:00</div>
+          </div>
+          <div class="recording-info">Surah 44 (Ad-Dukhan)</div>
+          <audio id="voiceNoteAudio2" src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/Surah+Dukhan.mp3"></audio>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salah Recordings Section -->
+    <div id="salahRecordings" class="content">
+      <!-- Removed placeholder text as requested -->
+
+      <!-- THIRD AUDIO PLAYER: Sheikh Yasser Salah -->
+      <div class="voice-note-container">
+        <div class="voice-note-player paused" id="voiceNotePlayer3">
+          <div class="player-top-row">
+            <div class="play-pause-btn" onclick="togglePlay3()">
+              <svg class="icon icon-play" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              <svg class="icon icon-pause" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+              </svg>
+            </div>
+            <div class="waveform">
+              <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
+              <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
+              <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
+              <div class="wave-bar" style="--i:7"></div><div class="wave-bar" style="--i:8"></div>
+              <div class="wave-bar" style="--i:9"></div><div class="wave-bar" style="--i:10"></div>
+              <div class="wave-bar" style="--i:11"></div><div class="wave-bar" style="--i:12"></div>
+              <div class="wave-bar" style="--i:13"></div><div class="wave-bar" style="--i:14"></div>
+              <div class="wave-bar" style="--i:15"></div><div class="wave-bar" style="--i:16"></div>
+              <div class="wave-bar" style="--i:17"></div><div class="wave-bar" style="--i:18"></div>
+              <div class="wave-bar" style="--i:19"></div><div class="wave-bar" style="--i:20"></div>
+              <div class="wave-bar" style="--i:21"></div><div class="wave-bar" style="--i:22"></div>
+              <div class="wave-bar" style="--i:23"></div><div class="wave-bar" style="--i:24"></div>
+              <div class="wave-bar" style="--i:25"></div><div class="wave-bar" style="--i:26"></div>
+              <div class="wave-bar" style="--i:27"></div><div class="wave-bar" style="--i:28"></div>
+              <div class="wave-bar" style="--i:29"></div><div class="wave-bar" style="--i:30"></div>
+              <div class="wave-bar" style="--i:31"></div><div class="wave-bar" style="--i:32"></div>
+            </div>
+            <div class="time-display" id="timeDisplay3">00:00 / 00:00</div>
+          </div>
+          <div class="recording-info">Sheikh Yasser Salah (Unknown Surah)</div>
+          <audio id="voiceNoteAudio3" src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/Sheikh+Yasser+Salah+Unknown.mp3"></audio>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The overlay that shows the big no-UI video -->
+  <div id="videoOverlay" class="video-overlay" onclick="closeOverlay()">
+    <!-- We'll insert the <video> element dynamically via JS -->
+  </div>
+
+  <script>
+    // Switch visible category
+    function showCategory(category) {
+      // Hide all sections
+      document.querySelectorAll(".content").forEach(el => el.classList.remove("active"));
+      // Show only the chosen section
+      document.getElementById(category).classList.add("active");
+    }
+
+    // Open video overlay
+    function openOverlay(videoSrc) {
+      const overlay = document.getElementById('videoOverlay');
+      overlay.innerHTML = ''; // Clear any existing content
+
+      const videoEl = document.createElement('video');
+      videoEl.src = videoSrc;
+      videoEl.autoplay = true;
+      videoEl.controls = false; // No native UI
+      videoEl.playsInline = true;
+
+      overlay.appendChild(videoEl);
+      overlay.classList.add('active');
+    }
+
+    // Close video overlay
+    function closeOverlay() {
+      const overlay = document.getElementById('videoOverlay');
+      overlay.classList.remove('active');
+      // Delay clearing the video so fade-out is smooth
+      setTimeout(() => {
+        overlay.innerHTML = '';
+      }, 400);
+    }
+
+    /*
+    =======================================
+    Voice Note Player Scripts
+    (three separate players)
+    =======================================
+    */
+
+    // =========================
+    // 1) Player #1 (Al-Qasas)
+    // =========================
+    const audioEl1     = document.getElementById('voiceNoteAudio1');
+    const timeDisplay1 = document.getElementById('timeDisplay1');
+    const player1      = document.getElementById('voiceNotePlayer1');
+    const playIcon1    = player1.querySelector('.icon-play');
+    const pauseIcon1   = player1.querySelector('.icon-pause');
+
+    function togglePlay1() {
+      if (audioEl1.paused) {
+        audioEl1.play();
+      } else {
+        audioEl1.pause();
+      }
+    }
+
+    audioEl1.addEventListener('loadedmetadata', () => {
+      // Display total duration as soon as metadata is loaded
+      const duration = formatTime(audioEl1.duration);
+      timeDisplay1.textContent = `00:00 / ${duration}`;
+    });
+    audioEl1.addEventListener('play', () => {
+      player1.classList.remove('paused');
+      playIcon1.style.opacity  = '0';
+      pauseIcon1.style.opacity = '1';
+    });
+    audioEl1.addEventListener('pause', () => {
+      player1.classList.add('paused');
+      playIcon1.style.opacity  = '1';
+      pauseIcon1.style.opacity = '0';
+    });
+    audioEl1.addEventListener('timeupdate', () => {
+      const currentTime = formatTime(audioEl1.currentTime);
+      const duration    = formatTime(audioEl1.duration);
+      timeDisplay1.textContent = `${currentTime} / ${duration}`;
+    });
+
+    // ===========================
+    // 2) Player #2 (Surah Dukhan)
+    // ===========================
+    const audioEl2     = document.getElementById('voiceNoteAudio2');
+    const timeDisplay2 = document.getElementById('timeDisplay2');
+    const player2      = document.getElementById('voiceNotePlayer2');
+    const playIcon2    = player2.querySelector('.icon-play');
+    const pauseIcon2   = player2.querySelector('.icon-pause');
+
+    function togglePlay2() {
+      if (audioEl2.paused) {
+        audioEl2.play();
+      } else {
+        audioEl2.pause();
+      }
+    }
+
+    audioEl2.addEventListener('loadedmetadata', () => {
+      const duration = formatTime(audioEl2.duration);
+      timeDisplay2.textContent = `00:00 / ${duration}`;
+    });
+    audioEl2.addEventListener('play', () => {
+      player2.classList.remove('paused');
+      playIcon2.style.opacity  = '0';
+      pauseIcon2.style.opacity = '1';
+    });
+    audioEl2.addEventListener('pause', () => {
+      player2.classList.add('paused');
+      playIcon2.style.opacity  = '1';
+      pauseIcon2.style.opacity = '0';
+    });
+    audioEl2.addEventListener('timeupdate', () => {
+      const currentTime = formatTime(audioEl2.currentTime);
+      const duration    = formatTime(audioEl2.duration);
+      timeDisplay2.textContent = `${currentTime} / ${duration}`;
+    });
+
+    // ==========================================
+    // 3) Player #3 (Sheikh Yasser Salah Unknown)
+    // ==========================================
+    const audioEl3     = document.getElementById('voiceNoteAudio3');
+    const timeDisplay3 = document.getElementById('timeDisplay3');
+    const player3      = document.getElementById('voiceNotePlayer3');
+    const playIcon3    = player3.querySelector('.icon-play');
+    const pauseIcon3   = player3.querySelector('.icon-pause');
+
+    function togglePlay3() {
+      if (audioEl3.paused) {
+        audioEl3.play();
+      } else {
+        audioEl3.pause();
+      }
+    }
+
+    audioEl3.addEventListener('loadedmetadata', () => {
+      const duration = formatTime(audioEl3.duration);
+      timeDisplay3.textContent = `00:00 / ${duration}`;
+    });
+    audioEl3.addEventListener('play', () => {
+      player3.classList.remove('paused');
+      playIcon3.style.opacity  = '0';
+      pauseIcon3.style.opacity = '1';
+    });
+    audioEl3.addEventListener('pause', () => {
+      player3.classList.add('paused');
+      playIcon3.style.opacity  = '1';
+      pauseIcon3.style.opacity = '0';
+    });
+    audioEl3.addEventListener('timeupdate', () => {
+      const currentTime = formatTime(audioEl3.currentTime);
+      const duration    = formatTime(audioEl3.duration);
+      timeDisplay3.textContent = `${currentTime} / ${duration}`;
+    });
+
+    // Utility to format time (seconds -> mm:ss)
+    function formatTime(sec) {
+      if (isNaN(sec)) return '00:00';
+      const minutes = Math.floor(sec / 60);
+      const seconds = Math.floor(sec % 60);
+      return String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
+    }
+
+    /*
+      Randomize the initial heights of each .wave-bar
+      so it looks more like a varied audio wave
+      from the moment the page loads.
+    */
+    window.addEventListener('DOMContentLoaded', () => {
+      const waveforms = document.querySelectorAll('.waveform');
+      waveforms.forEach(wave => {
+        const bars = wave.querySelectorAll('.wave-bar');
+        bars.forEach(bar => {
+          // random height between 10px and 40px for variety
+          const randomHeight = Math.floor(Math.random() * 31) + 10;
+          bar.style.height = randomHeight + 'px';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
