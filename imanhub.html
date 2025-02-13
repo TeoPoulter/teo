@@ -179,10 +179,6 @@
       overflow: hidden;
       cursor: pointer;
       position: relative;
-      /*
-        Use aspect-ratio for modern browsers, plus
-        a fallback width/height for older browsers.
-      */
       aspect-ratio: 3 / 5;
       width: 150px;  /* fallback */
       height: 250px; /* fallback */
@@ -207,6 +203,28 @@
       transform: scale(1.03);
       box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
     }
+    /* Green border after completed */
+    .grid-item.completed {
+      border: 3px solid #2ecc71; /* green color */
+      box-shadow: 0px 0px 10px rgba(46, 204, 113, 0.5);
+    }
+
+    /* We'll use a small <video> overlay on each grid item when hovering */
+    .preview-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; /* so clicks go through to the parent .grid-item */
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 10;
+    }
+    .preview-video.show {
+      opacity: 1;
+    }
 
     /* Full-page overlay for the video (no native UI) */
     .video-overlay {
@@ -228,11 +246,103 @@
       opacity: 1;
       visibility: visible;
     }
+    /* We originally had a white border on the video itself. 
+       We'll override that and use a container for the border. */
     .video-overlay video {
+      border: none !important; /* override old styling */
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Changed from cover to contain so the full video is visible */
+      border-radius: 0;
+    }
+
+    /* 
+    =======================================
+    Our new container around the video
+    =======================================
+    */
+    .video-click-catcher {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+    }
+    .video-container {
+      position: relative;
       border: 3px solid #fff;
-      max-width: 80vw; 
-      max-height: 80vh;
-      background-color: black;
+      border-radius: 8px;
+      max-width: 90vw; 
+      max-height: 90vh;
+      overflow: hidden;
+      z-index: 2; /* above the click-catcher */
+      display: flex;
+      flex-direction: column;
+      /* Removed fixed aspect-ratio to allow dynamic sizing */
+      margin-bottom: 10px; /* Ensure border doesn't overlap the progress bar */
+    }
+
+    /*
+    ==========================================
+    Bottom bar for navigation
+    ==========================================
+    */
+    .video-nav-bar {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+      max-width: 80vw;
+      display: flex;
+      justify-content: center;
+      z-index: 3; /* above the video container */
+    }
+    .video-progress {
+      width: 100%;
+      background: rgba(255,255,255,0.2);
+      height: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .video-progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: #fff;
+      width: 0%;
+      transition: width 0.1s linear; /* Smooth transition */
+    }
+
+    /*
+    ==========================================
+    Skip indicators for double-click
+    ==========================================
+    */
+    .skip-message {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      z-index: 5;
+    }
+    .skip-left {
+      left: 10%;
+    }
+    .skip-right {
+      right: 10%;
+    }
+    .skip-message.show {
+      opacity: 1;
     }
 
     /* 
@@ -256,6 +366,10 @@
       flex-direction: column;
       gap: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    /* Mark audio players as completed with green border too */
+    .voice-note-player.completed {
+      border: 2px solid #2ecc71;
     }
     /* Top row with button, wave, and time all horizontally aligned */
     .player-top-row {
@@ -296,17 +410,15 @@
       display: flex;
       align-items: center;
       gap: 2px;
-      /* fill up all horizontal space available */
+      cursor: pointer; /* so user sees they can scrub through */
     }
     .wave-bar {
-      /* narrower bars to fit more across the row */
       width: 3px;
       height: 20px; /* will be randomized by JS, but let's set default */
-      /* Always show gradient on the bars */
       background: linear-gradient(135deg, #b49f5e, #7f6a35);
       border-radius: 2px;
       animation: wave-animation 1.2s infinite ease-in-out;
-      animation-delay: calc(0.08s * var(--i));
+      animation-delay: calc(0.05s * var(--i));
     }
     @keyframes wave-animation {
       0% {
@@ -337,9 +449,50 @@
       opacity: 0.9;
       margin-left: 4px;
     }
+
+    /* Completed Button styling */
+    .completed-button {
+      position: fixed; /* so it's on the left middle of the screen */
+      left: 2%;
+      top: 50%;
+      transform: translateY(-50%) translateX(-150px);
+      background-color: #2ecc71;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 20000; /* on top of everything */
+    }
+    .completed-button.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-50%) translateX(0);
+    }
   </style>
 </head>
 <body>
+  <!-- Mobile detection: if on mobile or small screen, show message and stop rendering -->
+  <script>
+    if (/Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768) {
+      document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Poppins,sans-serif;font-size:1.5rem;color:#fff;background:#000;">Not yet adapted to Mobile - try a bigger screen!</div>';
+    }
+  </script>
+
+  <!-- 
+  ======================================
+    MASSIVE SECTION FOR NEW CONTENT
+    (Easily add new mp4s/thumbnails or
+     new audio players below)
+  ======================================
+  -->
+
   <!-- Animated background -->
   <div class="background">
     <div class="pattern"></div>
@@ -361,42 +514,120 @@
       <button onclick="showCategory('salahRecordings')">Salah Recordings</button>
     </div>
 
-    <!-- Reminders Section (5 videos) -->
+    <!-- Reminders Section (5 videos + a second row of 5 placeholders) -->
     <div id="reminders" class="content active">
       <div class="grid">
         <!-- Video #1 -->
         <div 
           class="grid-item"
+          data-video-id="video1"
+          data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+210429.png');"
-          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4')"
+          onclick="openOverlay('video1', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
         ></div>
 
         <!-- Video #2 -->
         <div 
           class="grid-item"
+          data-video-id="video2"
+          data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+212649.png');"
-          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4')"
+          onclick="openOverlay('video2', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
         ></div>
 
         <!-- Video #3 -->
         <div 
           class="grid-item"
+          data-video-id="video3"
+          data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+213005.png');"
-          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4')"
+          onclick="openOverlay('video3', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
         ></div>
 
         <!-- Video #4 -->
         <div 
           class="grid-item"
+          data-video-id="video4"
+          data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+214019.png');"
-          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4')"
+          onclick="openOverlay('video4', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
         ></div>
 
         <!-- Video #5 -->
         <div 
           class="grid-item"
+          data-video-id="video5"
+          data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+214028.png');"
-          onclick="openOverlay('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4')"
+          onclick="openOverlay('video5', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
+        ></div>
+      </div>
+
+      <!-- A second row of placeholders -->
+      <div class="grid">
+        <!-- Video placeholder #6 -->
+        <div 
+          class="grid-item"
+          data-video-id="video6"
+          data-video-src=""
+          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+6');"
+          onclick="openOverlay('video6', '', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
+        ></div>
+
+        <!-- Video placeholder #7 -->
+        <div 
+          class="grid-item"
+          data-video-id="video7"
+          data-video-src=""
+          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+7');"
+          onclick="openOverlay('video7', '', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
+        ></div>
+
+        <!-- Video placeholder #8 -->
+        <div 
+          class="grid-item"
+          data-video-id="video8"
+          data-video-src=""
+          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+8');"
+          onclick="openOverlay('video8', '', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
+        ></div>
+
+        <!-- Video placeholder #9 -->
+        <div 
+          class="grid-item"
+          data-video-id="video9"
+          data-video-src=""
+          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+9');"
+          onclick="openOverlay('video9', '', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
+        ></div>
+
+        <!-- Video placeholder #10 -->
+        <div 
+          class="grid-item"
+          data-video-id="video10"
+          data-video-src=""
+          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+10');"
+          onclick="openOverlay('video10', '', this)"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
         ></div>
       </div>
     </div>
@@ -424,8 +655,10 @@
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
               </svg>
             </div>
-            <!-- 32 bars, each using a custom --i value for the wave animation delay -->
-            <div class="waveform">
+            <!-- 90 bars -->
+            <div class="waveform" id="waveform1">
+              <!-- We'll generate 90 bars with random heights via JS -->
+              <!-- (Already in the script) -->
               <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
               <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
               <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
@@ -442,6 +675,35 @@
               <div class="wave-bar" style="--i:27"></div><div class="wave-bar" style="--i:28"></div>
               <div class="wave-bar" style="--i:29"></div><div class="wave-bar" style="--i:30"></div>
               <div class="wave-bar" style="--i:31"></div><div class="wave-bar" style="--i:32"></div>
+              <div class="wave-bar" style="--i:33"></div><div class="wave-bar" style="--i:34"></div>
+              <div class="wave-bar" style="--i:35"></div><div class="wave-bar" style="--i:36"></div>
+              <div class="wave-bar" style="--i:37"></div><div class="wave-bar" style="--i:38"></div>
+              <div class="wave-bar" style="--i:39"></div><div class="wave-bar" style="--i:40"></div>
+              <div class="wave-bar" style="--i:41"></div><div class="wave-bar" style="--i:42"></div>
+              <div class="wave-bar" style="--i:43"></div><div class="wave-bar" style="--i:44"></div>
+              <div class="wave-bar" style="--i:45"></div><div class="wave-bar" style="--i:46"></div>
+              <div class="wave-bar" style="--i:47"></div><div class="wave-bar" style="--i:48"></div>
+              <div class="wave-bar" style="--i:49"></div><div class="wave-bar" style="--i:50"></div>
+              <div class="wave-bar" style="--i:51"></div><div class="wave-bar" style="--i:52"></div>
+              <div class="wave-bar" style="--i:53"></div><div class="wave-bar" style="--i:54"></div>
+              <div class="wave-bar" style="--i:55"></div><div class="wave-bar" style="--i:56"></div>
+              <div class="wave-bar" style="--i:57"></div><div class="wave-bar" style="--i:58"></div>
+              <div class="wave-bar" style="--i:59"></div><div class="wave-bar" style="--i:60"></div>
+              <div class="wave-bar" style="--i:61"></div><div class="wave-bar" style="--i:62"></div>
+              <div class="wave-bar" style="--i:63"></div><div class="wave-bar" style="--i:64"></div>
+              <div class="wave-bar" style="--i:65"></div><div class="wave-bar" style="--i:66"></div>
+              <div class="wave-bar" style="--i:67"></div><div class="wave-bar" style="--i:68"></div>
+              <div class="wave-bar" style="--i:69"></div><div class="wave-bar" style="--i:70"></div>
+              <div class="wave-bar" style="--i:71"></div><div class="wave-bar" style="--i:72"></div>
+              <div class="wave-bar" style="--i:73"></div><div class="wave-bar" style="--i:74"></div>
+              <div class="wave-bar" style="--i:75"></div><div class="wave-bar" style="--i:76"></div>
+              <div class="wave-bar" style="--i:77"></div><div class="wave-bar" style="--i:78"></div>
+              <div class="wave-bar" style="--i:79"></div><div class="wave-bar" style="--i:80"></div>
+              <div class="wave-bar" style="--i:81"></div><div class="wave-bar" style="--i:82"></div>
+              <div class="wave-bar" style="--i:83"></div><div class="wave-bar" style="--i:84"></div>
+              <div class="wave-bar" style="--i:85"></div><div class="wave-bar" style="--i:86"></div>
+              <div class="wave-bar" style="--i:87"></div><div class="wave-bar" style="--i:88"></div>
+              <div class="wave-bar" style="--i:89"></div><div class="wave-bar" style="--i:90"></div>
             </div>
             <div class="time-display" id="timeDisplay1">00:00 / 00:00</div>
           </div>
@@ -462,7 +724,8 @@
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
               </svg>
             </div>
-            <div class="waveform">
+            <!-- 90 bars -->
+            <div class="waveform" id="waveform2">
               <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
               <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
               <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
@@ -479,6 +742,35 @@
               <div class="wave-bar" style="--i:27"></div><div class="wave-bar" style="--i:28"></div>
               <div class="wave-bar" style="--i:29"></div><div class="wave-bar" style="--i:30"></div>
               <div class="wave-bar" style="--i:31"></div><div class="wave-bar" style="--i:32"></div>
+              <div class="wave-bar" style="--i:33"></div><div class="wave-bar" style="--i:34"></div>
+              <div class="wave-bar" style="--i:35"></div><div class="wave-bar" style="--i:36"></div>
+              <div class="wave-bar" style="--i:37"></div><div class="wave-bar" style="--i:38"></div>
+              <div class="wave-bar" style="--i:39"></div><div class="wave-bar" style="--i:40"></div>
+              <div class="wave-bar" style="--i:41"></div><div class="wave-bar" style="--i:42"></div>
+              <div class="wave-bar" style="--i:43"></div><div class="wave-bar" style="--i:44"></div>
+              <div class="wave-bar" style="--i:45"></div><div class="wave-bar" style="--i:46"></div>
+              <div class="wave-bar" style="--i:47"></div><div class="wave-bar" style="--i:48"></div>
+              <div class="wave-bar" style="--i:49"></div><div class="wave-bar" style="--i:50"></div>
+              <div class="wave-bar" style="--i:51"></div><div class="wave-bar" style="--i:52"></div>
+              <div class="wave-bar" style="--i:53"></div><div class="wave-bar" style="--i:54"></div>
+              <div class="wave-bar" style="--i:55"></div><div class="wave-bar" style="--i:56"></div>
+              <div class="wave-bar" style="--i:57"></div><div class="wave-bar" style="--i:58"></div>
+              <div class="wave-bar" style="--i:59"></div><div class="wave-bar" style="--i:60"></div>
+              <div class="wave-bar" style="--i:61"></div><div class="wave-bar" style="--i:62"></div>
+              <div class="wave-bar" style="--i:63"></div><div class="wave-bar" style="--i:64"></div>
+              <div class="wave-bar" style="--i:65"></div><div class="wave-bar" style="--i:66"></div>
+              <div class="wave-bar" style="--i:67"></div><div class="wave-bar" style="--i:68"></div>
+              <div class="wave-bar" style="--i:69"></div><div class="wave-bar" style="--i:70"></div>
+              <div class="wave-bar" style="--i:71"></div><div class="wave-bar" style="--i:72"></div>
+              <div class="wave-bar" style="--i:73"></div><div class="wave-bar" style="--i:74"></div>
+              <div class="wave-bar" style="--i:75"></div><div class="wave-bar" style="--i:76"></div>
+              <div class="wave-bar" style="--i:77"></div><div class="wave-bar" style="--i:78"></div>
+              <div class="wave-bar" style="--i:79"></div><div class="wave-bar" style="--i:80"></div>
+              <div class="wave-bar" style="--i:81"></div><div class="wave-bar" style="--i:82"></div>
+              <div class="wave-bar" style="--i:83"></div><div class="wave-bar" style="--i:84"></div>
+              <div class="wave-bar" style="--i:85"></div><div class="wave-bar" style="--i:86"></div>
+              <div class="wave-bar" style="--i:87"></div><div class="wave-bar" style="--i:88"></div>
+              <div class="wave-bar" style="--i:89"></div><div class="wave-bar" style="--i:90"></div>
             </div>
             <div class="time-display" id="timeDisplay2">00:00 / 00:00</div>
           </div>
@@ -504,7 +796,8 @@
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
               </svg>
             </div>
-            <div class="waveform">
+            <!-- 90 bars -->
+            <div class="waveform" id="waveform3">
               <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
               <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
               <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
@@ -521,6 +814,35 @@
               <div class="wave-bar" style="--i:27"></div><div class="wave-bar" style="--i:28"></div>
               <div class="wave-bar" style="--i:29"></div><div class="wave-bar" style="--i:30"></div>
               <div class="wave-bar" style="--i:31"></div><div class="wave-bar" style="--i:32"></div>
+              <div class="wave-bar" style="--i:33"></div><div class="wave-bar" style="--i:34"></div>
+              <div class="wave-bar" style="--i:35"></div><div class="wave-bar" style="--i:36"></div>
+              <div class="wave-bar" style="--i:37"></div><div class="wave-bar" style="--i:38"></div>
+              <div class="wave-bar" style="--i:39"></div><div class="wave-bar" style="--i:40"></div>
+              <div class="wave-bar" style="--i:41"></div><div class="wave-bar" style="--i:42"></div>
+              <div class="wave-bar" style="--i:43"></div><div class="wave-bar" style="--i:44"></div>
+              <div class="wave-bar" style="--i:45"></div><div class="wave-bar" style="--i:46"></div>
+              <div class="wave-bar" style="--i:47"></div><div class="wave-bar" style="--i:48"></div>
+              <div class="wave-bar" style="--i:49"></div><div class="wave-bar" style="--i:50"></div>
+              <div class="wave-bar" style="--i:51"></div><div class="wave-bar" style="--i:52"></div>
+              <div class="wave-bar" style="--i:53"></div><div class="wave-bar" style="--i:54"></div>
+              <div class="wave-bar" style="--i:55"></div><div class="wave-bar" style="--i:56"></div>
+              <div class="wave-bar" style="--i:57"></div><div class="wave-bar" style="--i:58"></div>
+              <div class="wave-bar" style="--i:59"></div><div class="wave-bar" style="--i:60"></div>
+              <div class="wave-bar" style="--i:61"></div><div class="wave-bar" style="--i:62"></div>
+              <div class="wave-bar" style="--i:63"></div><div class="wave-bar" style="--i:64"></div>
+              <div class="wave-bar" style="--i:65"></div><div class="wave-bar" style="--i:66"></div>
+              <div class="wave-bar" style="--i:67"></div><div class="wave-bar" style="--i:68"></div>
+              <div class="wave-bar" style="--i:69"></div><div class="wave-bar" style="--i:70"></div>
+              <div class="wave-bar" style="--i:71"></div><div class="wave-bar" style="--i:72"></div>
+              <div class="wave-bar" style="--i:73"></div><div class="wave-bar" style="--i:74"></div>
+              <div class="wave-bar" style="--i:75"></div><div class="wave-bar" style="--i:76"></div>
+              <div class="wave-bar" style="--i:77"></div><div class="wave-bar" style="--i:78"></div>
+              <div class="wave-bar" style="--i:79"></div><div class="wave-bar" style="--i:80"></div>
+              <div class="wave-bar" style="--i:81"></div><div class="wave-bar" style="--i:82"></div>
+              <div class="wave-bar" style="--i:83"></div><div class="wave-bar" style="--i:84"></div>
+              <div class="wave-bar" style="--i:85"></div><div class="wave-bar" style="--i:86"></div>
+              <div class="wave-bar" style="--i:87"></div><div class="wave-bar" style="--i:88"></div>
+              <div class="wave-bar" style="--i:89"></div><div class="wave-bar" style="--i:90"></div>
             </div>
             <div class="time-display" id="timeDisplay3">00:00 / 00:00</div>
           </div>
@@ -531,12 +853,41 @@
     </div>
   </div>
 
-  <!-- The overlay that shows the big no-UI video -->
-  <div id="videoOverlay" class="video-overlay" onclick="closeOverlay()">
-    <!-- We'll insert the <video> element dynamically via JS -->
+  <!-- The overlay that shows the big no-UI video.
+       We removed the onclick="closeOverlay()" from here, 
+       because we now rely on a separate .video-click-catcher
+       for closing if user clicks outside the video. -->
+  <div id="videoOverlay" class="video-overlay">
+    <!-- We'll insert our custom HTML for the video + skip messages + nav bar dynamically -->
   </div>
 
+  <!-- The "Completed?" button, displayed in last 5 seconds of video -->
+  <button class="completed-button" id="completedBtn" onclick="onCompletedClick()">Completed?</button>
+
   <script>
+    /*
+    Store completed items in localStorage
+    We'll keep an object like { "video1": true, "video2": false, ... , "voiceNotePlayer1": true, ... }
+    */
+    let completedItems = {};
+
+    // Attempt to load from localStorage
+    function loadCompletedItems() {
+      const data = localStorage.getItem('completedItems');
+      if (data) {
+        completedItems = JSON.parse(data);
+      }
+    }
+
+    // Save to localStorage
+    function saveCompletedItems() {
+      localStorage.setItem('completedItems', JSON.stringify(completedItems));
+    }
+
+    let currentlyActiveItem = null; // store reference (could be a string for audio or a .grid-item for video)
+    let activeVideoEl = null;       // reference to the actual <video> element in the overlay
+    let checkingVideoTime = false;  // set a flag to track if we're in timeupdate
+
     // Switch visible category
     function showCategory(category) {
       // Hide all sections
@@ -545,29 +896,247 @@
       document.getElementById(category).classList.add("active");
     }
 
-    // Open video overlay
-    function openOverlay(videoSrc) {
-      const overlay = document.getElementById('videoOverlay');
-      overlay.innerHTML = ''; // Clear any existing content
+    // Mark completed in DOM + localStorage
+    function markAsCompleted(itemID) {
+      completedItems[itemID] = true;
+      saveCompletedItems();
 
-      const videoEl = document.createElement('video');
-      videoEl.src = videoSrc;
-      videoEl.autoplay = true;
-      videoEl.controls = false; // No native UI
-      videoEl.playsInline = true;
+      // If it's a video .grid-item
+      const videoEl = document.querySelector(`.grid-item[data-video-id="${itemID}"]`);
+      if (videoEl) {
+        videoEl.classList.add('completed');
+      }
 
-      overlay.appendChild(videoEl);
-      overlay.classList.add('active');
+      // If it's an audio .voice-note-player
+      const audioEl = document.getElementById(itemID);
+      if (audioEl) {
+        audioEl.classList.add('completed');
+      }
     }
 
-    // Close video overlay
-    function closeOverlay() {
+    // We'll call this to apply .completed from localStorage data at page load
+    function applyCompletedClasses() {
+      // For each key in completedItems
+      for (let key in completedItems) {
+        if (completedItems[key]) {
+          // If there's a video with that data-video-id
+          const videoEl = document.querySelector(`.grid-item[data-video-id="${key}"]`);
+          if (videoEl) {
+            videoEl.classList.add('completed');
+          }
+          // or if there's an audio with that ID
+          const audioEl = document.getElementById(key);
+          if (audioEl) {
+            audioEl.classList.add('completed');
+          }
+        }
+      }
+    }
+
+    // -------------------------
+    // OPEN OVERLAY FOR VIDEO
+    // -------------------------
+    function openOverlay(videoID, videoSrc, gridItemEl) {
+      if (!videoSrc) return; // if placeholder has no video
+      currentlyActiveItem = videoID; 
+      checkingVideoTime = false; // reset
+      const overlay = document.getElementById('videoOverlay');
+      
+      // We create our new structure inside the overlay:
+      overlay.innerHTML = `
+        <div class="video-click-catcher" onclick="closeOverlay(event)"></div>
+        <div class="video-container">
+          <video id="activeVideoEl" src="${videoSrc}" autoplay playsinline></video>
+          <!-- skip indicators for dblclick -->
+          <div class="skip-message skip-left" id="skipLeft">-10</div>
+          <div class="skip-message skip-right" id="skipRight">+10</div>
+        </div>
+        <!-- The bar at the bottom for navigation -->
+        <div class="video-nav-bar">
+          <div class="video-progress" onclick="handleVideoProgressClick(event)">
+            <div class="video-progress-fill" id="videoProgressFill"></div>
+          </div>
+        </div>
+      `;
+
+      overlay.classList.add('active');
+
+      // Grab reference to the newly inserted video
+      activeVideoEl = document.getElementById('activeVideoEl');
+
+      // Once the video metadata is loaded, calculate container dimensions to exactly fit the video
+      activeVideoEl.addEventListener('loadedmetadata', () => {
+        const videoRatio = activeVideoEl.videoWidth / activeVideoEl.videoHeight;
+        const maxWidth = window.innerWidth * 0.9;  // 90% of viewport width
+        const maxHeight = window.innerHeight * 0.9; // 90% of viewport height
+
+        let containerWidth = maxWidth;
+        let containerHeight = containerWidth / videoRatio;
+        if (containerHeight > maxHeight) {
+          containerHeight = maxHeight;
+          containerWidth = containerHeight * videoRatio;
+        }
+        const container = activeVideoEl.parentElement;
+        container.style.width = containerWidth + 'px';
+        container.style.height = containerHeight + 'px';
+      });
+
+      // Use a timer to differentiate single and double clicks
+      let clickTimeout = null;
+      activeVideoEl.addEventListener('click', function(e) {
+        if (clickTimeout) {
+          clearTimeout(clickTimeout);
+          clickTimeout = null;
+          handleVideoDoubleClick(e);
+        } else {
+          clickTimeout = setTimeout(() => {
+            // Single click toggles play/pause
+            if (activeVideoEl.paused) {
+              activeVideoEl.play();
+            } else {
+              activeVideoEl.pause();
+            }
+            clickTimeout = null;
+          }, 250);
+        }
+        e.stopPropagation();
+      });
+
+      activeVideoEl.addEventListener('timeupdate', handleVideoTimeUpdate);
+      activeVideoEl.addEventListener('ended', () => {
+        // On ended, show completed button
+        showCompletedButton();
+      });
+    }
+
+    // CLOSE OVERLAY (only if click is outside the video container)
+    function closeOverlay(event) {
+      // The .video-click-catcher is behind the .video-container
+      // If the user clicks .video-click-catcher, we close
       const overlay = document.getElementById('videoOverlay');
       overlay.classList.remove('active');
-      // Delay clearing the video so fade-out is smooth
+      // Delay clearing for a smooth fade-out
       setTimeout(() => {
         overlay.innerHTML = '';
+        activeVideoEl = null;
+        hideCompletedButton();
       }, 400);
+    }
+
+    // Show "Completed?" button
+    function showCompletedButton() {
+      const btn = document.getElementById('completedBtn');
+      btn.classList.add('show');
+    }
+
+    // Hide "Completed?" button
+    function hideCompletedButton() {
+      const btn = document.getElementById('completedBtn');
+      btn.classList.remove('show');
+    }
+
+    // When user clicks "Completed?"
+    function onCompletedClick() {
+      if (currentlyActiveItem) {
+        markAsCompleted(currentlyActiveItem);
+      }
+      // Hide the overlay
+      closeOverlay();
+    }
+
+    // Handle the big video time update (progress bar + last 5s check)
+    function handleVideoTimeUpdate() {
+      if (!activeVideoEl) return;
+      // Update progress fill
+      const fraction = (activeVideoEl.currentTime / activeVideoEl.duration) || 0;
+      const fillEl = document.getElementById('videoProgressFill');
+      if (fillEl) {
+        fillEl.style.width = (fraction * 100) + '%';
+      }
+      // Check if within last 5s
+      if (activeVideoEl.duration - activeVideoEl.currentTime <= 5) {
+        showCompletedButton();
+      } else {
+        hideCompletedButton();
+      }
+    }
+
+    // Handle user click on progress bar
+    function handleVideoProgressClick(e) {
+      if (!activeVideoEl || !activeVideoEl.duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const fraction = clickX / rect.width;
+      activeVideoEl.currentTime = fraction * activeVideoEl.duration;
+      e.stopPropagation();
+    }
+
+    // Double-click skip logic
+    function handleVideoDoubleClick(e) {
+      const wasPaused = activeVideoEl.paused;
+      const half = activeVideoEl.clientWidth / 2;
+      if (e.offsetX > half) {
+        // skip forward
+        skipForward(10);
+        showSkipMessage('skipRight');
+      } else {
+        // skip backward
+        skipBackward(10);
+        showSkipMessage('skipLeft');
+      }
+      // Ensure the video maintains its original state
+      if (!wasPaused) {
+        activeVideoEl.play();
+      } else {
+        activeVideoEl.pause();
+      }
+    }
+    function skipForward(sec) {
+      if (!activeVideoEl) return;
+      activeVideoEl.currentTime = Math.min(activeVideoEl.currentTime + sec, activeVideoEl.duration);
+    }
+    function skipBackward(sec) {
+      if (!activeVideoEl) return;
+      activeVideoEl.currentTime = Math.max(activeVideoEl.currentTime - sec, 0);
+    }
+    function showSkipMessage(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('show');
+      setTimeout(() => {
+        el.classList.remove('show');
+      }, 1000);
+    }
+
+    // ------------------------
+    // Hover preview on videos
+    // ------------------------
+    function startPreview(e) {
+      const gridItem = e.currentTarget;
+      const videoSrc = gridItem.getAttribute('data-video-src');
+      // Create a <video> element if it doesn't exist yet
+      if (videoSrc && !gridItem.querySelector('.preview-video')) {
+        const previewEl = document.createElement('video');
+        previewEl.className = 'preview-video';
+        previewEl.src = videoSrc;
+        previewEl.muted = true;
+        previewEl.loop = true;
+        previewEl.playsInline = true;
+        previewEl.autoplay = true;
+        // We'll append it, then force a reflow to fade it in
+        gridItem.appendChild(previewEl);
+        requestAnimationFrame(() => {
+          previewEl.classList.add('show');
+        });
+      }
+    }
+
+    function stopPreview(e) {
+      const gridItem = e.currentTarget;
+      const previewEl = gridItem.querySelector('.preview-video');
+      if (previewEl) {
+        gridItem.removeChild(previewEl);
+      }
     }
 
     /*
@@ -577,6 +1146,14 @@
     =======================================
     */
 
+    // Utility to format time (seconds -> mm:ss)
+    function formatTime(sec) {
+      if (isNaN(sec)) return '00:00';
+      const minutes = Math.floor(sec / 60);
+      const seconds = Math.floor(sec % 60);
+      return String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
+    }
+
     // =========================
     // 1) Player #1 (Al-Qasas)
     // =========================
@@ -585,17 +1162,17 @@
     const player1      = document.getElementById('voiceNotePlayer1');
     const playIcon1    = player1.querySelector('.icon-play');
     const pauseIcon1   = player1.querySelector('.icon-pause');
+    const wave1        = document.getElementById('waveform1');
 
     function togglePlay1() {
+      currentlyActiveItem = player1.id; 
       if (audioEl1.paused) {
         audioEl1.play();
       } else {
         audioEl1.pause();
       }
     }
-
     audioEl1.addEventListener('loadedmetadata', () => {
-      // Display total duration as soon as metadata is loaded
       const duration = formatTime(audioEl1.duration);
       timeDisplay1.textContent = `00:00 / ${duration}`;
     });
@@ -614,6 +1191,17 @@
       const duration    = formatTime(audioEl1.duration);
       timeDisplay1.textContent = `${currentTime} / ${duration}`;
     });
+    audioEl1.addEventListener('ended', () => {
+      showCompletedButton();
+    });
+    wave1.addEventListener('click', (e) => {
+      const rect = wave1.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const fraction = clickX / rect.width;
+      if (!isNaN(audioEl1.duration)) {
+        audioEl1.currentTime = fraction * audioEl1.duration;
+      }
+    });
 
     // ===========================
     // 2) Player #2 (Surah Dukhan)
@@ -623,15 +1211,16 @@
     const player2      = document.getElementById('voiceNotePlayer2');
     const playIcon2    = player2.querySelector('.icon-play');
     const pauseIcon2   = player2.querySelector('.icon-pause');
+    const wave2        = document.getElementById('waveform2');
 
     function togglePlay2() {
+      currentlyActiveItem = player2.id;
       if (audioEl2.paused) {
         audioEl2.play();
       } else {
         audioEl2.pause();
       }
     }
-
     audioEl2.addEventListener('loadedmetadata', () => {
       const duration = formatTime(audioEl2.duration);
       timeDisplay2.textContent = `00:00 / ${duration}`;
@@ -651,6 +1240,17 @@
       const duration    = formatTime(audioEl2.duration);
       timeDisplay2.textContent = `${currentTime} / ${duration}`;
     });
+    audioEl2.addEventListener('ended', () => {
+      showCompletedButton();
+    });
+    wave2.addEventListener('click', (e) => {
+      const rect = wave2.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const fraction = clickX / rect.width;
+      if (!isNaN(audioEl2.duration)) {
+        audioEl2.currentTime = fraction * audioEl2.duration;
+      }
+    });
 
     // ==========================================
     // 3) Player #3 (Sheikh Yasser Salah Unknown)
@@ -660,15 +1260,16 @@
     const player3      = document.getElementById('voiceNotePlayer3');
     const playIcon3    = player3.querySelector('.icon-play');
     const pauseIcon3   = player3.querySelector('.icon-pause');
+    const wave3        = document.getElementById('waveform3');
 
     function togglePlay3() {
+      currentlyActiveItem = player3.id;
       if (audioEl3.paused) {
         audioEl3.play();
       } else {
         audioEl3.pause();
       }
     }
-
     audioEl3.addEventListener('loadedmetadata', () => {
       const duration = formatTime(audioEl3.duration);
       timeDisplay3.textContent = `00:00 / ${duration}`;
@@ -688,21 +1289,18 @@
       const duration    = formatTime(audioEl3.duration);
       timeDisplay3.textContent = `${currentTime} / ${duration}`;
     });
-
-    // Utility to format time (seconds -> mm:ss)
-    function formatTime(sec) {
-      if (isNaN(sec)) return '00:00';
-      const minutes = Math.floor(sec / 60);
-      const seconds = Math.floor(sec % 60);
-      return String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
-    }
+    audioEl3.addEventListener('ended', () => {
+      showCompletedButton();
+    });
 
     /*
       Randomize the initial heights of each .wave-bar
-      so it looks more like a varied audio wave
-      from the moment the page loads.
+      and apply completed classes from localStorage
     */
     window.addEventListener('DOMContentLoaded', () => {
+      loadCompletedItems(); // load from localStorage
+      applyCompletedClasses(); // apply .completed as needed
+
       const waveforms = document.querySelectorAll('.waveform');
       waveforms.forEach(wave => {
         const bars = wave.querySelectorAll('.wave-bar');
@@ -712,6 +1310,16 @@
           bar.style.height = randomHeight + 'px';
         });
       });
+    });
+
+    // Add Escape key listener to close video overlay
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") {
+        const overlay = document.getElementById('videoOverlay');
+        if (overlay && overlay.classList.contains('active')) {
+          closeOverlay(e);
+        }
+      }
     });
   </script>
 </body>
