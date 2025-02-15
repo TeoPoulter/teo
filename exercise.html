@@ -1,529 +1,632 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Timer</title>
-    <style>
-        body {
-            background-color: #0d47a1; /* Dark blue background */
-            color: white;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden; /* Prevent scrollbars */
-            position: relative;
-        }
-        .background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        .background::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%231db954" fill-opacity="0.3"%3E%3Ccircle cx="10" cy="10" r="2"%3E%3Canimate attributeName="cy" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3Ccircle cx="90" cy="90" r="2"%3E%3Canimate attributeName="cy" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E') repeat;
-            z-index: -1;
-            opacity: 0.5;
-            animation: moveParticles 10s linear infinite;
-        }
-        @keyframes moveParticles {
-            from {
-                background-position: 0 0;
-            }
-            to {
-                background-position: 100% 100%;
-            }
-        }
-        .background::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background-image: radial-gradient(circle, rgba(29, 185, 84, 0.4), transparent);
-            animation: rotate 20s linear infinite;
-        }
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Timer</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+    }
 
-        .container {
-            text-align: center;
-            max-width: 600px;
-            width: 90%;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Shadow for depth */
-            position: relative;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .alarm-button {
-            background: url('https://i.imgur.com/jHuHFr2.png') no-repeat center center;
-            background-size: contain;
-            width: 200px;
-            height: 200px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-        .alarm-button:active {
-            transform: scale(0.95);
-        }
-        .alarm-button:hover {
-            outline: none; /* Remove outline on hover */
-        }
-        .input-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        label {
-            flex: 1;
-            margin-right: 10px;
-            text-align: right;
-            font-size: 1.2em;
-        }
-        input {
-            flex: 2;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid white;
-            font-size: 1em;
-            background-color: #1a1a1a;
-            color: white;
-            text-align: center;
-        }
-        input::placeholder {
-            color: white;
-            opacity: 0.5;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 12px 24px;
-            background-color: #444;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #666;
-        }
-        .lifetime-presses {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 12px;
-            background-color: #222;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        .notification {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            padding: 12px;
-            background-color: #333;
-            color: green;
-            font-size: 5em;
-            text-align: center;
-            border-radius: 8px;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-        #completedNotification {
-            top: 170px; /* Adjusted to be below the first notification */
-        }
+    /* Infinite Background Gradient Animation */
+    .infinite-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #ff0066, #ffcc00, #33cc33, #00ccff);
+      background-size: 400% 400%;
+      animation: gradientAnimation 20s ease infinite;
+      z-index: -4;
+    }
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
-        .estimated-time {
-            font-size: 1.2em;
-            color: yellow;
-            margin-top: 10px;
-        }
-        .countdown-timer {
-            font-size: 1.5em;
-            margin-top: 20px;
-            color: cyan;
-        }
-        .pause-button {
-            padding: 10px 20px;
-            background-color: #880000;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: background-color 0.3s;
-        }
-        .pause-button:hover {
-            background-color: #CC0000;
-        }
-        .time-button {
-            position: absolute;
-            top: 85px;
-            left: 15px;
-            padding: 12px;
-            background-color: #222;
-            border-radius: 8px;
-            font-size: 2em;
-            cursor: default; /* Just for display, not interactive */
-        }
-        .full-screen-notification {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-        .notification-content {
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #222;
-            color: green;
-            transform: scale(2.5); /* Enlarge the content */
-        }
-        .time-taken {
-            font-size: 1.5em;
-            color: yellow;
-            margin-top: 10px;
-        }
-    </style>
+    /* Background Particle Animation */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -3;
+    }
+    .background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%231db954" fill-opacity="0.3"%3E%3Ccircle cx="10" cy="10" r="2"%3E%3Canimate attributeName="cy" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="10;90;10" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3Ccircle cx="90" cy="90" r="2"%3E%3Canimate attributeName="cy" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3Canimate attributeName="cx" values="90;10;90" dur="4s" repeatCount="indefinite"/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E')
+        repeat;
+      opacity: 0.4;
+      animation: moveParticles 15s linear infinite;
+    }
+    @keyframes moveParticles {
+      from {
+        transform: translate(0, 0);
+      }
+      to {
+        transform: translate(50%, 50%);
+      }
+    }
+    .background::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: radial-gradient(
+        circle,
+        rgba(29, 185, 84, 0.3),
+        transparent 70%
+      );
+      animation: rotate 25s linear infinite;
+    }
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Time Buttons for Start and End Time */
+    .time-button {
+      position: fixed;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 1.1em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+    .time-button:hover {
+      transform: scale(1.05);
+    }
+    .time-start {
+      top: 20px;
+      left: 20px;
+    }
+    .time-end {
+      top: 20px;
+      right: 20px;
+    }
+
+    /* Notification Styles */
+    .notification {
+      position: fixed;
+      right: 20px;
+      background-color: rgba(50, 50, 50, 0.8);
+      color: #4caf50;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1.5em;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s ease-in-out;
+      z-index: 2;
+    }
+    /* Swap positions: "[y] done" on top, "[number] left" below */
+    #completedNotification {
+      top: 80px;
+    }
+    #notification {
+      top: 140px;
+    }
+
+    /* Lifetime Reps Counter */
+    .lifetime-presses {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 1em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+
+    /* Main Container */
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      margin: 80px auto;
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Button Container */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .alarm-button {
+      background: url('https://i.imgur.com/jHuHFr2.png') no-repeat center;
+      background-size: contain;
+      width: 180px;
+      height: 180px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .alarm-button:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .alarm-button:hover {
+      outline: none;
+    }
+
+    /* Input Containers */
+    .input-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+    }
+    label {
+      flex: 1;
+      margin-right: 10px;
+      text-align: right;
+      font-size: 1.2em;
+    }
+    input {
+      flex: 2;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #fff;
+      font-size: 1em;
+      background-color: rgba(26, 26, 26, 0.8);
+      color: #fff;
+      text-align: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+      background-color: rgba(26, 26, 26, 1);
+      border-color: #4caf50;
+    }
+    input::placeholder {
+      color: #fff;
+      opacity: 0.7;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+    button {
+      padding: 12px 24px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background-color: #666;
+      transform: translateY(-2px);
+    }
+    .pause-button {
+      background-color: #880000;
+    }
+    .pause-button:hover {
+      background-color: #cc0000;
+    }
+
+    /* Estimated Time & Countdown Timer */
+    .estimated-time {
+      font-size: 1.2em;
+      color: #ffeb3b;
+      margin-top: 10px;
+      transition: color 0.3s ease;
+    }
+    .countdown-timer {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #00e5ff;
+      transition: color 0.3s ease;
+    }
+
+    /* Full-Screen Notification */
+    .full-screen-notification {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      animation: fadeInFullScreen 0.5s ease;
+    }
+    @keyframes fadeInFullScreen {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .notification-content {
+      text-align: center;
+      padding: 20px 30px;
+      border-radius: 10px;
+      background-color: rgba(20, 20, 20, 0.95);
+      color: #4caf50;
+      transform: scale(1);
+      transition: transform 0.3s ease;
+    }
+    .notification-content h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .time-taken {
+      font-size: 1.5em;
+      color: #ffeb3b;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="background"></div>
+  <div class="infinite-bg"></div>
+  <div class="background"></div>
 
-    <!-- Display of Start Time -->
-    <div class="time-button">Start Time: <span id="startTime"></span></div>
-    <!-- Display of End Time -->
-    <div class="time-button" style="top: 160px;">End Time: <span id="endTime"></span></div>
+  <!-- Display of Start and End Time -->
+  <div class="time-button time-start">Start Time: <span id="startTime"></span></div>
+  <div class="time-button time-end">End Time: <span id="endTime"></span></div>
 
-    <!-- Notifications on the right side -->
-    <div class="notification" id="notification"></div>
-    <div class="notification" id="completedNotification"></div>
+  <!-- Notifications on the right side -->
+  <div class="notification" id="completedNotification"></div>
+  <div class="notification" id="notification"></div>
 
-    <!-- Lifetime Presses Counter -->
-    <div class="lifetime-presses">Lifetime Reps: <span id="pressesCount">0</span></div>
+  <!-- Lifetime Presses Counter -->
+  <div class="lifetime-presses">Lifetime Reps: <span id="pressesCount">0</span></div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <h1>Workout Timer</h1>
-        
-        <!-- Play sound button -->
-        <div class="button-container">
-            <button class="alarm-button" onclick="playSound()" onmouseover="hoverEffect()"></button>
-        </div>
+  <!-- Main Container -->
+  <div class="container">
+    <h1>Workout Timer</h1>
 
-        <!-- Reps Input -->
-        <div class="input-container">
-            <label for="times">Reps:</label>
-            <input type="number" id="times" min="1" value="1" oninput="saveSettings()">
-        </div>
-
-        <!-- Rest Time Input -->
-        <div class="input-container">
-            <label for="minutes">Rest Time:</label>
-            <input type="number" id="minutes" min="0" value="0" placeholder="Minutes" oninput="saveSettings()">
-            <input type="number" id="seconds" min="0" max="59" value="0" placeholder="Seconds" oninput="saveSettings()">
-        </div>
-
-        <!-- Controls -->
-        <div class="controls">
-            <button onclick="togglePause()" id="pauseButton" class="pause-button">Pause</button>
-            <button onclick="startAlarm()">Start</button>
-        </div>
-
-        <!-- Estimated Time & Countdown Display -->
-        <div class="estimated-time" id="estimatedTime"></div>
-        <div class="countdown-timer" id="countdownTimer"></div>
-
-        <!-- Full-Screen Notification (hidden by default) -->
-        <div class="full-screen-notification" id="fullScreenNotification" style="display: none;">
-            <div class="notification-content" id="fullScreenContent"></div>
-        </div>
+    <!-- Play sound button -->
+    <div class="button-container">
+      <button class="alarm-button" onclick="playSound()" onmouseover="hoverEffect()"></button>
     </div>
 
-    <!-- Audio File Reference (replace 'beep.mp3' with your path if needed) -->
-    <audio id="alarmSound" src="beep.mp3"></audio>
+    <!-- Reps Input -->
+    <div class="input-container">
+      <label for="times">Reps:</label>
+      <input type="number" id="times" min="1" value="1" oninput="saveSettings()" />
+    </div>
 
-    <script>
-        let countdownInterval;
-        let remainingTime = 0;
-        let isPaused = false;
-        let nextDingTime = 0;
-        let startTime = 0;
-        let totalTime = 0; // Total workout time in milliseconds
-        let restInterval = 0; // Rest interval time in milliseconds
+    <!-- Rest Time Input -->
+    <div class="input-container">
+      <label for="minutes">Rest Time:</label>
+      <input type="number" id="minutes" min="0" value="0" placeholder="Minutes" oninput="saveSettings()" />
+      <input type="number" id="seconds" min="0" max="59" value="0" placeholder="Seconds" oninput="saveSettings()" />
+    </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const pressesCountElement = document.getElementById('pressesCount');
-                const storedPresses = parseInt(localStorage.getItem('pressesCount')) || 0;
-                pressesCountElement.textContent = storedPresses;
+    <!-- Controls -->
+    <div class="controls">
+      <button onclick="togglePause()" id="pauseButton" class="pause-button">Pause</button>
+      <button onclick="startAlarm()">Start</button>
+    </div>
 
-                // Restore settings from localStorage
-                const times = localStorage.getItem('times');
-                const minutes = localStorage.getItem('minutes');
-                const seconds = localStorage.getItem('seconds');
+    <!-- Estimated Time & Countdown Display -->
+    <div class="estimated-time" id="estimatedTime"></div>
+    <div class="countdown-timer" id="countdownTimer"></div>
 
-                if (times) document.getElementById('times').value = times;
-                if (minutes) document.getElementById('minutes').value = minutes;
-                if (seconds) document.getElementById('seconds').value = seconds;
+    <!-- Full-Screen Notification (hidden by default) -->
+    <div class="full-screen-notification" id="fullScreenNotification" style="display: none;">
+      <div class="notification-content" id="fullScreenContent"></div>
+    </div>
+  </div>
 
-                // Update the estimated time on load
-                updateEstimatedTime(times, minutes, seconds);
-            } catch (error) {
-                console.error('Error on DOMContentLoaded:', error);
+  <!-- Audio File Reference (replace 'beep.mp3' with your path if needed) -->
+  <audio id="alarmSound" src="beep.mp3"></audio>
+
+  <script>
+    let countdownInterval;
+    let remainingTime = 0;
+    let isPaused = false;
+    let nextDingTime = 0;
+    let startTime = 0;
+    let totalTime = 0; // Total workout time in milliseconds
+    let restInterval = 0; // Rest interval time in milliseconds
+
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const pressesCountElement = document.getElementById('pressesCount');
+        const storedPresses = parseInt(localStorage.getItem('pressesCount')) || 0;
+        pressesCountElement.textContent = storedPresses;
+
+        // Restore settings from localStorage
+        const times = localStorage.getItem('times');
+        const minutes = localStorage.getItem('minutes');
+        const seconds = localStorage.getItem('seconds');
+
+        if (times) document.getElementById('times').value = times;
+        if (minutes) document.getElementById('minutes').value = minutes;
+        if (seconds) document.getElementById('seconds').value = seconds;
+
+        // Update the estimated time on load
+        updateEstimatedTime(times, minutes, seconds);
+      } catch (error) {
+        console.error('Error on DOMContentLoaded:', error);
+      }
+    });
+
+    function playSound() {
+      const audio = document.getElementById('alarmSound');
+      audio.play();
+      incrementPressesCount();
+    }
+
+    function incrementPressesCount() {
+      const pressesCountElement = document.getElementById('pressesCount');
+      let pressesCount = parseInt(pressesCountElement.textContent);
+      pressesCount++;
+      pressesCountElement.textContent = pressesCount;
+      localStorage.setItem('pressesCount', pressesCount);
+    }
+
+    function saveSettings() {
+      const times = document.getElementById('times').value;
+      const minutes = document.getElementById('minutes').value;
+      const seconds = document.getElementById('seconds').value;
+
+      localStorage.setItem('times', times);
+      localStorage.setItem('minutes', minutes);
+      localStorage.setItem('seconds', seconds);
+
+      updateEstimatedTime(times, minutes, seconds);
+    }
+
+    function showNotification(message, completed) {
+      const notificationElement = document.getElementById('notification');
+      notificationElement.textContent = message;
+
+      const completedNotificationElement = document.getElementById('completedNotification');
+      completedNotificationElement.textContent = completed;
+    }
+
+    function updateEstimatedTime(times, minutes, seconds) {
+      try {
+        // Convert to integers
+        const t = parseInt(times) || 0;
+        const m = parseInt(minutes) || 0;
+        const s = parseInt(seconds) || 0;
+
+        // Basic validation
+        if (t < 1 || (m === 0 && s === 0)) {
+          document.getElementById('estimatedTime').textContent = 'Please enter valid values.';
+          return;
+        }
+
+        const interval = m * 60000 + s * 1000;
+        totalTime = interval * t;
+        restInterval = interval;
+
+        const totalMinutes = Math.floor(totalTime / 60000);
+        const totalSeconds = Math.floor((totalTime % 60000) / 1000);
+
+        document.getElementById('estimatedTime').textContent =
+          `Estimated Time: ${totalMinutes} minutes ${totalSeconds} seconds`;
+      } catch (error) {
+        console.error('Error updating estimated time:', error);
+      }
+    }
+
+    function startAlarm() {
+      try {
+        const times = parseInt(document.getElementById('times').value);
+        const minutes = parseInt(document.getElementById('minutes').value);
+        const seconds = parseInt(document.getElementById('seconds').value);
+        const interval = minutes * 60000 + seconds * 1000;
+
+        if (isNaN(times) || isNaN(minutes) || isNaN(seconds) || times <= 0 || interval <= 0) {
+          alert('Please enter valid values for reps and rest time.');
+          return;
+        }
+
+        let remainingDings = times;
+        let completedDings = 0;
+        let delay = 0;
+
+        // Mark the start
+        startTime = Date.now();
+
+        // Show start time
+        const startTimeElement = document.getElementById('startTime');
+        startTimeElement.textContent = new Date(startTime).toLocaleTimeString();
+
+        // Set the end time for display
+        const endTimeVal = startTime + times * interval;
+        document.getElementById('endTime').textContent = new Date(endTimeVal).toLocaleTimeString();
+
+        // Update the UI
+        updateEstimatedTime(times, minutes, seconds);
+        document.getElementById('estimatedTime').style.display = 'block';
+
+        // Set the overall countdown for next ding
+        remainingTime = times * interval;
+        startCountdown(interval);
+
+        // Schedule each "ding"
+        for (let i = 0; i < times; i++) {
+          setTimeout(() => {
+            playSound();
+            completedDings++;
+            remainingDings--;
+
+            // Update notifications
+            showNotification(`${remainingDings} left`, `${completedDings} done`);
+
+            // If there are still dings left, start a sub-countdown
+            if (remainingDings > 0) {
+              nextDingTime = Date.now() + interval;
+              startNextDingTimer(restInterval);
+            } else {
+              // Last rep done, show the full-screen notification
+              showFullScreenNotification(times, minutes, seconds);
             }
-        });
+          }, delay);
 
-        function playSound() {
-            const audio = document.getElementById('alarmSound');
-            audio.play();
-            incrementPressesCount();
+          delay += interval;
         }
+      } catch (error) {
+        console.error('Error starting alarm:', error);
+      }
+    }
 
-        function incrementPressesCount() {
-            const pressesCountElement = document.getElementById('pressesCount');
-            let pressesCount = parseInt(pressesCountElement.textContent);
-            pressesCount++;
-            pressesCountElement.textContent = pressesCount;
-            localStorage.setItem('pressesCount', pressesCount);
-        }
+    function startNextDingTimer(interval) {
+      clearInterval(countdownInterval);
 
-        function saveSettings() {
-            const times = document.getElementById('times').value;
-            const minutes = document.getElementById('minutes').value;
-            const seconds = document.getElementById('seconds').value;
+      let remainingInterval = interval;
+      countdownInterval = setInterval(() => {
+        if (!isPaused) {
+          remainingInterval -= 1000;
+          const rmMins = Math.floor(remainingInterval / 60000);
+          const rmSecs = Math.floor((remainingInterval % 60000) / 1000);
 
-            localStorage.setItem('times', times);
-            localStorage.setItem('minutes', minutes);
-            localStorage.setItem('seconds', seconds);
+          const countdownTimer = document.getElementById('countdownTimer');
+          countdownTimer.textContent = `Next ding in: ${rmMins} minutes ${rmSecs} seconds`;
 
-            updateEstimatedTime(times, minutes, seconds);
-        }
-
-        function showNotification(message, completed) {
-            const notificationElement = document.getElementById('notification');
-            notificationElement.textContent = message;
-
-            const completedNotificationElement = document.getElementById('completedNotification');
-            completedNotificationElement.textContent = completed;
-        }
-
-        function updateEstimatedTime(times, minutes, seconds) {
-            try {
-                // Convert to integers
-                const t = parseInt(times) || 0;
-                const m = parseInt(minutes) || 0;
-                const s = parseInt(seconds) || 0;
-
-                // Basic validation
-                if (t < 1 || (m === 0 && s === 0)) {
-                    document.getElementById('estimatedTime').textContent = 'Please enter valid values.';
-                    return;
-                }
-
-                const interval = (m * 60000) + (s * 1000);
-                totalTime = interval * t; 
-                restInterval = interval;
-
-                const totalMinutes = Math.floor(totalTime / 60000);
-                const totalSeconds = Math.floor((totalTime % 60000) / 1000);
-
-                document.getElementById('estimatedTime').textContent = 
-                    `Estimated Time: ${totalMinutes} minutes ${totalSeconds} seconds`;
-            } catch (error) {
-                console.error('Error updating estimated time:', error);
-            }
-        }
-
-        function startAlarm() {
-            try {
-                const times = parseInt(document.getElementById('times').value);
-                const minutes = parseInt(document.getElementById('minutes').value);
-                const seconds = parseInt(document.getElementById('seconds').value);
-                const interval = (minutes * 60000) + (seconds * 1000);
-
-                if (isNaN(times) || isNaN(minutes) || isNaN(seconds) || times <= 0 || interval <= 0) {
-                    alert('Please enter valid values for reps and rest time.');
-                    return;
-                }
-
-                let remainingDings = times;
-                let completedDings = 0;
-                let delay = 0;
-
-                // Mark the start
-                startTime = Date.now();
-
-                // Show start time
-                const startTimeElement = document.getElementById('startTime');
-                startTimeElement.textContent = new Date(startTime).toLocaleTimeString();
-
-                // Set the end time for display
-                const endTimeVal = startTime + (times * interval);
-                document.getElementById('endTime').textContent = new Date(endTimeVal).toLocaleTimeString();
-
-                // Update the UI
-                updateEstimatedTime(times, minutes, seconds);
-                document.getElementById('estimatedTime').style.display = 'block';
-
-                // Set the overall countdown for next ding
-                remainingTime = times * interval;
-                startCountdown(interval);
-
-                // Schedule each "ding"
-                for (let i = 0; i < times; i++) {
-                    setTimeout(() => {
-                        playSound();
-                        completedDings++;
-                        remainingDings--;
-
-                        // Update notifications
-                        showNotification(`${remainingDings} left`, `${completedDings} done`);
-
-                        // If there are still dings left, start a sub-countdown
-                        if (remainingDings > 0) {
-                            nextDingTime = Date.now() + interval;
-                            startNextDingTimer(restInterval);
-                        } else {
-                            // Last rep done, show the full-screen notification
-                            showFullScreenNotification(times, minutes, seconds);
-                        }
-                    }, delay);
-
-                    delay += interval;
-                }
-            } catch (error) {
-                console.error('Error starting alarm:', error);
-            }
-        }
-
-        function startNextDingTimer(interval) {
+          if (remainingInterval <= 0) {
             clearInterval(countdownInterval);
-
-            let remainingInterval = interval;
-            countdownInterval = setInterval(() => {
-                if (!isPaused) {
-                    remainingInterval -= 1000;
-                    const rmMins = Math.floor(remainingInterval / 60000);
-                    const rmSecs = Math.floor((remainingInterval % 60000) / 1000);
-
-                    const countdownTimer = document.getElementById('countdownTimer');
-                    countdownTimer.textContent = `Next ding in: ${rmMins} minutes ${rmSecs} seconds`;
-
-                    if (remainingInterval <= 0) {
-                        clearInterval(countdownInterval);
-                        countdownTimer.textContent = 
-                            `Next ding in: ${Math.floor(interval / 60000)} minutes 0 seconds`;
-                    }
-                }
-            }, 1000);
+            countdownTimer.textContent =
+              `Next ding in: ${Math.floor(interval / 60000)} minutes 0 seconds`;
+          }
         }
+      }, 1000);
+    }
 
-        function startCountdown(interval) {
+    function startCountdown(interval) {
+      clearInterval(countdownInterval);
+
+      countdownInterval = setInterval(() => {
+        if (!isPaused) {
+          remainingTime -= 1000;
+          updateCountdownTimer();
+          if (remainingTime <= 0) {
             clearInterval(countdownInterval);
-
-            countdownInterval = setInterval(() => {
-                if (!isPaused) {
-                    remainingTime -= 1000;
-                    updateCountdownTimer();
-                    if (remainingTime <= 0) {
-                        clearInterval(countdownInterval);
-                    }
-                }
-            }, 1000);
+          }
         }
+      }, 1000);
+    }
 
-        function updateCountdownTimer() {
-            const countdownTimer = document.getElementById('countdownTimer');
-            const seconds = Math.ceil(remainingTime / 1000);
-            countdownTimer.textContent = `Next ding in: ${seconds} seconds`;
-        }
+    function updateCountdownTimer() {
+      const countdownTimer = document.getElementById('countdownTimer');
+      const seconds = Math.ceil(remainingTime / 1000);
+      countdownTimer.textContent = `Next ding in: ${seconds} seconds`;
+    }
 
-        function togglePause() {
-            isPaused = !isPaused;
-            const pauseButton = document.getElementById('pauseButton');
-            pauseButton.textContent = isPaused ? 'Resume' : 'Pause';
-        }
+    function togglePause() {
+      isPaused = !isPaused;
+      const pauseButton = document.getElementById('pauseButton');
+      pauseButton.textContent = isPaused ? 'Resume' : 'Pause';
+    }
 
-        function hoverEffect() {
-            const soundButton = document.querySelector('.alarm-button');
-            soundButton.style.backgroundImage = 
-                "url('https://i.ibb.co/RypMVDD/image-removebg-preview-4.png')";
-        }
+    function hoverEffect() {
+      const soundButton = document.querySelector('.alarm-button');
+      soundButton.style.backgroundImage =
+        "url('https://i.ibb.co/RypMVDD/image-removebg-preview-4.png')";
+    }
 
-        function showFullScreenNotification(times, minutes, seconds) {
-            const fullScreenNotification = document.getElementById('fullScreenNotification');
-            const fullScreenContent = document.getElementById('fullScreenContent');
+    function showFullScreenNotification(times, minutes, seconds) {
+      const fullScreenNotification = document.getElementById('fullScreenNotification');
+      const fullScreenContent = document.getElementById('fullScreenContent');
 
-            const endTime = startTime + totalTime;
-            const timeTaken = calculateTimeDifference(startTime, endTime);
+      const endTime = startTime + totalTime;
+      const timeTaken = calculateTimeDifference(startTime, endTime);
 
-            fullScreenContent.innerHTML = `
-                <h1>Workout Complete</h1>
-                <p>Start Time: ${new Date(startTime).toLocaleTimeString()}</p>
-                <p>End Time: ${new Date(endTime).toLocaleTimeString()}</p>
-                <p>Reps: ${times}</p>
-                <p>Rest Time: ${minutes} minutes ${seconds} seconds</p>
-                <p class="time-taken">Time Taken: ${timeTaken}</p>
-            `;
-            fullScreenNotification.style.display = 'flex';
+      fullScreenContent.innerHTML = `
+        <h1>Workout Complete</h1>
+        <p>Start Time: ${new Date(startTime).toLocaleTimeString()}</p>
+        <p>End Time: ${new Date(endTime).toLocaleTimeString()}</p>
+        <p>Reps: ${times}</p>
+        <p>Rest Time: ${minutes} minutes ${seconds} seconds</p>
+        <p class="time-taken">Time Taken: ${timeTaken}</p>
+      `;
+      fullScreenNotification.style.display = 'flex';
 
-            // Dismiss on click
-            fullScreenNotification.addEventListener('click', () => {
-                fullScreenNotification.style.display = 'none';
-            });
-        }
+      // Dismiss on click
+      fullScreenNotification.addEventListener('click', () => {
+        fullScreenNotification.style.display = 'none';
+      });
+    }
 
-        function calculateTimeDifference(start, end) {
-            const difference = end - start;
-            const minutes = Math.floor(difference / 60000);
-            const seconds = Math.floor((difference % 60000) / 1000);
-            return `${minutes} minutes ${seconds} seconds`;
-        }
-    </script>
+    function calculateTimeDifference(start, end) {
+      const difference = end - start;
+      const minutes = Math.floor(difference / 60000);
+      const seconds = Math.floor((difference % 60000) / 1000);
+      return `${minutes} minutes ${seconds} seconds`;
+    }
+  </script>
 </body>
 </html>
