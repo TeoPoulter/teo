@@ -89,7 +89,6 @@
       color: #f5f5f5; /* override text color to keep it visible */
     }
 
-    /* Moved content further up to remove empty space */
     .container {
       position: relative;
       z-index: 5;
@@ -113,7 +112,7 @@
     h1 {
       font-size: 3rem;
       margin-bottom: 20px;
-      background: linear-gradient(90deg, #9C824A, #b49f5e); /* gold-ish palette */
+      background: linear-gradient(90deg, #9C824A, #b49f5e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 8px rgba(180,159,94,0.4);
@@ -152,6 +151,156 @@
       background: linear-gradient(135deg, #b49f5e, #7f6a35);
     }
 
+    /* Filter Toggle & Panel */
+    .filter-toggle-btn {
+      margin: 0 auto 20px auto;
+      display: block;
+      background-color: #b49f5e;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .filter-toggle-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    #filterContainer {
+      display: none; /* hidden by default, toggled by JS */
+      margin: 0 auto 30px auto;
+      width: 80%;
+      max-width: 700px;
+      background: rgba(0,0,0,0.4);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      text-align: left; /* keep content left, center container overall */
+    }
+    .filter-section {
+      margin-bottom: 20px;
+    }
+    .filter-section label {
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    .filter-section input[type="radio"] {
+      display: none; /* hide the original inputs */
+    }
+
+    /* 
+       New custom toggle groups for Type and Orientation 
+       to "use our own UI for selecting the modes"
+    */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .toggle-group {
+      display: inline-flex;
+      gap: 8px;
+    }
+    .toggle-group button {
+      background: #2f2f2f;
+      border: 1px solid #444;
+      padding: 8px 16px;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.3s;
+    }
+    .toggle-group button:hover {
+      box-shadow: 0 0 8px rgba(180,159,94,0.6);
+    }
+    .toggle-group button.active {
+      background: linear-gradient(135deg, #b49f5e, #7f6a35);
+      border-color: #b49f5e;
+    }
+
+    /* Double slider container */
+    .slider-container {
+      position: relative;
+      height: 40px;
+      margin-top: 10px;
+    }
+    .slider-container input[type="range"] {
+      position: absolute;
+      width: 100%;
+      top: 14px; /* Enough offset so we can place the rangeValue below */
+      -webkit-appearance: none;
+      background: none;
+      pointer-events: none; /* We'll handle pointer events with a pseudo-element for track */
+      z-index: 3; /* ensure thumbs appear over the line */
+    }
+    .slider-container input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px;
+      width: 16px;
+      background: #b49f5e;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      cursor: pointer;
+      pointer-events: auto; /* re-enable pointer for the thumb */
+      position: relative;
+      z-index: 4;
+    }
+    .slider-container input[type="range"]::-moz-range-thumb {
+      height: 16px;
+      width: 16px;
+      background: #b49f5e;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      cursor: pointer;
+      pointer-events: auto;
+      position: relative;
+      z-index: 4;
+    }
+    /* The track: we simulate with a single background behind both sliders */
+    .slider-container::before {
+      content: '';
+      position: absolute;
+      top: 21px; /* center line behind the thumbs */
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #aaa;
+      z-index: 1;
+    }
+    /* The highlighted range between minRange and maxRange */
+    .slider-track {
+      position: absolute;
+      top: 21px;
+      height: 2px;
+      background: #fff;
+      z-index: 2;
+    }
+    .rangeValue {
+      position: absolute;
+      background: #1a1a1a;
+      padding: 2px 5px;
+      color: #fff;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      z-index: 5;
+    }
+
+    /* Additional numeric labels at the ends for clarity */
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #ccc;
+      margin-top: 4px;
+    }
+
     /* Content sections (for multiple categories) */
     .content {
       display: none;
@@ -165,28 +314,33 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Grid for video thumbnails (5 columns) */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 20px;
-      padding: 20px;
-      justify-items: center; 
-    }
+    /*
+     * We define different aspect-ratios and sizes
+     * for portrait vs. landscape .grid-item
+    */
     .grid-item {
       background: #111;
       border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
       position: relative;
-      aspect-ratio: 3 / 5;
-      width: 150px;  /* fallback */
-      height: 250px; /* fallback */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    /* For portrait items: aspect ratio ~ 3:5 */
+    .grid-item[data-orientation="portrait"] {
+      aspect-ratio: 3/5;
+      width: 150px;
+      height: auto;
+    }
+    /* For landscape items: aspect ratio ~16:9 */
+    .grid-item[data-orientation="landscape"] {
+      aspect-ratio: 16/9;
+      width: 400px; /* increased width for all landscape videos */
+      height: auto;
     }
     .grid-item::before {
       content: "";
@@ -246,29 +400,11 @@
       opacity: 1;
       visibility: visible;
     }
-    /* We originally had a white border on the video itself. 
-       We'll override that and use a container for the border. */
-    .video-overlay video {
-      border: none !important; /* override old styling */
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* Changed from cover to contain so the full video is visible */
-      border-radius: 0;
-    }
 
     /* 
-    =======================================
-    Our new container around the video
-    =======================================
+      The container that wraps the video. 
+      We'll programmatically expand its height so the progress bar is never overlapped.
     */
-    .video-click-catcher {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      cursor: pointer;
-    }
     .video-container {
       position: relative;
       border: 3px solid #fff;
@@ -276,37 +412,44 @@
       max-width: 90vw; 
       max-height: 90vh;
       overflow: hidden;
-      z-index: 2; /* above the click-catcher */
+      z-index: 2;
       display: flex;
       flex-direction: column;
-      /* Removed fixed aspect-ratio to allow dynamic sizing */
-      margin-bottom: 10px; /* Ensure border doesn't overlap the progress bar */
+      pointer-events: auto; /* let clicks register inside */
+    }
+    /* The actual video covers the container 100% in both directions. */
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
-    /*
-    ==========================================
-    Bottom bar for navigation
-    ==========================================
-    */
+    /* The bar at the bottom for navigation */
     .video-nav-bar {
       position: absolute;
-      bottom: 5%;
+      bottom: 5px; /* so it won't overlap portrait videos */
       left: 50%;
       transform: translateX(-50%);
-      width: 80vw;
-      max-width: 80vw;
+      width: 80%;
+      max-width: 80%;
       display: flex;
-      justify-content: center;
-      z-index: 3; /* above the video container */
+      align-items: center; /* align items vertically center */
+      gap: 10px;           /* spacing between time & bar */
+      z-index: 3;
+      pointer-events: auto;
     }
     .video-progress {
-      width: 100%;
+      flex: 1; 
       background: rgba(255,255,255,0.2);
       height: 8px;
       border-radius: 4px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      transition: background 0.2s;
+    }
+    .video-progress:hover {
+      background: rgba(255,255,255,0.3);
     }
     .video-progress-fill {
       position: absolute;
@@ -318,11 +461,16 @@
       transition: width 0.1s linear; /* Smooth transition */
     }
 
-    /*
-    ==========================================
-    Skip indicators for double-click
-    ==========================================
-    */
+    /* Time labels (elapsed, total) on each side of the progress bar */
+    .video-time-left,
+    .video-time-right {
+      color: #fff;
+      font-size: 0.9rem;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* Skip indicators for double-click */
     .skip-message {
       position: absolute;
       top: 50%;
@@ -345,7 +493,7 @@
       opacity: 1;
     }
 
-    /* 
+    /*
     =======================================
     Voice Note Player Styles
     =======================================
@@ -367,11 +515,9 @@
       gap: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
-    /* Mark audio players as completed with green border too */
     .voice-note-player.completed {
       border: 2px solid #2ecc71;
     }
-    /* Top row with button, wave, and time all horizontally aligned */
     .player-top-row {
       display: flex;
       align-items: center;
@@ -434,7 +580,6 @@
         opacity: 0.7;
       }
     }
-    /* If audio is paused, freeze the wave bars */
     .voice-note-player.paused .wave-bar {
       animation-play-state: paused;
     }
@@ -450,7 +595,6 @@
       margin-left: 4px;
     }
 
-    /* Completed Button styling */
     .completed-button {
       position: fixed; /* so it's on the left middle of the screen */
       left: 2%;
@@ -475,23 +619,24 @@
       pointer-events: auto;
       transform: translateY(-50%) translateX(0);
     }
+
+    /* Grid layout for items */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+      justify-items: center; 
+    }
   </style>
 </head>
 <body>
-  <!-- Mobile detection: if on mobile or small screen, show message and stop rendering -->
+  <!-- Mobile Detection: if user is on a mobile device or has a narrow screen, show message only -->
   <script>
     if (/Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768) {
-      document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Poppins,sans-serif;font-size:1.5rem;color:#fff;background:#000;">Not yet adapted to Mobile - try a bigger screen!</div>';
+      document.body.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100vh; font-family: Poppins, sans-serif; font-size:1.5rem; color:#fff; background:#000;">Not yet adapted to Mobile - try a bigger screen!</div>';
     }
   </script>
-
-  <!-- 
-  ======================================
-    MASSIVE SECTION FOR NEW CONTENT
-    (Easily add new mp4s/thumbnails or
-     new audio players below)
-  ======================================
-  -->
 
   <!-- Animated background -->
   <div class="background">
@@ -506,6 +651,56 @@
   <div class="container">
     <h1>Iman Hub</h1>
 
+    <!-- FILTER UI START -->
+    <button class="filter-toggle-btn" onclick="toggleFilterUI()">Show Filters</button>
+    <div id="filterContainer">
+      <div class="filter-row">
+        <div class="filter-section">
+          <label>Type:</label>
+          <!-- Our custom toggle group for Type -->
+          <div class="toggle-group type-toggle-group">
+            <button type="button" data-value="all">All</button>
+            <button type="button" data-value="video">Video</button>
+            <button type="button" data-value="audio">Audio</button>
+          </div>
+          <!-- Hidden radio inputs for type -->
+          <input type="radio" name="filterType" value="all" checked>
+          <input type="radio" name="filterType" value="video">
+          <input type="radio" name="filterType" value="audio">
+        </div>
+
+        <div class="filter-section">
+          <label>Orientation:</label>
+          <!-- Our custom toggle group for Orientation -->
+          <div class="toggle-group orientation-toggle-group">
+            <button type="button" data-value="all">All</button>
+            <button type="button" data-value="portrait">Portrait</button>
+            <button type="button" data-value="landscape">Landscape</button>
+          </div>
+          <!-- Hidden radio inputs for orientation -->
+          <input type="radio" name="filterOrientation" value="all" checked>
+          <input type="radio" name="filterOrientation" value="portrait">
+          <input type="radio" name="filterOrientation" value="landscape">
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <label>Length (minutes):</label>
+        <div class="slider-container">
+          <div class="slider-track" id="sliderTrack"></div>
+          <input type="range" id="minRange" min="0" max="120" step="1" value="0">
+          <input type="range" id="maxRange" min="0" max="120" step="1" value="120">
+          <span class="rangeValue" id="minRangeValue">0</span>
+          <span class="rangeValue" id="maxRangeValue">120</span>
+        </div>
+        <div class="slider-labels">
+          <div>0</div>
+          <div>120</div>
+        </div>
+      </div>
+    </div>
+    <!-- FILTER UI END -->
+
     <!-- Menu with 4 category buttons -->
     <div class="menu">
       <button onclick="showCategory('reminders')">Reminders</button>
@@ -514,138 +709,116 @@
       <button onclick="showCategory('salahRecordings')">Salah Recordings</button>
     </div>
 
-    <!-- Reminders Section (5 videos + a second row of 5 placeholders) -->
+    <!-- REMINDERS SECTION -->
     <div id="reminders" class="content active">
       <div class="grid">
-        <!-- Video #1 -->
+        <!-- REMINDERS CONTENT 1 -->
         <div 
           class="grid-item"
           data-video-id="video1"
           data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4"
+          data-type="video"
+          data-orientation="portrait"
+          data-length="1"
+          onclick="openOverlay('video1', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4')"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+210429.png');"
-          onclick="openOverlay('video1', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000033646.mp4', this)"
           onmouseover="startPreview(event)"
           onmouseleave="stopPreview(event)"
         ></div>
 
-        <!-- Video #2 -->
+        <!-- REMINDERS CONTENT 2 -->
         <div 
           class="grid-item"
           data-video-id="video2"
           data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4"
+          data-type="video"
+          data-orientation="portrait"
+          data-length="1"
+          onclick="openOverlay('video2', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4')"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+212649.png');"
-          onclick="openOverlay('video2', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034631.mp4', this)"
           onmouseover="startPreview(event)"
           onmouseleave="stopPreview(event)"
         ></div>
 
-        <!-- Video #3 -->
+        <!-- REMINDERS CONTENT 3 -->
         <div 
           class="grid-item"
           data-video-id="video3"
           data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4"
+          data-type="video"
+          data-orientation="portrait"
+          data-length="1"
+          onclick="openOverlay('video3', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4')"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+213005.png');"
-          onclick="openOverlay('video3', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034633.mp4', this)"
           onmouseover="startPreview(event)"
           onmouseleave="stopPreview(event)"
         ></div>
 
-        <!-- Video #4 -->
+        <!-- REMINDERS CONTENT 4 -->
         <div 
           class="grid-item"
           data-video-id="video4"
           data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4"
+          data-type="video"
+          data-orientation="portrait"
+          data-length="1"
+          onclick="openOverlay('video4', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4')"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+214019.png');"
-          onclick="openOverlay('video4', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034634.mp4', this)"
           onmouseover="startPreview(event)"
           onmouseleave="stopPreview(event)"
         ></div>
 
-        <!-- Video #5 -->
+        <!-- REMINDERS CONTENT 5 -->
         <div 
           class="grid-item"
           data-video-id="video5"
           data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4"
+          data-type="video"
+          data-orientation="portrait"
+          data-length="1"
+          onclick="openOverlay('video5', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4')"
           style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-11+214028.png');"
-          onclick="openOverlay('video5', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/1000034638.mp4', this)"
           onmouseover="startPreview(event)"
           onmouseleave="stopPreview(event)"
         ></div>
       </div>
 
-      <!-- A second row of placeholders -->
-      <div class="grid">
-        <!-- Video placeholder #6 -->
-        <div 
-          class="grid-item"
-          data-video-id="video6"
-          data-video-src=""
-          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+6');"
-          onclick="openOverlay('video6', '', this)"
-          onmouseover="startPreview(event)"
-          onmouseleave="stopPreview(event)"
-        ></div>
 
-        <!-- Video placeholder #7 -->
-        <div 
-          class="grid-item"
-          data-video-id="video7"
-          data-video-src=""
-          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+7');"
-          onclick="openOverlay('video7', '', this)"
-          onmouseover="startPreview(event)"
-          onmouseleave="stopPreview(event)"
-        ></div>
 
-        <!-- Video placeholder #8 -->
-        <div 
-          class="grid-item"
-          data-video-id="video8"
-          data-video-src=""
-          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+8');"
-          onclick="openOverlay('video8', '', this)"
-          onmouseover="startPreview(event)"
-          onmouseleave="stopPreview(event)"
-        ></div>
-
-        <!-- Video placeholder #9 -->
-        <div 
-          class="grid-item"
-          data-video-id="video9"
-          data-video-src=""
-          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+9');"
-          onclick="openOverlay('video9', '', this)"
-          onmouseover="startPreview(event)"
-          onmouseleave="stopPreview(event)"
-        ></div>
-
-        <!-- Video placeholder #10 -->
-        <div 
-          class="grid-item"
-          data-video-id="video10"
-          data-video-src=""
-          style="background-image: url('https://via.placeholder.com/150x250?text=Placeholder+10');"
-          onclick="openOverlay('video10', '', this)"
-          onmouseover="startPreview(event)"
-          onmouseleave="stopPreview(event)"
-        ></div>
-      </div>
+      <!-- Extra grid for newly added Reminders videos -->
+      <div class="grid" id="remindersGridExtra"></div>
     </div>
 
-    <!-- Education Section -->
+    <!-- EDUCATION SECTION -->
     <div id="education" class="content">
-      <p style="padding: 40px; font-size: 1.2rem; opacity: 0.8;">
-        Islamic learning videos / audios will go here...
-      </p>
+      <div class="grid">
+        <!-- EDUCATION CONTENT 1 (LANDSCAPE, 64 MIN, VIDEO) -->
+        <div
+          class="grid-item"
+          data-video-id="videoEdu1"
+          data-video-src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/saveinsta.cc_720p-the-prophets-prayer-according-to-authentic-ahadith-assim-al-hakeem.mp4"
+          data-type="video"
+          data-orientation="landscape"
+          data-length="64"
+          onclick="openOverlay('videoEdu1', 'https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/saveinsta.cc_720p-the-prophets-prayer-according-to-authentic-ahadith-assim-al-hakeem.mp4')"
+          style="background-image: url('https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-17+185523.png');"
+          onmouseover="startPreview(event)"
+          onmouseleave="stopPreview(event)"
+        ></div>
+      </div>
+
+      <!-- Extra grid for newly added Education videos -->
+      <div class="grid" id="educationGridExtra"></div>
     </div>
 
     <!-- Favourite Recitations Section -->
     <div id="favRecitations" class="content">
-      <!-- Removed the placeholder text as requested -->
-
-      <!-- FIRST AUDIO PLAYER: Al-Qasas -->
+      <!-- FIRST AUDIO PLAYER -->
       <div class="voice-note-container">
-        <div class="voice-note-player paused" id="voiceNotePlayer1">
+        <div class="voice-note-player paused" id="voiceNotePlayer1"
+             data-type="audio"
+             data-orientation="none"
+             data-length="3">
           <div class="player-top-row">
             <div class="play-pause-btn" onclick="togglePlay1()">
               <svg class="icon icon-play" viewBox="0 0 24 24">
@@ -655,10 +828,8 @@
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
               </svg>
             </div>
-            <!-- 90 bars -->
             <div class="waveform" id="waveform1">
               <!-- We'll generate 90 bars with random heights via JS -->
-              <!-- (Already in the script) -->
               <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
               <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
               <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
@@ -712,9 +883,12 @@
         </div>
       </div>
 
-      <!-- SECOND AUDIO PLAYER: Surah Dukhan -->
+      <!-- SECOND AUDIO PLAYER -->
       <div class="voice-note-container">
-        <div class="voice-note-player paused" id="voiceNotePlayer2">
+        <div class="voice-note-player paused" id="voiceNotePlayer2"
+             data-type="audio"
+             data-orientation="none"
+             data-length="15">
           <div class="player-top-row">
             <div class="play-pause-btn" onclick="togglePlay2()">
               <svg class="icon icon-play" viewBox="0 0 24 24">
@@ -724,8 +898,8 @@
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
               </svg>
             </div>
-            <!-- 90 bars -->
             <div class="waveform" id="waveform2">
+              <!-- 90 bars again -->
               <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
               <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
               <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
@@ -778,15 +952,19 @@
           <audio id="voiceNoteAudio2" src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/Surah+Dukhan.mp3"></audio>
         </div>
       </div>
+
+      <!-- Extra container for newly added Recitations audio -->
+      <div id="favRecitationsExtra"></div>
     </div>
 
     <!-- Salah Recordings Section -->
     <div id="salahRecordings" class="content">
-      <!-- Removed placeholder text as requested -->
-
-      <!-- THIRD AUDIO PLAYER: Sheikh Yasser Salah -->
+      <!-- THIRD AUDIO PLAYER -->
       <div class="voice-note-container">
-        <div class="voice-note-player paused" id="voiceNotePlayer3">
+        <div class="voice-note-player paused" id="voiceNotePlayer3"
+             data-type="audio"
+             data-orientation="none"
+             data-length="5">
           <div class="player-top-row">
             <div class="play-pause-btn" onclick="togglePlay3()">
               <svg class="icon icon-play" viewBox="0 0 24 24">
@@ -796,8 +974,8 @@
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
               </svg>
             </div>
-            <!-- 90 bars -->
             <div class="waveform" id="waveform3">
+              <!-- 90 bars -->
               <div class="wave-bar" style="--i:1"></div><div class="wave-bar" style="--i:2"></div>
               <div class="wave-bar" style="--i:3"></div><div class="wave-bar" style="--i:4"></div>
               <div class="wave-bar" style="--i:5"></div><div class="wave-bar" style="--i:6"></div>
@@ -850,15 +1028,16 @@
           <audio id="voiceNoteAudio3" src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/Sheikh+Yasser+Salah+Unknown.mp3"></audio>
         </div>
       </div>
+
+      <!-- Extra container for newly added Salah audio -->
+      <div id="salahRecordingsExtra"></div>
     </div>
+
   </div>
 
-  <!-- The overlay that shows the big no-UI video.
-       We removed the onclick="closeOverlay()" from here, 
-       because we now rely on a separate .video-click-catcher
-       for closing if user clicks outside the video. -->
-  <div id="videoOverlay" class="video-overlay">
-    <!-- We'll insert our custom HTML for the video + skip messages + nav bar dynamically -->
+  <!-- The overlay that shows the big no-UI video -->
+  <div id="videoOverlay" class="video-overlay" onclick="overlayClickHandler(event)">
+    <!-- We'll build the container + video + skip messages + bar in JS -->
   </div>
 
   <!-- The "Completed?" button, displayed in last 5 seconds of video -->
@@ -867,7 +1046,7 @@
   <script>
     /*
     Store completed items in localStorage
-    We'll keep an object like { "video1": true, "video2": false, ... , "voiceNotePlayer1": true, ... }
+    We'll keep an object like: { "video1": true, "video2": false, ... , "voiceNotePlayer1": true, etc. }
     */
     let completedItems = {};
 
@@ -884,9 +1063,8 @@
       localStorage.setItem('completedItems', JSON.stringify(completedItems));
     }
 
-    let currentlyActiveItem = null; // store reference (could be a string for audio or a .grid-item for video)
-    let activeVideoEl = null;       // reference to the actual <video> element in the overlay
-    let checkingVideoTime = false;  // set a flag to track if we're in timeupdate
+    let currentlyActiveItem = null; 
+    let activeVideoEl = null;       
 
     // Switch visible category
     function showCategory(category) {
@@ -894,6 +1072,20 @@
       document.querySelectorAll(".content").forEach(el => el.classList.remove("active"));
       // Show only the chosen section
       document.getElementById(category).classList.add("active");
+      // Also collapse the filter container if open
+      document.getElementById('filterContainer').style.display = 'none';
+      // Re-apply filters to the new section
+      applyFilters();
+    }
+
+    // Toggle the filter UI panel
+    function toggleFilterUI() {
+      const fc = document.getElementById('filterContainer');
+      if (fc.style.display === 'block') {
+        fc.style.display = 'none';
+      } else {
+        fc.style.display = 'block';
+      }
     }
 
     // Mark completed in DOM + localStorage
@@ -916,15 +1108,12 @@
 
     // We'll call this to apply .completed from localStorage data at page load
     function applyCompletedClasses() {
-      // For each key in completedItems
       for (let key in completedItems) {
         if (completedItems[key]) {
-          // If there's a video with that data-video-id
           const videoEl = document.querySelector(`.grid-item[data-video-id="${key}"]`);
           if (videoEl) {
             videoEl.classList.add('completed');
           }
-          // or if there's an audio with that ID
           const audioEl = document.getElementById(key);
           if (audioEl) {
             audioEl.classList.add('completed');
@@ -933,89 +1122,91 @@
       }
     }
 
-    // -------------------------
     // OPEN OVERLAY FOR VIDEO
-    // -------------------------
-    function openOverlay(videoID, videoSrc, gridItemEl) {
+    function openOverlay(videoID, videoSrc) {
       if (!videoSrc) return; // if placeholder has no video
       currentlyActiveItem = videoID; 
-      checkingVideoTime = false; // reset
       const overlay = document.getElementById('videoOverlay');
       
-      // We create our new structure inside the overlay:
+      // Build the markup with time labels around the progress bar
       overlay.innerHTML = `
-        <div class="video-click-catcher" onclick="closeOverlay(event)"></div>
-        <div class="video-container">
+        <div class="video-container" onclick="stopPropagation(event)" id="videoContainer">
           <video id="activeVideoEl" src="${videoSrc}" autoplay playsinline></video>
-          <!-- skip indicators for dblclick -->
           <div class="skip-message skip-left" id="skipLeft">-10</div>
           <div class="skip-message skip-right" id="skipRight">+10</div>
         </div>
-        <!-- The bar at the bottom for navigation -->
-        <div class="video-nav-bar">
+        <div class="video-nav-bar" onclick="stopPropagation(event)">
+          <div class="video-time-left" id="videoTimeLeft">00:00</div>
           <div class="video-progress" onclick="handleVideoProgressClick(event)">
             <div class="video-progress-fill" id="videoProgressFill"></div>
           </div>
+          <div class="video-time-right" id="videoTimeRight">00:00</div>
         </div>
       `;
 
       overlay.classList.add('active');
 
-      // Grab reference to the newly inserted video
       activeVideoEl = document.getElementById('activeVideoEl');
 
-      // Once the video metadata is loaded, calculate container dimensions to exactly fit the video
+      // Once metadata is loaded, adjust container size + a bit more for the progress bar
       activeVideoEl.addEventListener('loadedmetadata', () => {
         const videoRatio = activeVideoEl.videoWidth / activeVideoEl.videoHeight;
-        const maxWidth = window.innerWidth * 0.9;  // 90% of viewport width
-        const maxHeight = window.innerHeight * 0.9; // 90% of viewport height
+        const maxWidth = window.innerWidth * 0.9;  // 90% of viewport
+        const maxHeight = window.innerHeight * 0.9; // 90% of viewport
 
         let containerWidth = maxWidth;
         let containerHeight = containerWidth / videoRatio;
+
+        // If too tall, clamp
         if (containerHeight > maxHeight) {
           containerHeight = maxHeight;
           containerWidth = containerHeight * videoRatio;
         }
-        const container = activeVideoEl.parentElement;
+
+        // Add extra space for bottom bar
+        containerHeight += 60; 
+
+        const container = document.getElementById('videoContainer');
         container.style.width = containerWidth + 'px';
         container.style.height = containerHeight + 'px';
       });
 
-      // Use a timer to differentiate single and double clicks
-      let clickTimeout = null;
+      // Single-click => toggle play/pause, double-click => skip
       activeVideoEl.addEventListener('click', function(e) {
-        if (clickTimeout) {
-          clearTimeout(clickTimeout);
-          clickTimeout = null;
+        if (e.detail === 2) {
+          e.preventDefault();
+          e.stopPropagation();
           handleVideoDoubleClick(e);
-        } else {
-          clickTimeout = setTimeout(() => {
-            // Single click toggles play/pause
-            if (activeVideoEl.paused) {
-              activeVideoEl.play();
-            } else {
-              activeVideoEl.pause();
-            }
-            clickTimeout = null;
-          }, 250);
+        } else if (e.detail === 1) {
+          if (activeVideoEl.paused) {
+            activeVideoEl.play();
+          } else {
+            activeVideoEl.pause();
+          }
         }
-        e.stopPropagation();
       });
 
       activeVideoEl.addEventListener('timeupdate', handleVideoTimeUpdate);
       activeVideoEl.addEventListener('ended', () => {
-        // On ended, show completed button
         showCompletedButton();
       });
     }
 
-    // CLOSE OVERLAY (only if click is outside the video container)
-    function closeOverlay(event) {
-      // The .video-click-catcher is behind the .video-container
-      // If the user clicks .video-click-catcher, we close
+    // If user clicks outside the .video-container or the nav bar, close overlay
+    function overlayClickHandler(e) {
+      // if the user clicked the overlay background (this element) directly, close
+      if (e.target.id === 'videoOverlay') {
+        closeOverlay();
+      }
+    }
+    // Stop click from closing if clicked on the container or the bar
+    function stopPropagation(e) {
+      e.stopPropagation();
+    }
+
+    function closeOverlay() {
       const overlay = document.getElementById('videoOverlay');
       overlay.classList.remove('active');
-      // Delay clearing for a smooth fade-out
       setTimeout(() => {
         overlay.innerHTML = '';
         activeVideoEl = null;
@@ -1028,32 +1219,48 @@
       const btn = document.getElementById('completedBtn');
       btn.classList.add('show');
     }
-
     // Hide "Completed?" button
     function hideCompletedButton() {
       const btn = document.getElementById('completedBtn');
       btn.classList.remove('show');
     }
-
-    // When user clicks "Completed?"
     function onCompletedClick() {
       if (currentlyActiveItem) {
         markAsCompleted(currentlyActiveItem);
       }
-      // Hide the overlay
       closeOverlay();
     }
 
-    // Handle the big video time update (progress bar + last 5s check)
+    // A helper to format time in MM:SS
+    function formatTime(sec) {
+      if (isNaN(sec)) return '00:00';
+      const minutes = Math.floor(sec / 60);
+      const seconds = Math.floor(sec % 60);
+      return String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
+    }
+
+    // Handle video time + progress bar
     function handleVideoTimeUpdate() {
       if (!activeVideoEl) return;
-      // Update progress fill
       const fraction = (activeVideoEl.currentTime / activeVideoEl.duration) || 0;
       const fillEl = document.getElementById('videoProgressFill');
+
+      // Update progress bar fill
       if (fillEl) {
         fillEl.style.width = (fraction * 100) + '%';
       }
-      // Check if within last 5s
+
+      // Update the time labels
+      const elapsed = formatTime(activeVideoEl.currentTime);
+      const total   = formatTime(activeVideoEl.duration);
+      const videoTimeLeft = document.getElementById('videoTimeLeft');
+      const videoTimeRight = document.getElementById('videoTimeRight');
+      if (videoTimeLeft && videoTimeRight) {
+        videoTimeLeft.textContent  = elapsed;
+        videoTimeRight.textContent = total;
+      }
+
+      // Show/hide "Completed?" button in the last 5 seconds
       if (activeVideoEl.duration - activeVideoEl.currentTime <= 5) {
         showCompletedButton();
       } else {
@@ -1061,7 +1268,7 @@
       }
     }
 
-    // Handle user click on progress bar
+    // user clicks on the progress bar
     function handleVideoProgressClick(e) {
       if (!activeVideoEl || !activeVideoEl.duration) return;
       const rect = e.currentTarget.getBoundingClientRect();
@@ -1073,30 +1280,22 @@
 
     // Double-click skip logic
     function handleVideoDoubleClick(e) {
-      const wasPaused = activeVideoEl.paused;
+      if (!activeVideoEl) return;
       const half = activeVideoEl.clientWidth / 2;
       if (e.offsetX > half) {
-        // skip forward
         skipForward(10);
         showSkipMessage('skipRight');
       } else {
-        // skip backward
         skipBackward(10);
         showSkipMessage('skipLeft');
       }
-      // Ensure the video maintains its original state
-      if (!wasPaused) {
-        activeVideoEl.play();
-      } else {
-        activeVideoEl.pause();
-      }
+      // Force it to keep playing after skip
+      activeVideoEl.play();
     }
     function skipForward(sec) {
-      if (!activeVideoEl) return;
       activeVideoEl.currentTime = Math.min(activeVideoEl.currentTime + sec, activeVideoEl.duration);
     }
     function skipBackward(sec) {
-      if (!activeVideoEl) return;
       activeVideoEl.currentTime = Math.max(activeVideoEl.currentTime - sec, 0);
     }
     function showSkipMessage(id) {
@@ -1108,13 +1307,10 @@
       }, 1000);
     }
 
-    // ------------------------
-    // Hover preview on videos
-    // ------------------------
+    // Hover preview
     function startPreview(e) {
       const gridItem = e.currentTarget;
       const videoSrc = gridItem.getAttribute('data-video-src');
-      // Create a <video> element if it doesn't exist yet
       if (videoSrc && !gridItem.querySelector('.preview-video')) {
         const previewEl = document.createElement('video');
         previewEl.className = 'preview-video';
@@ -1123,14 +1319,12 @@
         previewEl.loop = true;
         previewEl.playsInline = true;
         previewEl.autoplay = true;
-        // We'll append it, then force a reflow to fade it in
         gridItem.appendChild(previewEl);
         requestAnimationFrame(() => {
           previewEl.classList.add('show');
         });
       }
     }
-
     function stopPreview(e) {
       const gridItem = e.currentTarget;
       const previewEl = gridItem.querySelector('.preview-video');
@@ -1140,23 +1334,12 @@
     }
 
     /*
-    =======================================
-    Voice Note Player Scripts
-    (three separate players)
-    =======================================
+     =======================================
+     Voice Note Players
+     =======================================
     */
 
-    // Utility to format time (seconds -> mm:ss)
-    function formatTime(sec) {
-      if (isNaN(sec)) return '00:00';
-      const minutes = Math.floor(sec / 60);
-      const seconds = Math.floor(sec % 60);
-      return String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
-    }
-
-    // =========================
-    // 1) Player #1 (Al-Qasas)
-    // =========================
+    // Player #1
     const audioEl1     = document.getElementById('voiceNoteAudio1');
     const timeDisplay1 = document.getElementById('timeDisplay1');
     const player1      = document.getElementById('voiceNotePlayer1');
@@ -1203,9 +1386,7 @@
       }
     });
 
-    // ===========================
-    // 2) Player #2 (Surah Dukhan)
-    // ===========================
+    // Player #2
     const audioEl2     = document.getElementById('voiceNoteAudio2');
     const timeDisplay2 = document.getElementById('timeDisplay2');
     const player2      = document.getElementById('voiceNotePlayer2');
@@ -1252,9 +1433,7 @@
       }
     });
 
-    // ==========================================
-    // 3) Player #3 (Sheikh Yasser Salah Unknown)
-    // ==========================================
+    // Player #3
     const audioEl3     = document.getElementById('voiceNoteAudio3');
     const timeDisplay3 = document.getElementById('timeDisplay3');
     const player3      = document.getElementById('voiceNotePlayer3');
@@ -1293,32 +1472,352 @@
       showCompletedButton();
     });
 
-    /*
-      Randomize the initial heights of each .wave-bar
-      and apply completed classes from localStorage
-    */
+    // Randomize wave bars & apply completions on load
     window.addEventListener('DOMContentLoaded', () => {
-      loadCompletedItems(); // load from localStorage
-      applyCompletedClasses(); // apply .completed as needed
+      loadCompletedItems(); 
+      applyCompletedClasses(); 
 
       const waveforms = document.querySelectorAll('.waveform');
       waveforms.forEach(wave => {
         const bars = wave.querySelectorAll('.wave-bar');
         bars.forEach(bar => {
-          // random height between 10px and 40px for variety
           const randomHeight = Math.floor(Math.random() * 31) + 10;
           bar.style.height = randomHeight + 'px';
         });
       });
+
+      // For the double range slider
+      const minRange = document.getElementById('minRange');
+      const maxRange = document.getElementById('maxRange');
+      const minRangeValue = document.getElementById('minRangeValue');
+      const maxRangeValue = document.getElementById('maxRangeValue');
+      const sliderTrack = document.getElementById('sliderTrack');
+
+      function updateSlider() {
+        let minVal = parseInt(minRange.value, 10);
+        let maxVal = parseInt(maxRange.value, 10);
+        // Ensure the smaller number is min, the bigger is max
+        if (minVal > maxVal) {
+          [minVal, maxVal] = [maxVal, minVal];
+        }
+        minRangeValue.textContent = minVal;
+        maxRangeValue.textContent = maxVal;
+
+        // Position the numeric bubbles
+        const rangeWidth = minRange.offsetWidth; 
+        const thumbPosMin = (minVal / 120) * rangeWidth;
+        const thumbPosMax = (maxVal / 120) * rangeWidth;
+        minRangeValue.style.left = thumbPosMin + 'px';
+        maxRangeValue.style.left = thumbPosMax + 'px';
+
+        // Highlight track
+        const percentMin = (minVal / 120) * 100;
+        const percentMax = (maxVal / 120) * 100;
+        sliderTrack.style.left = percentMin + '%';
+        sliderTrack.style.width = (percentMax - percentMin) + '%';
+
+        applyFilters();
+      }
+      minRange.addEventListener('input', updateSlider);
+      maxRange.addEventListener('input', updateSlider);
+      updateSlider();
+
+      // Also set up custom toggle groups for Type
+      const typeButtons = document.querySelectorAll('.type-toggle-group button');
+      typeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-value');
+          const radio = document.querySelector(`input[name="filterType"][value="${val}"]`);
+          if (radio) {
+            radio.checked = true;
+            applyFilters();
+          }
+          typeButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+      typeButtons[0].classList.add('active'); // "all"
+
+      // Orientation toggles
+      const orientationButtons = document.querySelectorAll('.orientation-toggle-group button');
+      orientationButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-value');
+          const radio = document.querySelector(`input[name="filterOrientation"][value="${val}"]`);
+          if (radio) {
+            radio.checked = true;
+            applyFilters();
+          }
+          orientationButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+      orientationButtons[0].classList.add('active'); // "all"
+
+      // ==== EXAMPLE: Data-based generation of new items (videos / audios) ====
+      // (You can fill these arrays with your own data, and the items will appear automatically.)
+
+      // 1. Data arrays
+      // Just supply the minimal fields needed. For videos: { id, src, thumbnail, orientation, length }
+      // For audios: { id, src, length, info (optional) }
+      const remindersData = [
+         {
+           id: "rem1",
+           src: "https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/Snapinst.app_video_AQNhVLdTAL3F4JJ7GadUOZMWhyGagXh2P0Pir8TGDGfml2hFoilAQIjCne9qftZ8DWh2BOLkR_s3rkM74iePFOZ9WbnrjzVtq_an7Fw.mp4",
+           thumbnail: "https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-20+110928.png",
+           orientation: "portrait", // or "landscape"
+           length: 2
+         }
+      ];
+
+      const educationData = [
+        // Example:
+        // {
+        //   id: "newEduVideo2",
+        //   src: "https://example.com/edu/video2.mp4",
+        //   thumbnail: "https://example.com/edu/thumb2.jpg",
+        //   orientation: "landscape",
+        //   length: 45
+        // }
+      ];
+
+      const favRecitationsAudio = [
+        // Example:
+        // {
+        //   id: "myNewRecitation1",
+        //   src: "https://example.com/audio1.mp3",
+        //   length: 5,
+        //   info: "Surah 99, Az-Zalzalah"
+        // }
+      ];
+
+      const salahRecordingsAudio = [
+        // Example:
+        // {
+        //   id: "myNewSalahAudio1",
+        //   src: "https://example.com/salahAudio1.mp3",
+        //   length: 4,
+        //   info: "Sheikh So-and-so"
+        // }
+      ];
+
+      // 2. Functions to create the HTML automatically
+
+      // For new videos
+      function createVideoGridItem(item) {
+        const div = document.createElement('div');
+        div.classList.add('grid-item');
+        // data attributes for filters + completed checks
+        div.setAttribute('data-video-id', item.id);
+        div.setAttribute('data-video-src', item.src);
+        div.setAttribute('data-type', 'video');
+        div.setAttribute('data-orientation', item.orientation || 'portrait');
+        div.setAttribute('data-length', item.length || '1');
+
+        // styling
+        div.style.backgroundImage = `url('${item.thumbnail}')`;
+
+        // event handlers
+        div.onclick = () => openOverlay(item.id, item.src);
+        div.onmouseover = startPreview;
+        div.onmouseleave = stopPreview;
+
+        return div;
+      }
+
+      // For new audios
+      function createAudioPlayer(item) {
+        // We'll build a voice-note-container + voice-note-player structure
+        const container = document.createElement('div');
+        container.classList.add('voice-note-container');
+
+        // The player block
+        const player = document.createElement('div');
+        player.classList.add('voice-note-player', 'paused');
+        player.id = item.id;
+        player.dataset.type = "audio";
+        player.dataset.orientation = "none";
+        player.dataset.length = item.length || "0";
+
+        // Build waveform bars
+        let barsHTML = '';
+        for (let i=1; i<=90; i++){
+          barsHTML += `<div class="wave-bar" style="--i:${i}"></div>`;
+        }
+
+        // Use item.info if provided
+        const infoText = item.info ? item.info : "";
+
+        // Insert the inner HTML
+        player.innerHTML = `
+          <div class="player-top-row">
+            <div class="play-pause-btn" onclick="togglePlayGeneric('${item.id}')">
+              <svg class="icon icon-play" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              <svg class="icon icon-pause" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+              </svg>
+            </div>
+            <div class="waveform" id="waveform_${item.id}">
+              ${barsHTML}
+            </div>
+            <div class="time-display" id="timeDisplay_${item.id}">00:00 / 00:00</div>
+          </div>
+          <div class="recording-info">${infoText}</div>
+          <audio id="audio_${item.id}" src="${item.src}"></audio>
+        `;
+
+        // append
+        container.appendChild(player);
+        return container;
+      }
+
+      // 3. We add them to the page in the correct place
+      // For Reminders
+      const remindersGridExtra = document.getElementById('remindersGridExtra');
+      remindersData.forEach(item => {
+        const gridItem = createVideoGridItem(item);
+        remindersGridExtra.appendChild(gridItem);
+      });
+
+      // For Education
+      const educationGridExtra = document.getElementById('educationGridExtra');
+      educationData.forEach(item => {
+        const gridItem = createVideoGridItem(item);
+        educationGridExtra.appendChild(gridItem);
+      });
+
+      // For Fav Recitations
+      const favRecitationsExtra = document.getElementById('favRecitationsExtra');
+      favRecitationsAudio.forEach(item => {
+        const audioElem = createAudioPlayer(item);
+        favRecitationsExtra.appendChild(audioElem);
+        // randomize wavebars
+        const waveContainer = audioElem.querySelector(`#waveform_${item.id}`);
+        const bars = waveContainer.querySelectorAll('.wave-bar');
+        bars.forEach(bar => {
+          const randomHeight = Math.floor(Math.random() * 31) + 10;
+          bar.style.height = randomHeight + 'px';
+        });
+      });
+
+      // For Salah Recordings
+      const salahRecordingsExtra = document.getElementById('salahRecordingsExtra');
+      salahRecordingsAudio.forEach(item => {
+        const audioElem = createAudioPlayer(item);
+        salahRecordingsExtra.appendChild(audioElem);
+        // randomize wavebars
+        const waveContainer = audioElem.querySelector(`#waveform_${item.id}`);
+        const bars = waveContainer.querySelectorAll('.wave-bar');
+        bars.forEach(bar => {
+          const randomHeight = Math.floor(Math.random() * 31) + 10;
+          bar.style.height = randomHeight + 'px';
+        });
+      });
+
+      // 4. Generic togglePlay function for new audio
+      // (We will mimic your existing togglePlay1/togglePlay2 structure, but handle ID dynamically.)
+      window.togglePlayGeneric = function (playerId) {
+        currentlyActiveItem = playerId;
+        const playerDiv = document.getElementById(playerId);
+        if (!playerDiv) return;
+        const audioEl = document.getElementById(`audio_${playerId}`);
+        if (!audioEl) return;
+
+        if (audioEl.paused) {
+          audioEl.play();
+        } else {
+          audioEl.pause();
+        }
+
+        // we can do the same event listeners for loadedmetadata, timeupdate, etc. dynamically
+        // or handle them once below:
+        audioEl.addEventListener('loadedmetadata', () => {
+          const dur = formatTime(audioEl.duration);
+          const timeDisplay = document.getElementById(`timeDisplay_${playerId}`);
+          if (timeDisplay) {
+            timeDisplay.textContent = `00:00 / ${dur}`;
+          }
+        });
+        audioEl.addEventListener('play', () => {
+          playerDiv.classList.remove('paused');
+          const pIcon = playerDiv.querySelector('.icon-play');
+          const sIcon = playerDiv.querySelector('.icon-pause');
+          if (pIcon) pIcon.style.opacity = '0';
+          if (sIcon) sIcon.style.opacity = '1';
+        });
+        audioEl.addEventListener('pause', () => {
+          playerDiv.classList.add('paused');
+          const pIcon = playerDiv.querySelector('.icon-play');
+          const sIcon = playerDiv.querySelector('.icon-pause');
+          if (pIcon) pIcon.style.opacity = '1';
+          if (sIcon) sIcon.style.opacity = '0';
+        });
+        audioEl.addEventListener('timeupdate', () => {
+          const cur = formatTime(audioEl.currentTime);
+          const dur = formatTime(audioEl.duration);
+          const timeDisplay = document.getElementById(`timeDisplay_${playerId}`);
+          if (timeDisplay) {
+            timeDisplay.textContent = `${cur} / ${dur}`;
+          }
+        });
+        audioEl.addEventListener('ended', () => {
+          showCompletedButton();
+        });
+
+        // If user clicks the waveform, scrub:
+        const waveDiv = document.getElementById(`waveform_${playerId}`);
+        if (waveDiv) {
+          waveDiv.onclick = (e) => {
+            const rect = waveDiv.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const fraction = clickX / rect.width;
+            if (!isNaN(audioEl.duration)) {
+              audioEl.currentTime = fraction * audioEl.duration;
+            }
+          };
+        }
+      };
+
+      // Re-apply filters so newly created items obey the filter
+      applyFilters();
     });
 
-    // Add Escape key listener to close video overlay
-    document.addEventListener('keydown', function(e) {
-      if (e.key === "Escape") {
-        const overlay = document.getElementById('videoOverlay');
-        if (overlay && overlay.classList.contains('active')) {
-          closeOverlay(e);
+    // Filter logic
+    function applyFilters() {
+      const typeValue = document.querySelector('input[name="filterType"]:checked').value;
+      const orientationValue = document.querySelector('input[name="filterOrientation"]:checked').value;
+      const minVal = parseInt(document.getElementById('minRange').value, 10);
+      const maxVal = parseInt(document.getElementById('maxRange').value, 10);
+      const rangeMin = Math.min(minVal, maxVal);
+      const rangeMax = Math.max(minVal, maxVal);
+
+      const activeContent = document.querySelector('.content.active');
+      if (!activeContent) return;
+
+      const items = activeContent.querySelectorAll('.grid-item, .voice-note-player');
+      items.forEach(item => {
+        const dataType = item.getAttribute('data-type') || 'video';
+        const dataOrientation = item.getAttribute('data-orientation') || 'none';
+        const dataLength = parseInt(item.getAttribute('data-length') || '0', 10);
+
+        const passType = (typeValue === 'all' || typeValue === dataType);
+        const passOrientation = (orientationValue === 'all' || orientationValue === dataOrientation);
+        const passLength = (dataLength >= rangeMin && dataLength <= rangeMax);
+
+        if (passType && passOrientation && passLength) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
         }
+      });
+    }
+
+    // Listen for Escape key to close
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('videoOverlay').classList.contains('active')) {
+        closeOverlay();
       }
     });
   </script>
