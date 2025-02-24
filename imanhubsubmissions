@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iman Hub Submission</title>
+  <style>
+    /* -------------------------- 
+       RESET & BASE STYLES 
+    --------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      color: #ffffff;  /* Light text for dark background */
+      overflow: hidden; /* We'll handle scrolling if content grows larger */
+    }
+
+    /* 
+      DYNAMIC BACKGROUND GRADIENT 
+      Creates a subtle moving dark gradient 
+    */
+    body {
+      background: linear-gradient(45deg, #121212, #1e1e1e, #2c2c2c, #121212);
+      background-size: 400% 400%;
+      animation: gradientBackground 18s ease infinite;
+    }
+    @keyframes gradientBackground {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* 
+      SCROLLABLE CONTAINER 
+      If content grows too large, allow scroll 
+    */
+    .scroll-container {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* -------------------------- 
+       CONTAINER 
+    --------------------------- */
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      animation: fadeIn 0.6s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* -------------------------- 
+       TITLE 
+    --------------------------- */
+    .title {
+      font-size: 2.2rem;
+      margin-bottom: 24px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255,255,255,0.15);
+      animation: popIn 0.8s ease forwards;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    @keyframes popIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* -------------------------- 
+       FORM 
+    --------------------------- */
+    .form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 500px;
+      gap: 20px;
+      background: rgba(30, 30, 30, 0.85);
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: slideUp 0.6s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .form label {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    select,
+    input[type="text"] {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      outline: none;
+      font-size: 1rem;
+      background-color: #2c2c2c;
+      color: #ffffff;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    select:hover,
+    input[type="text"]:hover {
+      background-color: #3a3a3a;
+    }
+
+    select:focus,
+    input[type="text"]:focus {
+      background-color: #454545;
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* --------------------------
+       STAR RATING WRAPPER
+    --------------------------- */
+    .star-rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stars {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .star {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #888;
+      transition: transform 0.2s ease;
+    }
+    .star:hover {
+      transform: scale(1.1);
+    }
+    .star.filled {
+      color: #fbc531;
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+    }
+    .rating-value {
+      font-size: 1rem;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    /* -------------------------- 
+       BUTTON STYLES 
+    --------------------------- */
+    .btn {
+      background-color: #5fa648;
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover {
+      background-color: #4e883c;
+      transform: translateY(-2px);
+    }
+
+    /* -------------------------- 
+       SUBMIT SUCCESS MESSAGE 
+    --------------------------- */
+    .success-message {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+      margin-top: 40px;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .success-message h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.15);
+    }
+
+    .success-message .btn-another {
+      background-color: #3c72a6;
+      color: #fff;
+      padding: 14px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .success-message .btn-another:hover {
+      background-color: #345f88;
+      transform: translateY(-2px);
+    }
+
+    /* --------------------------
+       LOADING OVERLAY & BAR
+    --------------------------- */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-bar {
+      width: 60%;
+      max-width: 300px;
+      height: 8px;
+      background: #333;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .loading-progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #5fa648, #7bc36b, #5fa648);
+      background-size: 200% 100%;
+      animation: loadingProgress 2s infinite linear, loadingFill 2s forwards;
+    }
+
+    /* Animate the color shift in the bar */
+    @keyframes loadingProgress {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 200% 0%;
+      }
+    }
+
+    /* Animate the bar fill to 100% over 2 seconds */
+    @keyframes loadingFill {
+      0% {
+        width: 0%;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+
+    .loading-text {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.15);
+      animation: fadeInLoading 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes fadeInLoading {
+      0% {
+        opacity: 0.6;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* -------------------------- 
+       MEDIA QUERIES 
+    --------------------------- */
+    @media (max-width: 480px) {
+      .title {
+        font-size: 1.8rem;
+      }
+      .form {
+        padding: 20px;
+      }
+      .loading-bar {
+        width: 80%;
+      }
+      .star {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-container">
+    <div class="container">
+
+      <!-- Title / Greeting -->
+      <h1 class="title">السلام عليكم</h1>
+
+      <!-- Form -->
+      <form class="form" id="imanForm">
+        
+        <!-- Which type of content are you sharing? -->
+        <div class="form-group" id="sectionTypeGroup">
+          <label for="sectionType">Which type of content are you sharing?</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="sectionType" value="Reels" required />
+              Reels
+            </label>
+            <label>
+              <input type="radio" name="sectionType" value="Reminders" required />
+              Reminders
+            </label>
+            <label>
+              <input type="radio" name="sectionType" value="Quran Recitations" required />
+              Qur'an Recitations
+            </label>
+            <label>
+              <input type="radio" name="sectionType" value="Salah Recordings" required />
+              Salah Recordings
+            </label>
+          </div>
+        </div>
+
+        <!-- What form does the content take? -->
+        <div class="form-group" id="contentFormGroup">
+          <label for="contentForm">What form does the content take?</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="contentForm" value="Audio" required />
+              Audio
+            </label>
+            <label>
+              <input type="radio" name="contentForm" value="Video" required />
+              Video with Audio
+            </label>
+          </div>
+        </div>
+
+        <!-- Audio Quality Rating -->
+        <div class="form-group" id="audioQualityGroup">
+          <label>How would you rate the audio quality?</label>
+          <div class="star-rating" id="audioRating">
+            <!-- Hidden range input to store the rating, required, default 3.0 -->
+            <input
+              type="range"
+              name="audioQuality"
+              id="audioQualityInput"
+              min="1"
+              max="10"
+              step="1"
+              value="3"
+              required
+              style="display: none;"
+            />
+
+            <!-- Visible star icons -->
+            <div class="stars" id="audioStars">
+              <!-- We'll have 5 clickable stars, each can handle half increments -->
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+              <span class="star" data-value="6">★</span>
+              <span class="star" data-value="7">★</span>
+              <span class="star" data-value="8">★</span>
+              <span class="star" data-value="9">★</span>
+              <span class="star" data-value="10">★</span>
+            </div>
+
+            <!-- Display numeric rating -->
+            <span class="rating-value" id="audioRatingValue">3</span>
+          </div>
+        </div>
+
+        <!-- Video Quality Rating (Only shows if user selected 'Video') -->
+        <div class="form-group" id="videoQualityGroup" style="display: none;">
+          <label>How would you rate the video quality?</label>
+          <div class="star-rating" id="videoRating">
+            <!-- Hidden range input for video rating -->
+            <input
+              type="range"
+              name="videoQuality"
+              id="videoQualityInput"
+              min="1"
+              max="10"
+              step="1.0"
+              value="3"
+              style="display: none;"
+            />
+
+            <!-- Visible star icons -->
+            <div class="stars" id="videoStars">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+              <span class="star" data-value="6">★</span>
+              <span class="star" data-value="7">★</span>
+              <span class="star" data-value="8">★</span>
+              <span class="star" data-value="9">★</span>
+              <span class="star" data-value="10">★</span>
+            </div>
+
+            <!-- Display numeric rating -->
+            <span class="rating-value" id="videoRatingValue">3.0</span>
+          </div>
+        </div>
+
+        <!-- What's the link to the content? (No validation requirement) -->
+        <div class="form-group" id="linkGroup">
+          <label for="contentLink">What's the link to the content?</label>
+          <input 
+            type="text" 
+            id="contentLink" 
+            name="contentLink" 
+            placeholder="Enter your link here..." 
+          />
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" class="btn">SUBMIT</button>
+      </form>
+
+      <!-- Success Message -->
+      <div class="success-message" id="successMessage">
+        <h2>May Allah ﷻ Accept This ❤️</h2>
+        <button class="btn-another" id="btnAnother">Submit Another</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <p class="loading-text">Loading...</p>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
+  </div>
+
+<script>
+  // -------------------------------
+  // Element references
+  // -------------------------------
+  const imanForm          = document.getElementById("imanForm");
+  const successMessage    = document.getElementById("successMessage");
+  const btnAnother        = document.getElementById("btnAnother");
+  const videoQualityGroup = document.getElementById("videoQualityGroup");
+  const contentFormRadios = document.getElementsByName("contentForm");
+  const loadingOverlay    = document.getElementById("loadingOverlay");
+
+  // AUDIO STAR RATING
+  const audioQualityInput = document.getElementById("audioQualityInput");
+  const audioStars        = document.getElementById("audioStars").querySelectorAll(".star");
+  const audioRatingValue  = document.getElementById("audioRatingValue");
+
+  // VIDEO STAR RATING
+  const videoQualityInput = document.getElementById("videoQualityInput");
+  const videoStars        = document.getElementById("videoStars").querySelectorAll(".star");
+  const videoRatingValue  = document.getElementById("videoRatingValue");
+
+  // -------------------------------
+  // Show or Hide Video Quality
+  // -------------------------------
+  contentFormRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+      if (radio.value === "Video") {
+        videoQualityGroup.style.display = "block";
+        // Mark it required
+        videoQualityInput.required = true;
+      } else {
+        videoQualityGroup.style.display = "none";
+        // Not required if not using
+        videoQualityInput.required = false;
+      }
+    });
+  });
+
+  // -------------------------------
+  // Star Rating Utility Functions
+  // -------------------------------
+  function updateStars(rating, starsNodeList) {
+    // rating is numeric, e.g. 3.5
+    // starsNodeList is a NodeList of .star spans with data-value
+    starsNodeList.forEach(star => {
+      const starValue = parseFloat(star.getAttribute("data-value"));
+      if (rating >= starValue) {
+        // fully filled
+        star.classList.add("filled");
+      } else {
+        star.classList.remove("filled");
+      }
+    });
+  }
+
+  // Initialize star ratings with default value
+  updateStars(parseFloat(audioQualityInput.value), audioStars);
+  updateStars(parseFloat(videoQualityInput.value), videoStars);
+
+  // -------------------------------
+  // Audio Star Click Handler
+  // -------------------------------
+  audioStars.forEach(star => {
+    star.addEventListener("click", () => {
+      const val = parseFloat(star.getAttribute("data-value"));
+      audioQualityInput.value = val;
+      audioRatingValue.textContent = val.toFixed(1);
+      updateStars(val, audioStars);
+    });
+  });
+
+  // -------------------------------
+  // Video Star Click Handler
+  // -------------------------------
+  videoStars.forEach(star => {
+    star.addEventListener("click", () => {
+      const val = parseFloat(star.getAttribute("data-value"));
+      videoQualityInput.value = val;
+      videoRatingValue.textContent = val.toFixed(1);
+      updateStars(val, videoStars);
+    });
+  });
+
+  // -------------------------------
+  // Form Submit
+  // -------------------------------
+  imanForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // Show loading overlay
+    loadingOverlay.classList.add("active");
+
+    // Collect form data
+    const formData = new FormData(this);
+
+    // Construct final object
+    const data = {
+      sectionType: formData.get("sectionType"),
+      contentForm: formData.get("contentForm"),
+      audioQuality: formData.get("audioQuality"),     // e.g. "3.5"
+      videoQuality: formData.get("videoQuality") || "N/A",
+      contentLink:  formData.get("contentLink")       // No validation requirement
+    };
+
+    // Send data to Google Sheets via Apps Script Web App
+    fetch("https://script.google.com/macros/s/AKfycbxhkvdPfyBbx5tCm5zOsXDQFpycCdrIkxUd3czvkG5RaIYNOJCFdCh1TTXhWPkDM1anqg/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(data),
+    })
+    .then(() => {
+      // Hide the loading overlay
+      loadingOverlay.classList.remove("active");
+      // Hide form & show success message
+      imanForm.style.display = "none";
+      successMessage.style.display = "flex";
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      // Hide the loading overlay if there's an error
+      loadingOverlay.classList.remove("active");
+      alert("An error occurred. Please try again.");
+    });
+  });
+
+  // -------------------------------
+  // Submit Another
+  // -------------------------------
+  btnAnother.addEventListener("click", function() {
+    imanForm.reset();
+
+    // Reset star ratings to defaults
+    audioQualityInput.value = 3;
+    videoQualityInput.value = 3;
+    audioRatingValue.textContent = "3.0";
+    videoRatingValue.textContent = "3.0";
+    updateStars(3, audioStars);
+    updateStars(3, videoStars);
+
+    // Hide videoQualityGroup by default
+    videoQualityGroup.style.display = "none";
+    videoQualityInput.required = false;
+
+    // Show the form again, hide success
+    imanForm.style.display = "flex";
+    successMessage.style.display = "none";
+  });
+</script>
+
+</body>
+</html>
