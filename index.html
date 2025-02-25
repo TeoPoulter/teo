@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teo's Tools</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #282828, #1a1a1a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        /* Title Animation */
+        h1 {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(120deg, #FFD700, #FFBF00, #FFD700);
+            background-size: 200% 200%;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            text-fill-color: transparent;
+            animation: slideIn 1.5s ease-out forwards, rippleEffect 4s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rippleEffect {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Icon Container */
+        .category-container {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        /* Icon Styles with Animation */
+        .category {
+            font-size: 4rem;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: rgba(31, 31, 31, 0.8);
+            border-radius: 50%;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            animation: bounceIn 2s ease-out forwards;
+            opacity: 0;
+            animation-fill-mode: forwards; /* Ensures it stays on screen */
+        }
+
+        /* Bounce-in Animation for Icons */
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Delay Staggering for Each Icon, after title finishes */
+        .category:nth-child(1) {
+            animation-delay: 2s; /* Starts 2 seconds after the title */
+        }
+
+        .category:nth-child(2) {
+            animation-delay: 2.3s; /* Starts slightly after the first icon */
+        }
+
+        /* Icon Hover Effects */
+        .category:hover {
+            transform: scale(1.2);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .display-area-wrapper {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .display-area {
+            position: relative;
+            width: 100%;
+            margin-top: 50px;
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .page-link {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            width: calc(33.333% - 20px);
+            height: 80px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-link span {
+            margin-left: 10px;
+        }
+
+        .page-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Special Styling for "The Truth" */
+        .page-link.truth {
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .page-link.truth:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .page-link {
+                font-size: 1.2rem;
+                width: calc(50% - 20px);
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .category-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .page-link {
+                font-size: 1rem;
+                width: calc(100% - 20px);
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Teo's Tools</h1>
+
+    <div class="category-container">
+        <!-- Tools Category -->
+        <div class="category" id="tools" aria-label="Tools Section">
+            🛠️
+        </div>
+
+        <!-- Islamic Category -->
+        <div class="category" id="islamic" aria-label="Islamic Section">
+            🕋
+        </div>
+    </div>
+
+    <div class="display-area-wrapper">
+        <div class="display-area" id="display-area">
+            <!-- Tools Submenu Links -->
+            <a href="memorization" class="page-link" aria-label="Memorization Tool">🧠 <span>Memorization</span></a>
+            <a href="audiomemorizer" class="page-link" aria-label="Playback Master Tool">🎧 <span>Playback Tools</span></a>
+            <a href="whiteboard" class="page-link" aria-label="Infinite Whiteboard Tool">📝 <span>Whiteboard</span></a>
+            <a href="exercise" class="page-link" aria-label="Interval Timer Tool">⏱️ <span>Interval Timer</span></a>
+
+            <!-- Islamic Submenu Links -->
+            <a href="/thetruth" class="page-link truth" aria-label="The Truth">🔑 <span>The Truth</span></a>
+            <!-- NEW LINK: Iman Hub -->
+            <a href="imanhub" class="page-link" aria-label="Iman Hub">🤲 <span>Iman Hub</span></a>
+            
+            <a href="quran" class="page-link" aria-label="The Holy Qur'an">🕋 <span>The Holy Qur'an</span></a>
+            <a href="aisha" class="page-link" aria-label="Aisha">💍 <span>Aisha</span></a>
+            <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Heaven In Islam</span></a>
+            <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
+            <a href="thehistoryofpalestine" class="page-link" aria-label="History of Palestine">🌍 <span>Palestine's History</span></a>
+            <a href="khutbah" class="page-link" aria-label="Khutbah Guidance">🕌 <span>Jummu'ah Khutbah</span></a>
+            <a href="islamicphrases" class="page-link" aria-label="Islamic Phrases">💬 <span>Islamic Phrases</span></a>
+        </div>
+    </div>
+
+    <script>
+        const toolsPages = [
+            "Memorization", 
+            "Playback Tools", 
+            "Whiteboard", 
+            "Interval Timer"
+        ];
+
+        // Updated to include "Iman Hub" after "The Truth"
+        const islamicPages = [
+            "The Truth",
+            "Iman Hub",
+            "The Holy Qur'an",
+            "Aisha",
+            "Heaven In Islam",
+            "Islam's History",
+            "Palestine's History",
+            "Khutbah Guidance",
+            "Islamic Phrases"
+        ];
+
+        const displayArea = document.getElementById('display-area');
+        const pageLinks = document.querySelectorAll('.page-link');
+        let timeout;
+
+        function showLinks(emojiType) {
+            clearTimeout(timeout);
+            displayArea.style.display = 'flex';
+            displayArea.style.animation = 'fadeIn 0.5s forwards';
+            pageLinks.forEach(link => link.style.display = 'none');
+
+            if (emojiType === 'tools') {
+                toolsPages.forEach((page, index) => {
+                    const link = pageLinks[index];
+                    if (link) {
+                        link.style.display = 'flex';
+                    }
+                });
+            } else if (emojiType === 'islamic') {
+                islamicPages.forEach((page, index) => {
+                    const link = pageLinks[toolsPages.length + index];
+                    if (link) {
+                        link.style.display = 'flex';
+                    }
+                });
+            }
+
+            timeout = setTimeout(() => {
+                fadeOutLinks();
+            }, 10000);
+        }
+
+        function fadeOutLinks() {
+            displayArea.style.animation = 'fadeOut 0.5s forwards';
+            setTimeout(() => {
+                displayArea.style.display = 'none';
+                displayArea.style.animation = '';
+            }, 500);
+        }
+
+        // Add event listeners for both hover and touch/click events
+        const toolsIcon = document.getElementById('tools');
+        const islamicIcon = document.getElementById('islamic');
+
+        toolsIcon.addEventListener('mouseenter', () => showLinks('tools'));
+        islamicIcon.addEventListener('mouseenter', () => showLinks('islamic'));
+
+        toolsIcon.addEventListener('click', () => showLinks('tools'));
+        toolsIcon.addEventListener('touchstart', () => showLinks('tools'));
+        islamicIcon.addEventListener('click', () => showLinks('islamic'));
+        islamicIcon.addEventListener('touchstart', () => showLinks('islamic'));
+    </script>
+
+</body>
+</html>
