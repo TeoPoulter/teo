@@ -119,6 +119,10 @@
             animation-delay: 2.3s; /* Starts slightly after the first icon */
         }
 
+        .category:nth-child(3) {
+            animation-delay: 2.6s; /* Starts slightly after the second icon */
+        }
+
         /* Icon Hover Effects */
         .category:hover {
             transform: scale(1.2);
@@ -224,7 +228,12 @@
             🛠️
         </div>
 
-        <!-- Islamic Category -->
+        <!-- Knowledge Category (formerly the second section) -->
+        <div class="category" id="knowledge" aria-label="Knowledge Section">
+            📚
+        </div>
+
+        <!-- New Islamic Category (third section) -->
         <div class="category" id="islamic" aria-label="Islamic Section">
             🕋
         </div>
@@ -238,18 +247,19 @@
             <a href="whiteboard" class="page-link" aria-label="Infinite Whiteboard Tool">📝 <span>Whiteboard</span></a>
             <a href="exercise" class="page-link" aria-label="Interval Timer Tool">⏱️ <span>Interval Timer</span></a>
 
-            <!-- Islamic Submenu Links -->
+            <!-- Knowledge Submenu Links (second section) -->
             <a href="/thetruth" class="page-link truth" aria-label="The Truth">🔑 <span>The Truth</span></a>
-            <!-- NEW LINK: Iman Hub -->
-            <a href="imanhub" class="page-link" aria-label="Iman Hub">🤲 <span>Iman Hub</span></a>
-            
-            <a href="quran" class="page-link" aria-label="The Holy Qur'an">🕋 <span>The Holy Qur'an</span></a>
             <a href="aisha" class="page-link" aria-label="Aisha">💍 <span>Aisha</span></a>
             <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Heaven In Islam</span></a>
             <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
             <a href="thehistoryofpalestine" class="page-link" aria-label="History of Palestine">🌍 <span>Palestine's History</span></a>
             <a href="khutbah" class="page-link" aria-label="Khutbah Guidance">🕌 <span>Jummu'ah Khutbah</span></a>
             <a href="islamicphrases" class="page-link" aria-label="Islamic Phrases">💬 <span>Islamic Phrases</span></a>
+
+            <!-- Islamic Submenu Links (third section) -->
+            <a href="imanhub" class="page-link" aria-label="Iman Hub">🤲 <span>Iman Hub</span></a>
+            <a href="quran" class="page-link" aria-label="The Holy Qur'an">🕋 <span>The Holy Qur'an</span></a>
+            <a href="https://teos.tools/WISEtimings" class="page-link" aria-label="WISE Timings">⏳ <span>WISE Timings</span></a>
         </div>
     </div>
 
@@ -261,17 +271,22 @@
             "Interval Timer"
         ];
 
-        // Updated to include "Iman Hub" after "The Truth"
-        const islamicPages = [
+        // Now for Knowledge (removed Qur'an and Iman Hub from here):
+        const knowledgePages = [
             "The Truth",
-            "Iman Hub",
-            "The Holy Qur'an",
             "Aisha",
             "Heaven In Islam",
             "Islam's History",
             "Palestine's History",
             "Khutbah Guidance",
             "Islamic Phrases"
+        ];
+
+        // New Islamic array with Qur'an, Iman Hub, and WISE Timings
+        const islamicPages = [
+            "Iman Hub",
+            "The Holy Qur'an",
+            "WISE Timings"
         ];
 
         const displayArea = document.getElementById('display-area');
@@ -291,9 +306,16 @@
                         link.style.display = 'flex';
                     }
                 });
+            } else if (emojiType === 'knowledge') {
+                knowledgePages.forEach((page, index) => {
+                    const link = pageLinks[toolsPages.length + index];
+                    if (link) {
+                        link.style.display = 'flex';
+                    }
+                });
             } else if (emojiType === 'islamic') {
                 islamicPages.forEach((page, index) => {
-                    const link = pageLinks[toolsPages.length + index];
+                    const link = pageLinks[toolsPages.length + knowledgePages.length + index];
                     if (link) {
                         link.style.display = 'flex';
                     }
@@ -313,15 +335,20 @@
             }, 500);
         }
 
-        // Add event listeners for both hover and touch/click events
+        // Add event listeners (hover + click/touch) for all three sections
         const toolsIcon = document.getElementById('tools');
+        const knowledgeIcon = document.getElementById('knowledge');
         const islamicIcon = document.getElementById('islamic');
 
         toolsIcon.addEventListener('mouseenter', () => showLinks('tools'));
-        islamicIcon.addEventListener('mouseenter', () => showLinks('islamic'));
-
         toolsIcon.addEventListener('click', () => showLinks('tools'));
         toolsIcon.addEventListener('touchstart', () => showLinks('tools'));
+
+        knowledgeIcon.addEventListener('mouseenter', () => showLinks('knowledge'));
+        knowledgeIcon.addEventListener('click', () => showLinks('knowledge'));
+        knowledgeIcon.addEventListener('touchstart', () => showLinks('knowledge'));
+
+        islamicIcon.addEventListener('mouseenter', () => showLinks('islamic'));
         islamicIcon.addEventListener('click', () => showLinks('islamic'));
         islamicIcon.addEventListener('touchstart', () => showLinks('islamic'));
     </script>
