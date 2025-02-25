@@ -3,327 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teo's Tools</title>
-    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/peUGC7J.jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <title>WISE Salah Timings</title>
     <style>
-        /* Base Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #282828, #1a1a1a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #ffffff;
+        /* General Reset */
+        * {
             margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-        }
-
-        /* Title Animation */
-        h1 {
-            font-size: 3.5rem;
-            text-align: center;
-            margin-bottom: 40px;
-            background: linear-gradient(120deg, #FFD700, #FFBF00, #FFD700);
-            background-size: 200% 200%;
-            color: transparent;
-            background-clip: text;
-            -webkit-background-clip: text;
-            text-fill-color: transparent;
-            animation: slideIn 1.5s ease-out forwards, rippleEffect 4s ease-in-out infinite;
-            opacity: 0;
-        }
-
-        @keyframes slideIn {
-            0% {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes rippleEffect {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        /* Icon Container */
-        .category-container {
-            display: flex;
-            gap: 60px;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 50px;
-        }
-
-        /* Icon Styles with Animation */
-        .category {
-            font-size: 4rem;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100px;
-            height: 100px;
-            background: rgba(31, 31, 31, 0.8);
-            border-radius: 50%;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            animation: bounceIn 2s ease-out forwards;
-            opacity: 0;
-            animation-fill-mode: forwards; /* Ensures it stays on screen */
-        }
-
-        /* Bounce-in Animation for Icons */
-        @keyframes bounceIn {
-            0% {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Delay Staggering for Each Icon, after title finishes */
-        .category:nth-child(1) {
-            animation-delay: 2s; /* Starts 2 seconds after the title */
-        }
-
-        .category:nth-child(2) {
-            animation-delay: 2.3s; /* Starts slightly after the first icon */
-        }
-
-        /* Icon Hover Effects */
-        .category:hover {
-            transform: scale(1.2);
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .display-area-wrapper {
-            max-width: 900px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .display-area {
-            position: relative;
-            width: 100%;
-            margin-top: 50px;
-            display: none;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.5s forwards;
-        }
-
-        .page-link {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 10px;
-            text-align: center;
-            font-size: 1.5rem;
-            text-decoration: none;
-            width: calc(33.333% - 20px);
-            height: 80px;
+            padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Full-screen background */
+        body {
+            background-color: #121212;
+            color: #ffffff;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
         }
 
-        .page-link span {
-            margin-left: 10px;
+        /* Salah Timings Container */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
         }
 
-        .page-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* Special Styling for "The Truth" */
-        .page-link.truth {
-            border: 2px solid #FFD700;
+        /* Header */
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
             color: #FFD700;
-            background-color: rgba(255, 255, 255, 0.05);
         }
 
-        .page-link.truth:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+        /* Salah Timings Table */
+        .prayer-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .page-link {
-                font-size: 1.2rem;
-                width: calc(50% - 20px);
-                height: 60px;
-            }
+        .prayer-table th, .prayer-table td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+            text-align: center;
         }
 
-        @media (max-width: 768px) {
-            .category-container {
-                flex-direction: column;
-                gap: 30px;
-            }
+        .prayer-table th {
+            background-color: #FFD700;
+            color: #000;
+            font-size: 18px;
+        }
 
-            .page-link {
-                font-size: 1rem;
-                width: calc(100% - 20px);
-                height: 60px;
-            }
+        .prayer-table td {
+            font-size: 18px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #bbbbbb;
         }
     </style>
 </head>
 <body>
 
-    <h1>Teo's Tools</h1>
-
-    <div class="category-container">
-        <!-- Tools Category -->
-        <div class="category" id="tools" aria-label="Tools Section">
-            🛠️
-        </div>
-
-        <!-- Islamic Category -->
-        <div class="category" id="islamic" aria-label="Islamic Section">
-            🕋
-        </div>
-    </div>
-
-    <div class="display-area-wrapper">
-        <div class="display-area" id="display-area">
-            <!-- Tools Submenu Links -->
-            <a href="memorization" class="page-link" aria-label="Memorization Tool">🧠 <span>Memorization</span></a>
-            <a href="audiomemorizer" class="page-link" aria-label="Playback Master Tool">🎧 <span>Playback Tools</span></a>
-            <a href="whiteboard" class="page-link" aria-label="Infinite Whiteboard Tool">📝 <span>Whiteboard</span></a>
-            <a href="exercise" class="page-link" aria-label="Interval Timer Tool">⏱️ <span>Interval Timer</span></a>
-
-            <!-- Islamic Submenu Links -->
-            <a href="/thetruth" class="page-link truth" aria-label="The Truth">🔑 <span>The Truth</span></a>
-            <!-- NEW LINK: Iman Hub -->
-            <a href="imanhub" class="page-link" aria-label="Iman Hub">🤲 <span>Iman Hub</span></a>
-            
-            <a href="quran" class="page-link" aria-label="The Holy Qur'an">🕋 <span>The Holy Qur'an</span></a>
-            <a href="aisha" class="page-link" aria-label="Aisha">💍 <span>Aisha</span></a>
-            <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Heaven In Islam</span></a>
-            <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
-            <a href="thehistoryofpalestine" class="page-link" aria-label="History of Palestine">🌍 <span>Palestine's History</span></a>
-            <a href="khutbah" class="page-link" aria-label="Khutbah Guidance">🕌 <span>Jummu'ah Khutbah</span></a>
-            <a href="islamicphrases" class="page-link" aria-label="Islamic Phrases">💬 <span>Islamic Phrases</span></a>
-        </div>
+    <div class="container">
+        <div class="title">📿 WISE Salah Timings 🕌</div>
+        <table class="prayer-table">
+            <thead>
+                <tr>
+                    <th>Prayer</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="prayer-times">
+                <tr><td colspan="2">Loading...</td></tr>
+            </tbody>
+        </table>
+        <div class="footer">Timings update daily | Provided by WISE Mosque</div>
     </div>
 
     <script>
-        const toolsPages = [
-            "Memorization", 
-            "Playback Tools", 
-            "Whiteboard", 
-            "Interval Timer"
-        ];
+async function fetchSalahTimes() {
+    const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8WYvVXVu4IMoe8hJSkkE2f2VSMjqZS5R3kAYcs1xoMYjnSKLgl1VNQUXTjJV5lvMO0B52KTaueizz/pub?output=tsv";
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.text();
+        const rows = data.split("\n").map(row => row.split("\t"));
+        
+        let tableHTML = "";
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i][0] && rows[i][1]) {
+let isAfterDhuhr = i >= 5; // After 5th row (Dhuhr), all times should be 24-hour
+let convertedTime = convertTo24Hour(rows[i][1].trim(), isAfterDhuhr);
 
-        // Updated to include "Iman Hub" after "The Truth"
-        const islamicPages = [
-            "The Truth",
-            "Iman Hub",
-            "The Holy Qur'an",
-            "Aisha",
-            "Heaven In Islam",
-            "Islam's History",
-            "Palestine's History",
-            "Khutbah Guidance",
-            "Islamic Phrases"
-        ];
-
-        const displayArea = document.getElementById('display-area');
-        const pageLinks = document.querySelectorAll('.page-link');
-        let timeout;
-
-        function showLinks(emojiType) {
-            clearTimeout(timeout);
-            displayArea.style.display = 'flex';
-            displayArea.style.animation = 'fadeIn 0.5s forwards';
-            pageLinks.forEach(link => link.style.display = 'none');
-
-            if (emojiType === 'tools') {
-                toolsPages.forEach((page, index) => {
-                    const link = pageLinks[index];
-                    if (link) {
-                        link.style.display = 'flex';
-                    }
-                });
-            } else if (emojiType === 'islamic') {
-                islamicPages.forEach((page, index) => {
-                    const link = pageLinks[toolsPages.length + index];
-                    if (link) {
-                        link.style.display = 'flex';
-                    }
-                });
+                tableHTML += `<tr><td>${rows[i][0]}</td><td>${convertedTime}</td></tr>`;
             }
-
-            timeout = setTimeout(() => {
-                fadeOutLinks();
-            }, 10000);
         }
 
-        function fadeOutLinks() {
-            displayArea.style.animation = 'fadeOut 0.5s forwards';
-            setTimeout(() => {
-                displayArea.style.display = 'none';
-                displayArea.style.animation = '';
-            }, 500);
-        }
+        document.getElementById("prayer-times").innerHTML = tableHTML;
+    } catch (error) {
+        document.getElementById("prayer-times").innerHTML = "<tr><td colspan='2'>Error loading data</td></tr>";
+        console.error("Error fetching Salah times:", error);
+    }
+}
 
-        // Add event listeners for both hover and touch/click events
-        const toolsIcon = document.getElementById('tools');
-        const islamicIcon = document.getElementById('islamic');
+// Function to Convert 12-hour Time to 24-hour
+function convertTo24Hour(time, isAfterDhuhr) {
+    let match = time.match(/(\d+):(\d+)\s?(AM|PM)?/i);
+    if (!match) return time; // If format is invalid, return as is
 
-        toolsIcon.addEventListener('mouseenter', () => showLinks('tools'));
-        islamicIcon.addEventListener('mouseenter', () => showLinks('islamic'));
+    let hours = parseInt(match[1], 10);
+    let minutes = match[2];
+    let meridian = match[3] ? match[3].toUpperCase() : "";
 
-        toolsIcon.addEventListener('click', () => showLinks('tools'));
-        toolsIcon.addEventListener('touchstart', () => showLinks('tools'));
-        islamicIcon.addEventListener('click', () => showLinks('islamic'));
-        islamicIcon.addEventListener('touchstart', () => showLinks('islamic'));
+    if (meridian === "PM" && hours < 12) {
+        hours += 12; // Convert PM hours properly
+    } else if (meridian === "AM" && hours === 12) {
+        hours = 0; // Midnight should be 00:00
+    }
+
+    // If there's no AM/PM but the prayer is after Dhuhr, assume it's PM
+    if (!meridian && isAfterDhuhr && hours < 12) {
+        hours += 12; // Convert times like Maghrib & Isha to 24-hour format
+    }
+
+    return `${hours.toString().padStart(2, "0")}:${minutes}`;
+}
+
+
+
+fetchSalahTimes();
+
     </script>
 
 </body>
