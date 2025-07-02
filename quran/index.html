@@ -1,3694 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Qur'an Sleep Radio and Memorization</title>
-<style>
-/* Import Poppins font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  <meta charset="UTF-8">
+  <title>Qur’an Player</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Reset & Base ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Poppins', sans-serif; }
+    button, select { font-family: inherit; }
 
-
-
-/* FOR EMBEDDING LINK, META INFO */
-    
-<meta property="og:title" content="Qur'an Radio & Player" />
-<meta property="og:description" content="The ultimate Qur'an experience. Listen to your favorite recitations, shuffle surahs, and explore a range of features designed for relaxation and memorization." />
-<meta property="og:image" content="https://i.imgur.com/4aK8b9G.png" />
-<meta property="og:url" content="teos.tools/quran" />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Teo's Tools" />
-
-<!-- Favicon for browser tabs -->
-<link rel="icon" href="https://i.imgur.com/4aK8b9G.png" type="image/png" />
-
-<!-- Mobile-friendly viewport -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
-
-/* Reset default margins and paddings */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* Apply gold shiny outline to Surah list items */
-#surahList li {
-    border: 2px solid #b49f5e;
-    border-radius: 8px;
-    animation: goldPulse 4s infinite ease-in-out;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/* Full-screen wipe overlay with dark, rich, golden-silver gradient and opacity */
-#goldenWipe {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://i.imgur.com/PXsFRVy.png') no-repeat center;
-    background-size: cover;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: smoothWipeWithPause 4s ease-in-out forwards;
-    box-shadow: 0 0 50px rgba(255, 215, 155, 0.5);
-}
-
-
-/* Slowed-down, luxurious wipe animation */
-@keyframes smoothWipeWithPause {
-    0% {
-        transform: translateX(-100%);
+    /* ===== Background ===== */
+    .background {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #000, #000 50%, #b49f5e 100%);
+      z-index: -2;
     }
-    50% {
-        transform: translateX(0);
+    .pattern {
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: url('https://i.imgur.com/rxD6yFb.png') repeat;
+      background-size: 100px 100px;
+      opacity: 0.04;
+      animation: rotate 60s linear infinite;
     }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-
-
-
-/* FOR SURAH BOX SHINE */
-@keyframes goldPulse {
-    0% {
-        border-color: #b49f5e;
-        box-shadow: 0 0 5px #b49f5e;
-    }
-    50% {
-        border-color: #e6c365;
-        box-shadow: 0 0 10px #e6c365;
-    }
-    100% {
-        border-color: #b49f5e;
-        box-shadow: 0 0 5px #b49f5e;
-    }
-}
-l
-
-
-
-
-
-
-/* Shimmer effect for a rich, metallic gradient shift */
-@keyframes darkGoldenShimmer {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Logo styling for dark luxurious animation */
-#wipeLogo {
-    width: 450px;
-    height: auto;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-}
-
-/* Page content fade-in */
-#pageContent {
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
-}
-
-/* Temporarily hide scrollbars during animation */
-body.no-scroll {
-    overflow: hidden;
-}
-
-/* Background container */
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, #000000, #000000 50%, #b49f5e 100%);
-}
-
-/* Rotating geometric pattern */
-.pattern {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: url('https://i.imgur.com/rxD6yFb.png');
-    background-size: 100px 100px;
-    opacity: 0.05;
-    animation: rotate 60s linear infinite;
-}
-
-/* Rotation animation */
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Corner images */
-.corner {
-    position: absolute;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 20vw;
-    height: 20vw;
-    max-width: 250px;
-    max-height: 250px;
-    z-index: 2;
-    filter: grayscale(1) brightness(0.2);
-}
-
-/* Specific positions */
-.top-left {
-    top: 0;
-    left: 0;
-    background-image: url('https://i.imgur.com/8Fx9W9u.png');
-}
-
-.top-right {
-    top: 0;
-    right: 0;
-    background-image: url('https://i.imgur.com/kBZivxG.png');
-}
-
-.bottom-left {
-    bottom: 0;
-    left: 0;
-    background-image: url('https://i.imgur.com/V1z0fyO.png');
-}
-
-.bottom-right {
-    bottom: 0;
-    right: 0;
-    background-image: url('https://i.imgur.com/YuU3nYm.png');
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
+    @keyframes rotate { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
     .corner {
-        width: 35vw;
-        height: 35vw;
+      position: absolute; width: 20vw; height: 20vw;
+      max-width: 250px; max-height: 250px;
+      background-size: contain; background-repeat: no-repeat;
+      filter: grayscale(1) brightness(0.2);
+      z-index: -1;
     }
-}
+    .top-left    { top:0; left:0;     background-image:url('https://i.imgur.com/8Fx9W9u.png'); }
+    .top-right   { top:0; right:0;    background-image:url('https://i.imgur.com/kBZivxG.png'); }
+    .bottom-left { bottom:0; left:0;  background-image:url('https://i.imgur.com/V1z0fyO.png'); }
+    .bottom-right{ bottom:0; right:0; background-image:url('https://i.imgur.com/YuU3nYm.png'); }
 
-/* Radio Player Interface */
-#radio {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 3;
-}
-
-/* Sleep Timer Button */
-.sleep-timer-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#sleepTimerButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    position: relative;
-}
-
-#sleepTimerButton img {
-    width: 400px;
-    height: 80px;
-    border-radius: 20px;
-}
-
-
-
-
-/* Juz Header (collapsible header for each Juz) */
-.juz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.8);
-    margin: 15px 0;
-    padding: 15px;
-    border-radius: 8px;
-    border: 2px solid #b49f5e;
-    box-shadow: 0 0 5px #b49f5e;
-    cursor: pointer;
-    animation: goldPulse 4s infinite ease-in-out;
-}
-
-.juz-header:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 10px #e6c365;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.juz-title {
-    font-size: 1.1em;
-    color: #fff;
-}
-
-.juz-play-button {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.juz-content {
-    margin-left: 20px;
-    display: none; /* Collapsed by default */
-}
-
-.juz-content li {
-    margin: 5px 0;
-}
-
-/* Gold Pulse Animation */
-@keyframes goldPulse {
-    0% {
-        border-color: #b49f5e;
-        box-shadow: 0 0 5px #b49f5e;
+    /* ===== UI Container ===== */
+    .ui-container {
+      position: relative; z-index:1;
+      max-width:500px; margin:2rem auto;
+      padding:2rem;
+      background:#000;
+      border:2px solid #b49f5e;
+      border-radius:12px;
+      box-shadow:0 0 20px rgba(180,159,94,0.5);
+      text-align:center;
     }
-    50% {
-        border-color: #e6c365;
-        box-shadow: 0 0 10px #e6c365;
-    }
-    100% {
-        border-color: #b49f5e;
-        box-shadow: 0 0 5px #b49f5e;
-    }
-}
-
-
-
-
-
-
-
-
-
-.control-button,
-.play-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    margin: 0 10px;
-    position: relative;
-    transition: transform 0.2s;
-}
-
-.control-button img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-}
-
-.play-button img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-}
-
-.control-button:active,
-.play-button:active,
-#sleepTimerButton:active,
-#helpButton:active,
-#switchModeButton:active {
-    transform: scale(0.95);
-}
-
-/* Help and Switch Mode Buttons Container */
-.help-button-container {
-    text-align: center;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
-
-
-/* Controls Container Styles */
-.controls-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 20px; /* Adjust padding as needed */
-    box-sizing: border-box;
-}
-
-.main-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Adjust the new button's styles */
-#newSwitchModeButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    position: relative;
-    margin-left: auto;
-}
-
-#newSwitchModeButton img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-}
-
-#newSwitchModeButton:active {
-    transform: scale(0.95);
-}
-
-
-
-
-
-
-
-
-
-
-/* Help, Switch Mode, and Statistics Buttons */
-#helpButton,
-#switchModeButton,
-#statsButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    position: relative;
-    margin: 0 10px;
-}
-
-#helpButton img,
-#switchModeButton img,
-#statsButton img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-}
-
-
-/* Tooltip */
-.tooltip {
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(180, 159, 94, 0.9);
-    color: #fff;
-    padding: 8px;
-    border-radius: 10px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-    z-index: 4;
-    font-size: 14px;
-    text-align: center;
-}
-
-.control-button:hover .tooltip,
-.play-button:hover .tooltip,
-#sleepTimerButton:hover .tooltip,
-#helpButton:hover .tooltip,
-#switchModeButton:hover .tooltip {
-    opacity: 1;
-}
-
-/* Shuffle Button Animation */
-@keyframes rotateButton {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Audio Player Styles */
-#audioPlayer {
-    display: none;
-}
-
-/* Custom progress bar */
-.progress-bar {
-    width: 80%;
-    max-width: 600px;
-    height: 10px;
-    background-color: #333;
-    border-radius: 5px;
-    margin: 20px auto 0;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-}
-
-/* Progress fill */
-.progress {
-    width: 0%;
-    height: 100%;
-    background-color: #b49f5e;
-}
-
-/* Modal Overlay */
-.modal-overlay, .filter-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Modal Content */
-.modal-content, .filter-modal-content {
-    background-color: #1a1a1a;
-    color: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    max-width: 90%;
-    max-height: 80%;
-    overflow-y: auto;
-    position: relative;
-}
-
-/* Close Button */
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 30px;
-    color: #fff;
-    cursor: pointer;
-}
-
-/* Button Descriptions in Modal */
-.modal-content img, .filter-modal-content img {
-    width: 50px;
-    height: 50px;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-
-.modal-content h2, .filter-modal-content h2 {
-    font-size: 24px;
-    margin-top: 0;
-    text-align: center;
-}
-
-.modal-content p, .filter-modal-content p {
-    font-size: 18px;
-    line-height: 1.5;
-}
-
-/* Scrollbar Styling */
-.modal-content::-webkit-scrollbar, .filter-modal-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.modal-content::-webkit-scrollbar-thumb, .filter-modal-content::-webkit-scrollbar-thumb {
-    background-color: #b49f5e;
-    border-radius: 5px;
-}
-
-/* Surah Info Styles */
-#surahInfoContainer {
-    display: none;
-    text-align: center;
-    margin-top: 20px;
-}
-
-.surah-info {
-    margin-top: 10px;
-    color: #fff;
-    font-size: 20px;
-    text-align: center;
-}
-
-.surah-info .surah-name {
-    font-weight: bold;
-}
-
-.surah-info .reciter-name {
-    font-style: italic;
-}
-
-.download-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    margin-top: 10px;
-}
-
-.download-button img {
-    width: 50px;
-    height: 50px;
-}
-
-/* Juz List Styles */
-.juz-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.juz-item {
-    background-color: #333;
-    color: #fff;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    width: 80px;
-    text-align: center;
-}
-
-.juz-item:hover {
-    background-color: #b49f5e;
-}
-
-.juz-item.selected {
-    background-color: #b49f5e;
-}
-
-/* Reset Filter Button */
-.reset-filter-button {
-    background-color: #b49f5e;
-    color: #fff;
-    padding: 10px 20px;
-    margin: 20px auto 0;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    display: block;
-}
-
-.reset-filter-button:hover {
-    background-color: #a18f57;
-}
-
-/* Memorization Mode Styles */
-#memorizationMode {
-    display: none;
-    position: relative;
-    z-index: 3;
-    text-align: center;
-    color: #fff;
-    padding: 20px;
-    overflow-y: auto;
-    max-height: 100vh;
-}
-
-/* Title using Almalik font */
-@font-face {
-    font-family: 'Almalik';
-    src: url('fonts/Almalik.otf') format('opentype'),
-         url('fonts/Almalik.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-h1 {
-    font-family: 'Almalik', sans-serif;
-    color: #4caf50;
-    margin-top: 40px;
-    font-size: 3em;
-    letter-spacing: 0.1em;
-    transition: color 0.4s ease;
-}
-
-h1:hover {
-    color: #81c784;
-}
-
-/* Styling for the search bar */
-#searchBar {
-    margin-top: 20px;
-    width: 80%;
-    max-width: 600px;
-    padding: 10px 45px 10px 15px;
-    font-size: 1em;
-    border: 2px solid #b49f5e;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #b49f5e;
-    outline: none;
-    transition: background 0.3s ease;
-    animation: goldPulse 4s infinite ease-in-out;
-    background: url('https://i.imgur.com/PUZam8g.png') no-repeat right 15px center;
-    background-size: 20px;
-    font-family: 'Almalik', sans-serif;
-    letter-spacing: 0.1em;
-}
-
-@keyframes goldPulse {
-    0% {
-        border-color: #b49f5e;
-        box-shadow: 0 0 5px #b49f5e;
-    }
-    50% {
-        border-color: #e6c365;
-        box-shadow: 0 0 10px #e6c365;
-    }
-    100% {
-        border-color: #b49f5e;
-        box-shadow: 0 0 5px #b49f5e;
-    }
-}
-
-#searchBar::placeholder {
-    color: #b49f5e;
-    animation: goldPulse 4s infinite ease-in-out;
-    font-family: 'Almalik', sans-serif;
-    letter-spacing: 0.1em;
-}
-
-#searchBar:focus {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    width: 100%;
-    max-width: 900px;
-    margin: 20px auto;
-    transition: transform 0.6s ease;
-}
-
-li {
-    background: rgba(0, 0, 0, 0.8);
-    margin: 15px 0;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-    cursor: pointer;
-    letter-spacing: 0.15em;
-}
-
-li:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.surah-name {
-    flex-grow: 1;
-    text-align: center;
-    padding-right: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.1em;
-}
-
-.three-dots {
-    cursor: pointer;
-    font-size: 1.5em;
-    margin-left: 10px;
-    color: #bbb;
-    transition: color 0.3s ease;
-}
-
-.three-dots:hover {
-    color: #fff;
-}
-
-.menu {
-    display: none;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.9);
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    color: #fff;
-    text-align: center;
-    z-index: 200;
-}
-
-.menu-slider {
-    width: 150px;
-    margin: 15px 0;
-}
-
-button {
-    background: linear-gradient(45deg, #4caf50, #81c784);
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 1.1em;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-
-
-
-
-
-
-
-
-
-
-button:hover {
-    transform: scale(1.05);
-}
-
-button:active {
-    transform: scale(0.95);
-}
-
-button.playing {
-    background: #43a047;
-}
-
-/* Blue Button Style */
-.blue-button {
-    background: linear-gradient(45deg, #1e3c72, #2a5298);
-}
-
-.blue-button:hover {
-    background: linear-gradient(45deg, #2a5298, #1e3c72);
-}
-
-.blue-button:active {
-    background: linear-gradient(45deg, #16335b, #1e3c72);
-}
-
-
-/* Bottom Bar */
-#bottomBar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background: linear-gradient(45deg, #181818, #282828);
-    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 800px;
-    z-index: 100;
-}
-
-#bottomBar .track-info {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#bottomBar .track-info .title {
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1em;
-}
-
-#bottomBar .controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 0 0 auto;
-}
-
-#bottomBar .controls button {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-#bottomBar .controls button img {
-    width: 24px;
-    height: 24px;
-}
-
-#bottomBar .controls button:hover {
-    color: #4caf50;
-}
-
-/* Progress Bar inside the track-info */
-#bottomBar .progress-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    padding-left: 50px;
-    padding-right: -20px;
-}
-
-#bottomBar .progress-container input[type="range"] {
-    width: 85%;
-    background: transparent;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-}
-
-#bottomBar .progress-container input[type="range"]::-webkit-slider-runnable-track {
-    height: 6px;
-    background: #666;
-    border-radius: 3px;
-}
-
-#bottomBar .progress-container input[type="range"]::-webkit-slider-thumb {
-    width: 12px;
-    height: 12px;
-    background: #4caf50;
-    border-radius: 50%;
-    -webkit-appearance: none;
-    margin-top: -3px;
-}
-
-#bottomBar .progress-time {
-    font-size: 0.8em;
-    color: #fff;
-    white-space: nowrap;
-}
-
-#currentTime {
-    position: absolute;
-    left: 0;
-}
-
-#duration {
-    position: absolute;
-    right: 0;
-}
-
-/* Filter Icons Section */
-.filter-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    gap: 30px;
-    flex-wrap: nowrap;
-}
-
-.filter-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    text-align: center;
-}
-
-.filter-item img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
-
-.filter-item span {
-    font-size: 14px;
-    color: #fff;
-}
-
-.filter-item:hover {
-    transform: scale(1.05);
-    transition: transform 0.2s ease;
-}
-
-/* Repeat Menu Styles */
-#repeatMenu {
-    display: none;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.9);
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    color: #fff;
-    text-align: center;
-    z-index: 200;
-}
-
-/* Mobile Styles */
-@media (max-width: 800px) {
-    body {
-        font-size: 20px;
-    }
-
     h1 {
-        font-size: 2em;
-        letter-spacing: 0.2em;
+      margin-bottom:1.5rem;
+      font-size:2rem;
+      color:#b49f5e;
+      font-weight:600;
     }
 
-    #searchBar {
-        width: 90%;
-        font-size: 1em;
-        padding: 12px 18px;
-    }
+    /* ===== Menu Layout ===== */
+    .menu { display:flex; flex-direction:column; gap:1rem; }
+    .menu .row { display:flex; gap:1rem; }
+    .menu .full > * { flex:1; }
+    .menu .two select { flex:2; }
+    .menu .two button { flex:1; }
 
-    ul {
-        max-width: 100%;
+    .menu select, .menu button {
+      padding:.75rem 1rem;
+      font-size:1rem;
+      border-radius:8px;
+      transition:background .2s,transform .1s;
+      text-align:center;
+      text-align-last:center;
     }
-
-    li {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
+    .menu select {
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      border:2px solid #b49f5e;
+      appearance:none;
     }
-
-    .surah-name {
-        text-align: left;
-        padding-right: 0;
-        font-size: 1.2em;
-        margin-bottom: 10px;
+    .menu button {
+      background:linear-gradient(45deg,#b49f5e,#e6c365);
+      border:none; color:#000; font-weight:600; cursor:pointer;
     }
+    .menu button:hover { background:linear-gradient(45deg,#e6c365,#b49f5e); transform:scale(1.05); }
+    .menu button:active { transform:scale(0.95); }
+    #customInput { display:none; }
 
-    .three-dots {
-        margin-left: 0;
-        margin-top: 10px;
-        align-self: flex-end;
-        font-size: 1.8em;
-    }
-
+    /* ===== Bottom Bar ===== */
     #bottomBar {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px;
-        bottom: 0;
+      position:fixed; bottom:1rem; left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 2rem); max-width:800px;
+      background:rgba(24,24,24,0.9);
+      border-radius:12px;
+      padding:1rem;
+      box-shadow:0 4px 15px rgba(0,0,0,0.5);
+      display:flex; flex-direction:column;
+      gap:.5rem;
+      backdrop-filter:blur(5px);
+      z-index:1;
+    }
+    .progress-bar {
+      position:relative; width:100%; height:8px;
+      background:#333; border-radius:4px;
+      cursor:pointer; overflow:hidden;
+    }
+    .progress-bar .progress {
+      width:0%; height:100%; background:#b49f5e;
+      transition:width .1s linear;
+    }
+    .bottom-row {
+      display:flex; align-items:center;
+      justify-content:space-between;
+    }
+    /* left side container: position relative so timer can be absolutely centered */
+    .left-container {
+      position:relative;
+      width:330px;
+      height:84px;
+    }
+    .controls-container {
+      display:flex; gap:.5rem;
+      justify-content:flex-end;
+      flex:1;
+      align-items:center;
+    }
+    .control-button, .play-button {
+      background:none; border:none; cursor:pointer; position:relative;
+      transition:transform .1s;
+      padding:4px;
+    }
+    .control-button img {
+      width:48px; height:48px;
+      border-radius:50%;
+      background:rgba(180,159,94,0.1);
+    }
+    #sleepTimerButton {
+      position:absolute;
+      left:0; top:50%;
+      transform:translateY(-50%);
+      padding:0; /* remove extra padding */
+    }
+    #sleepTimerButton img {
+      width:330px; height:84px;
+      border-radius:4px;
+      background:none;
+    }
+    .play-button img { width:64px; height:64px; }
+    .control-button:active, .play-button:active { transform:scale(0.9); }
+
+    .tooltip {
+      position:absolute; bottom:110%; left:50%;
+      transform:translateX(-50%);
+      background:rgba(180,159,94,0.9);
+      color:#fff; padding:4px 8px; border-radius:6px;
+      white-space:nowrap; font-size:.75rem;
+      opacity:0; pointer-events:none;
+      transition:opacity .2s;
+    }
+    .control-button:hover .tooltip,
+    .play-button:hover .tooltip,
+    .help-button-container button:hover .tooltip {
+      opacity:1;
     }
 
-    #bottomBar .track-info {
-        margin-bottom: 10px;
-        width: 100%;
-        text-align: center;
+    .help-button-container {
+      display:flex; gap:1rem; justify-content:flex-end;
     }
+    .help-button-container button {
+      background:none; border:none; cursor:pointer; position:relative;
+    }
+    .help-button-container img { width:36px; height:36px; }
 
-    #bottomBar .track-info .title {
-        font-size: 1.2em;
+    /* ===== Modals ===== */
+    .modal-overlay {
+      position:fixed; top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.8);
+      display:none; align-items:center; justify-content:center;
+      z-index:2;
     }
+    .modal-content {
+      background:#1a1a1a; color:#fff;
+      padding:1.5rem; border-radius:12px;
+      max-width:90%; max-height:80%; overflow-y:auto;
+      position:relative;
+    }
+    .modal-content h2 { margin-bottom:1rem; }
+    .close-button {
+      position:absolute; top:8px; right:12px;
+      background:none; border:none; font-size:1.5rem; color:#fff; cursor:pointer;
+    }
+    .juz-list {
+      display:flex; flex-wrap:wrap; gap:.5rem;
+      justify-content:center; margin:1rem 0;
+    }
+    .juz-item {
+      padding:.5rem 1rem;
+      background:#333; color:#fff;
+      border-radius:6px; cursor:pointer;
+      transition:background .2s;
+    }
+    .juz-item.selected, .juz-item:hover {
+      background:#b49f5e; color:#000;
+    }
+    .reset-filter-button {
+      margin-top:.5rem; background:#b49f5e; color:#000;
+      border:none; padding:.5rem 1rem; border-radius:6px; cursor:pointer;
+      transition:background .2s;
+    }
+    .reset-filter-button:hover { background:#e6c365; }
 
-    #bottomBar .controls {
-        margin-bottom: 10px;
+    /* ===== Responsive ===== */
+    @media (max-width:600px) {
+      .ui-container { margin:1rem; padding:1rem; }
+      h1 { font-size:1.5rem; }
+      #bottomBar { gap:.5rem; padding:.75rem; }
+      .control-button img { width:40px; height:40px; }
+      .play-button img    { width:56px; height:56px; }
+      .help-button-container img { width:32px; height:32px; }
+      .left-container { width:240px; height:60px; }
+      #sleepTimerButton img { width:240px; height:60px; }
     }
-
-    #bottomBar .controls button {
-        font-size: 2em;
-    }
-
-    #bottomBar .progress-container {
-        margin: 0;
-        width: 100%;
-    }
-
-    #bottomBar .progress-container input[type="range"] {
-        width: 100%;
-    }
-
-    #bottomBar .progress-time {
-        font-size: 1em;
-        right: -40px;
-    }
-
-    .menu {
-        width: 90%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .menu p {
-        font-size: 1.2em;
-    }
-
-    .menu-slider {
-        width: 80%;
-    }
-
-    .add-button {
-        font-size: 1em;
-        padding: 8px 12px;
-    }
-
-    .close-modal {
-        font-size: 1em;
-        padding: 12px 18px;
-    }
-
-    button {
-        font-size: 1.2em;
-    }
-}
-</style>
+  </style>
 </head>
-
 <body>
 
-<!-- Wipe animation overlay -->
-<div id="goldenWipe">
-    <img src="https://i.imgur.com/QwjOZSH.png" alt="Logo" id="wipeLogo">
-</div>
-
-<!-- Background layers -->
-<div class="background">
+  <div class="background">
     <div class="pattern"></div>
-
-    <!-- Corner Patterns -->
     <div class="corner top-left"></div>
     <div class="corner top-right"></div>
     <div class="corner bottom-left"></div>
     <div class="corner bottom-right"></div>
-</div>
+  </div>
 
-<!-- Page Content -->
-<div id="pageContent">
+  <div class="ui-container">
+    <h1>Qur’an Player</h1>
+    <div class="menu">
+      <div class="row full">
+        <select id="surahSelect"></select>
+      </div>
+      <div class="row two">
+        <select id="reciterSelect">
+          <option value="misharyquran">Mishary Rashid Alafasy</option>
+          <option value="yasserquran">Yasser Al Dosari</option>
+          <option value="maherquran">Maher Al Muaiqly</option>
+          <option value="abdulbasitquran">Abdul Basit Abdus Samad</option>
+        </select>
+        <button id="loadSurahBtn">▶ Play Surah</button>
+      </div>
+      <div class="row full">
+        <button id="customBtn">✚ Custom Recording</button>
+        <input type="file" id="customInput" accept=".mp3,.m4a">
+      </div>
+    </div>
+  </div>
 
-    <!-- Radio Mode -->
-    <div id="radioMode">
+  <audio id="audio"></audio>
 
-        <!-- Radio Player Interface -->
-        <div id="radio">
-            <!-- Sleep Timer Button -->
-            <div class="sleep-timer-container">
-                <button id="sleepTimerButton" aria-label="Sleep Timer">
-                    <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
-                    <div class="tooltip">Sleep Timer</div>
-                </button>
-            </div>
-
-            <!-- Main Controls -->
-            <div class="main-controls">
-                <!-- Volume Control Button -->
-                <button id="volumeButton" class="control-button" aria-label="Volume Control">
-                    <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume 100%">
-                    <div class="tooltip">Volume Control</div>
-                </button>
-                <!-- Speed Control Button -->
-                <button id="speedButton" class="control-button" aria-label="Speed Control">
-                    <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed 1x">
-                    <div class="tooltip">Speed Control</div>
-                </button>
-                <!-- Play/Pause Button -->
-                <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
-                    <img src="https://i.imgur.com/rfSFOWK.png" alt="Play Button">
-                    <div class="tooltip">Play/Pause</div>
-                </button>
-                <!-- Filter Button -->
-                <button id="filterButton" class="control-button" aria-label="Filter">
-                    <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button">
-                    <div class="tooltip">Filter</div>
-                </button>
-                <!-- Shuffle Button -->
-                <button id="shuffleButton" class="control-button" aria-label="Shuffle">
-                    <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button">
-                    <div class="tooltip">Shuffle</div>
-                </button>
-
-    <button id="newSwitchModeButton" aria-label="Switch Mode" class="control-button">
-        <img src="https://i.imgur.com/jtZXCvn.png" alt="Switch Mode Button">
-        <div class="tooltip">Switch Mode</div>
-    </button>
-
-            </div>
-
-            <!-- Help and Switch Mode Buttons -->
-<!-- Help and Switch Mode Buttons -->
-<div class="help-button-container">
-    <!-- Mode Switch Button -->
-    <button id="switchModeButton" aria-label="Switch Mode">
-        <img src="https://i.imgur.com/FiKtOLw.png" alt="Switch Mode Button">
-        <div class="tooltip">Switch Mode</div>
-    </button>
-    <!-- Statistics Button -->
-    <button id="statsButton" aria-label="Statistics">
-        <img src="https://i.imgur.com/BILlrut.png" alt="Statistics Button">
+  <div id="bottomBar">
+    <div class="progress-bar" id="progressBar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="bottom-row">
+      <div class="left-container">
+        <button id="sleepTimerButton" class="control-button" aria-label="Sleep Timer">
+          <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
+          <div class="tooltip">Sleep Timer</div>
+        </button>
+      </div>
+      <div class="controls-container">
+        <button id="speedButton" class="control-button" aria-label="Speed">
+          <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed">
+          <div class="tooltip">Speed</div>
+        </button>
+        <button id="repeatButton" class="control-button" aria-label="Repeat">
+          <img src="https://i.imgur.com/FiKtOLw.png" alt="Repeat">
+          <div class="tooltip">Repeat</div>
+        </button>
+        <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
+          <img src="https://i.imgur.com/rfSFOWK.png" alt="Play">
+          <div class="tooltip">Play/Pause</div>
+        </button>
+        <button id="shuffleButton" class="control-button" aria-label="Shuffle">
+          <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle">
+          <div class="tooltip">Shuffle</div>
+        </button>
+        <button id="volumeButton" class="control-button" aria-label="Volume">
+          <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume">
+          <div class="tooltip">Volume</div>
+        </button>
+      </div>
+    </div>
+    <div class="help-button-container">
+      <button id="filterButton" class="control-button" aria-label="Filter">
+        <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter">
+        <div class="tooltip">Filter</div>
+      </button>
+      <button id="statsButton" aria-label="Statistics">
+        <img src="https://i.imgur.com/BILlrut.png" alt="Stats">
         <div class="tooltip">Statistics</div>
-    </button>
-    <!-- Help Button -->
-    <button id="helpButton" aria-label="Help">
-        <img src="https://i.imgur.com/DokWy7J.png" alt="Help Button">
+      </button>
+      <button id="helpButton" aria-label="Help">
+        <img src="https://i.imgur.com/DokWy7J.png" alt="Help">
         <div class="tooltip">Help</div>
-    </button>
-</div>
+      </button>
+    </div>
+  </div>
 
-
-            <!-- Hidden audio player -->
-            <audio id="audioPlayer"></audio>
-            <!-- Custom progress bar -->
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-
-
-
-
-
-<!-- Statistics Modal Overlay -->
-<div class="modal-overlay" id="statsModalOverlay">
+  <div class="modal-overlay" id="statsModalOverlay">
     <div class="modal-content">
-        <button class="close-button" id="statsCloseButton">&times;</button>
-        <h2>Your Listening Statistics</h2>
-        <p><strong>Surahs Played:</strong> <span id="surahsPlayedCount">0</span></p>
-        <p><strong>Minutes Listened:</strong> <span id="minutesListened">0</span> minutes</p>
+      <button class="close-button" id="statsCloseButton">&times;</button>
+      <h2>Listening Statistics</h2>
+      <p><strong>Surahs Played:</strong> <span id="surahsPlayedCount">0</span></p>
+      <p><strong>Minutes Listened:</strong> <span id="minutesListened">0</span></p>
     </div>
-</div>
+  </div>
 
-
-
-
-
-
-
-
-            <!-- Surah Info -->
-            <div id="surahInfoContainer" class="surah-info">
-                <div class="surah-name" id="surahName">Surah Name</div>
-                <div class="reciter-name" id="reciterName">Reciter Name</div>
-
-<!-- Download Button -->
-<button id="downloadButton" class="download-button" aria-label="Download">
-    <img src="https://i.imgur.com/V1Hw6TW.png" alt="Download Button">
-    <div class="tooltip">Download</div>
-</button>
-<a id="downloadLink" download style="display: none;"></a> <!-- Hidden download link -->
-
-
-            </div>
-        </div>
-
-        <!-- Modal Overlay -->
-        <div class="modal-overlay" id="modalOverlay">
-            <div class="modal-content">
-                <button class="close-button" id="closeButton">&times;</button>
-                <h2>Qur'an Sleep Radio</h2>
-                <h2>‏اَلسَلامُ عَلَيْكُمْ وَرَحْمَةُ اَللهِ وَبَرَكاتُهُ</h2>
-                <p>This page serves as an archive of my favourite recitations from around the world, all in one place.</p>
-                <p>You can control the playback using the buttons below.</p>
-                <h3>Controls:</h3>
-                <p>
-                    <img src="https://i.imgur.com/rfSFOWK.png" alt="Play/Pause Button"> <strong>Play/Pause:</strong> Start or pause the recitation.
-                </p>
-                <p>
-                    <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume Control Button"> <strong>Volume Control:</strong> Adjust the volume level.
-                </p>
-                <p>
-                    <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed Control Button"> <strong>Speed Control:</strong> Adjust the playback speed.
-                </p>
-                <p>
-                    <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter Button"> <strong>Filter:</strong> Filter recitations by Juz.
-                </p>
-                <p>
-                    <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle Button"> <strong>Shuffle:</strong> Play a random Surah.
-                </p>
-                <p>
-                    <img src="https://i.imgur.com/KbIweaS.png" alt="Sleep Timer Button"> <strong>Sleep Timer:</strong> Set how long to play for, and relax to the Word of Allah.
-                </p>
-            </div>
-        </div>
-
-        <!-- Filter Modal Overlay -->
-        <div class="modal-overlay" id="filterModalOverlay">
-            <div class="modal-content" id="filterModalContent">
-                <button class="close-button" id="filterCloseButton">&times;</button>
-                <h2>Filter by Juz</h2>
-                <div class="juz-list" id="juzList">
-                    <!-- Juz items will be dynamically added here -->
-                </div>
-                <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
-            </div>
-        </div>
-
+  <div class="modal-overlay" id="filterModalOverlay">
+    <div class="modal-content">
+      <button class="close-button" id="filterCloseButton">&times;</button>
+      <h2>Filter by Juz</h2>
+      <div class="juz-list" id="juzList"></div>
+      <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
     </div>
+  </div>
 
-    <!-- Memorization Mode -->
-    <div id="memorizationMode">
-
-
-
-
-
-
-<!-- Menu Template -->
-<div id="menuTemplate" class="menu" style="display: none;">
-    <p id="menuSurahName"></p>
-    <p>Repeat Count: <span id="surahPlayCountValue">1</span></p>
-    <input type="range" id="surahPlayCount" min="1" max="31" value="1">
-    <button id="closeMenuButton">Close</button>
-</div>
-
-<!-- Juz List Container -->
-<div id="juzListContainer" class="juz-container" style="display: none;">
-    <!-- Juz items will be dynamically added here -->
-</div>
-
-
-
-        <!-- Title -->
-        <h1>Qur'an Memorisation</h1>
-
-        <!-- Search Bar -->
-        <input type="text" id="searchBar" placeholder="Search Surah..." />
-
-        <!-- Filter Icons -->
-        <div class="filter-icons">
-            <div class="filter-item" id="sortDefaultOrder">
-                <img src="https://i.imgur.com/4g0zAcn.png" alt="Qur'anic Order Icon">
-                <span>Qur'anic Order</span>
-            </div>
-            <div class="filter-item" id="sortRevelationOrder">
-                <img src="https://i.imgur.com/pN1nyEg.png" alt="Revelation Order Icon">
-                <span>Revelation Order</span>
-            </div>
-            <div class="filter-item" id="sortShortestToLongest">
-                <img src="https://i.imgur.com/LsUPh5n.png" alt="Shortest to Longest Icon">
-                <span>Shortest to Longest</span>
-            </div>
-            <div class="filter-item" id="sortLongestToShortest">
-                <img src="https://i.imgur.com/lv82H0O.png" alt="Longest to Shortest Icon">
-                <span>Longest to Shortest</span>
-            </div>
-            <div class="filter-item" id="juzButton">
-                <img src="https://i.imgur.com/CKUpN9x.png" alt="Juz Icon">
-                <span>Juz</span>
-            </div>
-            <div class="filter-item" id="createPlaylistButton">
-                <img src="https://i.imgur.com/CKUpN9x.png" alt="Create Playlist Icon">
-                <span>Create Playlist</span>
-            </div>
-        </div>
-
-        <!-- Surah List -->
-        <ul id="surahList"></ul>
-
-        <!-- Juz List -->
-        <div id="juzListContainer" class="juz-container" style="display: none;">
-            <!-- Juz items will be dynamically added here -->
-        </div>
-
-        <!-- Playlist Display -->
-        <div id="playlistDisplay" style="display: none;">
-            <h2>Your Playlist</h2>
-            <div id="playlistItems"></div>
-            <button id="playPlaylistButton" class="blue-button">Play Playlist</button>
-        </div>
-
-        <!-- Bottom Bar -->
-        <div id="bottomBar">
-            <div class="track-info">
-                <p id="bottomTrackTitle" class="title"></p>
-
-                <!-- Progress Bar -->
-                <div class="progress-container">
-                    <input type="range" id="progressBar" min="0" max="100" value="0">
-                    <span class="progress-time" id="currentTime">00:00</span>
-                    <span class="progress-time" id="duration">00:00</span>
-                </div>
-            </div>
-
-            <!-- Control Buttons -->
-            <div class="controls">
-                <button id="memPlayPauseButton"><img src="https://i.imgur.com/rfSFOWK.png" alt="Play"></button>
-                <button id="repeatButton"><img src="https://i.imgur.com/FiKtOLw.png" alt="Repeat"></button>
-            </div>
-        </div>
-
-        <!-- Repeat Menu -->
-        <div id="repeatMenu" class="menu">
-            <p>Repeat No.</p>
-            <input type="range" id="repeatCountSlider" class="menu-slider" min="1" max="31" step="1" value="1">
-            <span id="repeatCountValue">1</span> times
-            <br>
-            <button id="closeRepeatMenuButton">Close</button>
-        </div>
-
-        <!-- Playlist Modal -->
-        <div id="playlistModal" style="display: none;">
-            <div id="playlistModalContent">
-                <h2>Choose Surahs to Add to the Playlist</h2>
-                <ul id="playlistSurahList"></ul>
-                <button class="close-modal" id="finishPlaylistButton">Finish</button>
-            </div>
-        </div>
-
+  <div class="modal-overlay" id="helpModalOverlay">
+    <div class="modal-content">
+      <button class="close-button" id="helpCloseButton">&times;</button>
+      <h2>How to Use</h2>
+      <p><img src="https://i.imgur.com/rfSFOWK.png" width="24" alt=""> <strong>Play/Pause</strong> – start or pause playback.</p>
+      <p><img src="https://i.imgur.com/YHeXLfV.png" width="24" alt=""> <strong>Volume</strong> – cycle volume levels.</p>
+      <p><img src="https://i.imgur.com/wDDwzEi.png" width="24" alt=""> <strong>Speed</strong> – cycle playback speed.</p>
+      <p><img src="https://i.imgur.com/6jVJpH5.png" width="24" alt=""> <strong>Sleep Timer</strong> – set auto-stop timer.</p>
+      <p><img src="https://i.imgur.com/0xVbbOJ.png" width="24" alt=""> <strong>Filter</strong> – choose a Juz for shuffle.</p>
+      <p><img src="https://i.imgur.com/4K1dnEH.png" width="24" alt=""> <strong>Shuffle</strong> – play a random Surah.</p>
+      <p><img src="https://i.imgur.com/BILlrut.png" width="24" alt=""> <strong>Statistics</strong> – view usage stats.</p>
+      <p><img src="https://i.imgur.com/DokWy7J.png" width="24" alt=""> <strong>Help</strong> – show this guide.</p>
     </div>
-
-</div>
-
-<!-- Include JS -->
-<script>
-
-
-
-
-
-
-
-
-const juzData = [
-    { number: 1, name: "Alif Lam Meem", surahs: [1, 2] },
-    { number: 2, name: "Sayaqool", surahs: [2] },
-    { number: 3, name: "Tilkal Rusull", surahs: [2, 3] },
-    { number: 4, name: "Lan Tana Loo", surahs: [3, 4] },
-    { number: 5, name: "Wal Mohsanat", surahs: [4, 5] },
-    { number: 6, name: "La Yuhibbullah", surahs: [5, 6] },
-    { number: 7, name: "Wa Iza Samiu", surahs: [6, 7] },
-    { number: 8, name: "Wa Lau Annana", surahs: [7, 8] },
-    { number: 9, name: "Qalal Malao", surahs: [8, 9] },
-    { number: 10, name: "Wa A'lamu", surahs: [9, 10, 11] },
-    { number: 11, name: "Yatazeroon", surahs: [11, 12] },
-    { number: 12, name: "Wa Mamin Da'abat", surahs: [12, 13, 14] },
-    { number: 13, name: "Wa Ma Ubarri'u", surahs: [15, 16] },
-    { number: 14, name: "Rubama", surahs: [15, 16] },
-    { number: 15, name: "Subhanallazi", surahs: [17, 18] },
-    { number: 16, name: "Qal Alam", surahs: [18, 19, 20] },
-    { number: 17, name: "Iqtaraba", surahs: [21, 22] },
-    { number: 18, name: "Qadd Aflaha", surahs: [23, 24] },
-    { number: 19, name: "Wa Qalallazina", surahs: [25, 26, 27] },
-    { number: 20, name: "A'man Khalaq", surahs: [27, 28, 29] },
-    { number: 21, name: "Utlu Ma Oohi", surahs: [29, 30, 31] },
-    { number: 22, name: "Wa Manyaqnut", surahs: [32, 33, 34, 35] },
-    { number: 23, name: "Wa Mali", surahs: [36, 37, 38, 39] },
-    { number: 24, name: "Faman Azlam", surahs: [39, 40, 41, 42, 43] },
-    { number: 25, name: "Elahe Yuruddo", surahs: [42, 43, 44, 45, 46] },
-    { number: 26, name: "Ha'a Meem", surahs: [46, 47, 48, 49, 50, 51] },
-    { number: 27, name: "Qala Fama Khatbukum", surahs: [51, 52, 53, 54, 55, 56, 57] },
-    { number: 28, name: "Qadd Sami Allah", surahs: [58, 59, 60, 61, 62, 63, 64, 65, 66] },
-    { number: 29, name: "Tabarakallazi", surahs: [67, 68, 69, 70, 71, 72, 73] },
-    { number: 30, name: "Amma", surahs: [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114] }
-];
-
-
-
-
-
-
-// Ensure Surah information is hidden on page load
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById('surahInfoContainer').style.display = 'none';
-    document.body.classList.add('no-scroll');
-    setTimeout(function () {
-        document.getElementById('goldenWipe').style.display = 'none';
-        document.body.classList.remove('no-scroll');
-        document.getElementById('pageContent').style.opacity = '1'; // Show page content
-    }, 4000);
-
-const audioPlayer = document.getElementById('audioPlayer');
-const playPauseButton = document.getElementById('playPauseButton');
-const shuffleButton = document.getElementById('shuffleButton');
-const speedButton = document.getElementById('speedButton');
-const volumeButton = document.getElementById('volumeButton');
-const sleepTimerButton = document.getElementById('sleepTimerButton');
-const helpButton = document.getElementById('helpButton');
-const filterButton = document.getElementById('filterButton');
-const progressBar = document.querySelector('.progress-bar');
-const progress = document.getElementById('progress');
-const modalOverlay = document.getElementById('modalOverlay');
-const closeButton = document.getElementById('closeButton');
-const filterModalOverlay = document.getElementById('filterModalOverlay');
-const filterCloseButton = document.getElementById('filterCloseButton');
-const surahNameDisplay = document.getElementById('surahName');
-const reciterNameDisplay = document.getElementById('reciterName');
-document.getElementById('downloadButton').addEventListener('click', setDownloadUrl);
-
-document.getElementById('juzButton').addEventListener('click', () => {
-    displayJuzList();
-});
-
-function displayJuzList() {
-    // Hide the existing Surah list and playlist display
-    surahUl.style.display = 'none';
-    playlistDisplay.style.display = 'none';
-
-    // Clear existing Juz content
-    const juzListContainer = document.getElementById('juzListContainer');
-    juzListContainer.innerHTML = '';
-    juzListContainer.style.display = 'block';
-
-    juzData.forEach(juz => {
-        // Juz Header
-        const juzHeader = document.createElement('div');
-        juzHeader.classList.add('juz-header');
-
-        // Juz Title
-        const juzTitle = document.createElement('div');
-        juzTitle.classList.add('juz-title');
-        juzTitle.textContent = `Juz ${juz.number} - ${juz.name}`;
-
-        // Juz Play Button
-        const juzPlayButton = document.createElement('button');
-        juzPlayButton.classList.add('juz-play-button');
-        juzPlayButton.textContent = 'Play Juz';
-        juzPlayButton.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent collapsing when clicking play
-            playJuzSurahs(juz);
-        });
-
-        // Append Title and Play Button to Header
-        juzHeader.appendChild(juzTitle);
-        juzHeader.appendChild(juzPlayButton);
-
-        // Juz Content (Surah List)
-        const juzContent = document.createElement('div');
-        juzContent.classList.add('juz-content');
-
-        // Add Surahs to Juz Content
-        juz.surahs.forEach(surahNumber => {
-            const surah = surahListData.find(s => s.number === surahNumber);
-            if (surah) {
-                const surahItem = createSurahListItem(surah);
-                juzContent.appendChild(surahItem);
-            }
-        });
-
-        // Toggle Juz Content on Header Click
-        juzHeader.addEventListener('click', () => {
-            if (juzContent.style.display === 'none') {
-                juzContent.style.display = 'block';
-            } else {
-                juzContent.style.display = 'none';
-            }
-        });
-
-        // Append Header and Content to Container
-        juzListContainer.appendChild(juzHeader);
-        juzListContainer.appendChild(juzContent);
-    });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-const resetFilterButton = document.getElementById('resetFilterButton');
-const switchModeButton = document.getElementById('switchModeButton');
-
-        // AUDIO
-
-const surahs = {
-    'surah_001': {
-        name: 'Al-Fatihah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/001.mp3']
-            },
-            // Add more recitations
-        ],
-        juz: [1]
-    },
-    'surah_002': {
-        name: 'Al-Baqarah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/002_part1.mp3', 'quranforsleep/assets/002_part2.mp3']
-            },
-        ],
-        juz: [1, 2, 3]
-    },
-    'surah_003': {
-        name: 'Ali Imran',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/003.mp3']
-            },
-        ],
-        juz: [3, 4]
-    },
-    'surah_004': {
-        name: 'An-Nisa',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/004.mp3']
-            },
-        ],
-        juz: [4, 5, 6]
-    },
-    'surah_005': {
-        name: "Al-Ma'idah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/005.mp3']
-            },
-        ],
-        juz: [6, 7]
-    },
-    'surah_006': {
-        name: "Al-An'am",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/006.mp3']
-            },
-        ],
-        juz: [7, 8]
-    },
-    'surah_007': {
-        name: "Al-A'raf",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/007.mp3']
-            },
-        ],
-        juz: [8, 9]
-    },
-    'surah_008': {
-        name: 'Al-Anfal',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/008.mp3']
-            },
-        ],
-        juz: [9, 10]
-    },
-    'surah_009': {
-        name: 'At-Tawbah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/009.mp3']
-            },
-        ],
-        juz: [10, 11]
-    },
-    'surah_010': {
-        name: 'Yunus',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/010.mp3']
-            },
-        ],
-        juz: [11]
-    },
-    'surah_011': {
-        name: 'Hud',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/011.mp3']
-            },
-        ],
-        juz: [11, 12]
-    },
-    'surah_012': {
-        name: 'Yusuf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/012.mp3']
-            },
-        ],
-        juz: [12, 13]
-    },
-    'surah_013': {
-        name: "Ar-Ra'd",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/013.mp3']
-            },
-        ],
-        juz: [13]
-    },
-    'surah_014': {
-        name: 'Ibrahim',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/014.mp3']
-            },
-        ],
-        juz: [13]
-    },
-    'surah_015': {
-        name: 'Al-Hijr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/015.mp3']
-            },
-        ],
-        juz: [14]
-    },
-    'surah_016': {
-        name: 'An-Nahl',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/016.mp3']
-            },
-        ],
-        juz: [14]
-    },
-    'surah_017': {
-        name: 'Al-Isra',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/017.mp3']
-            },
-        ],
-        juz: [15]
-    },
-    'surah_018': {
-        name: 'Al-Kahf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/018.mp3']
-            },
-        ],
-        juz: [15, 16]
-    },
-    'surah_019': {
-        name: 'Maryam',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/019.mp3']
-            },
-        ],
-        juz: [16]
-    },
-    'surah_020': {
-        name: 'Ta-Ha',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/020.mp3']
-            },
-        ],
-        juz: [16]
-    },
-    'surah_021': {
-        name: 'Al-Anbiya',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/021.mp3']
-            },
-        ],
-        juz: [17]
-    },
-    'surah_022': {
-        name: 'Al-Hajj',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/022.mp3']
-            },
-        ],
-        juz: [17]
-    },
-    'surah_023': {
-        name: "Al-Mu'minun",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/023.mp3']
-            },
-        ],
-        juz: [18]
-    },
-    'surah_024': {
-        name: 'An-Nur',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/024.mp3']
-            },
-        ],
-        juz: [18]
-    },
-    'surah_025': {
-        name: 'Al-Furqan',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/025.mp3']
-            },
-        ],
-        juz: [18, 19]
-    },
-    'surah_026': {
-        name: "Ash-Shu'ara",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/026.mp3']
-            },
-        ],
-        juz: [19]
-    },
-    'surah_027': {
-        name: 'An-Naml',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/027.mp3']
-            },
-        ],
-        juz: [19, 20]
-    },
-    'surah_028': {
-        name: 'Al-Qasas',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/028.mp3']
-            },
-        ],
-        juz: [20]
-    },
-    'surah_029': {
-        name: 'Al-Ankabut',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/029.mp3']
-            },
-        ],
-        juz: [20, 21]
-    },
-    'surah_030': {
-        name: 'Ar-Rum',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/030.mp3']
-            },
-        ],
-        juz: [21]
-    },
-    'surah_031': {
-        name: 'Luqman',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/031.mp3']
-            },
-        ],
-        juz: [21]
-    },
-    'surah_032': {
-        name: 'As-Sajdah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/032.mp3']
-            },
-        ],
-        juz: [21]
-    },
-    'surah_033': {
-        name: 'Al-Ahzab',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/033.mp3']
-            },
-        ],
-        juz: [21, 22]
-    },
-    'surah_034': {
-        name: 'Saba',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/034.mp3']
-            },
-        ],
-        juz: [22]
-    },
-    'surah_035': {
-        name: 'Fatir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/035.mp3']
-            },
-        ],
-        juz: [22]
-    },
-    'surah_036': {
-        name: 'Ya-Sin',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/036.mp3']
-            },
-        ],
-        juz: [22, 23]
-    },
-    'surah_037': {
-        name: 'As-Saffat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/037.mp3']
-            },
-        ],
-        juz: [23]
-    },
-    'surah_038': {
-        name: 'Sad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/038.mp3']
-            },
-        ],
-        juz: [23]
-    },
-    'surah_039': {
-        name: 'Az-Zumar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/039.mp3']
-            },
-        ],
-        juz: [23, 24]
-    },
-    'surah_040': {
-        name: 'Ghafir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/040.mp3']
-            },
-        ],
-        juz: [24]
-    },
-    'surah_041': {
-        name: 'Fussilat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/041.mp3']
-            },
-        ],
-        juz: [24, 25]
-    },
-    'surah_042': {
-        name: 'Ash-Shura',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/042.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_043': {
-        name: 'Az-Zukhruf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/043.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_044': {
-        name: 'Ad-Dukhan',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/044.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_045': {
-        name: 'Al-Jathiyah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/045.mp3']
-            },
-        ],
-        juz: [25]
-    },
-    'surah_046': {
-        name: 'Al-Ahqaf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/046.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_047': {
-        name: 'Muhammad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/047.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_048': {
-        name: 'Al-Fath',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/048.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_049': {
-        name: 'Al-Hujurat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/049.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_050': {
-        name: 'Qaf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/050.mp3']
-            },
-        ],
-        juz: [26]
-    },
-    'surah_051': {
-        name: 'Adh-Dhariyat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/051.mp3']
-            },
-        ],
-        juz: [26, 27]
-    },
-    'surah_052': {
-        name: 'At-Tur',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/052.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_053': {
-        name: 'An-Najm',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/053.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_054': {
-        name: 'Al-Qamar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/054.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_055': {
-        name: 'Ar-Rahman',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/055.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_056': {
-        name: "Al-Waqi'ah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/056.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_057': {
-        name: 'Al-Hadid',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/057.mp3']
-            },
-        ],
-        juz: [27]
-    },
-    'surah_058': {
-        name: 'Al-Mujadilah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/058.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_059': {
-        name: 'Al-Hashr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/059.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_060': {
-        name: 'Al-Mumtahanah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/060.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_061': {
-        name: 'As-Saf',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/061.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_062': {
-        name: "Al-Jumu'ah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/062.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_063': {
-        name: 'Al-Munafiqun',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/063.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_064': {
-        name: 'At-Taghabun',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/064.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_065': {
-        name: 'At-Talaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/065.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_066': {
-        name: 'At-Tahrim',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/066.mp3']
-            },
-        ],
-        juz: [28]
-    },
-    'surah_067': {
-        name: 'Al-Mulk',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/067.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_068': {
-        name: 'Al-Qalam',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/068.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_069': {
-        name: 'Al-Haqqah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/069.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_070': {
-        name: "Al-Ma'arij",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/070.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_071': {
-        name: 'Nuh',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/071.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_072': {
-        name: 'Al-Jinn',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/072.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_073': {
-        name: 'Al-Muzzammil',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/073.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_074': {
-        name: 'Al-Muddaththir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/074.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_075': {
-        name: 'Al-Qiyamah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/075.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_076': {
-        name: 'Al-Insan',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/076.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_077': {
-        name: 'Al-Mursalat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/077.mp3']
-            },
-        ],
-        juz: [29]
-    },
-    'surah_078': {
-        name: 'An-Naba',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/078.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_079': {
-        name: "An-Nazi'at",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/079.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_080': {
-        name: 'Abasa',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/080.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_081': {
-        name: 'At-Takwir',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/081.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_082': {
-        name: 'Al-Infitar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/082.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_083': {
-        name: 'Al-Mutaffifin',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/083.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_084': {
-        name: 'Al-Inshiqaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/084.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_085': {
-        name: 'Al-Buruj',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/085.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_086': {
-        name: 'At-Tariq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/086.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_087': {
-        name: "Al-A'la",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/087.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_088': {
-        name: 'Al-Ghashiyah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/088.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_089': {
-        name: 'Al-Fajr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/089.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_090': {
-        name: 'Al-Balad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/090.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_091': {
-        name: 'Ash-Shams',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/091.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_092': {
-        name: 'Al-Layl',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/092.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_093': {
-        name: 'Ad-Duha',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/093.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_094': {
-        name: 'Ash-Sharh',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/094.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_095': {
-        name: 'At-Tin',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/095.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_096': {
-        name: 'Al-Alaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/096.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_097': {
-        name: 'Al-Qadr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/097.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_098': {
-        name: 'Al-Bayyinah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/098.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_099': {
-        name: 'Az-Zalzalah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/099.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_100': {
-        name: 'Al-Adiyat',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/100.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_101': {
-        name: "Al-Qari'ah",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/101.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_102': {
-        name: 'At-Takathur',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/102.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_103': {
-        name: 'Al-Asr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/103.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_104': {
-        name: 'Al-Humazah',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/104.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_105': {
-        name: 'Al-Fil',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/105.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_106': {
-        name: 'Quraysh',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/106.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_107': {
-        name: "Al-Ma'un",
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/107.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_108': {
-        name: 'Al-Kawthar',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/108.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_109': {
-        name: 'Al-Kafirun',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/109.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_110': {
-        name: 'An-Nasr',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/110.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_111': {
-        name: 'Al-Masad',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/111.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_112': {
-        name: 'Al-Ikhlas',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/112.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_113': {
-        name: 'Al-Falaq',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/113.mp3']
-            },
-        ],
-        juz: [30]
-    },
-    'surah_114': {
-        name: 'An-Nas',
-        recitations: [
-            {
-                reciter: 'Mishary Rashid Alafasy',
-                files: ['quranforsleep/assets/114.mp3']
-            },
-        ],
-        juz: [30]
-    }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-let memAudioPlayer = new Audio();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Variables for Surah info and download button
-const surahInfoContainer = document.getElementById('surahInfoContainer');
-
-function setDownloadUrl() {
-    const downloadLink = document.getElementById('downloadLink');
-    downloadLink.href = audioPlayer.src; // Set the current audio source as download link
-    downloadLink.download = `${currentSurah.name}.mp3`; // Optional: name the file based on surah
-    downloadLink.click(); // Trigger download
-}
-
-
-
-
-
-
-
-
-
-// Initialize statistics variables
-let surahsPlayedCount = parseInt(localStorage.getItem('surahsPlayedCount')) || 0;
-let totalListeningTime = parseInt(localStorage.getItem('totalListeningTime')) || 0; // in seconds
-
-
-
-// Variables to store interval IDs
-let radioListeningInterval;
-let memListeningInterval;
-
-// For Radio Mode
-audioPlayer.addEventListener('pause', () => {
-    clearInterval(radioListeningInterval);
-    localStorage.setItem('totalListeningTime', totalListeningTime);
-});
-
-audioPlayer.addEventListener('ended', () => {
-    clearInterval(radioListeningInterval);
-    localStorage.setItem('totalListeningTime', totalListeningTime);
-});
-
-// For Memorization Mode
-memAudioPlayer.addEventListener('pause', () => {
-    clearInterval(memListeningInterval);
-    localStorage.setItem('totalListeningTime', totalListeningTime);
-});
-
-memAudioPlayer.addEventListener('ended', () => {
-    clearInterval(memListeningInterval);
-    localStorage.setItem('totalListeningTime', totalListeningTime);
-});
-
-
-
-
-
-
-
-const statsButton = document.getElementById('statsButton');
-console.log('statsButton:', statsButton);
-
-const statsModalOverlay = document.getElementById('statsModalOverlay');
-const statsCloseButton = document.getElementById('statsCloseButton');
-const surahsPlayedCountDisplay = document.getElementById('surahsPlayedCount');
-const minutesListenedDisplay = document.getElementById('minutesListened');
-
-// Event listener for stats button
-statsButton.addEventListener('click', () => {
-    // Update the statistics in the modal
-    surahsPlayedCountDisplay.textContent = surahsPlayedCount;
-
-    // Convert totalListeningTime from seconds to minutes
-    const minutesListened = Math.floor(totalListeningTime / 60);
-    minutesListenedDisplay.textContent = minutesListened;
-
-    statsModalOverlay.style.display = 'flex';
-});
-
-// Event listener for closing the stats modal when clicking outside
-statsModalOverlay.addEventListener('click', (event) => {
-    if (event.target === statsModalOverlay) {
-        statsModalOverlay.style.display = 'none';
-    }
-});
-
-// Event listener for the close button inside the stats modal
-statsCloseButton.addEventListener('click', () => {
-    statsModalOverlay.style.display = 'none';
-});
-
-
-
-
-
-
-
-
-let currentSurahKey = null;
-let currentSurah = null;
-let currentRecitation = null;
-let currentPart = 0;
-
-// Sleep Timer settings
-const sleepTimes = [
-    { time: null, img: 'https://i.imgur.com/6jVJpH5.png', alt: 'Sleep Timer' },
-    { time: 10 * 60, img: 'https://i.imgur.com/2i3xjzP.png', alt: 'Sleep Timer: 10 Minutes' },
-    { time: 15 * 60, img: 'https://i.imgur.com/8C92a9F.png', alt: 'Sleep Timer: 15 Minutes' },
-    { time: 20 * 60, img: 'https://i.imgur.com/ZkhlFd4.png', alt: 'Sleep Timer: 20 Minutes' },
-    { time: 30 * 60, img: 'https://i.imgur.com/dlYk6kr.png', alt: 'Sleep Timer: 30 Minutes' },
-    { time: 60 * 60, img: 'https://i.imgur.com/T8qc0tX.png', alt: 'Sleep Timer: 1 Hour' },
-    { time: 120 * 60, img: 'https://i.imgur.com/mj64RF8.png', alt: 'Sleep Timer: 2 Hours' }
-];
-let currentSleepIndex = 0;
-let sleepTimerTimeout = null;
-
-// Speed settings
-const speeds = [
-    { rate: 1.0, img: 'https://i.imgur.com/wDDwzEi.png', alt: 'Speed 1x' },
-    { rate: 1.25, img: 'https://i.imgur.com/56ibCLP.png', alt: 'Speed 1.25x' },
-    { rate: 1.5, img: 'https://i.imgur.com/QrgfxD1.png', alt: 'Speed 1.5x' },
-    { rate: 1.75, img: 'https://i.imgur.com/AJUMmXp.png', alt: 'Speed 1.75x' },
-    { rate: 2.0, img: 'https://i.imgur.com/PzKnwfo.png', alt: 'Speed 2x' },
-    { rate: 0.5, img: 'https://i.imgur.com/rQqbvso.png', alt: 'Speed 0.5x' },
-    { rate: 0.75, img: 'https://i.imgur.com/JymFl6p.png', alt: 'Speed 0.75x' }
-];
-let currentSpeedIndex = 0;
-
-// Volume settings
-const volumes = [
-    { level: 1.0, img: 'https://i.imgur.com/YHeXLfV.png', alt: 'Volume 100%' },
-    { level: 0.33, img: 'https://i.imgur.com/7tPoTem.png', alt: 'Volume 33%' },
-    { level: 0.67, img: 'https://i.imgur.com/3eYgm5a.png', alt: 'Volume 67%' }
-];
-let currentVolumeIndex = 0;
-
-// Filter settings
-let selectedJuz = null;
-
-audioPlayer.volume = volumes[currentVolumeIndex].level;
-audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
-
-function playSurah(surahKey) {
-    currentSurahKey = surahKey;
-    currentSurah = surahs[surahKey];
-    const recitations = currentSurah.recitations || [{ reciter: currentSurah.reciter, files: currentSurah.files }];
-    currentRecitation = recitations[Math.floor(Math.random() * recitations.length)];
-    currentPart = 0;
-    updateSurahInfo();
-    playCurrentPart();
-// Increment surahs played count
-surahsPlayedCount++;
-
-}
-
-
-
-
-
-
-
-
-
-
-function playJuzSurahs(juz) {
-    // Set the playlist to the Surahs in the Juz
-    playlist = juz.surahs.map(surahNumber => {
-        return surahListData.find(s => s.number === surahNumber);
-    }).filter(surah => surah !== undefined);
-
-    if (playlist.length > 0) {
-        currentPlaylistIndex = 0;
-        isPlaylistPlaying = true;
-        currentPlayCount = 1; // Reset play count
-        currentRepeatCount = 1; // Reset repeat count
-        playPlaylistSurah();
-    } else {
-        alert("No Surahs available in this Juz.");
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-function playCurrentPart() {
-    if (currentPart < currentRecitation.files.length) {
-        audioPlayer.src = currentRecitation.files[currentPart];
-        audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
-        audioPlayer.volume = volumes[currentVolumeIndex].level;
-        audioPlayer.play();
-        isPlaying = true;
-        updatePlayPauseIcon();
-        updateMediaSession();
-    }
-}
-
-
-
-// For Radio Mode
-audioPlayer.addEventListener('ended', () => {
-    currentPart++;
-    if (currentPart < currentRecitation.files.length) {
-        playCurrentPart();
-    } else {
-        // Surah has completed playing
-        surahsPlayedCount++;
-        localStorage.setItem('surahsPlayedCount', surahsPlayedCount);
-        if (isPlaying) {
-            playRandomSurah();
-        }
-    }
-});
-
-// For Memorization Mode
-memAudioPlayer.addEventListener('ended', () => {
-    // Surah has completed playing
-    surahsPlayedCount++;
-    localStorage.setItem('surahsPlayedCount', surahsPlayedCount);
-
-    // Existing logic
-    if (playCount === 31 || currentPlayCount < playCount) {
-        currentPlayCount++;
-        memAudioPlayer.currentTime = 0;
-        memAudioPlayer.play();
-    } else if (repeatCount === 31 || currentRepeatCount < repeatCount) {
-        currentRepeatCount++;
-        currentPlayCount = 1;
-        memAudioPlayer.currentTime = 0;
-        memAudioPlayer.play();
-    } else if (isPlaylistPlaying) {
-        currentPlaylistIndex++;
-        currentPlayCount = 1;
-        currentRepeatCount = 1;
-        playPlaylistSurah();
-    } else {
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/rfSFOWK.png" alt="Play">`; // Play icon
-        memIsPlaying = false;
-    }
-});
-
-
-
-
-playPauseButton.addEventListener('click', () => {
-    if (!isPlaying) {
-        if (!currentSurah) {
-            playRandomSurah();
-        } else {
-            audioPlayer.play();
-            isPlaying = true;
-            updatePlayPauseIcon();
-            updateMediaSession();
-        }
-        startSleepTimer();
-    } else {
-        audioPlayer.pause();
-        isPlaying = false;
-        updatePlayPauseIcon();
-        clearSleepTimer();
-    }
-});
-
-shuffleButton.addEventListener('click', () => {
-    shuffleButton.style.animation = 'rotateButton 0.5s';
-    shuffleButton.addEventListener('animationend', () => {
-        shuffleButton.style.animation = '';
-    });
-    playRandomSurah();
-    isPlaying = true;
-    updatePlayPauseIcon();
-    startSleepTimer();
-});
-
-function playRandomSurah() {
-    let keys = Object.keys(surahs);
-    if (selectedJuz) {
-        keys = keys.filter(key => surahs[key].juz.includes(selectedJuz));
-    }
-    if (keys.length > 0) {
-        const randomSurahKey = keys[Math.floor(Math.random() * keys.length)];
-        playSurah(randomSurahKey);
-    } else {
-        alert('No Surahs available for the selected Juz.');
-    }
-}
-
-speedButton.addEventListener('click', () => {
-    currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
-    audioPlayer.playbackRate = speeds[currentSpeedIndex].rate;
-    const speedIcon = speedButton.querySelector('img');
-    speedIcon.src = speeds[currentSpeedIndex].img;
-    speedIcon.alt = speeds[currentSpeedIndex].alt;
-});
-
-volumeButton.addEventListener('click', () => {
-    currentVolumeIndex = (currentVolumeIndex + 1) % volumes.length;
-    audioPlayer.volume = volumes[currentVolumeIndex].level;
-    const volumeIcon = volumeButton.querySelector('img');
-    volumeIcon.src = volumes[currentVolumeIndex].img;
-    volumeIcon.alt = volumes[currentVolumeIndex].alt;
-});
-
-sleepTimerButton.addEventListener('click', () => {
-    currentSleepIndex = (currentSleepIndex + 1) % sleepTimes.length;
-    const sleepIcon = sleepTimerButton.querySelector('img');
-    sleepIcon.src = sleepTimes[currentSleepIndex].img;
-    sleepIcon.alt = sleepTimes[currentSleepIndex].alt;
-    if (isPlaying) {
-        startSleepTimer();
-    }
-});
-
-function startSleepTimer() {
-    clearSleepTimer();
-    const sleepTime = sleepTimes[currentSleepIndex].time;
-    if (sleepTime !== null) {
-        const fadeOutTime = 10;
-        const stopTime = sleepTime - fadeOutTime;
-
-        sleepTimerTimeout = setTimeout(() => {
-            let fadeInterval = setInterval(() => {
-                if (audioPlayer.volume > 0.01) {
-                    audioPlayer.volume -= 0.01;
-                } else {
-                    clearInterval(fadeInterval);
-                    audioPlayer.pause();
-                    isPlaying = false;
-                    updatePlayPauseIcon();
-                    audioPlayer.volume = volumes[currentVolumeIndex].level;
-                }
-            }, 1000 * fadeOutTime / 100);
-        }, 1000 * stopTime);
-    }
-}
-
-function clearSleepTimer() {
-    if (sleepTimerTimeout) {
-        clearTimeout(sleepTimerTimeout);
-        sleepTimerTimeout = null;
-    }
-}
-
-function updateSurahInfo() {
-    surahNameDisplay.textContent = currentSurah.name;
-    reciterNameDisplay.textContent = currentRecitation.reciter;
-    surahInfoContainer.style.display = 'block'; // Ensure the container is shown
-}
-
-function updatePlayPauseIcon() {
-    const icon = playPauseButton.querySelector('img');
-    icon.src = isPlaying ? 'https://i.imgur.com/iAyh3qN.png' : 'https://i.imgur.com/rfSFOWK.png';
-}
-
-function updateMediaSession() {
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: currentSurah.name,
-            artist: currentRecitation.reciter,
-            album: 'Qur\'an Sleep Radio',
-        });
-    }
-}
-
-helpButton.addEventListener('click', () => {
-    modalOverlay.style.display = 'flex';
-});
-
-closeButton.addEventListener('click', () => {
-    modalOverlay.style.display = 'none';
-});
-
-filterButton.addEventListener('click', () => {
-    filterModalOverlay.style.display = 'flex';
-});
-
-
-// Ensure Juz Filter menu overlay closes when clicking outside
-filterModalOverlay.addEventListener('click', (event) => {
-    if (event.target === filterModalOverlay) {
-        filterModalOverlay.style.display = 'none';
-    }
-});
-
-
-filterCloseButton.addEventListener('click', () => {
-    filterModalOverlay.style.display = 'none';
-});
-
-juzList.innerHTML = Array.from({ length: 30 }, (_, i) => {
-    const juzNumber = i + 1;
-    return `<div class="juz-item" data-juz="${juzNumber}">Juz ${juzNumber}</div>`;
-}).join('');
-
-juzList.addEventListener('click', event => {
-    if (event.target.classList.contains('juz-item')) {
-        const selected = event.target;
-        selectedJuz = parseInt(selected.getAttribute('data-juz'), 10);
-        document.querySelectorAll('.juz-item').forEach(item => item.classList.remove('selected'));
-        selected.classList.add('selected');
-    }
-});
-
-resetFilterButton.addEventListener('click', () => {
-    selectedJuz = null;
-    document.querySelectorAll('.juz-item').forEach(item => item.classList.remove('selected'));
-});
-
-progressBar.addEventListener('click', event => {
-    const clickX = event.offsetX;
-    const width = progressBar.offsetWidth;
-    const duration = audioPlayer.duration;
-    audioPlayer.currentTime = (clickX / width) * duration;
-});
-
-audioPlayer.addEventListener('timeupdate', () => {
-    const duration = audioPlayer.duration;
-    const currentTime = audioPlayer.currentTime;
-    const progressPercent = (currentTime / duration) * 100;
-    progress.style.width = `${progressPercent}%`;
-});
-
-// Function to show Surah info and download button when audio starts playing
-audioPlayer.addEventListener('play', function () {
-    updateSurahInfo();
-});
-
-// Hide the info again when audio is paused or ended
-audioPlayer.addEventListener('pause', function () {
-    surahInfoContainer.style.display = 'none';
-});
-
-audioPlayer.addEventListener('ended', function () {
-    surahInfoContainer.style.display = 'none';
-});
-
-
-switchModeButton.addEventListener('click', () => {
-    const radioMode = document.getElementById('radioMode');
-    const memorizationMode = document.getElementById('memorizationMode');
-    
-    if (radioMode.style.display !== 'none') {
-        radioMode.style.display = 'none';
-        memorizationMode.style.display = 'block';
-        
-        // Ensure surahs are populated when switching to memorization mode
-        populateSurahList();
-    } else {
-        memorizationMode.style.display = 'none';
-        radioMode.style.display = 'block';
-    }
-});
-
-
-// Function to convert a time string to seconds
-function timeToSeconds(timeString) {
-    const timeParts = timeString.split(":").map(Number);
-    let seconds = 0;
-
-    if (timeParts.length === 2) { // Format is "mm:ss"
-        const [minutes, secs] = timeParts;
-        seconds = (minutes * 60) + secs;
-    } else if (timeParts.length === 3) { // Format is "hh:mm:ss"
-        const [hours, minutes, secs] = timeParts;
-        seconds = (hours * 3600) + (minutes * 60) + secs;
-    }
-
-    return seconds;
-}
-
-
-
-/* Memorization Mode JavaScript */
-// Initialize variables
-
-    const surahListData = [
-        { number: 1, name: "Al-Fatiha", length: timeToSeconds("0:00:52"), revelationOrder: 5 },
-        { number: 2, name: "Al-Baqarah", length: timeToSeconds("2:06:16"), revelationOrder: 87 },
-        { number: 3, name: "Aal-E-Imran", length: timeToSeconds("1:18:45"), revelationOrder: 89 },
-        { number: 4, name: "An-Nisa", length: timeToSeconds("1:19:57"), revelationOrder: 92 },
-        { number: 5, name: "Al-Ma'idah", length: timeToSeconds("1:03:01"), revelationOrder: 112 },
-        { number: 6, name: "Al-An'am", length: timeToSeconds("1:12:30"), revelationOrder: 55 },
-        { number: 7, name: "Al-A'raf", length: timeToSeconds("1:23:15"), revelationOrder: 39 },
-        { number: 8, name: "Al-Anfal", length: timeToSeconds("0:30:38"), revelationOrder: 88 },
-        { number: 9, name: "At-Tawbah", length: timeToSeconds("1:00:25"), revelationOrder: 113 },
-        { number: 10, name: "Yunus", length: timeToSeconds("0:45:13"), revelationOrder: 51 },
-        { number: 11, name: "Hud", length: timeToSeconds("0:46:26"), revelationOrder: 52 },
-        { number: 12, name: "Yusuf", length: timeToSeconds("0:42:05"), revelationOrder: 53 },
-        { number: 13, name: "Ar-Ra'd", length: timeToSeconds("0:20:31"), revelationOrder: 96 },
-        { number: 14, name: "Ibrahim", length: timeToSeconds("0:20:27"), revelationOrder: 72 },
-        { number: 15, name: "Al-Hijr", length: timeToSeconds("0:15:55"), revelationOrder: 54 },
-        { number: 16, name: "An-Nahl", length: timeToSeconds("0:42:24"), revelationOrder: 70 },
-        { number: 17, name: "Al-Isra", length: timeToSeconds("0:35:14"), revelationOrder: 50 },
-        { number: 18, name: "Al-Kahf", length: timeToSeconds("0:33:30"), revelationOrder: 69 },
-        { number: 19, name: "Maryam", length: timeToSeconds("0:21:23"), revelationOrder: 44 },
-        { number: 20, name: "Ta-Ha", length: timeToSeconds("0:27:08"), revelationOrder: 45 },
-        { number: 21, name: "Al-Anbiya", length: timeToSeconds("0:26:25"), revelationOrder: 73 },
-        { number: 22, name: "Al-Hajj", length: timeToSeconds("0:29:32"), revelationOrder: 103 },
-        { number: 23, name: "Al-Mu'minun", length: timeToSeconds("0:25:00"), revelationOrder: 74 },
-        { number: 24, name: "An-Nur", length: timeToSeconds("0:30:41"), revelationOrder: 102 },
-        { number: 25, name: "Al-Furqan", length: timeToSeconds("0:18:22"), revelationOrder: 42 },
-        { number: 26, name: "Ash-Shu'ara", length: timeToSeconds("0:30:47"), revelationOrder: 47 },
-        { number: 27, name: "An-Naml", length: timeToSeconds("0:26:12"), revelationOrder: 48 },
-        { number: 28, name: "Al-Qasas", length: timeToSeconds("0:31:44"), revelationOrder: 49 },
-        { number: 29, name: "Al-Ankabut", length: timeToSeconds("0:21:25"), revelationOrder: 85 },
-        { number: 30, name: "Ar-Rum", length: timeToSeconds("0:19:31"), revelationOrder: 84 },
-        { number: 31, name: "Luqman", length: timeToSeconds("0:11:55"), revelationOrder: 57 },
-        { number: 32, name: "As-Sajdah", length: timeToSeconds("0:08:44"), revelationOrder: 75 },
-        { number: 33, name: "Al-Ahzab", length: timeToSeconds("0:29:17"), revelationOrder: 90 },
-        { number: 34, name: "Saba", length: timeToSeconds("0:19:03"), revelationOrder: 58 },
-        { number: 35, name: "Fatir", length: timeToSeconds("0:17:37"), revelationOrder: 43 },
-        { number: 36, name: "Ya-Sin", length: timeToSeconds("0:17:40"), revelationOrder: 41 },
-        { number: 37, name: "As-Saffat", length: timeToSeconds("0:24:24"), revelationOrder: 56 },
-        { number: 38, name: "Sad", length: timeToSeconds("0:17:50"), revelationOrder: 38 },
-        { number: 39, name: "Az-Zumar", length: timeToSeconds("0:27:10"), revelationOrder: 59 },
-        { number: 40, name: "Ghafir", length: timeToSeconds("0:26:22"), revelationOrder: 60 },
-        { number: 41, name: "Fussilat", length: timeToSeconds("0:19:20"), revelationOrder: 61 },
-        { number: 42, name: "Ash-Shura", length: timeToSeconds("0:19:30"), revelationOrder: 62 },
-        { number: 43, name: "Az-Zukhruf", length: timeToSeconds("0:20:28"), revelationOrder: 63 },
-        { number: 44, name: "Ad-Dukhan", length: timeToSeconds("0:09:51"), revelationOrder: 64 },
-        { number: 45, name: "Al-Jathiyah", length: timeToSeconds("0:10:52"), revelationOrder: 65 },
-        { number: 46, name: "Al-Ahqaf", length: timeToSeconds("0:15:57"), revelationOrder: 66 },
-        { number: 47, name: "Muhammad", length: timeToSeconds("0:12:18"), revelationOrder: 95 },
-        { number: 48, name: "Al-Fath", length: timeToSeconds("0:12:02"), revelationOrder: 111 },
-        { number: 49, name: "Al-Hujurat", length: timeToSeconds("0:08:35"), revelationOrder: 106 },
-        { number: 50, name: "Qaf", length: timeToSeconds("0:09:20"), revelationOrder: 34 },
-        { number: 51, name: "Adh-Dhariyat", length: timeToSeconds("0:09:05"), revelationOrder: 67 },
-        { number: 52, name: "At-Tur", length: timeToSeconds("0:08:05"), revelationOrder: 76 },
-        { number: 53, name: "An-Najm", length: timeToSeconds("0:07:41"), revelationOrder: 23 },
-        { number: 54, name: "Al-Qamar", length: timeToSeconds("0:08:03"), revelationOrder: 37 },
-        { number: 55, name: "Ar-Rahman", length: timeToSeconds("0:11:19"), revelationOrder: 97 },
-        { number: 56, name: "Al-Waqi'ah", length: timeToSeconds("0:11:57"), revelationOrder: 46 },
-        { number: 57, name: "Al-Hadid", length: timeToSeconds("0:13:43"), revelationOrder: 94 },
-        { number: 58, name: "Al-Mujadila", length: timeToSeconds("0:10:13"), revelationOrder: 105 },
-        { number: 59, name: "Al-Hashr", length: timeToSeconds("0:10:27"), revelationOrder: 101 },
-        { number: 60, name: "Al-Mumtahanah", length: timeToSeconds("0:07:31"), revelationOrder: 91 },
-        { number: 61, name: "As-Saff", length: timeToSeconds("0:04:53"), revelationOrder: 109 },
-        { number: 62, name: "Al-Jumu'ah", length: timeToSeconds("0:03:34"), revelationOrder: 110 },
-        { number: 63, name: "Al-Munafiqun", length: timeToSeconds("0:04:18"), revelationOrder: 104 },
-        { number: 64, name: "At-Taghabun", length: timeToSeconds("0:05:25"), revelationOrder: 108 },
-        { number: 65, name: "At-Talaq", length: timeToSeconds("0:06:01"), revelationOrder: 99 },
-        { number: 66, name: "At-Tahrim", length: timeToSeconds("0:06:12"), revelationOrder: 107 },
-        { number: 67, name: "Al-Mulk", length: timeToSeconds("0:07:35"), revelationOrder: 77 },
-        { number: 68, name: "Al-Qalam", length: timeToSeconds("0:07:36"), revelationOrder: 2 },
-        { number: 69, name: "Al-Haqqah", length: timeToSeconds("0:06:46"), revelationOrder: 78 },
-        { number: 70, name: "Al-Ma'arij", length: timeToSeconds("0:05:18"), revelationOrder: 79 },
-        { number: 71, name: "Nuh", length: timeToSeconds("0:04:41"), revelationOrder: 71 },
-        { number: 72, name: "Al-Jinn", length: timeToSeconds("0:05:35"), revelationOrder: 40 },
-        { number: 73, name: "Al-Muzzammil", length: timeToSeconds("0:04:04"), revelationOrder: 3 },
-        { number: 74, name: "Al-Muddaththir", length: timeToSeconds("0:05:24"), revelationOrder: 4 },
-        { number: 75, name: "Al-Qiyamah", length: timeToSeconds("0:03:32"), revelationOrder: 31 },
-        { number: 76, name: "Al-Insan", length: timeToSeconds("0:05:15"), revelationOrder: 98 },
-        { number: 77, name: "Al-Mursalat", length: timeToSeconds("0:04:59"), revelationOrder: 33 },
-        { number: 78, name: "An-Naba", length: timeToSeconds("0:04:52"), revelationOrder: 80 },
-        { number: 79, name: "An-Nazi'at", length: timeToSeconds("0:04:16"), revelationOrder: 81 },
-        { number: 80, name: "Abasa", length: timeToSeconds("0:03:40"), revelationOrder: 24 },
-        { number: 81, name: "At-Takwir", length: timeToSeconds("0:02:38"), revelationOrder: 7 },
-        { number: 82, name: "Al-Infitar", length: timeToSeconds("0:02:17"), revelationOrder: 82 },
-        { number: 83, name: "Al-Mutaffifin", length: timeToSeconds("0:05:10"), revelationOrder: 86 },
-        { number: 84, name: "Al-Inshiqaq", length: timeToSeconds("0:02:40"), revelationOrder: 83 },
-        { number: 85, name: "Al-Buruj", length: timeToSeconds("0:03:18"), revelationOrder: 27 },
-        { number: 86, name: "At-Tariq", length: timeToSeconds("0:01:40"), revelationOrder: 36 },
-        { number: 87, name: "Al-A'la", length: timeToSeconds("0:01:48"), revelationOrder: 8 },
-        { number: 88, name: "Al-Ghashiyah", length: timeToSeconds("0:02:14"), revelationOrder: 68 },
-        { number: 89, name: "Al-Fajr", length: timeToSeconds("0:03:33"), revelationOrder: 10 },
-        { number: 90, name: "Al-Balad", length: timeToSeconds("0:02:00"), revelationOrder: 35 },
-        { number: 91, name: "Ash-Shams", length: timeToSeconds("0:01:24"), revelationOrder: 26 },
-        { number: 92, name: "Al-Lail", length: timeToSeconds("0:01:52"), revelationOrder: 9 },
-        { number: 93, name: "Ad-Duha", length: timeToSeconds("0:01:05"), revelationOrder: 11 },
-        { number: 94, name: "Al-Inshirah", length: timeToSeconds("0:00:43"), revelationOrder: 12 },
-        { number: 95, name: "At-Tin", length: timeToSeconds("0:01:05"), revelationOrder: 28 },
-        { number: 96, name: "Al-Alaq", length: timeToSeconds("0:01:35"), revelationOrder: 1 },
-        { number: 97, name: "Al-Qadr", length: timeToSeconds("0:00:45"), revelationOrder: 25 },
-        { number: 98, name: "Al-Bayyinah", length: timeToSeconds("0:02:06"), revelationOrder: 100 },
-        { number: 99, name: "Az-Zalzalah", length: timeToSeconds("0:01:00"), revelationOrder: 93 },
-        { number: 100, name: "Al-Adiyat", length: timeToSeconds("0:01:10"), revelationOrder: 14 },
-        { number: 101, name: "Al-Qari'ah", length: timeToSeconds("0:01:03"), revelationOrder: 30 },
-        { number: 102, name: "At-Takathur", length: timeToSeconds("0:01:03"), revelationOrder: 16 },
-        { number: 103, name: "Al-Asr", length: timeToSeconds("0:00:27"), revelationOrder: 13 },
-        { number: 104, name: "Al-Humazah", length: timeToSeconds("0:00:58"), revelationOrder: 32 },
-        { number: 105, name: "Al-Fil", length: timeToSeconds("0:00:49"), revelationOrder: 19 },
-        { number: 106, name: "Quraish", length: timeToSeconds("0:00:43"), revelationOrder: 29 },
-        { number: 107, name: "Al-Ma'un", length: timeToSeconds("0:00:58"), revelationOrder: 17 },
-        { number: 108, name: "Al-Kauthar", length: timeToSeconds("0:00:25"), revelationOrder: 15 },
-        { number: 109, name: "Al-Kafirun", length: timeToSeconds("0:00:54"), revelationOrder: 18 },
-        { number: 110, name: "An-Nasr", length: timeToSeconds("0:00:35"), revelationOrder: 114 },
-        { number: 111, name: "Al-Masad", length: timeToSeconds("0:00:42"), revelationOrder: 6 },
-        { number: 112, name: "Al-Ikhlas", length: timeToSeconds("0:00:22"), revelationOrder: 22 },
-        { number: 113, name: "Al-Falaq", length: timeToSeconds("0:00:33"), revelationOrder: 20 },
-        { number: 114, name: "An-Nas", length: timeToSeconds("0:00:50"), revelationOrder: 21 }
+  </div>
+
+  <script>
+    const reciterSelect       = document.getElementById('reciterSelect');
+    const surahSelect         = document.getElementById('surahSelect');
+    const loadSurahBtn        = document.getElementById('loadSurahBtn');
+    const customBtn           = document.getElementById('customBtn');
+    const customInput         = document.getElementById('customInput');
+    const audio               = document.getElementById('audio');
+    const progressBar         = document.getElementById('progressBar');
+    const progressDiv         = document.getElementById('progress');
+    const sleepTimerButton    = document.getElementById('sleepTimerButton');
+    const volumeButton        = document.getElementById('volumeButton');
+    const speedButton         = document.getElementById('speedButton');
+    const playPauseButton     = document.getElementById('playPauseButton');
+    const filterButton        = document.getElementById('filterButton');
+    const filterModalOverlay  = document.getElementById('filterModalOverlay');
+    const filterCloseButton   = document.getElementById('filterCloseButton');
+    const statsButton         = document.getElementById('statsButton');
+    const statsModalOverlay   = document.getElementById('statsModalOverlay');
+    const statsCloseButton    = document.getElementById('statsCloseButton');
+    const helpButton          = document.getElementById('helpButton');
+    const helpModalOverlay    = document.getElementById('helpModalOverlay');
+    const helpCloseButton     = document.getElementById('helpCloseButton');
+    const juzListDiv          = document.getElementById('juzList');
+    const resetFilterButton   = document.getElementById('resetFilterButton');
+    const surahsPlayedCountEl = document.getElementById('surahsPlayedCount');
+    const minutesListenedEl   = document.getElementById('minutesListened');
+    const repeatButton        = document.getElementById('repeatButton');
+
+    const surahNames = [
+      "Al-Fatiha","Al-Baqara","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus",
+      "Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
+      "Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum",
+      "Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir",
+      "Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiya","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf",
+      "Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'a","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah",
+      "As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij",
+      "Nuh","Al-Jinn","Al-Muzzammil","Al-Muddathir","Al-Qiyama","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa",
+      "At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-Ala","Al-Ghashiyah","Al-Fajr","Al-Balad",
+      "Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat",
+      "Al-Qariah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr",
+      "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
     ];
+    const juzData = [
+      {number:1,surahs:[1,2]},{number:2,surahs:[2]},{number:3,surahs:[2,3]},
+      {number:4,surahs:[3,4]},{number:5,surahs:[4,5]},{number:6,surahs:[5,6]},
+      {number:7,surahs:[6,7]},{number:8,surahs:[7,8]},{number:9,surahs:[8,9]},
+      {number:10,surahs:[9,10,11]},{number:11,surahs:[11,12]},{number:12,surahs:[12,13,14]},
+      {number:13,surahs:[15,16]},{number:14,surahs:[15,16]},{number:15,surahs:[17,18]},
+      {number:16,surahs:[18,19,20]},{number:17,surahs:[21,22]},{number:18,surahs:[23,24]},
+      {number:19,surahs:[25,26,27]},{number:20,surahs:[27,28,29]},{number:21,surahs:[29,30,31]},
+      {number:22,surahs:[32,33,34,35]},{number:23,surahs:[36,37,38,39]},{number:24,surahs:[39,40,41,42,43]},
+      {number:25,surahs:[42,43,44,45,46]},{number:26,surahs:[46,47,48,49,50,51]},
+      {number:27,surahs:[51,52,53,54,55,56,57]},{number:28,surahs:[58,59,60,61,62,63,64,65,66]},
+      {number:29,surahs:[67,68,69,70,71,72,73]},{number:30,surahs:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]}
+    ];
+    const surahJuzMap = {};
+    juzData.forEach(j=> j.surahs.forEach(n=>{
+      surahJuzMap[n] = (surahJuzMap[n]||[]).concat(j.number);
+    }));
 
+    const sleepTimes = [
+      {time:null,img:'https://i.imgur.com/6jVJpH5.png'},
+      {time:10*60,img:'https://i.imgur.com/2i3xjzP.png'},
+      {time:15*60,img:'https://i.imgur.com/8C92a9F.png'},
+      {time:20*60,img:'https://i.imgur.com/ZkhlFd4.png'},
+      {time:30*60,img:'https://i.imgur.com/dlYk6kr.png'},
+      {time:60*60,img:'https://i.imgur.com/T8qc0tX.png'},
+      {time:120*60,img:'https://i.imgur.com/mj64RF8.png'}
+    ];
+    let currentSleepIndex=0, sleepTimerTimeout=null;
 
-const surahUl = document.getElementById('surahList');
-const searchBar = document.getElementById('searchBar');
-const memPlayPauseButton = document.getElementById('memPlayPauseButton');
-const bottomTrackTitle = document.getElementById('bottomTrackTitle');
-const memProgressBar = document.getElementById('progressBar');
-const memCurrentTime = document.getElementById('currentTime');
-const memDuration = document.getElementById('duration');
-const repeatButton = document.getElementById('repeatButton');
-const repeatMenu = document.getElementById('repeatMenu');
-const repeatCountSlider = document.getElementById('repeatCountSlider');
-const repeatCountValue = document.getElementById('repeatCountValue');
-const closeRepeatMenuButton = document.getElementById('closeRepeatMenuButton');
-const playlistModal = document.getElementById('playlistModal');
-const createPlaylistButton = document.getElementById('createPlaylistButton');
-const playlistSurahList = document.getElementById('playlistSurahList');
-const finishPlaylistButton = document.getElementById('finishPlaylistButton');
-const playlistDisplay = document.getElementById('playlistDisplay');
-const playlistItems = document.getElementById('playlistItems');
-const playPlaylistButton = document.getElementById('playPlaylistButton');
+    const speeds = [
+      {rate:1,img:'https://i.imgur.com/wDDwzEi.png'},
+      {rate:1.25,img:'https://i.imgur.com/56ibCLP.png'},
+      {rate:1.5,img:'https://i.imgur.com/QrgfxD1.png'},
+      {rate:1.75,img:'https://i.imgur.com/AJUMmXp.png'},
+      {rate:2,img:'https://i.imgur.com/PzKnwfo.png'},
+      {rate:0.5,img:'https://i.imgur.com/rQqbvso.png'},
+      {rate:0.75,img:'https://i.imgur.com/JymFl6p.png'}
+    ];
+    let currentSpeedIndex=0;
 
+    const volumes = [
+      {lvl:1,img:'https://i.imgur.com/YHeXLfV.png'},
+      {lvl:0.67,img:'https://i.imgur.com/3eYgm5a.png'},
+      {lvl:0.33,img:'https://i.imgur.com/7tPoTem.png'}
+    ];
+    let currentVolumeIndex=0;
 
-let isPlaying = false; // Add this at the top-level scope where other variables are declared
-let currentMemSurahIndex = -1;
-let playCount = 1;
-let currentPlayCount = 1;
-let repeatCount = 1;
-let currentRepeatCount = 1;
-let memIsPlaying = false;
+    let selectedJuz=null;
+    let surahsPlayedCount = parseInt(localStorage.getItem('surahsPlayedCount'))||0;
+    let totalListeningTime = parseInt(localStorage.getItem('totalListeningTime'))||0;
+    let listeningInterval=null;
 
-// Playlist variables
-let playlist = [];
-let currentPlaylistIndex = 0;
-let isPlaylistPlaying = false;
-
-function populateSurahList() {
-    const surahList = document.getElementById('surahList');
-    surahList.innerHTML = ''; // Clear list
-
-    surahListData.forEach(surah => {
-        const surahItem = document.createElement('li');
-        surahItem.classList.add('surah-item');
-        surahItem.textContent = `${surah.number}. ${surah.name}`;
-        
-        surahItem.addEventListener('click', () => {
-            currentMemSurahIndex = surahListData.findIndex(s => s.number === surah.number);
-            playMemSurah();
-        });
-
-        surahList.appendChild(surahItem);
-    });
-}
-
-
-// Create Surah List Item
-function createSurahListItem(surah) {
-    const li = document.createElement('li');
-    li.innerHTML = `<span class="surah-name">${surah.number}. ${surah.name} (${formatTime(surah.length)})</span><span class="three-dots">&#x22EE;</span>`;
-    li.addEventListener('click', () => {
-        currentMemSurahIndex = surahListData.findIndex(s => s.number === surah.number);
-        currentPlayCount = playCount; // Reset play count
-        currentRepeatCount = repeatCount; // Reset repeat count
-        isPlaylistPlaying = false; // Not playing from playlist
-        playMemSurah();
+    // Populate Surah dropdown
+    surahNames.forEach((name,i)=>{
+      const num=i+1, val=String(num).padStart(3,'0');
+      const opt=document.createElement('option');
+      opt.value=val;
+      opt.textContent=`${num} - ${name}`;
+      surahSelect.appendChild(opt);
     });
 
-    const menu = document.getElementById('menuTemplate') ? document.getElementById('menuTemplate').cloneNode(true) : document.createElement('div');
-    menu.id = `menu-${surah.number}`;
-    menu.classList.add('menu');
-    menu.querySelector('#menuSurahName').textContent = surah.name;
-    const playCountSlider = menu.querySelector('#surahPlayCount');
-    const playCountValue = menu.querySelector('#surahPlayCountValue');
+    // Play a Surah by key
+    function playSurah(key){
+      const rec=reciterSelect.value;
+      audio.src=`${rec}/${key}.mp3`;
+      audio.playbackRate=speeds[currentSpeedIndex].rate;
+      audio.volume=volumes[currentVolumeIndex].lvl;
+      audio.loop=false;
+      audio.play();
+      updatePlayIcon();
+      startListeningTimer();
+      surahsPlayedCount++;
+      localStorage.setItem('surahsPlayedCount',surahsPlayedCount);
+    }
+    // Shuffle
+    function playRandomSurah(){
+      let list=Array.from({length:114},(_,i)=>i+1);
+      if(selectedJuz) list=list.filter(n=>(surahJuzMap[n]||[]).includes(selectedJuz));
+      const r=list[Math.floor(Math.random()*list.length)];
+      const key=String(r).padStart(3,'0');
+      surahSelect.value=key;
+      playSurah(key);
+    }
 
-    playCountSlider.max = 31; // Set max to 31 (30 + infinite)
-    playCountSlider.addEventListener('input', function () {
-        playCount = parseInt(this.value);
-        if (playCount == 31) {
-            playCountValue.textContent = 'infinite';
-        } else {
-            playCountValue.textContent = playCount;
-        }
+    // Event bindings
+    loadSurahBtn.addEventListener('click',()=>playSurah(surahSelect.value));
+    customBtn.addEventListener('click',()=>customInput.click());
+    customInput.addEventListener('change',e=>{
+      const f=e.target.files[0];
+      if(!f)return;
+      clearSleepTimer();
+      audio.src=URL.createObjectURL(f);
+      audio.loop=false;
+      audio.play();
+      updatePlayIcon();
     });
-    menu.querySelector('#closeMenuButton').addEventListener('click', () => {
-        menu.style.display = 'none';
+    playPauseButton.addEventListener('click',()=>{
+      if(audio.paused) playSurah(surahSelect.value);
+      else { audio.pause(); clearListeningTimer(); }
+      updatePlayIcon();
+    });
+    shuffleButton.addEventListener('click',()=>{
+      shuffleButton.style.transform='rotate(360deg)';
+      setTimeout(()=>shuffleButton.style.transform='',400);
+      playRandomSurah();
+    });
+    speedButton.addEventListener('click',()=>{
+      currentSpeedIndex=(currentSpeedIndex+1)%speeds.length;
+      speedButton.querySelector('img').src=speeds[currentSpeedIndex].img;
+      audio.playbackRate=speeds[currentSpeedIndex].rate;
+    });
+    volumeButton.addEventListener('click',()=>{
+      currentVolumeIndex=(currentVolumeIndex+1)%volumes.length;
+      volumeButton.querySelector('img').src=volumes[currentVolumeIndex].img;
+      audio.volume=volumes[currentVolumeIndex].lvl;
+    });
+    sleepTimerButton.addEventListener('click',()=>{
+      currentSleepIndex=(currentSleepIndex+1)%sleepTimes.length;
+      sleepTimerButton.querySelector('img').src=sleepTimes[currentSleepIndex].img;
+      if(!audio.paused) startSleepTimer();
+    });
+    filterButton.addEventListener('click',()=>filterModalOverlay.style.display='flex');
+    filterCloseButton.addEventListener('click',()=>filterModalOverlay.style.display='none');
+    statsButton.addEventListener('click',()=>{
+      surahsPlayedCountEl.textContent=surahsPlayedCount;
+      minutesListenedEl.textContent=Math.floor(totalListeningTime/60);
+      statsModalOverlay.style.display='flex';
+    });
+    statsCloseButton.addEventListener('click',()=>statsModalOverlay.style.display='none');
+    helpButton.addEventListener('click',()=>helpModalOverlay.style.display='flex');
+    helpCloseButton.addEventListener('click',()=>helpModalOverlay.style.display='none');
+    repeatButton.addEventListener('click',()=>{
+      audio.loop = !audio.loop;
+      repeatButton.querySelector('img').style.opacity = audio.loop ? '1' : '0.5';
     });
 
-    li.querySelector('.three-dots').addEventListener('click', (event) => {
-        event.stopPropagation();
-        const rect = li.getBoundingClientRect();
-        menu.style.display = 'block';
-        menu.style.top = `${rect.bottom + window.scrollY}px`;
-        menu.style.left = `${rect.left + window.scrollX}px`;
+    // Progress bar
+    progressBar.addEventListener('click',e=>{
+      const pct=e.offsetX/progressBar.clientWidth;
+      audio.currentTime=audio.duration*pct;
+    });
+    audio.addEventListener('timeupdate',()=>{
+      if(audio.duration){
+        progressDiv.style.width=(audio.currentTime/audio.duration*100)+'%';
+      }
+    });
+    audio.addEventListener('ended',()=>{
+      clearListeningTimer();
+      if(audio.loop) audio.play();
+      else playRandomSurah();
     });
 
-    document.body.appendChild(menu);
-    return li;
-}
-
-function formatTime(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${hours > 0 ? String(hours).padStart(2, '0') + ':' : ''}${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-}
-
-function playMemSurah() {
-    if (currentMemSurahIndex >= 0 && currentMemSurahIndex < surahListData.length) {
-        const surahNumber = surahListData[currentMemSurahIndex].number;
-        memAudioPlayer.src = `assets/${String(surahNumber).padStart(3, '0')}.mp3`;
-        memAudioPlayer.play();
-        bottomTrackTitle.textContent = surahListData[currentMemSurahIndex].name;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/iAyh3qN.png" alt="Pause">`; // Pause icon
-        memIsPlaying = true;
-// Increment surahs played count
-surahsPlayedCount++;
-
-    }
-}
-
-memPlayPauseButton.addEventListener('click', () => {
-    if (memAudioPlayer.paused) {
-        memAudioPlayer.play();
-        memIsPlaying = true;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/iAyh3qN.png" alt="Pause">`; // Pause icon
-    } else {
-        memAudioPlayer.pause();
-        memIsPlaying = false;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/rfSFOWK.png" alt="Play">`; // Play icon
-    }
-});
-
-memAudioPlayer.addEventListener('ended', () => {
-    if (playCount === 31 || currentPlayCount < playCount) {
-        currentPlayCount++;
-        memAudioPlayer.currentTime = 0;
-        memAudioPlayer.play();
-    } else if (repeatCount === 31 || currentRepeatCount < repeatCount) {
-        currentRepeatCount++;
-        currentPlayCount = 1;
-        memAudioPlayer.currentTime = 0;
-        memAudioPlayer.play();
-    } else if (isPlaylistPlaying) {
-        currentPlaylistIndex++;
-        currentPlayCount = 1;
-        currentRepeatCount = 1;
-        playPlaylistSurah();
-    } else {
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/rfSFOWK.png" alt="Play">`; // Play icon
-        memIsPlaying = false;
-    }
-});
-
-memAudioPlayer.addEventListener('timeupdate', () => {
-    if (memAudioPlayer.duration) {
-        memProgressBar.value = (memAudioPlayer.currentTime / memAudioPlayer.duration) * 100;
-        memCurrentTime.textContent = formatTime(memAudioPlayer.currentTime);
-        memDuration.textContent = formatTime(memAudioPlayer.duration);
-    }
-});
-
-memProgressBar.addEventListener('input', (e) => {
-    if (memAudioPlayer.duration) {
-        memAudioPlayer.currentTime = (e.target.value / 100) * memAudioPlayer.duration;
-    }
-});
-
-// Repeat Button Functionality
-repeatButton.addEventListener('click', () => {
-    if (repeatMenu.style.display === 'block') {
-        repeatMenu.style.display = 'none';
-    } else {
-        const rect = repeatButton.getBoundingClientRect();
-        repeatMenu.style.display = 'block';
-        repeatMenu.style.top = `${rect.top + window.scrollY - repeatMenu.offsetHeight}px`;
-        repeatMenu.style.left = `${rect.left + window.scrollX - repeatMenu.offsetWidth / 2 + repeatButton.offsetWidth / 2}px`;
-    }
-
-    // Update the repeat button image
-    repeatButton.innerHTML = `<img src="https://i.imgur.com/FiKtOLw.png" alt="Repeat">`;
-});
-
-repeatCountSlider.addEventListener('input', function () {
-    repeatCount = parseInt(this.value);
-    if (repeatCount === 31) {
-        repeatCountValue.textContent = 'infinite';
-    } else {
-        repeatCountValue.textContent = repeatCount;
-    }
-});
-
-closeRepeatMenuButton.addEventListener('click', () => {
-    repeatMenu.style.display = 'none';
-});
-
-// Playlist Feature
-createPlaylistButton.addEventListener('click', () => {
-    openPlaylistModal();
-});
-
-function openPlaylistModal() {
-    playlistModal.style.display = 'block';
-    playlistSurahList.innerHTML = '';
-
-    surahListData.forEach(surah => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span>${surah.number}. ${surah.name}</span>`;
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.min = '1';
-        input.value = '1';
-        input.style.width = '50px';
-        input.style.marginRight = '10px';
-
-        const addButton = document.createElement('button');
-        addButton.textContent = 'Add';
-        addButton.className = 'add-button';
-        addButton.addEventListener('click', () => {
-            let count = parseInt(input.value);
-            if (!isNaN(count) && count > 0) {
-                for (let i = 0; i < count; i++) {
-                    playlist.push(surah);
-                }
-                alert(`${surah.name} added ${count} times to the playlist.`);
-            } else {
-                alert("Invalid number.");
-            }
-        });
-        li.appendChild(input);
-        li.appendChild(addButton);
-        playlistSurahList.appendChild(li);
+    // Juz filter
+    juzListDiv.innerHTML=juzData.map(j=>
+      `<div class="juz-item" data-juz="${j.number}">Juz ${j.number}</div>`
+    ).join('');
+    juzListDiv.querySelectorAll('.juz-item').forEach(el=>{
+      el.addEventListener('click',()=>{
+        document.querySelectorAll('.juz-item').forEach(x=>x.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedJuz=parseInt(el.dataset.juz);
+      });
     });
-}
+    resetFilterButton.addEventListener('click',()=>{
+      selectedJuz=null;
+      document.querySelectorAll('.juz-item').forEach(x=>x.classList.remove('selected'));
+    });
 
-finishPlaylistButton.addEventListener('click', () => {
-    playlistModal.style.display = 'none';
-    displayPlaylist();
-});
-
-function displayPlaylist() {
-    playlistItems.innerHTML = '';
-    if (playlist.length > 0) {
-        playlistDisplay.style.display = 'block';
-        playlist.forEach((surah, index) => {
-            const div = document.createElement('div');
-            div.className = 'playlist-item';
-            div.textContent = `${index + 1}. ${surah.name}`;
-            playlistItems.appendChild(div);
-        });
-    } else {
-        playlistDisplay.style.display = 'none';
+    // Helpers
+    function updatePlayIcon(){
+      playPauseButton.querySelector('img').src = audio.paused
+        ? 'https://i.imgur.com/rfSFOWK.png'
+        : 'https://i.imgur.com/iAyh3qN.png';
     }
-}
-
-playPlaylistButton.addEventListener('click', () => {
-    if (playlist.length > 0) {
-        currentPlaylistIndex = 0;
-        isPlaylistPlaying = true;
-        playPlaylistSurah();
+    function startSleepTimer(){
+      clearSleepTimer();
+      const t=sleepTimes[currentSleepIndex].time;
+      if(t!=null){
+        const fade=10;
+        sleepTimerTimeout=setTimeout(()=>{
+          const step=audio.volume/fade;
+          const fi=setInterval(()=>{
+            if(audio.volume>step) audio.volume-=step;
+            else{ clearInterval(fi); audio.pause(); updatePlayIcon(); }
+          },1000);
+        },(t-fade)*1000);
+      }
     }
-});
-
-function playPlaylistSurah() {
-    if (currentPlaylistIndex < playlist.length) {
-        const surah = playlist[currentPlaylistIndex];
-        currentMemSurahIndex = surahListData.findIndex(s => s.number === surah.number);
-        memAudioPlayer.src = `assets/${String(surah.number).padStart(3, '0')}.mp3`;
-        memAudioPlayer.play();
-        bottomTrackTitle.textContent = surah.name;
-        memPlayPauseButton.innerHTML = `<img src="https://i.imgur.com/iAyh3qN.png" alt="Pause">`; // Pause icon
-        memIsPlaying = true;
-    } else {
-        isPlaylistPlaying = false;
-        memIsPlaying = false;
+    function clearSleepTimer(){
+      if(sleepTimerTimeout){ clearTimeout(sleepTimerTimeout); sleepTimerTimeout=null; }
     }
-}
-
-// Search functionality
-searchBar.addEventListener('input', function () {
-    const query = this.value.toLowerCase();
-    const filteredSurahs = surahListData.filter(surah => surah.name.toLowerCase().includes(query));
-    populateSurahList(filteredSurahs);
-});
-
-document.getElementById('sortDefaultOrder').addEventListener('click', () => {
-    surahListData.sort((a, b) => a.number - b.number);
-    populateSurahList();
-});
-
-
-
-// For Memorization Mode
-memAudioPlayer.addEventListener('play', () => {
-    memListeningInterval = setInterval(() => {
+    function startListeningTimer(){
+      clearListeningTimer();
+      listeningInterval=setInterval(()=>{
         totalListeningTime++;
-    }, 1000);
-});
-
-memAudioPlayer.addEventListener('pause', () => {
-    clearInterval(memListeningInterval);
-});
-
-memAudioPlayer.addEventListener('ended', () => {
-    clearInterval(memListeningInterval);
-});
-
-
-
-document.getElementById('sortShortestToLongest').addEventListener('click', () => {
-    surahListData.sort((a, b) => a.length - b.length);
-    populateSurahList();
-});
-
-document.getElementById('sortLongestToShortest').addEventListener('click', () => {
-    surahListData.sort((a, b) => b.length - a.length);
-    populateSurahList();
-});
-
-document.getElementById('sortRevelationOrder').addEventListener('click', () => {
-    surahListData.sort((a, b) => a.revelationOrder - b.revelationOrder);
-    populateSurahList();
-});
-
-// Initialize Surah List
-populateSurahList();
-
-});
-
-
-
-
-// Get reference to the new switch mode button
-const newSwitchModeButton = document.getElementById('newSwitchModeButton');
-
-// Function to toggle modes
-function toggleModes() {
-    const radioMode = document.getElementById('radioMode');
-    const memorizationMode = document.getElementById('memorizationMode');
-
-    if (radioMode.style.display !== 'none') {
-        radioMode.style.display = 'none';
-        memorizationMode.style.display = 'block';
-
-        // Ensure surahs are populated when switching to memorization mode
-        populateSurahList();
-    } else {
-        memorizationMode.style.display = 'none';
-        radioMode.style.display = 'block';
+        localStorage.setItem('totalListeningTime',totalListeningTime);
+      },1000);
     }
-}
+    function clearListeningTimer(){
+      if(listeningInterval){ clearInterval(listeningInterval); listeningInterval=null; }
+    }
 
-// Attach the toggle function to both switch mode buttons
-switchModeButton.addEventListener('click', toggleModes);
-newSwitchModeButton.addEventListener('click', toggleModes);
-
-
-
-
-</script>
-
+    // Initialize
+    surahSelect.value='001';
+    playSurah('001');
+  </script>
 </body>
 </html>
