@@ -229,6 +229,49 @@
     .slider-container input {
       width:80%; margin-top:1rem;
     }
+
+    /* ===== Mobile Responsive Fixes ===== */
+    @media (max-width: 600px) {
+      .ui-container {
+        width: calc(100% - 2rem);
+        max-width: none;
+        margin: 1rem auto 6rem;
+        padding: 1rem;
+      }
+      .menu .row.two {
+        flex-direction: column;
+      }
+      .menu .row.two select,
+      .menu .row.two button {
+        flex: none;
+        width: 100%;
+      }
+      .menu select, .menu button {
+        font-size: 0.9rem;
+        padding: .5rem .75rem;
+      }
+      #loadSurahBtn {
+        font-size: 0.9rem;
+      }
+      #bottomBar {
+        padding: .25rem;
+      }
+      .controls-container {
+        gap: .25rem;
+      }
+      .control-button img {
+        width: 40px; height: 40px;
+      }
+      .play-button img {
+        width: 56px; height: 56px;
+      }
+      .help-button-container img {
+        width: 30px; height: 30px;
+      }
+      .help-button-container {
+        gap: .5rem;
+      }
+    }
   </style>
 </head>
 <body>
