@@ -42,7 +42,7 @@
 
     /* ===== UI Container ===== */
     .ui-container {
-      position: relative; z-index:1;
+      position: relative; z-index:2;
       max-width:500px; margin:2rem auto;
       padding:2rem;
       background:#000;
@@ -87,6 +87,20 @@
     .menu button:active { transform:scale(0.95); }
     #customInput { display:none; }
 
+    /* ===== Visualizer ===== */
+    #visualizer {
+      position: relative; z-index:1;
+      display:block;
+      margin:2rem auto;
+      width: calc(100% - 4rem);
+      max-width:500px;
+      height:150px;
+      background:transparent;
+    }
+    @media(min-width:600px) {
+      #visualizer { height:80px; }
+    }
+
     /* ===== Bottom Bar ===== */
     #bottomBar {
       position:fixed; bottom:1rem; left:50%;
@@ -94,10 +108,8 @@
       width:calc(100% - 2rem); max-width:800px;
       background:rgba(24,24,24,0.9);
       border-radius:12px;
-      padding:1rem;
+      padding:0.5rem;
       box-shadow:0 4px 15px rgba(0,0,0,0.5);
-      display:flex; flex-direction:column;
-      gap:.5rem;
       backdrop-filter:blur(5px);
       z-index:1;
     }
@@ -105,6 +117,7 @@
       position:relative; width:100%; height:8px;
       background:#333; border-radius:4px;
       cursor:pointer; overflow:hidden;
+      margin-bottom:.5rem;
     }
     .progress-bar .progress {
       width:0%; height:100%; background:#b49f5e;
@@ -112,18 +125,13 @@
     }
     .bottom-row {
       display:flex; align-items:center;
-      justify-content:space-between;
-    }
-    /* left side container: position relative so timer can be absolutely centered */
-    .left-container {
-      position:relative;
-      width:330px;
-      height:84px;
+      justify-content:center;
+      gap:1rem;
+      margin-bottom:.5rem;
     }
     .controls-container {
       display:flex; gap:.5rem;
-      justify-content:flex-end;
-      flex:1;
+      justify-content:center;
       align-items:center;
     }
     .control-button, .play-button {
@@ -136,20 +144,14 @@
       border-radius:50%;
       background:rgba(180,159,94,0.1);
     }
-    #sleepTimerButton {
-      position:absolute;
-      left:0; top:50%;
-      transform:translateY(-50%);
-      padding:0; /* remove extra padding */
-    }
-    #sleepTimerButton img {
-      width:330px; height:84px;
-      border-radius:4px;
-      background:none;
-    }
     .play-button img { width:64px; height:64px; }
     .control-button:active, .play-button:active { transform:scale(0.9); }
 
+    .help-button-container {
+      display:flex; gap:1rem; justify-content:center;
+    }
+    .help-button-container img { width:36px; height:36px; }
+    .help-button-container button { background:none; border:none; cursor:pointer; position:relative; }
     .tooltip {
       position:absolute; bottom:110%; left:50%;
       transform:translateX(-50%);
@@ -165,13 +167,20 @@
       opacity:1;
     }
 
-    .help-button-container {
-      display:flex; gap:1rem; justify-content:flex-end;
+    /* ===== Sleep & Repeat Buttons ===== */
+    #sleepTimerBtn, #repeatSettingBtn {
+      background: linear-gradient(45deg,#b49f5e,#e6c365);
+      border: none;
+      color: #000;
+      font-weight:600;
+      padding:.75rem 1rem;
+      border-radius:8px;
+      cursor:pointer;
+      transition:background .2s,transform .1s;
+      flex:1;
     }
-    .help-button-container button {
-      background:none; border:none; cursor:pointer; position:relative;
-    }
-    .help-button-container img { width:36px; height:36px; }
+    #sleepTimerBtn:hover, #repeatSettingBtn:hover { background:linear-gradient(45deg,#e6c365,#b49f5e); transform:scale(1.05); }
+    #sleepTimerBtn:active, #repeatSettingBtn:active { transform:scale(0.95); }
 
     /* ===== Modals ===== */
     .modal-overlay {
@@ -204,23 +213,29 @@
     .juz-item.selected, .juz-item:hover {
       background:#b49f5e; color:#000;
     }
+    .reset-filter-button, .slider-container {
+      margin-top:.5rem; text-align:center;
+    }
     .reset-filter-button {
-      margin-top:.5rem; background:#b49f5e; color:#000;
+      background:#b49f5e; color:#000;
       border:none; padding:.5rem 1rem; border-radius:6px; cursor:pointer;
       transition:background .2s;
     }
     .reset-filter-button:hover { background:#e6c365; }
+    .slider-container input {
+      width:80%; margin-top:1rem;
+    }
 
     /* ===== Responsive ===== */
     @media (max-width:600px) {
       .ui-container { margin:1rem; padding:1rem; }
       h1 { font-size:1.5rem; }
-      #bottomBar { gap:.5rem; padding:.75rem; }
+      #bottomBar { padding:.5rem; }
       .control-button img { width:40px; height:40px; }
       .play-button img    { width:56px; height:56px; }
       .help-button-container img { width:32px; height:32px; }
-      .left-container { width:240px; height:60px; }
-      #sleepTimerButton img { width:240px; height:60px; }
+      #sleepTimerBtn, #repeatSettingBtn { padding:.5rem .75rem; font-size:.9rem; }
+      #visualizer { margin:1rem auto; height:100px; }
     }
   </style>
 </head>
@@ -253,57 +268,45 @@
         <button id="customBtn">✚ Custom Recording</button>
         <input type="file" id="customInput" accept=".mp3,.m4a">
       </div>
+      <div class="row two">
+        <button id="sleepTimerBtn">⏰ Sleep Timer Off</button>
+        <button id="repeatSettingBtn">🔁 Repeat Off</button>
+      </div>
     </div>
   </div>
+
+  <!-- Visualizer between top and bottom -->
+  <canvas id="visualizer"></canvas>
 
   <audio id="audio"></audio>
 
   <div id="bottomBar">
-    <div class="progress-bar" id="progressBar">
-      <div class="progress" id="progress"></div>
-    </div>
+    <div class="progress-bar" id="progressBar"><div class="progress" id="progress"></div></div>
     <div class="bottom-row">
-      <div class="left-container">
-        <button id="sleepTimerButton" class="control-button" aria-label="Sleep Timer">
-          <img src="https://i.imgur.com/6jVJpH5.png" alt="Sleep Timer">
-          <div class="tooltip">Sleep Timer</div>
-        </button>
-      </div>
       <div class="controls-container">
         <button id="speedButton" class="control-button" aria-label="Speed">
-          <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed">
-          <div class="tooltip">Speed</div>
+          <img src="https://i.imgur.com/wDDwzEi.png" alt="Speed"><div class="tooltip">Speed</div>
         </button>
-        <button id="repeatButton" class="control-button" aria-label="Repeat">
-          <img src="https://i.imgur.com/FiKtOLw.png" alt="Repeat">
-          <div class="tooltip">Repeat</div>
+        <button id="filterButton" class="control-button" aria-label="Filter">
+          <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter"><div class="tooltip">Filter</div>
         </button>
         <button id="playPauseButton" class="play-button" aria-label="Play/Pause">
-          <img src="https://i.imgur.com/rfSFOWK.png" alt="Play">
-          <div class="tooltip">Play/Pause</div>
+          <img src="https://i.imgur.com/rfSFOWK.png" alt="Play"><div class="tooltip">Play/Pause</div>
         </button>
         <button id="shuffleButton" class="control-button" aria-label="Shuffle">
-          <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle">
-          <div class="tooltip">Shuffle</div>
+          <img src="https://i.imgur.com/4K1dnEH.png" alt="Shuffle"><div class="tooltip">Shuffle</div>
         </button>
         <button id="volumeButton" class="control-button" aria-label="Volume">
-          <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume">
-          <div class="tooltip">Volume</div>
+          <img src="https://i.imgur.com/YHeXLfV.png" alt="Volume"><div class="tooltip">Volume</div>
         </button>
       </div>
     </div>
     <div class="help-button-container">
-      <button id="filterButton" class="control-button" aria-label="Filter">
-        <img src="https://i.imgur.com/0xVbbOJ.png" alt="Filter">
-        <div class="tooltip">Filter</div>
-      </button>
       <button id="statsButton" aria-label="Statistics">
-        <img src="https://i.imgur.com/BILlrut.png" alt="Stats">
-        <div class="tooltip">Statistics</div>
+        <img src="https://i.imgur.com/BILlrut.png" alt="Stats"><div class="tooltip">Statistics</div>
       </button>
       <button id="helpButton" aria-label="Help">
-        <img src="https://i.imgur.com/DokWy7J.png" alt="Help">
-        <div class="tooltip">Help</div>
+        <img src="https://i.imgur.com/DokWy7J.png" alt="Help"><div class="tooltip">Help</div>
       </button>
     </div>
   </div>
@@ -322,6 +325,11 @@
       <button class="close-button" id="filterCloseButton">&times;</button>
       <h2>Filter by Juz</h2>
       <div class="juz-list" id="juzList"></div>
+      <div class="slider-container">
+        <label for="juzSlider" style="color:#b49f5e;">Choose Juz:</label><br>
+        <input type="range" id="juzSlider" min="1" max="24" value="1">
+        <span id="juzSliderValue" style="color:#fff;">1</span>
+      </div>
       <button class="reset-filter-button" id="resetFilterButton">Reset Filter</button>
     </div>
   </div>
@@ -333,7 +341,8 @@
       <p><img src="https://i.imgur.com/rfSFOWK.png" width="24" alt=""> <strong>Play/Pause</strong> – start or pause playback.</p>
       <p><img src="https://i.imgur.com/YHeXLfV.png" width="24" alt=""> <strong>Volume</strong> – cycle volume levels.</p>
       <p><img src="https://i.imgur.com/wDDwzEi.png" width="24" alt=""> <strong>Speed</strong> – cycle playback speed.</p>
-      <p><img src="https://i.imgur.com/6jVJpH5.png" width="24" alt=""> <strong>Sleep Timer</strong> – set auto-stop timer.</p>
+      <p><strong>⏰ Sleep Timer</strong> – set auto-stop timer.</p>
+      <p><strong>🔁 Repeat</strong> – cycle repeat count.</p>
       <p><img src="https://i.imgur.com/0xVbbOJ.png" width="24" alt=""> <strong>Filter</strong> – choose a Juz for shuffle.</p>
       <p><img src="https://i.imgur.com/4K1dnEH.png" width="24" alt=""> <strong>Shuffle</strong> – play a random Surah.</p>
       <p><img src="https://i.imgur.com/BILlrut.png" width="24" alt=""> <strong>Statistics</strong> – view usage stats.</p>
@@ -347,13 +356,15 @@
     const loadSurahBtn        = document.getElementById('loadSurahBtn');
     const customBtn           = document.getElementById('customBtn');
     const customInput         = document.getElementById('customInput');
+    const sleepTimerBtn       = document.getElementById('sleepTimerBtn');
+    const repeatSettingBtn    = document.getElementById('repeatSettingBtn');
     const audio               = document.getElementById('audio');
     const progressBar         = document.getElementById('progressBar');
     const progressDiv         = document.getElementById('progress');
-    const sleepTimerButton    = document.getElementById('sleepTimerButton');
     const volumeButton        = document.getElementById('volumeButton');
     const speedButton         = document.getElementById('speedButton');
     const playPauseButton     = document.getElementById('playPauseButton');
+    const shuffleButton       = document.getElementById('shuffleButton');
     const filterButton        = document.getElementById('filterButton');
     const filterModalOverlay  = document.getElementById('filterModalOverlay');
     const filterCloseButton   = document.getElementById('filterCloseButton');
@@ -365,9 +376,12 @@
     const helpCloseButton     = document.getElementById('helpCloseButton');
     const juzListDiv          = document.getElementById('juzList');
     const resetFilterButton   = document.getElementById('resetFilterButton');
+    const juzSlider           = document.getElementById('juzSlider');
+    const juzSliderValue      = document.getElementById('juzSliderValue');
     const surahsPlayedCountEl = document.getElementById('surahsPlayedCount');
     const minutesListenedEl   = document.getElementById('minutesListened');
-    const repeatButton        = document.getElementById('repeatButton');
+    const canvas              = document.getElementById('visualizer');
+    const canvasCtx           = canvas.getContext('2d');
 
     const surahNames = [
       "Al-Fatiha","Al-Baqara","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus",
@@ -379,7 +393,7 @@
       "As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij",
       "Nuh","Al-Jinn","Al-Muzzammil","Al-Muddathir","Al-Qiyama","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa",
       "At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-Ala","Al-Ghashiyah","Al-Fajr","Al-Balad",
-      "Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat",
+      "Ash-Shams","Al-Lail","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat",
       "Al-Qariah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr",
       "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
     ];
@@ -402,15 +416,18 @@
     }));
 
     const sleepTimes = [
-      {time:null,img:'https://i.imgur.com/6jVJpH5.png'},
-      {time:10*60,img:'https://i.imgur.com/2i3xjzP.png'},
-      {time:15*60,img:'https://i.imgur.com/8C92a9F.png'},
-      {time:20*60,img:'https://i.imgur.com/ZkhlFd4.png'},
-      {time:30*60,img:'https://i.imgur.com/dlYk6kr.png'},
-      {time:60*60,img:'https://i.imgur.com/T8qc0tX.png'},
-      {time:120*60,img:'https://i.imgur.com/mj64RF8.png'}
+      {time:null,label:'Off'},
+      {time:10*60,label:'10 min'},
+      {time:15*60,label:'15 min'},
+      {time:20*60,label:'20 min'},
+      {time:30*60,label:'30 min'},
+      {time:60*60,label:'1 hr'},
+      {time:120*60,label:'2 hr'}
     ];
     let currentSleepIndex=0, sleepTimerTimeout=null;
+
+    let repeatSetting = 0;      // 0=off,1,2,3,4=infinite
+    let actualRepeats = 0;
 
     const speeds = [
       {rate:1,img:'https://i.imgur.com/wDDwzEi.png'},
@@ -435,19 +452,61 @@
     let totalListeningTime = parseInt(localStorage.getItem('totalListeningTime'))||0;
     let listeningInterval=null;
 
-    // Populate Surah dropdown
-    surahNames.forEach((name,i)=>{
-      const num=i+1, val=String(num).padStart(3,'0');
-      const opt=document.createElement('option');
-      opt.value=val;
-      opt.textContent=`${num} - ${name}`;
-      surahSelect.appendChild(opt);
-    });
+    function populateSurahSelect(juz=null){
+      surahSelect.innerHTML='';
+      surahNames.forEach((name,i)=>{
+        const num=i+1;
+        if(juz===null || (surahJuzMap[num]||[]).includes(juz)){
+          const val=String(num).padStart(3,'0');
+          const opt=document.createElement('option');
+          opt.value=val;
+          opt.textContent=`${num} - ${name}`;
+          surahSelect.appendChild(opt);
+        }
+      });
+    }
+    populateSurahSelect();
 
-    // Play a Surah by key
+    const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const sourceNode = audioCtx.createMediaElementSource(audio);
+    const analyser = audioCtx.createAnalyser();
+    sourceNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 2048;
+    const bufferLength = analyser.fftSize;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function drawVisualizer(){
+      requestAnimationFrame(drawVisualizer);
+      const width = canvas.width = canvas.clientWidth * window.devicePixelRatio;
+      const height = canvas.height = canvas.clientHeight * window.devicePixelRatio;
+      analyser.getByteTimeDomainData(dataArray);
+      canvasCtx.clearRect(0,0,width,height);
+      canvasCtx.lineWidth = 2 * window.devicePixelRatio;
+      canvasCtx.strokeStyle = '#b49f5e';
+      canvasCtx.beginPath();
+      const sliceWidth = width / bufferLength;
+      let x = 0;
+      for(let i=0;i<bufferLength;i++){
+        const v = dataArray[i] / 128.0;
+        const y = (v * height/8) + height/2;
+        if(i===0) canvasCtx.moveTo(x,y);
+        else canvasCtx.lineTo(x,y);
+        x += sliceWidth;
+      }
+      canvasCtx.stroke();
+    }
+    drawVisualizer();
+
+    let currentKey = '001';
+
     function playSurah(key){
+      currentKey = key;
+      actualRepeats = 0;
+      if(audioCtx.state==='suspended') audioCtx.resume();
       const rec=reciterSelect.value;
       audio.src=`${rec}/${key}.mp3`;
+      audio.load();
       audio.playbackRate=speeds[currentSpeedIndex].rate;
       audio.volume=volumes[currentVolumeIndex].lvl;
       audio.loop=false;
@@ -457,7 +516,6 @@
       surahsPlayedCount++;
       localStorage.setItem('surahsPlayedCount',surahsPlayedCount);
     }
-    // Shuffle
     function playRandomSurah(){
       let list=Array.from({length:114},(_,i)=>i+1);
       if(selectedJuz) list=list.filter(n=>(surahJuzMap[n]||[]).includes(selectedJuz));
@@ -467,14 +525,15 @@
       playSurah(key);
     }
 
-    // Event bindings
     loadSurahBtn.addEventListener('click',()=>playSurah(surahSelect.value));
     customBtn.addEventListener('click',()=>customInput.click());
     customInput.addEventListener('change',e=>{
       const f=e.target.files[0];
       if(!f)return;
       clearSleepTimer();
+      actualRepeats=0;
       audio.src=URL.createObjectURL(f);
+      audio.load();
       audio.loop=false;
       audio.play();
       updatePlayIcon();
@@ -499,59 +558,89 @@
       volumeButton.querySelector('img').src=volumes[currentVolumeIndex].img;
       audio.volume=volumes[currentVolumeIndex].lvl;
     });
-    sleepTimerButton.addEventListener('click',()=>{
+    sleepTimerBtn.addEventListener('click',()=>{
       currentSleepIndex=(currentSleepIndex+1)%sleepTimes.length;
-      sleepTimerButton.querySelector('img').src=sleepTimes[currentSleepIndex].img;
+      sleepTimerBtn.textContent = sleepTimes[currentSleepIndex].label==='Off'
+        ? '⏰ Sleep Timer Off'
+        : `⏰ ${sleepTimes[currentSleepIndex].label}`;
       if(!audio.paused) startSleepTimer();
     });
+    repeatSettingBtn.addEventListener('click',()=>{
+      repeatSetting=(repeatSetting+1)%5;
+      let label;
+      switch(repeatSetting){
+        case 0: label='🔁 Repeat Off'; break;
+        case 1: label='🔁 Repeat 1×'; break;
+        case 2: label='🔁 Repeat 2×'; break;
+        case 3: label='🔁 Repeat 3×'; break;
+        case 4: label='🔁 Repeat ∞'; break;
+      }
+      repeatSettingBtn.textContent=label;
+    });
+
     filterButton.addEventListener('click',()=>filterModalOverlay.style.display='flex');
     filterCloseButton.addEventListener('click',()=>filterModalOverlay.style.display='none');
-    statsButton.addEventListener('click',()=>{
-      surahsPlayedCountEl.textContent=surahsPlayedCount;
-      minutesListenedEl.textContent=Math.floor(totalListeningTime/60);
-      statsModalOverlay.style.display='flex';
-    });
-    statsCloseButton.addEventListener('click',()=>statsModalOverlay.style.display='none');
-    helpButton.addEventListener('click',()=>helpModalOverlay.style.display='flex');
-    helpCloseButton.addEventListener('click',()=>helpModalOverlay.style.display='none');
-    repeatButton.addEventListener('click',()=>{
-      audio.loop = !audio.loop;
-      repeatButton.querySelector('img').style.opacity = audio.loop ? '1' : '0.5';
+    filterModalOverlay.addEventListener('click',e=>{
+      if(e.target===filterModalOverlay) filterModalOverlay.style.display='none';
     });
 
-    // Progress bar
-    progressBar.addEventListener('click',e=>{
-      const pct=e.offsetX/progressBar.clientWidth;
-      audio.currentTime=audio.duration*pct;
-    });
-    audio.addEventListener('timeupdate',()=>{
-      if(audio.duration){
-        progressDiv.style.width=(audio.currentTime/audio.duration*100)+'%';
-      }
-    });
-    audio.addEventListener('ended',()=>{
-      clearListeningTimer();
-      if(audio.loop) audio.play();
-      else playRandomSurah();
-    });
-
-    // Juz filter
-    juzListDiv.innerHTML=juzData.map(j=>
-      `<div class="juz-item" data-juz="${j.number}">Juz ${j.number}</div>`
+    juzListDiv.innerHTML=[30,29,28,27,26,25].map(num=>
+      `<div class="juz-item" data-juz="${num}">Juz ${num}</div>`
     ).join('');
     juzListDiv.querySelectorAll('.juz-item').forEach(el=>{
       el.addEventListener('click',()=>{
         document.querySelectorAll('.juz-item').forEach(x=>x.classList.remove('selected'));
         el.classList.add('selected');
         selectedJuz=parseInt(el.dataset.juz);
+        populateSurahSelect(selectedJuz);
+        filterModalOverlay.style.display='none';
       });
+    });
+    juzSlider.addEventListener('input',()=>{
+      const val=parseInt(juzSlider.value,10);
+      juzSliderValue.textContent=val;
+      selectedJuz=val;
+      document.querySelectorAll('.juz-item').forEach(x=>x.classList.remove('selected'));
+      populateSurahSelect(selectedJuz);
     });
     resetFilterButton.addEventListener('click',()=>{
       selectedJuz=null;
       document.querySelectorAll('.juz-item').forEach(x=>x.classList.remove('selected'));
+      populateSurahSelect(null);
     });
 
-    // Helpers
+    statsButton.addEventListener('click',()=>{
+      surahsPlayedCountEl.textContent=surahsPlayedCount;
+      minutesListenedEl.textContent=Math.floor(totalListeningTime/60);
+      statsModalOverlay.style.display='flex';
+    });
+    statsCloseButton.addEventListener('click',()=>statsModalOverlay.style.display='none');
+    statsModalOverlay.addEventListener('click',e=>{
+      if(e.target===statsModalOverlay) statsModalOverlay.style.display='none';
+    });
+
+    helpButton.addEventListener('click',()=>helpModalOverlay.style.display='flex');
+    helpCloseButton.addEventListener('click',()=>helpModalOverlay.style.display='none');
+    helpModalOverlay.addEventListener('click',e=>{
+      if(e.target===helpModalOverlay) helpModalOverlay.style.display='none';
+    });
+
+    progressBar.addEventListener('click',e=>{
+      const pct=e.offsetX/progressBar.clientWidth;
+      audio.currentTime=audio.duration*pct;
+    });
+    audio.addEventListener('timeupdate',()=>{
+      if(audio.duration) progressDiv.style.width=(audio.currentTime/audio.duration*100)+'%';
+    });
+    audio.addEventListener('ended',()=>{
+      clearListeningTimer();
+      if(repeatSetting>0 && (repeatSetting===4 || actualRepeats<repeatSetting)){
+        actualRepeats++;
+        audio.currentTime=0;
+        audio.play();
+      } else playRandomSurah();
+    });
+
     function updatePlayIcon(){
       playPauseButton.querySelector('img').src = audio.paused
         ? 'https://i.imgur.com/rfSFOWK.png'
@@ -585,7 +674,6 @@
       if(listeningInterval){ clearInterval(listeningInterval); listeningInterval=null; }
     }
 
-    // Initialize
     surahSelect.value='001';
     playSurah('001');
   </script>
