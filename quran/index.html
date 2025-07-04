@@ -101,7 +101,7 @@
     }
     @media (max-width:600px) {
       #visualizer {
-        height: 200px;
+        height: 150px;
       }
     }
 
@@ -230,13 +230,12 @@
       width:80%; margin-top:1rem;
     }
 
-    /* ===== Mobile Responsive Fixes ===== */
-    @media (max-width: 600px) {
+    /* ===== Mobile Adjustments ===== */
+    @media (max-width:600px) {
       .ui-container {
+        margin:1rem auto;
+        padding:1rem;
         width: calc(100% - 2rem);
-        max-width: none;
-        margin: 1rem auto 6rem;
-        padding: 1rem;
       }
       .menu .row.two {
         flex-direction: column;
@@ -248,16 +247,15 @@
       }
       .menu select, .menu button {
         font-size: 0.9rem;
-        padding: .5rem .75rem;
+        padding: 0.6rem 0.8rem;
       }
-      #loadSurahBtn {
-        font-size: 0.9rem;
+      .bottom-row {
+        flex-wrap: wrap;
+        gap: 0.5rem;
       }
       #bottomBar {
-        padding: .25rem;
-      }
-      .controls-container {
-        gap: .25rem;
+        padding: 0.75rem;
+        bottom: 0.5rem;
       }
       .control-button img {
         width: 40px; height: 40px;
@@ -268,8 +266,8 @@
       .help-button-container img {
         width: 30px; height: 30px;
       }
-      .help-button-container {
-        gap: .5rem;
+      #visualizer {
+        width: calc(100% - 2rem);
       }
     }
   </style>
@@ -526,7 +524,7 @@
       let x = 0;
       for(let i=0;i<bufferLength;i+=step){
         const v = dataArray[i] / 128.0;
-        // reduce amplitude to make waveform "chill"
+        // reduce amplitude for smoother look
         const y = height/2 + (v - 1) * (height / 4);
         if(x===0) canvasCtx.moveTo(x,y);
         else canvasCtx.lineTo(x,y);
