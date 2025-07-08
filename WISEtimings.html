@@ -1,151 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WISE Salah Timings</title>
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Full-screen background */
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            flex-direction: column;
-        }
-
-        /* Salah Timings Container */
-        .container {
-            width: 90%;
-            max-width: 600px;
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Header */
-        .title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #FFD700;
-        }
-
-        /* Salah Timings Table */
-        .prayer-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .prayer-table th, .prayer-table td {
-            padding: 12px;
-            border-bottom: 1px solid #444;
-            text-align: center;
-        }
-
-        .prayer-table th {
-            background-color: #FFD700;
-            color: #000;
-            font-size: 18px;
-        }
-
-        .prayer-table td {
-            font-size: 18px;
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #bbbbbb;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WISE Salah Timings</title>
+  <style>
+    /* Reset & layout */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+    body { background:#121212; color:#fff; display:flex;
+           justify-content:center; align-items:center;
+           height:100vh; text-align:center; flex-direction:column; }
+    .container { width:90%; max-width:600px; background:#1e1e1e;
+                 padding:30px; border-radius:12px;
+                 box-shadow:0 5px 15px rgba(255,255,255,0.1); }
+    .title { font-size:32px; font-weight:bold; margin-bottom:20px; color:#FFD700; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td { padding:12px; border-bottom:1px solid #444; text-align:center; font-size:18px; }
+    th { background:#FFD700; color:#000; }
+    .footer { margin-top:20px; font-size:14px; color:#bbb; }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="title">📿 WISE Salah Timings 🕌</div>
+    <table>
+      <thead>
+        <tr><th>Prayer</th><th>Time</th></tr>
+      </thead>
+      <tbody id="prayer-times">
+        <tr><td colspan="2">Loading…</td></tr>
+      </tbody>
+    </table>
+    <div class="footer">Timings update daily | Provided by WISE Mosque</div>
+  </div>
 
-    <div class="container">
-        <div class="title">📿 WISE Salah Timings 🕌</div>
-        <table class="prayer-table">
-            <thead>
-                <tr>
-                    <th>Prayer</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody id="prayer-times">
-                <tr><td colspan="2">Loading...</td></tr>
-            </tbody>
-        </table>
-        <div class="footer">Timings update daily | Provided by WISE Mosque</div>
-    </div>
+  <script>
+    async function showTimings() {
+      const today = new Date().toISOString().slice(0,10);       // "YYYY-MM-DD"
+      try {
+        const resp = await fetch('./timingsarchive.json');
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const all = await resp.json();
+        const times = all[today];
+        const tbody = document.getElementById('prayer-times');
 
-    <script>
-async function fetchSalahTimes() {
-    const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8WYvVXVu4IMoe8hJSkkE2f2VSMjqZS5R3kAYcs1xoMYjnSKLgl1VNQUXTjJV5lvMO0B52KTaueizz/pub?output=tsv";
-    
-    try {
-        const response = await fetch(url);
-        const data = await response.text();
-        const rows = data.split("\n").map(row => row.split("\t"));
-        
-        let tableHTML = "";
-        for (let i = 1; i < rows.length; i++) {
-            if (rows[i][0] && rows[i][1]) {
-let isAfterDhuhr = i >= 5; // After 5th row (Dhuhr), all times should be 24-hour
-let convertedTime = convertTo24Hour(rows[i][1].trim(), isAfterDhuhr);
-
-                tableHTML += `<tr><td>${rows[i][0]}</td><td>${convertedTime}</td></tr>`;
-            }
+        if (!times) {
+          tbody.innerHTML = `<tr><td colspan="2">No timings for ${today}</td></tr>`;
+          return;
         }
 
-        document.getElementById("prayer-times").innerHTML = tableHTML;
-    } catch (error) {
-        document.getElementById("prayer-times").innerHTML = "<tr><td colspan='2'>Error loading data</td></tr>";
-        console.error("Error fetching Salah times:", error);
+        const rows = [
+          ['Fajr', times.Fajr],
+          ['Fajr Jama\'ah', times.FajrJamaah],
+          ['Sunrise', times.Sunrise],
+          ['Dhuhr', times.Dhuhr],
+          ['Dhuhr Jama\'ah', times.DhuhrJamaah],
+          ['Asr', times.Asr],
+          ['Asr Jama\'ah', times.AsrJamaah],
+          ['Maghrib', times.Maghrib],
+          ['Maghrib Jama\'ah', times.MaghribJamaah],
+          ['Isha', times.Isha],
+          ['Isha Jama\'ah', times.IshaJamaah]
+        ];
+
+        tbody.innerHTML = rows.map(
+          ([prayer,time]) => `<tr><td>${prayer}</td><td>${time}</td></tr>`
+        ).join('');
+      } catch (err) {
+        console.error(err);
+        document.getElementById('prayer-times').innerHTML =
+          `<tr><td colspan="2">Error loading timings</td></tr>`;
+      }
     }
-}
-
-// Function to Convert 12-hour Time to 24-hour
-function convertTo24Hour(time, isAfterDhuhr) {
-    let match = time.match(/(\d+):(\d+)\s?(AM|PM)?/i);
-    if (!match) return time; // If format is invalid, return as is
-
-    let hours = parseInt(match[1], 10);
-    let minutes = match[2];
-    let meridian = match[3] ? match[3].toUpperCase() : "";
-
-    if (meridian === "PM" && hours < 12) {
-        hours += 12; // Convert PM hours properly
-    } else if (meridian === "AM" && hours === 12) {
-        hours = 0; // Midnight should be 00:00
-    }
-
-    // If there's no AM/PM but the prayer is after Dhuhr, assume it's PM
-    if (!meridian && isAfterDhuhr && hours < 12) {
-        hours += 12; // Convert times like Maghrib & Isha to 24-hour format
-    }
-
-    return `${hours.toString().padStart(2, "0")}:${minutes}`;
-}
-
-
-
-fetchSalahTimes();
-
-    </script>
-
+    showTimings();
+  </script>
 </body>
 </html>
