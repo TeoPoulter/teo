@@ -552,7 +552,10 @@
       actualRepeats = 0;
       if(audioCtx.state==='suspended') audioCtx.resume();
       const rec=reciterSelect.value;
-      audio.src=`${rec}/${key}.mp3`;
+      audio.src = 
+  `https://teostoolsquran.s3.eu-west-2.amazonaws.com/`
+  + `${rec}/${key}.mp3`;
+
       audio.load();
       audio.playbackRate=speeds[currentSpeedIndex].rate;
       audio.volume=volumes[currentVolumeIndex].lvl;
