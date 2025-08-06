@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clear Qur'an Reader - Juz Amma</title>
+  <style>
+    :root {
+      --color-bg-light: #ffffff;
+      --color-text-light: #111111;
+      --color-bg-dark: #121212;
+      --color-text-dark: #e0e0e0;
+      --color-accent: #4ade80;
+      --color-accent-dark: #22c55e;
+      --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --transition-speed: 0.3s ease;
+      --max-width: 800px;
+    }
+
+    /* Dark mode styles */
+    [data-theme='dark'] {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+    }
+
+    /* Light mode styles */
+    [data-theme='light'] {
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
+    }
+
+    /* Base styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      background-color: inherit;
+      color: inherit;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: color var(--transition-speed);
+    }
+    [data-theme='dark'] a {
+      color: var(--color-accent-dark);
+    }
+    a:hover, a:focus {
+      text-decoration: underline;
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--max-width);
+      margin: 5rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: inherit;
+      border-bottom: 1px solid #ccc;
+      border-color: rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      z-index: 1000;
+      transition: border-color var(--transition-speed);
+    }
+    [data-theme='dark'] header {
+      border-color: rgba(255,255,255,0.1);
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.3rem;
+      user-select: none;
+    }
+
+    /* Dark mode toggle button */
+    #darkModeToggle {
+      background-color: var(--color-accent);
+      border: none;
+      color: #000;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      user-select: none;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+    }
+    #darkModeToggle:hover {
+      background-color: var(--color-accent-dark);
+      color: #fff;
+    }
+
+    /* Surah list (main page) */
+    #surahList {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .surah-link {
+      display: block;
+      padding: 1rem 1.2rem;
+      background-color: #f0fdf4;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 3px 8px rgba(74, 222, 128, 0.3);
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .surah-link:hover,
+    .surah-link:focus {
+      background-color: var(--color-accent);
+      color: #000;
+      border-color: var(--color-accent-dark);
+      outline: none;
+    }
+    [data-theme='dark'] .surah-link {
+      background-color: #1e2f1e;
+      color: var(--color-text-dark);
+      box-shadow: none;
+    }
+    [data-theme='dark'] .surah-link:hover,
+    [data-theme='dark'] .surah-link:focus {
+      background-color: var(--color-accent-dark);
+      color: #000;
+      border-color: var(--color-accent);
+    }
+
+    /* Surah page container */
+    #surahPage {
+      display: none;
+      margin-top: 1rem;
+      user-select: text;
+    }
+
+    /* Back link */
+    #backToList {
+      display: inline-block;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      cursor: pointer;
+      user-select: none;
+    }
+    #backToList:hover,
+    #backToList:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+    [data-theme='dark'] #backToList {
+      color: var(--color-accent-dark);
+    }
+
+    /* Surah title and summary */
+    #surahTitle {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      line-height: 1.1;
+      user-select: text;
+    }
+    #surahTranslationName {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      opacity: 0.7;
+      user-select: text;
+    }
+    #surahSummary {
+      font-size: 1rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+      user-select: text;
+      line-height: 1.5;
+      max-width: 95%;
+      color: #555;
+    }
+    [data-theme='dark'] #surahSummary {
+      color: #bbb;
+    }
+
+    /* Ayah styling */
+    .ayah {
+      margin-bottom: 1.4rem;
+      padding-left: 1.2rem;
+      border-left: 4px solid var(--color-accent);
+      font-size: 1.15rem;
+      line-height: 1.6;
+      user-select: text;
+      transition: border-color var(--transition-speed);
+    }
+    [data-theme='dark'] .ayah {
+      border-left-color: var(--color-accent-dark);
+    }
+    .ayah-number {
+      font-weight: 700;
+      color: var(--color-accent);
+      user-select: none;
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 0.5rem;
+    }
+    [data-theme='dark'] .ayah-number {
+      color: var(--color-accent-dark);
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.1rem;
+      }
+      #darkModeToggle {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+      }
+      #surahTitle {
+        font-size: 1.5rem;
+      }
+      #surahTranslationName {
+        font-size: 1.1rem;
+      }
+      .ayah {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Clear Qur'an Reader - Juz Amma</h1>
+    <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+  </header>
+
+  <main class="container" role="main">
+    <!-- Surah list / Main page -->
+    <section id="surahList" aria-label="List of Juz Amma Surahs">
+      <a href="#" class="surah-link" data-surah="78">78. The Momentous News</a>
+      <!-- Future surahs for Juz Amma go here -->
+    </section>
+
+    <!-- Surah content page -->
+    <section id="surahPage" aria-label="Surah Content" tabindex="-1" style="display:none;">
+      <a href="#" id="backToList" role="link" tabindex="0">← Back to Surah List</a>
+      <h2 id="surahTitle"></h2>
+      <h3 id="surahTranslationName" aria-hidden="true"></h3>
+      <p id="surahSummary"></p>
+      <div id="ayahContainer"></div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const darkToggleBtn = document.getElementById('darkModeToggle');
+      const html = document.documentElement;
+
+      // Load saved theme or default to light
+      if (localStorage.getItem('theme') === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        darkToggleBtn.textContent = '☀️';
+      } else {
+        html.setAttribute('data-theme', 'light');
+        darkToggleBtn.textContent = '🌙';
+      }
+
+      darkToggleBtn.addEventListener('click', () => {
+        if (html.getAttribute('data-theme') === 'light') {
+          html.setAttribute('data-theme', 'dark');
+          darkToggleBtn.textContent = '☀️';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          html.setAttribute('data-theme', 'light');
+          darkToggleBtn.textContent = '🌙';
+          localStorage.setItem('theme', 'light');
+        }
+      });
+
+      // Surah data for Juz Amma (currently only Surah 78)
+      // No subheadings, no footnotes included
+      const surahs = {
+        78: {
+          number: 78,
+          name: "An-Naba'",
+          translationName: "The Momentous News",
+          summary:
+            "This chapter thoroughly refutes the arguments of those who deny resurrection by drawing attention to the countless signs of Allah’s power and concludes with the dreadful events of Judgment Day.",
+          ayahs: [
+            "What are they asking one another about?",
+            "About the momentous news,",
+            "over which they disagree.",
+            "But no! They will come to know.",
+            "Again, no! They will come to know.",
+            "Have We not smoothed out the earth ˹like a bed˺,",
+            "and ˹made˺ the mountains as ˹its˺ pegs?",
+            "We created you in pairs,",
+            "and made your sleep for rest,",
+            "and made the night as a cover,",
+            "and made the day for livelihood,",
+            "and built above you seven mighty ˹heavens˺,",
+            "and placed ˹in them˺ a shining lamp,",
+            "and sent down from the rain clouds pouring water,",
+            "producing by it grain and various plants,",
+            "and dense orchards?",
+            "Surely the Day of ˹Final˺ Decision is an appointed time:",
+            "the Day the Trumpet will be blown and you will all come forth in crowds.",
+            "The sky will be opened, becoming ˹as˺ gateways,",
+            "and the mountains will be blown away, becoming ˹as˺ a mirage.",
+            "Truly Hell is lying in ambush",
+            "as a home for the transgressors,",
+            "where they will remain for ˹endless˺ ages.",
+            "They will not taste any coolness or drink,",
+            "except boiling water and ˹oozing˺ pus—",
+            "an ˹appropriate˺ reward.",
+            "For they never expected any reckoning,",
+            "and totally rejected Our signs.",
+            "And We have everything recorded precisely.",
+            "˹So it will be said,˺ “Taste ˹the punishment˺, for all you will get from Us is more torment.”",
+            "Surely the righteous will have salvation:",
+            "gardens, vineyards,",
+            "and full-bosomed maidens of equal age,",
+            "and full cups ˹of pure wine˺,",
+            "never to hear any idle talk or lying therein—",
+            "a ˹fitting˺ reward as a generous gift from your Lord,",
+            "the Lord of the heavens and the earth and everything in between— the Most Compassionate. None will dare speak to Him",
+            "on the Day ˹when˺ the ˹holy˺ spirit and the angels will stand in ranks. None will talk, except those granted permission by the Most Compassionate and whose words are true.",
+            "That is ˹truly˺ the Day ˹of ultimate˺ truth. So let whoever wills take the path leading back to their Lord.",
+            "We have surely warned you of an imminent punishment—the Day every person will see ˹the consequences of˺ what their hands have done, and the disbeliever will cry, “I wish I were dust.”"
+          ]
+        }
+        // Additional surahs for Juz Amma can be added here following this format
+      };
+
+      const surahListEl = document.getElementById('surahList');
+      const surahPageEl = document.getElementById('surahPage');
+      const backToListLink = document.getElementById('backToList');
+      const surahTitleEl = document.getElementById('surahTitle');
+      const surahTranslationNameEl = document.getElementById('surahTranslationName');
+      const surahSummaryEl = document.getElementById('surahSummary');
+      const ayahContainer = document.getElementById('ayahContainer');
+
+      // Populate surah list dynamically in case more surahs added
+      function populateSurahList() {
+        surahListEl.innerHTML = '';
+        const keys = Object.keys(surahs).sort((a, b) => a - b);
+        for (const key of keys) {
+          const surah = surahs[key];
+          const a = document.createElement('a');
+          a.href = "#";
+          a.className = "surah-link";
+          a.textContent = `${surah.number}. ${surah.translationName}`;
+          a.dataset.surah = surah.number;
+          a.setAttribute('aria-label', `Open Surah ${surah.number} ${surah.translationName}`);
+          a.addEventListener('click', e => {
+            e.preventDefault();
+            openSurahPage(surah.number);
+          });
+          surahListEl.appendChild(a);
+        }
+      }
+
+      function openSurahPage(surahNumber) {
+        const surah = surahs[surahNumber];
+        if (!surah) return;
+
+        // Hide list, show surah page
+        surahListEl.style.display = 'none';
+        surahPageEl.style.display = 'block';
+        surahPageEl.focus();
+
+        // Populate surah info
+        surahTitleEl.textContent = `${surah.number}. ${surah.name}`;
+        surahTranslationNameEl.textContent = surah.translationName;
+        surahSummaryEl.textContent = surah.summary;
+
+        // Populate ayahs
+        ayahContainer.innerHTML = '';
+        surah.ayahs.forEach((text, idx) => {
+          const ayahDiv = document.createElement('div');
+          ayahDiv.className = 'ayah';
+
+          const ayahNumberSpan = document.createElement('span');
+          ayahNumberSpan.className = 'ayah-number';
+          ayahNumberSpan.textContent = `${idx + 1}.`;
+
+          ayahDiv.appendChild(ayahNumberSpan);
+          ayahDiv.appendChild(document.createTextNode(text));
+          ayahContainer.appendChild(ayahDiv);
+        });
+
+        // Update URL hash (optional)
+        history.pushState(null, '', `#surah-${surahNumber}`);
+      }
+
+      function backToList() {
+        surahPageEl.style.display = 'none';
+        surahListEl.style.display = 'flex';
+        surahListEl.focus();
+
+        // Reset URL hash
+        history.pushState(null, '', window.location.pathname);
+      }
+
+      backToListLink.addEventListener('click', e => {
+        e.preventDefault();
+        backToList();
+      });
+
+      // On load, populate surah list and handle hash navigation
+      function onLoad() {
+        populateSurahList();
+
+        if (window.location.hash.startsWith('#surah-')) {
+          const surahNumber = window.location.hash.replace('#surah-', '');
+          if (surahs[surahNumber]) {
+            openSurahPage(surahNumber);
+            return;
+          }
+        }
+        // Otherwise, show list
+        surahListEl.style.display = 'flex';
+        surahPageEl.style.display = 'none';
+      }
+
+      window.addEventListener('popstate', () => {
+        // Handle back/forward navigation cleanly
+        if (window.location.hash.startsWith('#surah-')) {
+          const surahNumber = window.location.hash.replace('#surah-', '');
+          if (surahs[surahNumber]) {
+            openSurahPage(surahNumber);
+            return;
+          }
+        }
+        backToList();
+      });
+
+      window.onload = onLoad;
+    })();
+  </script>
+</body>
+</html>
