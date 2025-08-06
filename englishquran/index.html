@@ -229,158 +229,818 @@
         toggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
       });
 
-      const surahs = {
-        78: {
-          number: 78,
-          name: "An-Nabaʾ",
-          translationName: "The Momentous News",
-          summary: "This chapter thoroughly refutes the arguments of those who deny resurrection by drawing attention to the countless signs of Allah’s power and concludes with the dreadful events of Judgment Day.",
-          ayahs: [
-            "What are they asking one another about?",
-            "About the momentous news,",
-            "over which they disagree.",
-            "But no! They will come to know.",
-            "Again, no! They will come to know.",
-            "Have We not smoothed out the earth ˹like a bed˺,",
-            "and ˹made˺ the mountains as ˹its˺ pegs?",
-            "We created you in pairs,",
-            "and made your sleep for rest,",
-            "and made the night as a cover,",
-            "and made the day for livelihood,",
-            "and built above you seven mighty ˹heavens˺,",
-            "and placed ˹in them˺ a shining lamp,",
-            "and sent down from the rain clouds pouring water,",
-            "producing by it grain and various plants,",
-            "and dense orchards?",
-            "Surely the Day of ˹Final˺ Decision is an appointed time:",
-            "the Day the Trumpet will be blown and you will all come forth in crowds.",
-            "The sky will be opened, becoming ˹as˺ gateways,",
-            "and the mountains will be blown away, becoming ˹as˺ a mirage.",
-            "Truly Hell is lying in ambush",
-            "as a home for the transgressors,",
-            "where they will remain for ˹endless˺ ages.",
-            "They will not taste any coolness or drink,",
-            "except boiling water and ˹oozing˺ pus—",
-            "an ˹appropriate˺ reward.",
-            "For they never expected any reckoning,",
-            "and totally rejected Our signs.",
-            "And We have everything recorded precisely.",
-            "˹So it will be said,˺ “Taste ˹the punishment˺, for all you will get from Us is more torment.”",
-            "Surely the righteous will have salvation:",
-            "gardens, vineyards,",
-            "and full-bosomed maidens of equal age,",
-            "and full cups ˹of pure wine˺,",
-            "never to hear any idle talk or lying therein—",
-            "a ˹fitting˺ reward as a generous gift from your Lord,",
-            "the Lord of the heavens and the earth and everything in between— the Most Compassionate. None will dare speak to Him",
-            "on the Day ˹when˺ the ˹holy˺ spirit and the angels will stand in ranks. None will talk, except those granted permission by the Most Compassionate and whose words are true.",
-            "That is ˹truly˺ the Day ˹of ultimate˺ truth. So let whoever wills take the path leading back to their Lord.",
-            "We have surely warned you of an imminent punishment—the Day every person will see ˹the consequences of˺ what their hands have done, and the disbeliever will cry, “I wish I were dust.”"
-          ]
-        },
-        79: {
-          number: 79,
-          name: "An-Nâzi’ât",
-          translationName: "Those ˹Angels˺ Stripping out ˹Souls˺",
-          summary: "This Meccan sûrah emphasizes that the Day of Judgment is inevitable and its time is known only to Allah. The destruction of Pharaoh is cited as a deterrent to the disbelievers.",
-          ayahs: [
-            "By those ˹angels˺ stripping out ˹evil souls˺ harshly,",
-            "and those pulling out ˹good souls˺ gently,",
-            "and those gliding ˹through heavens˺ swiftly,",
-            "and those taking the lead vigorously,",
-            "and those conducting affairs ˹obediently˺!",
-            "˹Consider˺ the Day ˹when˺ the quaking Blast will come to pass,",
-            "followed by a second Blast.",
-            "˹The deniers’˺ hearts on that Day will be trembling ˹in horror˺,",
-            "with their eyes downcast.",
-            "˹But now˺ they ask ˹mockingly˺, “Will we really be restored to our former state,",
-            "even after we have been reduced to decayed bones?”",
-            "Adding, “Then such a return would be a ˹total˺ loss ˹for us˺!”",
-            "But indeed, it will take only one ˹mighty˺ Blast,",
-            "and at once they will be above ground.",
-            "Has the story of Moses reached you ˹O Prophet˺?",
-            "His Lord called him in the sacred valley of Ṭuwa,",
-            "˹commanding,˺ “Go to Pharaoh, for he has truly transgressed ˹all bounds˺.”",
-            "And say, ‘Would you ˹be willing to˺ purify yourself,",
-            "and let me guide you to your Lord so that you will be in awe ˹of Him˺?’”",
-            "Then Moses showed him the great sign,",
-            "but he denied and disobeyed ˹Allah˺,",
-            "then turned his back, striving ˹against the truth˺.",
-            "Then he summoned ˹his people˺ and called out,",
-            "saying, “I am your lord, the most high!”",
-            "So Allah overtook him, making him an example in this life and the next.",
-            "Surely in this is a lesson for whoever stands in awe of ˹Allah˺.",
-            "Which is harder to create: you or the sky? He built it,",
-            "raising it high and forming it flawlessly.",
-            "He dimmed its night, and brought forth its daylight.",
-            "As for the earth, He spread it out as well,",
-            "bringing forth its water and pastures",
-            "and setting the mountains firmly ˹upon it˺—",
-            "all as ˹a means of˺ sustenance for you and your animals.",
-            "But, when the Supreme Disaster comes to pass—",
-            "the Day every person will remember all ˹their˺ striving,",
-            "and the Hellfire will be displayed for all to see—",
-            "then as for those who transgressed",
-            "and preferred the ˹fleeting˺ life of this world,",
-            "the Hellfire will certainly be ˹their˺ home.",
-            "And as for those who were in awe of standing before their Lord and restrained themselves from ˹evil˺ desires,",
-            "Paradise will certainly be ˹their˺ home.",
-            "They ask you ˹O Prophet˺ regarding the Hour, “When will it be?”",
-            "But it is not for you to tell its time.",
-            "That knowledge rests with your Lord ˹alone˺.",
-            "Your duty is only to warn whoever is in awe of it.",
-            "On the Day they see it, it will be as if they had stayed ˹in the world˺ no more than one evening or its morning."
-          ]
-        },
-        80: {
-          number: 80,
-          name: "ʿAbasa",
-          translationName: "He Frowned",
-          summary: "This Meccan sûrah recounts the Prophet’s interaction with ʻAbdullāh ibn Umm Maktūm and calls upon reflection on resurrection through God’s signs in creation.",
-          ayahs: [
-            "He frowned and turned ˹his attention˺ away,",
-            "˹simply˺ because the blind man came to him ˹interrupting˺.",
-            "You never know ˹O Prophet˺, perhaps he may be purified,",
-            "or he may be mindful, benefitting from the reminder.",
-            "As for the one who was indifferent,",
-            "you gave him your ˹undivided˺ attention,",
-            "even though you are not to blame if he would not be purified.",
-            "But as for the one who came to you, eager ˹to learn˺,",
-            "being in awe ˹of Allah˺,",
-            "you were inattentive to him.",
-            "But no! This ˹revelation˺ is truly a reminder.",
-            "So let whoever wills be mindful of it.",
-            "It is ˹written˺ on pages held in honour—",
-            "highly esteemed, purified—",
-            "by the hands of angel-scribes,",
-            "honourable and virtuous.",
-            "Condemned are ˹disbelieving˺ humans! How ungrateful they are ˹to Allah˺!",
-            "From what substance did He create them?",
-            "He created them from a sperm-drop, and ordained their development.",
-            "Then He makes the way easy for them,",
-            "then causes them to die and be buried.",
-            "Then when He wills, He will resurrect them.",
-            "But no! They have failed to comply with what He ordered.",
-            "Let people then consider their food:",
-            "how We pour down rain in abundance",
-            "and meticulously split the earth open ˹for sprouts˺,",
-            "causing grain to grow in it,",
-            "as well as grapes and greens,",
-            "and olives and palm trees,",
-            "and dense orchards,",
-            "and fruit and fodder—",
-            "all as ˹a means of˺ sustenance for you and your animals.",
-            "Then, when the Deafening Blast comes to pass—",
-            "on that Day every person will flee from their own siblings,",
-            "and ˹even˺ their mother and father,",
-            "and ˹even˺ their spouse and children.",
-            "For then everyone will have enough concern of their own.",
-            "On that Day ˹some˺ faces will be bright, laughing and rejoicing,",
-            "while ˹other˺ faces will be dusty, cast in gloom—",
-            "those are the disbelievers, the ˹wicked˺ sinners."
-          ]
-        }
-      };
+ const surahs = {
+  78: {
+    number: 78,
+    name: "An-Nabaʾ",
+    translationName: "The Momentous News",
+    summary: "This Meccan sûrah thoroughly refutes the arguments of those who deny the Hereafter by citing some of the marvels of Allah’s creation to prove His ability to raise the dead to life and reward everyone according to their deeds.",
+    ayahs: [
+      "What are they asking one another about?",
+      "About the momentous news,",
+      "over which they disagree.",
+      "But no! They will come to know.",
+      "Again, no! They will come to know.",
+      "Have We not smoothed out the earth ˹like a bed˺,",
+      "and ˹made˺ the mountains as ˹its˺ pegs,",
+      "and created you in pairs,",
+      "and made your sleep for rest,",
+      "and made the night as a cover,",
+      "and made the day for livelihood,",
+      "and built above you seven mighty ˹heavens˺,",
+      "and placed ˹in them˺ a shining lamp,",
+      "and sent down from rainclouds pouring water,",
+      "producing by it grain and ˹various˺ plants,",
+      "and dense orchards?",
+      "Indeed, the Day of ˹Final˺ Decision is an appointed time—",
+      "˹it is˺ the Day the Trumpet will be blown, and you will ˹all˺ come forth in crowds.",
+      "The sky will be ˹split˺ open, becoming ˹many˺ gates,",
+      "and the mountains will be blown away, becoming ˹like˺ a mirage.",
+      "Indeed, Hell is lying in ambush",
+      "as a home for the transgressors,",
+      "where they will remain for ˹endless˺ ages.",
+      "There they will not taste any coolness or drink,",
+      "except boiling water and ˹oozing˺ pus—",
+      "a fitting reward.",
+      "For they never expected any reckoning,",
+      "and totally rejected Our signs.",
+      "And We have everything recorded precisely.",
+      "˹So the deniers will be told,˺ “Taste ˹the punishment˺, for all you will get from Us is more torment.”",
+      "Indeed, the righteous will have salvation—",
+      "Gardens, vineyards,",
+      "and full-bosomed maidens of equal age,",
+      "and full cups ˹of pure wine˺,",
+      "never to hear any idle talk or lying therein—",
+      "a ˹fitting˺ reward as a generous gift from your Lord,",
+      "the Lord of the heavens and the earth and everything in between, the Most Compassionate. No one will dare speak to Him",
+      "on the Day the ˹holy˺ spirit and the angels will stand in ranks. None will talk, except those granted permission by the Most Compassionate and whose words are true.",
+      "That Day is the ˹ultimate˺ truth. So let whoever wills take the path leading back to their Lord.",
+      "Indeed, We have warned you of an imminent punishment—the Day every person will see ˹the consequences of˺ what their hands have done, and the disbelievers will cry, “I wish I were dust.”"
+    ]
+  },
+
+  79: {
+    number: 79,
+    name: "An-Nâzi’ât",
+    translationName: "Those ˹Angels˺ Stripping out ˹Souls˺",
+    summary: "This Meccan sûrah emphasizes that the Day of Judgment is inevitable and its time is known only to Allah. The destruction of Pharaoh is cited as a deterrent to the disbelievers.",
+    ayahs: [
+      "By those ˹angels˺ stripping out ˹evil souls˺ harshly,",
+      "and those pulling out ˹good souls˺ gently,",
+      "and those gliding ˹through heavens˺ swiftly,",
+      "and those taking the lead vigorously,",
+      "and those conducting affairs ˹obediently˺!",
+      "˹Consider˺ the Day ˹when˺ the quaking Blast will come to pass,",
+      "followed by a second Blast.",
+      "˹The deniers’˺ hearts on that Day will be trembling ˹in horror˺,",
+      "with their eyes downcast.",
+      "˹But now˺ they ask ˹mockingly˺, “Will we really be restored to our former state,",
+      "even after we have been reduced to decayed bones?”",
+      "Adding, “Then such a return would be a ˹total˺ loss ˹for us˺!”",
+      "But indeed, it will take only one ˹mighty˺ Blast,",
+      "and at once they will be above ground.",
+      "Has the story of Moses reached you ˹O Prophet˺?",
+      "His Lord called him in the sacred valley of Ṭuwa,",
+      "˹commanding,˺ “Go to Pharaoh, for he has truly transgressed ˹all bounds˺.”",
+      "And say, ‘Would you ˹be willing to˺ purify yourself,",
+      "and let me guide you to your Lord so that you will be in awe ˹of Him˺?’”",
+      "Then Moses showed him the great sign,",
+      "but he denied and disobeyed ˹Allah˺,",
+      "then turned his back, striving ˹against the truth˺.",
+      "Then he summoned ˹his people˺ and called out,",
+      "saying, “I am your lord, the most high!”",
+      "So Allah overtook him, making him an example in this life and the next.",
+      "Surely in this is a lesson for whoever stands in awe of ˹Allah˺.",
+      "Which is harder to create: you or the sky? He built it,",
+      "raising it high and forming it flawlessly.",
+      "He dimmed its night, and brought forth its daylight.",
+      "As for the earth, He spread it out as well,",
+      "bringing forth its water and pastures",
+      "and setting the mountains firmly ˹upon it˺—",
+      "all as ˹a means of˺ sustenance for you and your animals.",
+      "But, when the Supreme Disaster comes to pass—",
+      "the Day every person will remember all ˹their˺ striving,",
+      "and the Hellfire will be displayed for all to see—",
+      "then as for those who transgressed",
+      "and preferred the ˹fleeting˺ life of this world,",
+      "the Hellfire will certainly be ˹their˺ home.",
+      "And as for those who were in awe of standing before their Lord and restrained themselves from ˹evil˺ desires,",
+      "Paradise will certainly be ˹their˺ home.",
+      "They ask you ˹O Prophet˺ regarding the Hour, “When will it be?”",
+      "But it is not for you to tell its time.",
+      "That knowledge rests with your Lord ˹alone˺.",
+      "Your duty is only to warn whoever is in awe of it.",
+      "On the Day they see it, it will be as if they had stayed ˹in the world˺ no more than one evening or its morning."
+    ]
+  },
+
+  80: {
+    number: 80,
+    name: "ʿAbasa",
+    translationName: "He Frowned",
+    summary: "In a ḥadîth collected by At-Tirmiḍī, a blind man by the name of ’Abdullâh ibn Umm Maktûm came to the Prophet ﷺ seeking to learn, but the Prophet was engaged with the Meccan elite. This sûrah reminds believers that all are equal before Allah and urges reflection on His signs in creation.",
+    ayahs: [
+      "He frowned and turned ˹his attention˺ away,",
+      "˹simply˺ because the blind man came to him ˹interrupting˺.",
+      "You never know ˹O Prophet˺, perhaps he may be purified,",
+      "or he may be mindful, benefitting from the reminder.",
+      "As for the one who was indifferent,",
+      "you gave him your ˹undivided˺ attention,",
+      "even though you are not to blame if he would not be purified.",
+      "But as for the one who came to you, eager ˹to learn˺,",
+      "being in awe ˹of Allah˺,",
+      "you were inattentive to him.",
+      "But no! This ˹revelation˺ is truly a reminder.",
+      "So let whoever wills be mindful of it.",
+      "It is ˹written˺ on pages held in honour—",
+      "highly esteemed, purified—",
+      "by the hands of angel-scribes,",
+      "honourable and virtuous.",
+      "Condemned are ˹disbelieving˺ humans! How ungrateful they are ˹to Allah˺!",
+      "From what substance did He create them?",
+      "He created them from a sperm-drop, and ordained their development.",
+      "Then He makes the way easy for them,",
+      "then causes them to die and be buried.",
+      "Then when He wills, He will resurrect them.",
+      "But no! They have failed to comply with what He ordered.",
+      "Let people then consider their food:",
+      "how We pour down rain in abundance",
+      "and meticulously split the earth open ˹for sprouts˺,",
+      "causing grain to grow in it,",
+      "as well as grapes and greens,",
+      "and olives and palm trees,",
+      "and dense orchards,",
+      "and fruit and fodder—",
+      "all as ˹a means of˺ sustenance for you and your animals.",
+      "Then, when the Deafening Blast comes to pass—",
+      "on that Day every person will flee from their own siblings,",
+      "and ˹even˺ their mother and father,",
+      "and ˹even˺ their spouse and children.",
+      "For then everyone will have enough concern of their own.",
+      "On that Day ˹some˺ faces will be bright, laughing and rejoicing,",
+      "while ˹other˺ faces will be dusty, cast in gloom—",
+      "those are the disbelievers, the ˹wicked˺ sinners."
+    ]
+  },
+
+  81: {
+    number: 81,
+    name: "At-Takwīr",
+    translationName: "Putting out ˹the Sun˺",
+    summary: "This Meccan sûrah describes apocalyptic signs leading up to the Day of Judgment, emphasizing that everyone will face the consequences of their deeds and affirming the Quran’s divine origin.",
+    ayahs: [
+      "When the sun is put out,",
+      "and when the stars fall down,",
+      "and when the mountains are blown away,",
+      "and when pregnant camels are left untended,",
+      "and when wild beasts are gathered together,",
+      "and when the seas are set on fire,",
+      "and when the souls ˹and their bodies˺ are paired ˹once more˺,",
+      "and when baby girls, buried alive, are asked for what crime they were put to death,",
+      "and when the records ˹of deeds˺ are laid open,",
+      "and when the sky is stripped away,",
+      "and when the Hellfire is fiercely flared up,",
+      "and when Paradise is brought near—",
+      "˹on that Day˺ each soul will know what ˹deeds˺ it has brought along.",
+      "I do swear by the receding stars which travel and hide,",
+      "and the night as it falls",
+      "and the day as it breaks!",
+      "Indeed, this ˹Quran˺ is the Word of ˹Allah delivered by Gabriel,˺ a noble messenger-angel,",
+      "full of power, held in honour by the Lord of the Throne, obeyed there ˹in heaven˺, and trustworthy.",
+      "And your fellow man is not insane.",
+      "And he did see that ˹angel˺ on the clear horizon,",
+      "and he does not withhold ˹what is revealed to him of˺ the unseen.",
+      "And this ˹Quran˺ is not the word of an outcast devil.",
+      "So what ˹other˺ path would you take?",
+      "Surely this ˹Quran˺ is only a reminder to the whole world—",
+      "to whoever of you wills to take the Straight Way.",
+      "But you cannot will ˹to do so˺, except by the Will of Allah, the Lord of all worlds."
+    ]
+  },
+
+  82: {
+    number: 82,
+    name: "Al-Infiṭār",
+    translationName: "The ˹Sky˺ Splitting Open",
+    summary: "Like the previous sûrah, this Meccan sûrah describes horrors of the Day of Judgment and warns that everyone—even deceitful evildoers—will be held accountable before vigilant angels.",
+    ayahs: [
+      "When the sky splits open,",
+      "and when the stars fall away,",
+      "and when the seas burst forth,",
+      "and when the graves spill out,",
+      "˹then˺ each soul will know what it has sent forth or left behind.",
+      "O humanity! What has emboldened you against your Lord, the Most Generous,",
+      "Who created you, fashioned you, and perfected your design,",
+      "moulding you in whatever form He willed?",
+      "But no! In fact, you deny the ˹final˺ Judgment,",
+      "while you are certainly observed by vigilant,",
+      "honourable angels, recording ˹everything˺.",
+      "They know whatever you do.",
+      "Indeed, the virtuous will be in bliss,",
+      "and the wicked will be in Hell,",
+      "burning in it on Judgment Day,",
+      "and they will have no escape from it.",
+      "What will make you realize what Judgment Day is?",
+      "Again, what will make you realize what Judgment Day is?",
+      "˹It is˺ the Day no soul will be of ˹any˺ benefit to another whatsoever, for all authority on that Day belongs to Allah ˹entirely˺."
+    ]
+  },
+
+  83: {
+    number: 83,
+    name: "Al-Muṭaffifīn",
+    translationName: "Defrauders",
+    summary: "This Meccan sûrah warns those who cheat on scales that they will face severe judgment, while the virtuous will be rewarded and laugh at the deniers on the Last Day.",
+    ayahs: [
+      "Woe to the defrauders!",  
+      "Those who take full measure ˹when they buy˺ from people,",
+      "but give less when they measure or weigh for buyers.",  
+      "Do such people not think that they will be resurrected",
+      "for a tremendous Day—",
+      "the Day ˹all˺ people will stand before the Lord of all worlds?",  
+      "But no! The wicked are certainly bound for Sijjīn—",
+      "and what will make you realize what Sijjīn is?—",
+      "a fate ˹already˺ sealed.",  
+      "Woe on that Day to the deniers—",
+      "those who deny Judgment Day!",
+      "None would deny it except every evildoing transgressor.",
+      "Whenever Our revelations are recited to them, they say, “Ancient fables!”",
+      "But no! In fact, their hearts have been stained by all ˹the evil˺ they used to commit!",
+      "Undoubtedly, they will be sealed off from their Lord on that Day.",
+      "Moreover, they will surely burn in Hell, and then be told, “This is what you used to deny.”",
+      "But no! The virtuous are certainly bound for ’Illiyūn—",
+      "and what will make you realize what ’Illiyūn is?—",
+      "a fate ˹already˺ sealed, witnessed by those nearest ˹to Allah˺.",
+      "Surely the virtuous will be in bliss, ˹seated˺ on ˹canopied˺ couches, gazing around.",
+      "You will recognize on their faces the glow of delight.",
+      "They will be given a drink of sealed, pure wine, whose last sip will smell like musk.",
+      "So let whoever aspires to this strive ˹diligently˺.",
+      "And this drink’s flavour will come from Tasnīm—a spring from which those nearest ˹to Allah˺ will drink.",
+      "Indeed, the wicked used to laugh at the believers,",
+      "wink to one another whenever they passed by,",
+      "and muse ˹over these exploits˺ upon returning to their own people.",
+      "And when they saw the faithful, they would say, “These ˹people˺ are truly astray,”",
+      "even though they were not sent as keepers over the believers.",
+      "But on that Day the believers will be laughing at the disbelievers,",
+      "as they sit on ˹canopied˺ couches, looking on.",
+      "˹The believers will be asked,˺ “Have the disbelievers ˹not˺ been paid back for what they used to do?”"
+    ]
+  },
+
+  84: {
+    number: 84,
+    name: "Al-Inshiqāq",
+    translationName: "The ˹Sky˺ Bursting Open",
+    summary: "As a follow-up to the previous sûrah, this Meccan sûrah elaborates on the events of Judgment Day: the records of deeds and the contrasting fates of the righteous and the wicked.",
+    ayahs: [
+      "When the sky bursts open, obeying its Lord as it must,",
+      "and when the earth is flattened out,",
+      "and ejects ˹all˺ its contents and becomes empty, obeying its Lord as it must—",
+      "surely you will all be judged.",
+      "O humanity! Indeed, you are labouring restlessly towards your Lord, and will ˹eventually˺ meet the consequences.",
+      "As for those who are given their record in their right hand, they will have an easy reckoning, and will return to their people joyfully.",
+      "And as for those who are given their record ˹in their left hand˺ from behind their backs, they will cry for ˹instant˺ destruction, and will burn in the blazing Fire.",
+      "For they used to be prideful among their people, thinking they would never return ˹to Allah˺.",
+      "Yes! Surely their Lord has always been All-Seeing of them.",
+      "So, I do swear by the twilight!",  
+      "And by the night and whatever it envelops!",  
+      "And by the moon when it waxes full!",  
+      "You will certainly pass from one state to another.",
+      "So what is the matter with them that they do not believe,",
+      "and when the Quran is recited to them, they do not bow down ˹in submission˺?",
+      "In fact, the disbelievers persist in denial.",
+      "But Allah knows best whatever they hide.",
+      "So give them good news of a painful punishment.",
+      "But those who believe and do good will have a never-ending reward."
+    ]
+  },
+
+  85: {
+    number: 85,
+    name: "Al-Burūj",
+    translationName: "Constellations",
+    summary: "This Meccan sûrah condemns the persecution of the believers (specifically the Najrān Christians) and contrasts the fate of the torturers in Hell with the believers’ blissful reward in Paradise.",
+    ayahs: [
+      "By the sky full of constellations, and the promised Day ˹of Judgment˺,",
+      "and the witness and what is witnessed!",
+      "Condemned are the makers of the ditch—the fire ˹pit˺ filled with fuel—",
+      "when they sat around it, watching what they had ˹ordered to be˺ done to the believers,",
+      "who they resented for no reason other than belief in Allah—the Almighty, the Praiseworthy—to Whom belongs the kingdom of the heavens and earth.",
+      "And Allah is a Witness over all things.",
+      "Those who persecute the believing men and women and then do not repent will certainly suffer the punishment of Hell and the torment of burning.",
+      "Surely those who believe and do good will have Gardens under which rivers flow. That is the greatest triumph.",
+      "Indeed, the ˹crushing˺ grip of your Lord is severe.",
+      "For He is certainly the One Who originates and resurrects ˹all˺. And He is the All-Forgiving, All-Loving—Lord of the Throne, the All-Glorious, Doer of whatever He wills.",
+      "Has the story of the ˹destroyed˺ forces reached you ˹O Prophet˺—the forces of Pharaoh and Thamūd?",
+      "Yet the disbelievers ˹still˺ persist in denial.",
+      "But Allah encompasses them from all sides.",
+      "In fact, this is a glorious Quran, ˹recorded˺ in a Preserved Tablet."
+    ]
+  },
+
+  86: {
+    number: 86,
+    name: "Aṭ-Ṭāriq",
+    translationName: "The Nightly Star",
+    summary: "In this Meccan sûrah, an oath is made by the night and the star; all deeds are recorded by vigilant angels and resurrection is affirmed as easy for Allah.",
+    ayahs: [
+      "By the heaven and the nightly star!",
+      "And what will make you realize what the nightly star is?",
+      "˹It is˺ the star of piercing brightness.",
+      "There is no soul without a vigilant angel ˹recording everything˺.",
+      "Let people then consider what they were created from!",
+      "˹They were˺ created from a spurting fluid, stemming from between the backbone and the ribcage.",
+      "Surely He is fully capable of bringing them back ˹to life˺ on the Day all secrets will be disclosed.",
+      "Then one will have neither power nor ˹any˺ helper.",
+      "By the sky with its recurring cycles, and the earth with its sprouting plants!",
+      "Surely this ˹Quran˺ is a decisive word, and is not to be taken lightly.",
+      "They are certainly devising ˹evil˺ plans, but I too am planning.",
+      "So bear with the disbelievers ˹O Prophet˺. Let them be for ˹just˺ a little while."
+    ]
+  },
+
+  87: {
+    number: 87,
+    name: "Al-Aʿlá",
+    translationName: "The Most High",
+    summary: "This Meccan sûrah opens with an injunction to glorify the Most High, reminds that the Quran and success are facilitated by Allah, and warns the heedless of the fate of the wicked.",
+    ayahs: [
+      "Glorify the Name of your Lord, the Most High,",
+      "Who created and ˹perfectly˺ fashioned ˹all˺,",
+      "and Who ordained precisely and inspired accordingly,",
+      "and Who brings forth ˹green˺ pasture, then reduces it to withered chaff.",
+      "We will have you recite ˹the Quran, O Prophet,˺ so you will not forget ˹any of it˺, unless Allah wills otherwise. He surely knows what is open and what is hidden.",
+      "We will facilitate for you the Way of Ease.",
+      "So ˹always˺ remind ˹with the Quran˺—˹even˺ if the reminder is beneficial ˹only to some˺.",
+      "Those in awe ˹of Allah˺ will be mindful ˹of it˺.",
+      "But it will be shunned by the most wretched, who will burn in the greatest Fire, where they will not ˹be able to˺ live or die.",
+      "Successful indeed are those who purify themselves, remember the Name of their Lord, and pray.",
+      "But you ˹deniers only˺ prefer the life of this world, even though the Hereafter is far better and more lasting.",
+      "This is certainly ˹mentioned˺ in the earlier Scriptures—the Scriptures of Abraham and Moses."
+    ]
+  },
+
+  88: {
+    number: 88,
+    name: "Al-Ghāshiyah",
+    translationName: "The Overwhelming Event",
+    summary: "This Meccan sûrah contrasts the fate of the evildoers in Hell with the bliss of the righteous in Paradise and calls the heedless to reflect on Allah’s creative signs.",
+    ayahs: [
+      "Has the news of the Overwhelming Event reached you ˹O Prophet˺?",
+      "On that Day ˹some˺ faces will be downcast, ˹totally˺ overburdened, exhausted, burning in a scorching Fire, left to drink from a scalding spring.",
+      "They will have no food except a foul, thorny shrub, neither nourishing nor satisfying hunger.",
+      "On that Day ˹other˺ faces will be glowing with bliss, ˹fully˺ pleased with their striving, in an elevated Garden, where no idle talk will be heard.",
+      "In it will be a running spring, along with thrones raised high, and cups set at hand, and ˹fine˺ cushions lined up, and ˹splendid˺ carpets spread out.",
+      "Do they not ever reflect on camels—how they were ˹masterfully˺ created;",
+      "and the sky—how it was raised ˹high˺;",
+      "and the mountains—how they were firmly set up;";
+      "and the earth—how it was levelled out?",
+      "So, ˹continue to˺ remind ˹all, O Prophet˺, for your duty is only to remind.",
+      "You are not ˹there˺ to compel them ˹to believe˺.",
+      "But whoever turns away, persisting in disbelief, then Allah will inflict upon them the major punishment.",
+      "Surely to Us is their return, then surely with Us is their reckoning."
+    ]
+  },
+
+  89: {
+    number: 89,
+    name: "Al-Fajr",
+    translationName: "Dawn",
+    summary: "This Meccan sûrah reassures the Prophet by recalling the fate of past nations, warns against ingratitude and oppression, and promises reward for the righteous in the hereafter.",
+    ayahs: [
+      "By the dawn, and the ten nights, and the even and the odd, and the night when it passes!",
+      "Is all this ˹not˺ a sufficient oath for those who have sense?",
+      "Did you not see how your Lord dealt with ’Ād—the people of Iram—with ˹their˺ great stature, unmatched in any other land;",
+      "and Thamūd who carved ˹their homes into˺ the rocks in the ˹Stone˺ Valley;",
+      "and the Pharaoh of mighty structures?",
+      "They all transgressed throughout the land, spreading much corruption there.",
+      "So your Lord unleashed on them a scourge of punishment.",
+      "˹For˺ your Lord is truly vigilant.",
+      "Now, whenever a human being is tested by their Lord through ˹His˺ generosity and blessings, they boast, “My Lord has ˹deservedly˺ honoured me!”",
+      "But when He tests them by limiting their provision, they protest, “My Lord has ˹undeservedly˺ humiliated me!”",
+      "Absolutely not! In fact, you are not ˹even˺ gracious to the orphan, nor do you urge one another to feed the poor.",
+      "And you devour ˹others’˺ inheritance greedily, and love wealth fervently.",
+      "Enough! When the earth is entirely crushed over and over, and your Lord comes ˹to judge˺ with angels, rank upon rank, and Hell is brought forth on that Day—this is when every ˹disbelieving˺ person will remember ˹their own sins˺.",
+      "But what is the use of remembering then? They will cry, “I wish I had sent forth ˹something good˺ for my ˹true˺ life.”",
+      "On that Day He will punish ˹them˺ severely, like no other, and bind ˹them˺ tightly, like no other.",
+      "˹Allah will say to the righteous,˺ “O tranquil soul! Return to your Lord, well pleased ˹with Him˺ and well pleasing ˹to Him˺.",
+      "So join My servants, and enter My Paradise.”"
+    ]
+  },
+
+  90: {
+    number: 90,
+    name: "Al-Balad",
+    translationName: "The City",
+    summary: "This Meccan sûrah declares that humankind is in constant struggle, urges kindness to orphans and the needy, and states that good-doers attain Paradise while the wicked face Hell.",
+    ayahs: [
+      "I do swear by this city ˹of Mecca˺—even though you ˹O Prophet˺ are subject to abuse in this city—",
+      "and by every parent and ˹their˺ child!",
+      "Indeed, We have created humankind in ˹constant˺ struggle.",
+      "Do they think that no one has power over them, boasting, “I have wasted enormous wealth!”?",
+      "Do they think that no one sees them?",
+      "Have We not given them two eyes, a tongue, and two lips; and shown them the two ways ˹of right and wrong˺?",
+      "If only they had attempted the challenging path ˹of goodness instead˺!",
+      "And what will make you realize what ˹attempting˺ the challenging path is?",
+      "It is to free a slave, or to give food in times of famine to an orphaned relative or to a poor person in distress, and—above all—to be one of those who have faith and urge each other to perseverance and compassion.",
+      "These are the people of the right.",
+      "As for those who deny Our signs, they are the people of the left.",
+      "The Fire will be sealed over them."
+    ]
+  }
+
+  
+  91: {
+    number: 91,
+    name: "Ash-Shams",
+    translationName: "The Sun",
+    summary: "This Meccan sûrah states that people have free choice to purify or corrupt their souls. Those who choose purity will be successful, and those who choose corruption will be destroyed like the people of Thamûd.",
+    ayahs: [
+      "By the sun and its brightness,",
+      "and the moon as it follows it,",
+      "and the day as it unveils it,",
+      "and the night as it conceals it!",
+      "And by heaven and ˹the One˺ Who built it,",
+      "and the earth and ˹the One˺ Who spread it!",
+      "And by the soul and ˹the One˺ Who fashioned it,",
+      "then with ˹the knowledge of˺ right and wrong inspired it!",
+      "Successful indeed is the one who purifies their soul,",
+      "and doomed is the one who corrupts it!",
+      "Thamûd rejected ˹the truth˺ out of arrogance,",
+      "when the most wicked of them was roused ˹to kill the she-camel˺.",
+      "But the messenger of Allah warned them, “˹Do not disturb˺ Allah’s camel and her ˹turn to˺ drink!”",
+      "Still they defied him and slaughtered her. So their Lord crushed them for their crime, levelling all to the ground.",
+      "He has no fear of consequences."
+    ]
+  },
+
+  92: {
+    number: 92,
+    name: "Al-Layl",
+    translationName: "The Night",
+    summary: "This Meccan sûrah emphasizes Allah’s power to create and show the Way, the people’s ability to choose between good and evil, and the consequences of each route.",
+    ayahs: [
+      "By the night when it covers,",
+      "and the day when it shines!",
+      "And by ˹the One˺ Who created male and female!",
+      "Surely the ends you strive for are diverse.",
+      "As for the one who is charitable, mindful ˹of Allah˺,",
+      "and ˹firmly˺ believes in the finest reward,",
+      "We will facilitate for them the Way of Ease.",
+      "And as for the one who is stingy, indifferent ˹to Allah˺,",
+      "and ˹staunchly˺ denies the finest reward,",
+      "We will facilitate for them the path of hardship.",
+      "And their wealth will be of no benefit to them when they tumble ˹into Hell˺.",
+      "It is certainly upon Us ˹alone˺ to show ˹the way to˺ guidance.",
+      "And surely to Us ˹alone˺ belong this life and the next.",
+      "And so I have warned you of a raging Fire,",
+      "in which none will burn except the most wretched—who deny and turn away.",
+      "But the righteous will be spared from it—",
+      "who donate ˹some of˺ their wealth only to purify themselves,",
+      "not in return for someone’s favours,",
+      "but seeking the pleasure of their Lord, the Most High.",
+      "They will certainly be pleased."
+    ]
+  },
+
+  93: {
+    number: 93,
+    name: "Aḍ-Ḍuḥā",
+    translationName: "The Morning Sunlight",
+    summary: "This Meccan sûrah was revealed to reassure the Prophet ﷺ after a pause in revelation, reminding him of Allah’s favours and encouraging him to continue.",
+    ayahs: [
+      "By the morning sunlight,",
+      "and the night when it falls still!",
+      "Your Lord ˹O Prophet˺ has not abandoned you, nor has He become hateful ˹of you˺.",
+      "And the next life is certainly far better for you than this one.",
+      "And ˹surely˺ your Lord will give so much to you that you will be pleased.",
+      "Did He not find you as an orphan then sheltered you?",
+      "Did He not find you unguided then guided you?",
+      "And did He not find you needy then satisfied your needs?",
+      "So do not oppress the orphan,",
+      "nor repulse the beggar.",
+      "And proclaim the blessings of your Lord."
+    ]
+  },
+
+  94: {
+    number: 94,
+    name: "Ash-Sharḥ",
+    translationName: "Uplifting the Heart",
+    summary: "This sûrah reminds the Prophet ﷺ of Allah’s continued support, assuring him that with hardship comes ease.",
+    ayahs: [
+      "Have We not uplifted your heart for you ˹O Prophet˺,",
+      "relieved you of the burden which weighed so heavily on your back,",
+      "and elevated your renown for you?",
+      "So, surely with hardship comes ease.",
+      "Surely with ˹that˺ hardship comes ˹more˺ ease.",
+      "So once you have fulfilled ˹your duty˺, strive ˹in devotion˺,",
+      "turning to your Lord ˹alone˺ with hope."
+    ]
+  },
+
+  95: {
+    number: 95,
+    name: "At-Tīn",
+    translationName: "The Fig",
+    summary: "This Meccan sûrah emphasizes that Allah honours humans but many of them debase themselves by denying the meeting with Him in the Hereafter.",
+    ayahs: [
+      "By the fig and the olive ˹of Jerusalem˺, and Mount Sinai, and this secure city ˹of Mecca˺!",
+      "Indeed, We created humans in the best form.",
+      "But We will reduce them to the lowest of the low ˹in Hell˺,",
+      "except those who believe and do good—they will have a never-ending reward.",
+      "Now, what makes you deny the ˹final˺ Judgment?",
+      "Is Allah not the most just of all judges?"
+    ]
+  },
+
+  96: {
+    number: 96,
+    name: "Al-’Alaq",
+    translationName: "The Clinging Clot ˹of Blood˺",
+    summary: "Verses 1–5 are the first revelation of the Quran, commanding the Prophet ﷺ to read in the Name of his Lord. The rest rebukes those who oppose him.",
+    ayahs: [
+      "Read, ˹O Prophet,˺ in the Name of your Lord Who created—",
+      "created humans from a clinging clot.",
+      "Read! And your Lord is the Most Generous,",
+      "Who taught by the pen—taught humanity what they knew not.",
+      "Most certainly, one exceeds all bounds once they think they are self-sufficient.",
+      "But ˹surely˺ to your Lord is the return ˹of all˺.",
+      "Have you seen the man who prevents a servant ˹of Ours˺ from praying?",
+      "What if this ˹servant˺ is ˹rightly˺ guided, or encourages righteousness?",
+      "What if that ˹man˺ persists in denial and turns away?",
+      "Does he not know that Allah sees ˹all˺?",
+      "But no! If he does not desist, We will certainly drag him by the forelock—a lying, sinful forelock.",
+      "So let him call his associates. We will call the wardens of Hell.",
+      "Again, no! Never obey him ˹O Prophet˺! Rather, ˹continue to˺ prostrate and draw near ˹to Allah˺."
+    ]
+  },
+
+  97: {
+    number: 97,
+    name: "Al-Qadr",
+    translationName: "The Night of Glory",
+    summary: "This Meccan sûrah celebrates the Night of Glory on which the Quran was revealed, describing its unparalleled virtue.",
+    ayahs: [
+      "Indeed, ˹it is˺ We ˹Who˺ sent this ˹Quran˺ down on the Night of Glory.",
+      "And what will make you realize what the Night of Glory is?",
+      "The Night of Glory is better than a thousand months.",
+      "That night the angels and the ˹holy˺ spirit descend, by the permission of their Lord, for every ˹decreed˺ matter.",
+      "It is all peace until the break of dawn."
+    ]
+  },
+
+  98: {
+    number: 98,
+    name: "Al-Bayyinah",
+    translationName: "The Clear Proof",
+    summary: "This Medinian sûrah explains that the Prophet ﷺ is the clear proof sent to reform people’s worship and warns disbelievers of Hell while promising reward to believers.",
+    ayahs: [
+      "The disbelievers from the People of the Book and the polytheists were not going to desist ˹from disbelief˺ until the clear proof came to them:",
+      "a messenger from Allah, reciting scrolls of ˹utmost˺ purity, containing upright commandments.",
+      "It was not until this clear proof came to the People of the Book that they became divided ˹about his prophethood˺.",
+      "—even though they were only commanded to worship Allah ˹alone˺ with sincere devotion to Him in all uprightness, establish prayer, and pay alms-tax. That is the upright Way.",
+      "Indeed, those who disbelieve from the People of the Book and the polytheists will be in the Fire of Hell, to stay there forever. They are the worst of ˹all˺ beings.",
+      "Indeed, those who believe and do good—they are the best of ˹all˺ beings.",
+      "Their reward with their Lord will be Gardens of Eternity, under which rivers flow, to stay there for ever and ever. Allah is pleased with them and they are pleased with Him. This is ˹only˺ for those in awe of their Lord."
+    ]
+  },
+
+  99: {
+    number: 99,
+    name: "Az-Zalzalah",
+    translationName: "The ˹Ultimate˺ Quake",
+    summary: "This Medinian sûrah states that on the Day of ultimate quaking, the earth and humanity will reveal all deeds for judgement.",
+    ayahs: [
+      "When the earth is shaken ˹in˺ its ultimate quaking,",
+      "and when the earth throws out ˹all˺ its contents,",
+      "and humanity cries, “What is wrong with it?”—",
+      "on that Day the earth will recount everything, having been inspired by your Lord ˹to do so˺.",
+      "On that Day people will proceed in separate groups to be shown ˹the consequences of˺ their deeds.",
+      "So whoever does an atom’s weight of good will see it.",
+      "And whoever does an atom’s weight of evil will see it."
+    ]
+  },
+
+  100: {
+    number: 100,
+    name: "Al-’Ādiyāt",
+    translationName: "The Galloping ˹Horses˺",
+    summary: "This Meccan sûrah stresses that people will be accountable on Judgment Day for their ingratitude to their Lord, illustrated by the galloping horses on battlefields.",
+    ayahs: [
+      "By the galloping, panting horses,",
+      "striking sparks of fire ˹with their hoofs˺,",
+      "launching raids at dawn,",
+      "stirring up ˹clouds of˺ dust,",
+      "and penetrating into the heart of enemy lines!",
+      "Surely humankind is ungrateful to their Lord—",
+      "and they certainly attest to this—",
+      "and they are truly extreme in their love of ˹worldly˺ gains.",
+      "Do they not know that when the contents of the graves will be spilled out,",
+      "and the secrets of the hearts will be laid bare—",
+      "surely their Lord is All-Aware of them on that Day."
+    ]
+  },
+
+  101: {
+    number: 101,
+    name: "Al-Qâri’ah",
+    translationName: "The Striking Disaster",
+    summary: "This Meccan sûrah describes the Resurrection and the weighing of deeds, with the outcome of bliss for the heavy-deed and abyss for the light-deed.",
+    ayahs: [
+      "The Striking Disaster!",
+      "What is the Striking Disaster?",
+      "And what will make you realize what the Striking Disaster is?",
+      "˹It is˺ the Day people will be like scattered moths,",
+      "and the mountains will be like carded wool.",
+      "So as for those whose scale is heavy ˹with good deeds˺, they will be in a life of bliss.",
+      "And as for those whose scale is light, their home will be the abyss.",
+      "And what will make you realize what that is? ˹It is˺ a scorching Fire."
+    ]
+  },
+
+  102: {
+    number: 102,
+    name: "At-Takâthur",
+    translationName: "Competition for More ˹Gains˺",
+    summary: "This Meccan sûrah criticizes those who are distracted by worldly gains and warns that they will be questioned about their pleasures in the Hereafter.",
+    ayahs: [
+      "Competition for more ˹gains˺ diverts you ˹from Allah˺,",
+      "until you end up in ˹your˺ graves.",
+      "But no! You will soon come to know.",
+      "Again, no! You will soon come to know.",
+      "Indeed, if you were to know ˹your fate˺ with certainty, ˹you would have acted differently˺.",
+      "˹But˺ you will surely see the Hellfire.",
+      "Again, you will surely see it with the eye of certainty.",
+      "Then, on that Day, you will definitely be questioned about ˹your worldly˺ pleasures."
+    ]
+  },
+
+  103: {
+    number: 103,
+    name: "Al-’Aṣr",
+    translationName: "The ˹Passage of˺ Time",
+    summary: "This Meccan sûrah emphasizes that humanity is in loss except those who have faith, do good, and urge each other to truth and perseverance.",
+    ayahs: [
+      "By the ˹passage of˺ time!",
+      "Surely humanity is in ˹grave˺ loss,",
+      "except those who have faith, do good, and urge each other to the truth, and urge each other to perseverance."
+    ]
+  },
+
+  104: {
+    number: 104,
+    name: "Al-Humazah",
+    translationName: "The Backbiters",
+    summary: "This Meccan sûrah condemns those who slander and hoard wealth, warning them of the Crusher—Allah’s kindled Fire.",
+    ayahs: [
+      "Woe to every backbiter, slanderer,",
+      "who amasses wealth ˹greedily˺ and counts it ˹repeatedly˺,",
+      "thinking that their wealth will make them immortal!",
+      "Not at all! Such a person will certainly be tossed into the Crusher.",
+      "And what will make you realize what the Crusher is? ˹It is˺ Allah’s kindled Fire,",
+      "which rages over the hearts. It will be sealed over them, ˹tightly secured˺ with long braces."
+    ]
+  },
+
+  105: {
+    number: 105,
+    name: "Al-Fîl",
+    translationName: "The Elephant",
+    summary: "This Meccan sûrah recounts how Allah protected the Kaʿbah by thwarting Abraha’s army of elephants with birds pelting them with stones.",
+    ayahs: [
+      "Have you not seen ˹O Prophet˺ how your Lord dealt with the Army of the Elephant?",
+      "Did He not frustrate their scheme?",
+      "For He sent against them flocks of birds,",
+      "that pelted them with stones of baked clay,",
+      "leaving them like chewed up straw."
+    ]
+  },
+
+  106: {
+    number: 106,
+    name: "Quraysh",
+    translationName: "˹The People of˺ Quraysh",
+    summary: "This Meccan sûrah reminds Quraysh to worship Allah alone for the security and provision He granted them in their trading caravans.",
+    ayahs: [
+      "˹At least˺ for ˹the favour of˺ making Quraysh habitually secure—",
+      "secure in their trading caravan ˹to Yemen˺ in the winter and ˹Syria˺ in the summer—",
+      "let them worship the Lord of this ˹Sacred˺ House,",
+      "Who has fed them against hunger and made them secure against fear."
+    ]
+  },
+
+  107: {
+    number: 107,
+    name: "Al-Mâ’ûn",
+    translationName: "˹Simplest˺ Aid",
+    summary: "This Meccan sûrah condemns those who deny the Hereafter, neglect orphans and the poor, and show off in prayer without true compassion.",
+    ayahs: [
+      "Have you seen the one who denies the ˹final˺ Judgment?",
+      "That is the one who repulses the orphan,",
+      "and does not encourage the feeding of the poor.",
+      "So woe to those ˹hypocrites˺ who pray",
+      "yet are unmindful of their prayers;",
+      "those who ˹only˺ show off,",
+      "and refuse to give ˹even the simplest˺ aid."
+    ]
+  },
+
+  108: {
+    number: 108,
+    name: "Al-Kawthar",
+    translationName: "Abundant Goodness",
+    summary: "This Meccan sûrah reassures the Prophet ﷺ with the gift of abundant goodness and commands him to pray and sacrifice to Allah alone.",
+    ayahs: [
+      "Indeed, We have granted you ˹O Prophet˺ abundant goodness.",
+      "So pray and sacrifice to your Lord ˹alone˺.",
+      "Only the one who hates you is truly cut off ˹from any goodness˺."
+    ]
+  },
+
+  109: {
+    number: 109,
+    name: "Al-Kâfirûn",
+    translationName: "The Disbelievers",
+    summary: "This Meccan sûrah declares no compromise in worship, affirming that the Prophet ﷺ worships Allah alone and the disbelievers their gods.",
+    ayahs: [
+      "˹O Prophet,˺ “O you disbelievers!",
+      "I do not worship what you worship,",
+      "nor do you worship what I worship.",
+      "I will never worship what you worship,",
+      "nor will you ever worship what I worship.",
+      "You have your way, and I have my Way.”"
+    ]
+  },
+
+  110: {
+    number: 110,
+    name: "An-Naṣr",
+    translationName: "The ˹Ultimate˺ Help",
+    summary: "This Medinian sûrah instructs the Prophet ﷺ that when victory and crowds embrace Islam, he should glorify and seek forgiveness of his Lord.",
+    ayahs: [
+      "When Allah’s ˹ultimate˺ help comes and the victory ˹over Mecca is achieved˺,",
+      "and you ˹O Prophet˺ see the people embracing Allah’s Way in crowds,",
+      "then glorify the praises of your Lord and seek His forgiveness, for certainly He is ever Accepting of Repentance."
+    ]
+  },
+
+  111: {
+    number: 111,
+    name: "Al-Masad",
+    translationName: "The Palm-Fibre Rope",
+    summary: "This Meccan sûrah warns Abu Lahab and his wife of their doom for opposing the Prophet ﷺ, declaring their wealth and kin will not benefit them.",
+    ayahs: [
+      "May the hands of Abu Lahab perish, and he ˹himself˺ perish!",
+      "Neither his wealth nor ˹worldly˺ gains will benefit him.",
+      "He will burn in a flaming Fire,",
+      "and ˹so will˺ his wife, the carrier of ˹thorny˺ kindling,",
+      "around her neck will be a rope of palm-fibre."
+    ]
+  },
+
+  112: {
+    number: 112,
+    name: "Al-Ikhlâṣ",
+    translationName: "Purity of Faith",
+    summary: "This Meccan sûrah refutes all forms of polytheism, proclaiming Allah’s absolute oneness, self-sufficiency, and incomparability.",
+    ayahs: [
+      "Say, “He is Allah—One ˹and Indivisible˺;",
+      "Allah—the Sustainer ˹needed by all˺.",
+      "He has never had offspring, nor was He born.",
+      "And there is none comparable to Him.”"
+    ]
+  },
+
+  113: {
+    number: 113,
+    name: "Al-Falaq",
+    translationName: "The Daybreak",
+    summary: "This Medinian sûrah is a supplication seeking refuge in the Lord of daybreak from all forms of external evil.",
+    ayahs: [
+      "Say, “I seek refuge in the Lord of the daybreak",
+      "from the evil of whatever He has created,",
+      "and from the evil of the night when it grows dark,",
+      "and from the evil of those ˹witches casting spells by˺ blowing onto knots,",
+      "and from the evil of an envier when they envy.”"
+    ]
+  },
+
+  114: {
+    number: 114,
+    name: "An-Nâs",
+    translationName: "Humankind",
+    summary: "This final Medinian sûrah is a supplication seeking refuge in the Lord of humankind from the evil whisperer among jinn and humans.",
+    ayahs: [
+      "Say, “I seek refuge in the Lord of humankind,",
+      "the Master of humankind,",
+      "the God of humankind,",
+      "from the evil of the lurking whisperer—",
+      "who whispers into the hearts of humankind—",
+      "from among jinn and humankind.”"
+    ]
+  }
+};
 
       const surahListEl = document.getElementById('surahList');
       const surahPageEl = document.getElementById('surahPage');
