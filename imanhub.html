@@ -628,6 +628,96 @@
       padding: 20px;
       justify-items: center; 
     }
+
+    /* ---------------------------------------
+       DISCONTINUED STAMP OVERLAY (added)
+       --------------------------------------- */
+    @keyframes stampIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(-8deg) scale(1.45);
+        filter: blur(6px) saturate(0.8);
+        text-shadow: 0 0 0 rgba(0,0,0,0);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-18deg) scale(0.98);
+        filter: blur(0.6px);
+        text-shadow:
+          0 6px 18px rgba(0,0,0,0.55),
+          0 2px 4px rgba(0,0,0,0.6);
+      }
+      80% {
+        transform: translate(-50%, -50%) rotate(-18deg) scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-18deg) scale(1);
+        filter: blur(0);
+        text-shadow:
+          0 10px 24px rgba(0,0,0,0.55),
+          0 2px 4px rgba(0,0,0,0.5);
+      }
+    }
+    /* Soft ink-smear echo */
+    @keyframes smearFade {
+      0% {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translate(-50%, -50%) rotate(-12deg) scale(1.55);
+      }
+      100% {
+        opacity: .18;
+        filter: blur(2.5px);
+        transform: translate(-50%, -50%) rotate(-18deg) scale(1.02);
+      }
+    }
+
+    /* Use pseudo-elements so it survives body.innerHTML replacement on mobile */
+    body::before,
+    body::after {
+      content: "This page was discontinued in Ramadan 2025";
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-18deg);
+      z-index: 2147483647; /* above everything */
+      pointer-events: none; /* do not block interactions */
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      letter-spacing: .06em;
+      line-height: 1.1;
+      text-align: center;
+      white-space: pre-wrap;
+      width: 90vw;
+      max-width: 1400px;
+      font-size: clamp(28px, 8vw, 110px);
+    }
+    /* The crisp stamped text */
+    body::after {
+      color: rgba(180,159,94,0.22);
+      -webkit-text-stroke: 2px rgba(180,159,94,0.45);
+              text-stroke: 2px rgba(180,159,94,0.45);
+      text-shadow:
+        0 10px 24px rgba(0,0,0,0.55),
+        0 2px 4px rgba(0,0,0,0.5);
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.35));
+      animation: stampIn 900ms cubic-bezier(.2,1.2,.2,1) 220ms both;
+      mix-blend-mode: normal;
+    }
+    /* The faint ink echo underneath for realism */
+    body::before {
+      color: rgba(180,159,94,0.10);
+      -webkit-text-stroke: 6px rgba(0,0,0,0.15);
+              text-stroke: 6px rgba(0,0,0,0.15);
+      filter: blur(2px);
+      animation: smearFade 900ms ease-out 100ms both;
+      mix-blend-mode: normal;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before, body::after { animation: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -948,8 +1038,8 @@
             </div>
             <div class="time-display" id="timeDisplay2">00:00 / 00:00</div>
           </div>
-          <div class="recording-info">Surah 44 (Ad-Dukhan)</div>
-          <audio id="voiceNoteAudio2" src="https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/Surah+Dukhan.mp3"></audio>
+          <div class="recording-info">Surah 44 (Ad-Dukhan) [REDACTED]</div>
+          <audio id="voiceNoteAudio2" src="https://teosiman-hub-bucket.s3.eu-west-2.amazonaws.com/mp3/Surah+Dukhan.mp3"></audio>
         </div>
       </div>
 
@@ -1555,83 +1645,39 @@
       orientationButtons[0].classList.add('active'); // "all"
 
       // ==== EXAMPLE: Data-based generation of new items (videos / audios) ====
-      // (You can fill these arrays with your own data, and the items will appear automatically.)
-
-      // 1. Data arrays
-      // Just supply the minimal fields needed. For videos: { id, src, thumbnail, orientation, length }
-      // For audios: { id, src, length, info (optional) }
       const remindersData = [
          {
            id: "rem1",
            src: "https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/mp4/Snapinst.app_video_AQNhVLdTAL3F4JJ7GadUOZMWhyGagXh2P0Pir8TGDGfml2hFoilAQIjCne9qftZ8DWh2BOLkR_s3rkM74iePFOZ9WbnrjzVtq_an7Fw.mp4",
            thumbnail: "https://teos-iman-hub-bucket.s3.eu-west-2.amazonaws.com/thumbnails/Screenshot+2025-02-20+110928.png",
-           orientation: "portrait", // or "landscape"
+           orientation: "portrait",
            length: 2
          }
       ];
 
-      const educationData = [
-        // Example:
-        // {
-        //   id: "newEduVideo2",
-        //   src: "https://example.com/edu/video2.mp4",
-        //   thumbnail: "https://example.com/edu/thumb2.jpg",
-        //   orientation: "landscape",
-        //   length: 45
-        // }
-      ];
+      const educationData = [];
+      const favRecitationsAudio = [];
+      const salahRecordingsAudio = [];
 
-      const favRecitationsAudio = [
-        // Example:
-        // {
-        //   id: "myNewRecitation1",
-        //   src: "https://example.com/audio1.mp3",
-        //   length: 5,
-        //   info: "Surah 99, Az-Zalzalah"
-        // }
-      ];
-
-      const salahRecordingsAudio = [
-        // Example:
-        // {
-        //   id: "myNewSalahAudio1",
-        //   src: "https://example.com/salahAudio1.mp3",
-        //   length: 4,
-        //   info: "Sheikh So-and-so"
-        // }
-      ];
-
-      // 2. Functions to create the HTML automatically
-
-      // For new videos
       function createVideoGridItem(item) {
         const div = document.createElement('div');
         div.classList.add('grid-item');
-        // data attributes for filters + completed checks
         div.setAttribute('data-video-id', item.id);
         div.setAttribute('data-video-src', item.src);
         div.setAttribute('data-type', 'video');
         div.setAttribute('data-orientation', item.orientation || 'portrait');
         div.setAttribute('data-length', item.length || '1');
-
-        // styling
         div.style.backgroundImage = `url('${item.thumbnail}')`;
-
-        // event handlers
         div.onclick = () => openOverlay(item.id, item.src);
         div.onmouseover = startPreview;
         div.onmouseleave = stopPreview;
-
         return div;
       }
 
-      // For new audios
       function createAudioPlayer(item) {
-        // We'll build a voice-note-container + voice-note-player structure
         const container = document.createElement('div');
         container.classList.add('voice-note-container');
 
-        // The player block
         const player = document.createElement('div');
         player.classList.add('voice-note-player', 'paused');
         player.id = item.id;
@@ -1639,16 +1685,13 @@
         player.dataset.orientation = "none";
         player.dataset.length = item.length || "0";
 
-        // Build waveform bars
         let barsHTML = '';
         for (let i=1; i<=90; i++){
           barsHTML += `<div class="wave-bar" style="--i:${i}"></div>`;
         }
 
-        // Use item.info if provided
         const infoText = item.info ? item.info : "";
 
-        // Insert the inner HTML
         player.innerHTML = `
           <div class="player-top-row">
             <div class="play-pause-btn" onclick="togglePlayGeneric('${item.id}')">
@@ -1823,3 +1866,4 @@
   </script>
 </body>
 </html>
+
