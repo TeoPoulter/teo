@@ -78,13 +78,8 @@
             width: 50%;
         }
 
-        .timeline-container.left {
-            left: 0;
-        }
-
-        .timeline-container.right {
-            left: 50%;
-        }
+        .timeline-container.left { left: 0; }
+        .timeline-container.right { left: 50%; }
 
         .timeline-container::before {
             content: "";
@@ -95,7 +90,6 @@
             border-style: solid;
             border-color: transparent transparent transparent var(--light-color);
         }
-
         .timeline-container.right::before {
             left: -15px;
             border-color: transparent var(--light-color) transparent transparent;
@@ -113,10 +107,7 @@
             border-radius: 50%;
             z-index: 1;
         }
-
-        .timeline-container.right::after {
-            left: -10px;
-        }
+        .timeline-container.right::after { left: -10px; }
 
         .timeline-content {
             padding: 20px 30px;
@@ -126,19 +117,16 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .timeline-content:hover {
             background-color: var(--light-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
         .timeline-content h2 {
             margin-top: 0;
             color: var(--primary-color);
             font-weight: 800;
             font-size: 1.75rem;
         }
-
         .timeline-content p {
             margin-bottom: 0;
             line-height: 1.8;
@@ -157,46 +145,29 @@
             font-weight: 600;
             font-size: 0.9em;
         }
-
-        .timeline-container.left .timeline-content .date {
-            right: 15px;
-        }
-
-        .timeline-container.right .timeline-content .date {
-            left: 15px;
-        }
+        .timeline-container.left .timeline-content .date { right: 15px; }
+        .timeline-container.right .timeline-content .date { left: 15px; }
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
-            .timeline::after {
-                left: 31px;
-            }
-
+            .timeline::after { left: 31px; }
             .timeline-container {
                 width: 100%;
                 padding-left: 70px;
                 padding-right: 25px;
             }
-
             .timeline-container::before {
                 left: 60px;
                 border: medium solid var(--light-color);
                 border-width: 10px 10px 10px 0;
                 border-color: transparent var(--light-color) transparent transparent;
             }
-
-            .timeline-container.left::after, .timeline-container.right::after {
-                left: 15px;
-            }
-
-            .timeline-container.right {
-                left: 0%;
-            }
-
+            .timeline-container.left::after,
+            .timeline-container.right::after { left: 15px; }
+            .timeline-container.right { left: 0%; }
             .timeline-container.left .timeline-content .date,
             .timeline-container.right .timeline-content .date {
-                right: auto;
-                left: 15px;
+                right: auto; left: 15px;
             }
         }
 
@@ -208,10 +179,7 @@
             font-size: 0.9em;
             border-radius: 4px;
         }
-
-        .tooltip-arrow {
-            color: var(--primary-color);
-        }
+        .tooltip-arrow { color: var(--primary-color); }
     </style>
 </head>
 <body>
@@ -221,7 +189,7 @@
         <h1 data-aos="zoom-in">Islamic History Timeline</h1>
         <p data-aos="fade-up">A comprehensive journey through significant events from the inception of Islam to the present day. </p>
         <p data-aos="fade-up">It should be noted that Islam itself is submission to Allah alone, and thus we say Islam has been around since the dawn of humanity,</p>
-       <p data-aos="fade-up">with Adam (A.S) as the first Muslim, and all the Prophets and Messengers after Adam of course being Muslim too.</p>
+        <p data-aos="fade-up">with Adam (A.S) as the first Muslim, and all the Prophets and Messengers after Adam of course being Muslim too.</p>
         <p data-aos="fade-up">This page documents the spread of Islam after the final Messenger of Allah, Muhammad (peace and blessings be upon him).</p>
         <p data-aos="fade-up">(Also including some pivotal, more recent, events in the Muslim world.)</p>
     </div>
@@ -230,519 +198,474 @@
     <div class="timeline" id="timeline">
         <!-- Event 1 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(1)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(1)">
                 <span class="date">570 CE</span>
                 <h2>Birth of Prophet Muhammad <span class="arabic">ﷺ</span></h2>
-                <p>
-                    Prophet Muhammad <span class="arabic">ﷺ</span> is born in Mecca.
-                </p>
+                <p>Prophet Muhammad <span class="arabic">ﷺ</span> is born in Mecca.</p>
             </div>
         </div>
         <!-- Event 2 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(2)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(2)">
                 <span class="date">610 CE</span>
                 <h2>First Revelation</h2>
-                <p>
-                    Prophet Muhammad <span class="arabic">ﷺ</span> receives the first revelation in the Cave of Hira.
-                </p>
+                <p>Prophet Muhammad <span class="arabic">ﷺ</span> receives the first revelation in the Cave of Hira.</p>
             </div>
         </div>
         <!-- Event 3 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(3)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(3)">
                 <span class="date">613 CE</span>
                 <h2>Public Preaching Begins</h2>
-                <p>
-                    Prophet Muhammad <span class="arabic">ﷺ</span> begins publicly preaching the message of Islam.
-                </p>
+                <p>Prophet Muhammad <span class="arabic">ﷺ</span> begins publicly preaching the message of Islam.</p>
             </div>
         </div>
         <!-- Event 4 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(4)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(4)">
                 <span class="date">622 CE</span>
                 <h2>The Hijrah</h2>
-                <p>
-                    Migration to Medina, marking the start of the Islamic calendar.
-                </p>
+                <p>Migration to Medina, marking the start of the Islamic calendar.</p>
             </div>
         </div>
         <!-- Event 5 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(5)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(5)">
                 <span class="date">624 CE</span>
                 <h2>Battle of Badr</h2>
-                <p>
-                    Muslims secure a significant victory against the Quraysh.
-                </p>
+                <p>Muslims secure a significant victory against the Quraysh.</p>
             </div>
         </div>
         <!-- Event 6 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(6)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(6)">
                 <span class="date">630 CE</span>
                 <h2>Conquest of Mecca</h2>
-                <p>
-                    Prophet Muhammad <span class="arabic">ﷺ</span> peacefully conquers Mecca.
-                </p>
+                <p>Prophet Muhammad <span class="arabic">ﷺ</span> peacefully conquers Mecca.</p>
             </div>
         </div>
         <!-- Event 7 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(7)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(7)">
                 <span class="date">632 CE</span>
                 <h2>Farewell Sermon</h2>
-                <p>
-                    Prophet Muhammad <span class="arabic">ﷺ</span> delivers his final sermon during Hajj.
-                </p>
+                <p>Prophet Muhammad <span class="arabic">ﷺ</span> delivers his final sermon during Hajj.</p>
             </div>
         </div>
         <!-- Event 8 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(8)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(8)">
                 <span class="date">632 CE</span>
                 <h2>Passing of the Prophet</h2>
-                <p>
-                    Prophet Muhammad <span class="arabic">ﷺ</span> passes away in Medina.
-                </p>
+                <p>Prophet Muhammad <span class="arabic">ﷺ</span> passes away in Medina.</p>
             </div>
         </div>
         <!-- Event 9 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(9)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(9)">
                 <span class="date">632-634 CE</span>
                 <h2>Caliphate of Abu Bakr</h2>
-                <p>
-                    Abu Bakr becomes the first Rightly Guided Caliph.
-                </p>
+                <p>Abu Bakr becomes the first Rightly Guided Caliph.</p>
             </div>
         </div>
         <!-- Event 10 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(10)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(10)">
                 <span class="date">634-644 CE</span>
                 <h2>Caliphate of Umar ibn al-Khattab</h2>
-                <p>
-                    Expansion of the Islamic empire into Persia and the Levant.
-                </p>
+                <p>Expansion of the Islamic empire into Persia and the Levant.</p>
             </div>
         </div>
         <!-- Event 11 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(11)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(11)">
                 <span class="date">644-656 CE</span>
                 <h2>Caliphate of Uthman ibn Affan</h2>
-                <p>
-                    Compilation of the Qur'an into a single book.
-                </p>
+                <p>Compilation of the Qur'an into a single book.</p>
             </div>
         </div>
         <!-- Event 12 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(12)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(12)">
                 <span class="date">656-661 CE</span>
                 <h2>Caliphate of Ali ibn Abi Talib</h2>
-                <p>
-                    Civil unrest and the first Fitna (internal conflict).
-                </p>
+                <p>Civil unrest and the first Fitna (internal conflict).</p>
             </div>
         </div>
         <!-- Event 13 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(13)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(13)">
                 <span class="date">661-750 CE</span>
                 <h2>Umayyad Caliphate</h2>
-                <p>
-                    Establishment of Damascus as the capital; expansion continues.
-                </p>
+                <p>Establishment of Damascus as the capital; expansion continues.</p>
             </div>
         </div>
         <!-- Event 14 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(14)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(14)">
                 <span class="date">680 CE</span>
                 <h2>Battle of Karbala</h2>
-                <p>
-                    Martyrdom of Husayn ibn Ali; significant for Shia Islam.
-                </p>
+                <p>Martyrdom of Husayn ibn Ali; significant for Shia Islam.</p>
             </div>
         </div>
         <!-- Event 15 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(15)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(15)">
                 <span class="date">711 CE</span>
                 <h2>Muslim Conquest of Spain</h2>
-                <p>
-                    Tariq ibn Ziyad leads forces into Iberia, beginning Al-Andalus.
-                </p>
+                <p>Tariq ibn Ziyad leads forces into Iberia, beginning Al-Andalus.</p>
             </div>
         </div>
         <!-- Event 16 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(16)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(16)">
                 <span class="date">750-1258 CE</span>
                 <h2>Abbasid Caliphate</h2>
-                <p>
-                    Golden Age of Islam; capital moved to Baghdad.
-                </p>
+                <p>Golden Age of Islam; capital moved to Baghdad.</p>
             </div>
         </div>
         <!-- Event 17 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(17)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(17)">
                 <span class="date">762 CE</span>
                 <h2>Founding of Baghdad</h2>
-                <p>
-                    Baghdad becomes a center of learning and culture.
-                </p>
+                <p>Baghdad becomes a center of learning and culture.</p>
             </div>
         </div>
         <!-- Event 18 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(18)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(18)">
                 <span class="date">813 CE</span>
                 <h2>Reign of Al-Ma'mun</h2>
-                <p>
-                    Establishment of the House of Wisdom in Baghdad.
-                </p>
+                <p>Establishment of the House of Wisdom in Baghdad.</p>
             </div>
         </div>
         <!-- Event 19 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(19)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(19)">
                 <span class="date">1096-1099 CE</span>
                 <h2>The First Crusade</h2>
-                <p>
-                    Crusaders capture Jerusalem; beginning of Crusades.
-                </p>
+                <p>Crusaders capture Jerusalem; beginning of Crusades.</p>
             </div>
         </div>
         <!-- Event 20 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(20)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(20)">
                 <span class="date">1187 CE</span>
                 <h2>Salahuddin Retakes Jerusalem</h2>
-                <p>
-                    Salahuddin Ayyubi recaptures Jerusalem from Crusaders.
-                </p>
+                <p>Salahuddin Ayyubi recaptures Jerusalem from Crusaders.</p>
             </div>
         </div>
         <!-- Event 21 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(21)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(21)">
                 <span class="date">1258 CE</span>
                 <h2>Sack of Baghdad</h2>
-                <p>
-                    Mongol invasion leads to the fall of the Abbasid Caliphate.
-                </p>
+                <p>Mongol invasion leads to the fall of the Abbasid Caliphate.</p>
             </div>
         </div>
         <!-- Event 22 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(22)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(22)">
                 <span class="date">1299-1922 CE</span>
                 <h2>Ottoman Empire</h2>
-                <p>
-                    Rise and expansion of the Ottoman Turks.
-                </p>
+                <p>Rise and expansion of the Ottoman Turks.</p>
             </div>
         </div>
         <!-- Event 23 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(23)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(23)">
                 <span class="date">1453 CE</span>
                 <h2>Fall of Constantinople</h2>
-                <p>
-                    Ottomans capture Constantinople, renaming it Istanbul.
-                </p>
+                <p>Ottomans capture Constantinople, renaming it Istanbul.</p>
             </div>
         </div>
         <!-- Event 24 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(24)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(24)">
                 <span class="date">1492 CE</span>
                 <h2>End of Muslim Rule in Spain</h2>
-                <p>
-                    Fall of Granada; completion of the Reconquista.
-                </p>
+                <p>Fall of Granada; completion of the Reconquista.</p>
             </div>
         </div>
         <!-- Event 25 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(25)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(25)">
                 <span class="date">1526 CE</span>
                 <h2>Founding of the Mughal Empire</h2>
-                <p>
-                    Babur establishes Mughal rule in India.
-                </p>
+                <p>Babur establishes Mughal rule in India.</p>
             </div>
         </div>
         <!-- Event 26 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(26)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(26)">
                 <span class="date">1798 CE</span>
                 <h2>Napoleon Invades Egypt</h2>
-                <p>
-                    French campaign in Egypt and Syria begins.
-                </p>
+                <p>French campaign in Egypt and Syria begins.</p>
             </div>
         </div>
         <!-- Event 27 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(27)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(27)">
                 <span class="date">1857 CE</span>
                 <h2>Indian Rebellion</h2>
-                <p>
-                    Uprising against British East India Company rule.
-                </p>
+                <p>Uprising against British East India Company rule.</p>
             </div>
         </div>
         <!-- Event 28 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(28)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(28)">
                 <span class="date">1914-1918 CE</span>
                 <h2>World War I and Ottoman Decline</h2>
-                <p>
-                    Ottoman Empire collapses after aligning with Central Powers.
-                </p>
+                <p>Ottoman Empire collapses after aligning with Central Powers.</p>
             </div>
         </div>
         <!-- Event 29 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(29)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(29)">
                 <span class="date">1924 CE</span>
                 <h2>Abolition of the Caliphate</h2>
-                <p>
-                    Turkey abolishes the Ottoman Caliphate.
-                </p>
+                <p>Turkey abolishes the Ottoman Caliphate.</p>
             </div>
         </div>
         <!-- Event 30 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(30)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(30)">
                 <span class="date">1947 CE</span>
                 <h2>Partition of India</h2>
-                <p>
-                    Creation of Pakistan as a separate Muslim-majority nation.
-                </p>
+                <p>Creation of Pakistan as a separate Muslim-majority nation.</p>
             </div>
         </div>
         <!-- Event 31 -->
         <div class="timeline-container left" data-aos="fade-right">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(31)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(31)">
                 <span class="date">1948 CE</span>
                 <h2>Establishment of Israel</h2>
-                <p>
-                    State of Israel declared; beginning of Arab-Israeli conflict.
-                </p>
+                <p>State of Israel declared; beginning of Arab-Israeli conflict.</p>
             </div>
         </div>
         <!-- Event 32 -->
         <div class="timeline-container right" data-aos="fade-left">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(32)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(32)">
                 <span class="date">1969 CE</span>
                 <h2>Formation of the OIC</h2>
-                <p>
-                    Establishment of the Organization of Islamic Cooperation.
-                </p>
+                <p>Establishment of the Organization of Islamic Cooperation.</p>
             </div>
         </div>
         <!-- Event 33 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(33)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(33)">
                 <span class="date">1979 CE</span>
                 <h2>Iranian Revolution</h2>
-                <p>
-                    Overthrow of the Shah; establishment of Islamic Republic.
-                </p>
+                <p>Overthrow of the Shah; establishment of Islamic Republic.</p>
             </div>
         </div>
         <!-- Event 34 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(34)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(34)">
                 <span class="date">2001 CE</span>
                 <h2>September 11 Attacks</h2>
-                <p>
-                    Terrorist attacks in the U.S.; impact on global politics.
-                </p>
+                <p>Terrorist attacks in the U.S.; impact on global politics.</p>
             </div>
         </div>
         <!-- Event 35 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(35)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(35)">
                 <span class="date">2010-2012 CE</span>
                 <h2>Arab Spring</h2>
-                <p>
-                    Series of uprisings across the Arab world.
-                </p>
+                <p>Series of uprisings across the Arab world.</p>
            </div>
         </div>
 
         <!-- Event 36 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(36)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(36)">
                 <span class="date">1916 CE</span>
                 <h2>Sykes-Picot Agreement</h2>
-                <p>
-                    Secret agreement between Britain and France dividing Ottoman territories.
-                </p>
+                <p>Secret agreement between Britain and France dividing Ottoman territories.</p>
             </div>
         </div>
         <!-- Event 37 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(37)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(37)">
                 <span class="date">1917 CE</span>
                 <h2>Balfour Declaration</h2>
-                <p>
-                    British support for a "national home for the Jewish people" in Palestine.
-                </p>
+                <p>British support for a "national home for the Jewish people" in Palestine.</p>
             </div>
         </div>
         <!-- Event 38 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(38)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(38)">
                 <span class="date">1945 CE</span>
                 <h2>Founding of the Arab League</h2>
-                <p>
-                    Establishment of the League of Arab States in Cairo.
-                </p>
+                <p>Establishment of the League of Arab States in Cairo.</p>
             </div>
         </div>
         <!-- Event 39 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(39)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(39)">
                 <span class="date">1952 CE</span>
                 <h2>Egyptian Revolution</h2>
-                <p>
-                    Overthrow of King Farouk; rise of Gamal Abdel Nasser.
-                </p>
+                <p>Overthrow of King Farouk; rise of Gamal Abdel Nasser.</p>
             </div>
         </div>
         <!-- Event 40 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(40)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(40)">
                 <span class="date">1967 CE</span>
                 <h2>Six-Day War</h2>
-                <p>
-                    Conflict between Israel and neighboring Arab countries; territorial changes.
-                </p>
+                <p>Conflict between Israel and neighboring Arab countries; territorial changes.</p>
             </div>
         </div>
         <!-- Event 41 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(41)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(41)">
                 <span class="date">1973 CE</span>
                 <h2>Yom Kippur War</h2>
-                <p>
-                    Egypt and Syria launch surprise attack on Israel.
-                </p>
+                <p>Egypt and Syria launch surprise attack on Israel.</p>
             </div>
         </div>
         <!-- Event 42 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(42)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(42)">
                 <span class="date">1980-1988 CE</span>
                 <h2>Iran-Iraq War</h2>
-                <p>
-                    Prolonged conflict between Iran and Iraq.
-                </p>
+                <p>Prolonged conflict between Iran and Iraq.</p>
             </div>
         </div>
         <!-- Event 43 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(43)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(43)">
                 <span class="date">1987 CE</span>
                 <h2>First Intifada</h2>
-                <p>
-                    Palestinian uprising against Israeli occupation.
-                </p>
+                <p>Palestinian uprising against Israeli occupation.</p>
             </div>
         </div>
         <!-- Event 44 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(44)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(44)">
                 <span class="date">1991 CE</span>
                 <h2>Gulf War</h2>
-                <p>
-                    Coalition forces expel Iraq from Kuwait.
-                </p>
+                <p>Coalition forces expel Iraq from Kuwait.</p>
             </div>
         </div>
         <!-- Event 45 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(45)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(45)">
                 <span class="date">1993 CE</span>
                 <h2>Oslo Accords</h2>
-                <p>
-                    Peace agreement between Israel and the PLO.
-                </p>
+                <p>Peace agreement between Israel and the PLO.</p>
             </div>
         </div>
         <!-- Event 46 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(46)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(46)">
                 <span class="date">2003 CE</span>
                 <h2>Iraq War</h2>
-                <p>
-                    U.S.-led invasion of Iraq; overthrow of Saddam Hussein.
-                </p>
+                <p>U.S.-led invasion of Iraq; overthrow of Saddam Hussein.</p>
             </div>
         </div>
         <!-- Event 47 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(47)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(47)">
                 <span class="date">2011 CE</span>
                 <h2>Syrian Civil War Begins</h2>
-                <p>
-                    Conflict erupts in Syria following Arab Spring protests.
-                </p>
+                <p>Conflict erupts in Syria following Arab Spring protests.</p>
             </div>
         </div>
         <!-- Event 48 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(48)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(48)">
                 <span class="date">2014 CE</span>
                 <h2>Rise of ISIS</h2>
-                <p>
-                    ISIS declares a caliphate in parts of Iraq and Syria.
-                </p>
+                <p>ISIS declares a caliphate in parts of Iraq and Syria.</p>
             </div>
         </div>
         <!-- Event 49 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(49)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(49)">
                 <span class="date">2017 CE</span>
                 <h2>Recognition of Jerusalem as Israel's Capital</h2>
-                <p>
-                    U.S. moves its embassy to Jerusalem; international reactions.
-                </p>
+                <p>U.S. moves its embassy to Jerusalem; international reactions.</p>
             </div>
         </div>
         <!-- Event 50 -->
         <div class="timeline-container left" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(50)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(50)">
                 <span class="date">2020 CE</span>
                 <h2>Abraham Accords</h2>
-                <p>
-                    Normalization agreements between Israel and several Arab countries.
-                </p>
+                <p>Normalization agreements between Israel and several Arab countries.</p>
             </div>
         </div>
         <!-- Event 51 -->
         <div class="timeline-container right" data-aos="fade-up">
-            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top"  onclick="showModal(51)">
+            <div class="timeline-content" data-bs-toggle="tooltip" data-bs-placement="top" onclick="showModal(51)">
                 <span class="date">2021 CE</span>
                 <h2>Afghanistan under Taliban Control</h2>
-                <p>
-                    Withdrawal of U.S. troops; Taliban takeover of Afghanistan.
-                </p>
+                <p>Withdrawal of U.S. troops; Taliban takeover of Afghanistan.</p>
+            </div>
+        </div>
+
+        <!-- ===== Added Events (52+) — strictly chronological after 2021; nothing removed ===== -->
+        <div class="timeline-container left" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(52)">
+                <span class="date">2022 CE</span>
+                <h2>Qatar Hosts FIFA World Cup</h2>
+                <p>First World Cup in a Muslim-majority country; global spotlight on the Arab world and Islamic culture.</p>
+            </div>
+        </div>
+
+        <div class="timeline-container right" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(53)">
+                <span class="date">2023 CE</span>
+                <h2>Türkiye–Syria Earthquakes</h2>
+                <p>Catastrophic quakes devastate large regions; massive humanitarian response across the Muslim world.</p>
+            </div>
+        </div>
+
+        <div class="timeline-container left" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(54)">
+                <span class="date">2023–2025 CE</span>
+                <h2>Genocide in Gaza</h2>
+                <p>Following October 2023, Israel’s assault on Gaza results in widespread civilian deaths, displacement, siege, and destruction; hospitals, schools, and aid deliveries are repeatedly struck.</p>
+            </div>
+        </div>
+
+        <div class="timeline-container right" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(55)">
+                <span class="date">2024 CE</span>
+                <h2>ICJ Provisional Measures on Gaza</h2>
+                <p>In South Africa v. Israel, the International Court of Justice orders provisional measures, including steps to prevent genocide and enable humanitarian aid.</p>
+            </div>
+        </div>
+
+        <div class="timeline-container left" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(56)">
+                <span class="date">2024 CE</span>
+                <h2>ICC Seeks Arrest Warrants</h2>
+                <p>The International Criminal Court prosecutor applies for arrest warrants related to crimes in Israel/Palestine, covering leaders from multiple parties.</p>
+            </div>
+        </div>
+
+        <div class="timeline-container right" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(57)">
+                <span class="date">2024 CE</span>
+                <h2>Rafah Offensive & Mass Displacement</h2>
+                <p>Military operations expand to Rafah; displacement intensifies amid acute shortages of food, water, medicine, and shelter.</p>
+            </div>
+        </div>
+
+        <div class="timeline-container left" data-aos="fade-up">
+            <div class="timeline-content" onclick="showModal(58)">
+                <span class="date">2025 CE</span>
+                <h2>Ongoing Siege, Famine Risk in Gaza</h2>
+                <p>By 2025, Gaza faces persistent siege conditions, extreme hunger, disease outbreaks, and continued barriers to reconstruction and relief.</p>
             </div>
         </div>
     </div>
 
     <!-- Modals for Event Details -->
-    <!-- Event 36 Modal -->
+    <!-- Event 36 Modal (pre-existing example retained) -->
     <div class="modal fade" id="modal36" tabindex="-1" aria-labelledby="modalLabel36" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content bg-dark text-light">
@@ -752,15 +675,15 @@
           </div>
           <div class="modal-body">
             <p>
-                The Sykes-Picot Agreement was a secret treaty between the United Kingdom and France, with assent from the Russian Empire, defining their proposed spheres of influence and control in the Middle East should the Triple Entente succeed in defeating the Ottoman Empire during World War I. The agreement has had a lasting impact on the political landscape of the Middle East.
+                The Sykes-Picot Agreement was a secret treaty between the United Kingdom and France, with assent from the Russian Empire,
+                defining their proposed spheres of influence and control in the Middle East should the Triple Entente succeed in defeating the Ottoman Empire during World War I.
+                The agreement has had a lasting impact on the political landscape of the Middle East.
             </p>
-            <!-- Include images or maps if desired -->
           </div>
         </div>
       </div>
     </div>
-    <!-- Continue adding modals for each new event -->
-    <!-- ... -->
+    <!-- (Other modals are created dynamically if missing) -->
 
     <!-- Include Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -771,52 +694,85 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/ScrollTrigger.min.js"></script>
     <!-- Initialize AOS and GSAP -->
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-        });
+        AOS.init({ duration: 1000, once: true });
 
         // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
-
-        gsap.from(".header h1", {
-            duration: 1.5,
-            y: -50,
-            opacity: 0,
-            ease: "power4.out"
-        });
-
-        gsap.from(".header p", {
-            duration: 1.5,
-            y: 50,
-            opacity: 0,
-            ease: "power4.out",
-            delay: 0.5
-        });
+        gsap.from(".header h1", { duration: 1.5, y: -50, opacity: 0, ease: "power4.out" });
+        gsap.from(".header p",  { duration: 1.5, y:  50, opacity: 0, ease: "power4.out", delay: 0.5 });
 
         gsap.utils.toArray('.timeline-container').forEach(function(elem) {
             gsap.from(elem, {
-                scrollTrigger: {
-                    trigger: elem,
-                    start: "top 80%"
-                },
-                duration: 1,
-                y: 100,
-                opacity: 0,
-                ease: "power4.out"
+                scrollTrigger: { trigger: elem, start: "top 80%" },
+                duration: 1, y: 100, opacity: 0, ease: "power4.out"
             });
         });
 
         // Initialize Tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl)
+          return new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
-        // Function to Show Modals
+        /**
+         * showModal:
+         * - If #modal{eventId} exists, opens it.
+         * - If missing, builds a modal from the clicked timeline card’s content (date/title/body) so there are NO dead clicks/errors.
+         *   Keeps your UX identical without hard-coding dozens of modals.
+         */
         function showModal(eventId) {
-            var modal = new bootstrap.Modal(document.getElementById('modal' + eventId));
-            modal.show();
+            var existing = document.getElementById('modal' + eventId);
+            if (existing) {
+                new bootstrap.Modal(existing).show();
+                return;
+            }
+
+            // derive content from the clicked element (inline handlers expose window.event)
+            var ev = window.event;
+            var card = ev && ev.currentTarget ? ev.currentTarget : null;
+            if (!card) {
+                createAndShowModal(eventId, 'Event ' + eventId, '', '');
+                return;
+            }
+
+            var dateEl  = card.querySelector('.date');
+            var titleEl = card.querySelector('h2');
+            var bodyEl  = card.querySelector('p');
+
+            var date  = dateEl ? dateEl.textContent.trim() : '';
+            var title = titleEl ? titleEl.textContent.trim() : ('Event ' + eventId);
+            var body  = bodyEl ? bodyEl.innerHTML.trim() : '';
+
+            var fullTitle = date ? (title + ' — ' + date) : title;
+            createAndShowModal(eventId, fullTitle, body, 'bg-dark text-light');
+        }
+
+        function createAndShowModal(eventId, titleText, bodyHTML, extraClasses) {
+            var modalId = 'modal' + eventId;
+            var labelId = 'modalLabel' + eventId;
+
+            var modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = modalId;
+            modal.tabIndex = -1;
+            modal.setAttribute('aria-labelledby', labelId);
+            modal.setAttribute('aria-hidden', 'true');
+
+            modal.innerHTML = `
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content ${extraClasses || ''}">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="${labelId}">${titleText}</h5>
+                    <button type="button" class="btn-close ${extraClasses && extraClasses.includes('text-light') ? 'btn-close-white' : ''}" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>${bodyHTML || ''}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            document.body.appendChild(modal);
+            new bootstrap.Modal(modal).show();
         }
     </script>
 </body>
