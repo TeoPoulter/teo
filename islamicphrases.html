@@ -207,6 +207,64 @@
                 font-size: 2.5em;
             }
         }
+
+        /* ===============================
+           DISCONTINUED STAMP OVERLAY
+           (same look/feel & effect as on Iman Hub)
+        ================================*/
+        .discontinued-overlay{
+            position:fixed;
+            inset:0;
+            z-index:99999;
+            pointer-events:none; /* purely visual, page underneath unchanged */
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background: radial-gradient(ellipse at center,
+                       rgba(0,0,0,0.15) 0%,
+                       rgba(0,0,0,0.35) 60%,
+                       rgba(0,0,0,0.55) 100%);
+            opacity:0;
+            animation: overlayFade .6s ease forwards .2s;
+        }
+        @keyframes overlayFade{
+            from{ opacity:0; }
+            to  { opacity:1; }
+        }
+
+        .discontinued-badge{
+            transform: rotate(-18deg) scale(1);
+            font-size: clamp(28px, 10vw, 86px);
+            letter-spacing:.04em;
+            color:#ffffff;
+            text-align:center;
+            line-height:1.15;
+            font-weight:800;
+            text-transform:uppercase;
+            text-shadow:
+                0 6px 24px rgba(0,0,0,.45),
+                0 2px 8px rgba(0,0,0,.35);
+            -webkit-text-stroke: 1px rgba(0,0,0,.25);
+            /* “slap/stamp” entrance */
+            animation: stampIn .68s cubic-bezier(.2,1.1,.2,1) forwards;
+            will-change: transform, opacity, filter;
+            padding:.35em .6em;
+            background:
+              linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0)),
+              linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 45%),
+              rgba(71,23,246,.18);
+            border: 4px solid rgba(162,57,202,.55);
+            border-radius: 16px;
+            box-shadow:
+              0 14px 40px rgba(0,0,0,.45),
+              inset 0 1px 0 rgba(255,255,255,.15);
+            backdrop-filter: blur(2px);
+        }
+        @keyframes stampIn{
+            0%   { opacity:0; transform: rotate(-18deg) scale(.92) translateY(-8px); filter: blur(3px); }
+            55%  { opacity:1; transform: rotate(-18deg) scale(1.04) translateY(2px);  filter: blur(0); }
+            100% { opacity:1; transform: rotate(-18deg) scale(1)    translateY(0);    }
+        }
     </style>
 </head>
 <body>
@@ -380,21 +438,21 @@
     <!-- Quranic phrases sorted by relevance -->
     <div class="phrase-card">
         <h2>Ya ayyuhal ladheena amanu</h2>
-        <h3>يَا أَيُّهَا الَّذِينَ آمَنُوا</h3>
+        <h3>يَا أَيُّهَا الَّذِينَ آمَنُوا</h3>
         <p><strong>Meaning:</strong> "O you who have believed."</p>
         <p><strong>Usage:</strong> An address to believers in the Quran.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Alhamdulillahi Rabbil 'alameen</h2>
-        <h3>الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</h3>
+        <h3>الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</h3>
         <p><strong>Meaning:</strong> "All praise is due to Allah, Lord of the worlds."</p>
         <p><strong>Usage:</strong> Opening of Surah Al-Fatiha, praising Allah.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Ar-Rahman Ar-Raheem</h2>
-        <h3>الرَّحْمَٰنِ الرَّحِيمِ</h3>
+        <h3>الرَّحْمَٰنِ الرَّحِيمِ</h3>
         <p><strong>Meaning:</strong> "The Most Gracious, the Most Merciful."</p>
         <p><strong>Usage:</strong> Describing Allah's attributes.</p>
     </div>
@@ -408,28 +466,28 @@
 
     <div class="phrase-card">
         <h2>Inna Allaha ala kulli shay’in Qadeer</h2>
-        <h3>إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ</h3>
+        <h3>إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ</h3>
         <p><strong>Meaning:</strong> "Indeed, Allah is over all things competent."</p>
         <p><strong>Usage:</strong> Affirming Allah's omnipotence.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Inna Allaha Ghafurur Raheem</h2>
-        <h3>إِنَّ اللَّهَ غَفُورٌ رَحِيمٌ</h3>
+        <h3>إِنَّ اللَّهَ غَفُورٌ رَحِيمٌ</h3>
         <p><strong>Meaning:</strong> "Indeed, Allah is Forgiving and Merciful."</p>
         <p><strong>Usage:</strong> Emphasizing Allah's forgiveness and mercy.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Bismillahir Rahmanir Raheem</h2>
-        <h3>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h3>
+        <h3>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h3>
         <p><strong>Meaning:</strong> "In the name of Allah, the Most Gracious, the Most Merciful."</p>
         <p><strong>Usage:</strong> Opening phrase of most Surahs; said before actions.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Subhanallahi amma yushrikoon</h2>
-        <h3>سُبْحَانَ اللَّهِ عَمَّا يُشْرِكُونَ</h3>
+        <h3>سُبْحَانَ اللَّهِ عَمَّا يُشْرِكُونَ</h3>
         <p><strong>Meaning:</strong> "Glory be to Allah above what they associate with Him."</p>
         <p><strong>Usage:</strong> Declaring Allah's transcendence above shirk.</p>
     </div>
@@ -443,77 +501,77 @@
 
     <div class="phrase-card">
         <h2>Kullun Nafsin dha'iqatul mawt</h2>
-        <h3>كُلُّ نَفْسٍ ذَائِقَةُ الْمَوْتِ</h3>
+        <h3>كُلُّ نَفْسٍ ذَائِقَةُ الْمَوْتِ</h3>
         <p><strong>Meaning:</strong> "Every soul shall taste death."</p>
         <p><strong>Usage:</strong> Reminder of mortality.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Wa tawakkal 'ala Allah</h2>
-        <h3>وَتَوَكَّلْ عَلَى اللَّهِ</h3>
+        <h3>وَتَوَكَّلْ عَلَى اللَّهِ</h3>
         <p><strong>Meaning:</strong> "And put your trust in Allah."</p>
         <p><strong>Usage:</strong> Encouraging reliance on Allah.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Inna ma'al 'usri yusra</h2>
-        <h3>إِنَّ مَعَ الْعُسْرِ يُسْرًا</h3>
+        <h3>إِنَّ مَعَ الْعُسْرِ يُسْرًا</h3>
         <p><strong>Meaning:</strong> "Indeed, with hardship [will be] ease."</p>
         <p><strong>Usage:</strong> Offering comfort during difficulties.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Rabbana atina fid-dunya hasanatan</h2>
-        <h3>رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً</h3>
+        <h3>رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً</h3>
         <p><strong>Meaning:</strong> "Our Lord, give us in this world [that which is] good..."</p>
         <p><strong>Usage:</strong> Part of a supplication for good in this life and the hereafter.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Fabi ayyi ala'i Rabbikuma tukadhiban</h2>
-        <h3>فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ</h3>
+        <h3>فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ</h3>
         <p><strong>Meaning:</strong> "So which of the favors of your Lord would you deny?"</p>
         <p><strong>Usage:</strong> Refrain in Surah Ar-Rahman emphasizing gratitude.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Inna Allaha yuhibbul muhsineen</h2>
-        <h3>إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ</h3>
+        <h3>إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ</h3>
         <p><strong>Meaning:</strong> "Indeed, Allah loves the doers of good."</p>
         <p><strong>Usage:</strong> Encouraging excellence in deeds.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Wa qaala Rabbukum ud'ooni astajib lakum</h2>
-        <h3>وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ</h3>
+        <h3>وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ</h3>
         <p><strong>Meaning:</strong> "And your Lord says, 'Call upon Me; I will respond to you.'"</p>
         <p><strong>Usage:</strong> Encouraging supplication to Allah.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Wa ma khalaqtul jinna wal insa illa liya'budoon</h2>
-        <h3>وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ</h3>
+        <h3>وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ</h3>
         <p><strong>Meaning:</strong> "And I did not create the jinn and mankind except to worship Me."</p>
         <p><strong>Usage:</strong> Stating the purpose of creation.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Allahu la ilaha illa Hu</h2>
-        <h3>اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ</h3>
+        <h3>اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ</h3>
         <p><strong>Meaning:</strong> "Allah—there is no deity except Him."</p>
         <p><strong>Usage:</strong> Affirmation of monotheism.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Inna Allaha ma'as sabireen</h2>
-        <h3>إِنَّ اللَّهَ مَعَ الصَّابِرِينَ</h3>
+        <h3>إِنَّ اللَّهَ مَعَ الصَّابِرِينَ</h3>
         <p><strong>Meaning:</strong> "Indeed, Allah is with the patient."</p>
         <p><strong>Usage:</strong> Encouraging patience and perseverance.</p>
     </div>
 
     <div class="phrase-card">
         <h2>Wa'bud Rabbaka hatta ya'tiyakal yaqeen</h2>
-        <h3>وَاعْبُدْ رَبَّكَ حَتَّىٰ يَأْتِيَكَ الْيَقِينُ</h3>
+        <h3>وَاعْبُدْ رَبَّكَ حَتَّىٰ يَأْتِيَكَ الْيَقِينُ</h3>
         <p><strong>Meaning:</strong> "And worship your Lord until there comes to you the certainty (death)."</p>
         <p><strong>Usage:</strong> Command to persist in worship.</p>
     </div>
@@ -569,29 +627,29 @@
     </div>
 
     <div class="phrase-card">
-        <h2>الَّذِي (Alladhi)</h2>
-        <h3>الَّذِي</h3>
+        <h2>الَّذِي (Alladhi)</h2>
+        <h3>الَّذِي</h3>
         <p><strong>Meaning:</strong> "He who" or "that which" (masculine singular).</p>
         <p><strong>Usage:</strong> Relative pronoun for masculine singular nouns.</p>
     </div>
 
     <div class="phrase-card">
-        <h2>الَّتِي (Allati)</h2>
-        <h3>الَّتِي</h3>
+        <h2>الَّتِي (Allati)</h2>
+        <h3>الَّتِي</h3>
         <p><strong>Meaning:</strong> "She who" or "that which" (feminine singular).</p>
         <p><strong>Usage:</strong> Relative pronoun for feminine singular nouns.</p>
     </div>
 
     <div class="phrase-card">
-        <h2>الَّذِينَ (Alladheena)</h2>
-        <h3>الَّذِينَ</h3>
+        <h2>الَّذِينَ (Alladheena)</h2>
+        <h3>الَّذِينَ</h3>
         <p><strong>Meaning:</strong> "Those who" (masculine plural).</p>
         <p><strong>Usage:</strong> Relative pronoun for masculine plural nouns.</p>
     </div>
 
     <div class="phrase-card">
-        <h2>كُلُّ (Kullu)</h2>
-        <h3>كُلُّ</h3>
+        <h2>كُلُّ (Kullu)</h2>
+        <h3>كُلُّ</h3>
         <p><strong>Meaning:</strong> "All" or "every".</p>
         <p><strong>Usage:</strong> Denotes entirety or totality.</p>
     </div>
@@ -639,15 +697,15 @@
     </div>
 
     <div class="phrase-card">
-        <h2>أَيُّ (Ayyu)</h2>
-        <h3>أَيُّ</h3>
+        <h2>أَيُّ (Ayyu)</h2>
+        <h3>أَيُّ</h3>
         <p><strong>Meaning:</strong> "Which".</p>
         <p><strong>Usage:</strong> Interrogative pronoun used to specify.</p>
     </div>
 
     <div class="phrase-card">
-        <h2>إِنَّ (Inna)</h2>
-        <h3>إِنَّ</h3>
+        <h2>إِنَّ (Inna)</h2>
+        <h3>إِنَّ</h3>
         <p><strong>Meaning:</strong> "Indeed" or "verily".</p>
         <p><strong>Usage:</strong> Particle used for emphasis.</p>
     </div>
@@ -681,6 +739,15 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 </script>
+
+<!-- ===============================
+     DISCONTINUED OVERLAY (on top)
+================================ -->
+<div class="discontinued-overlay" aria-hidden="true">
+    <div class="discontinued-badge">
+        This page was discontinued<br/>in September 2025
+    </div>
+</div>
 
 </body>
 </html>
