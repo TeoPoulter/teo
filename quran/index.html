@@ -270,6 +270,63 @@
         width: calc(100% - 2rem);
       }
     }
+
+    /* ===============================
+       DISCONTINUED STAMP OVERLAY
+       (same look/feel & effect as on Iman Hub)
+    ================================*/
+    .discontinued-overlay{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      pointer-events:none; /* purely visual, page underneath unchanged */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(ellipse at center,
+                 rgba(0,0,0,0.15) 0%,
+                 rgba(0,0,0,0.35) 60%,
+                 rgba(0,0,0,0.55) 100%);
+      opacity:0;
+      animation: overlayFade .6s ease forwards .2s;
+    }
+    @keyframes overlayFade{
+      from{ opacity:0; }
+      to  { opacity:1; }
+    }
+
+    .discontinued-badge{
+      transform: rotate(-18deg) scale(1);
+      font-size: clamp(28px, 10vw, 86px);
+      letter-spacing:.04em;
+      color:#ffffff;
+      text-align:center;
+      line-height:1.15;
+      font-weight:800;
+      text-transform:uppercase;
+      text-shadow:
+          0 6px 24px rgba(0,0,0,.45),
+          0 2px 8px rgba(0,0,0,.35);
+      -webkit-text-stroke: 1px rgba(0,0,0,.25);
+      animation: stampIn .68s cubic-bezier(.2,1.1,.2,1) forwards;
+      will-change: transform, opacity, filter;
+      padding:.35em .6em;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0)),
+        linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 45%),
+        rgba(71,23,246,.18);
+      border: 4px solid rgba(162,57,202,.55);
+      border-radius: 16px;
+      box-shadow:
+        0 14px 40px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.15);
+      backdrop-filter: blur(2px);
+    }
+    @keyframes stampIn{
+      0%   { opacity:0; transform: rotate(-18deg) scale(.92) translateY(-8px); filter: blur(3px); }
+      55%  { opacity:1; transform: rotate(-18deg) scale(1.04) translateY(2px);  filter: blur(0); }
+      100% { opacity:1; transform: rotate(-18deg) scale(1)    translateY(0);    }
+    }
   </style>
 </head>
 <body>
@@ -727,6 +784,14 @@
     surahSelect.value='001';
     playSurah('001');
   </script>
+
+  <!-- ===============================
+       DISCONTINUED OVERLAY (on top)
+  ================================== -->
+  <div class="discontinued-overlay" aria-hidden="true">
+    <div class="discontinued-badge">
+      This page was discontinued<br/>in September 2025
+    </div>
+  </div>
 </body>
 </html>
- 
