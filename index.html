@@ -246,47 +246,67 @@
             <a href="audiomemorizer" class="page-link" aria-label="Playback Master Tool">🎧 <span>Playback Tools</span></a>
             <a href="whiteboard" class="page-link" aria-label="Infinite Whiteboard Tool">📝 <span>Whiteboard</span></a>
             <a href="exercise" class="page-link" aria-label="Interval Timer Tool">⏱️ <span>Interval Timer</span></a>
+            <a href="counter" class="page-link" aria-label="Counter Tool">🔢 <span>Counter</span></a>
 
-            <!-- Knowledge Submenu Links (second section) -->
+            <!-- Knowledge Submenu Links (second section, ORDERED top-left to bottom-right) -->
             <a href="/thetruth" class="page-link truth" aria-label="The Truth">🔑 <span>The Truth</span></a>
+            <a href="trinity" class="page-link" aria-label="The Trinity">✝️ <span>The Trinity</span></a>
             <a href="aisha" class="page-link" aria-label="Aisha">💍 <span>Aisha</span></a>
-            <a href="jannah" class="page-link" aria-label="Jannatul Firdaus">🏞️ <span>Heaven In Islam</span></a>
+            <a href="islamicdilemma" class="page-link" aria-label="Islamic Dilemma">🧩 <span>Islamic Dilemma</span></a>
+            <a href="womeninislam" class="page-link" aria-label="Women in Islam">🧕 <span>Women</span></a>
+            <a href="religionofpeace" class="page-link" aria-label="Religion of Peace">☮️ <span>Religion of Peace?</span></a>
+            <a href="quranicpreservation" class="page-link" aria-label="Quranic Preservation">🗃️ <span>Quranic Preservation</span></a>
+            <a href="qadr" class="page-link" aria-label="Predestination (Qadr)">🎯 <span>Predestination</span></a>
+            <a href="apostasy" class="page-link" aria-label="Apostasy">🚪 <span>Apostasy</span></a>
+            <a href="jannah" class="page-link" aria-label="Heaven in Islam">🏞️ <span>Heaven</span></a>
             <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
             <a href="thehistoryofpalestine" class="page-link" aria-label="History of Palestine">🌍 <span>Palestine's History</span></a>
-            <a href="khutbah" class="page-link" aria-label="Khutbah Guidance">🕌 <span>Jummu'ah Khutbah</span></a>
-            <a href="islamicphrases" class="page-link" aria-label="Islamic Phrases">💬 <span>Islamic Phrases</span></a>
 
             <!-- Islamic Submenu Links (third section) -->
             <a href="imanhub" class="page-link" aria-label="Iman Hub">🤲 <span>Iman Hub</span></a>
             <a href="quran" class="page-link" aria-label="The Holy Qur'an">🕋 <span>The Holy Qur'an</span></a>
             <a href="https://teos.tools/WISEtimings" class="page-link" aria-label="WISE Timings">⏳ <span>WISE Timings</span></a>
+            <a href="jannah" class="page-link" aria-label="Heaven in Islam">🏞️ <span>Heaven In Islam</span></a>
+            <a href="thehistoryofislam" class="page-link" aria-label="History of Islam">📜 <span>Islam's History</span></a>
+            <a href="khutbah" class="page-link" aria-label="Khutbah Guidance">🕌 <span>Jummu'ah Khutbah</span></a>
+            <a href="islamicphrases" class="page-link" aria-label="Islamic Phrases">💬 <span>Islamic Phrases</span></a>
         </div>
     </div>
 
     <script>
         const toolsPages = [
-            "Memorization", 
-            "Playback Tools", 
-            "Whiteboard", 
-            "Interval Timer"
+            "Memorization",
+            "Playback Tools",
+            "Whiteboard",
+            "Interval Timer",
+            "Counter"
         ];
 
-        // Now for Knowledge (removed Qur'an and Iman Hub from here):
+        // Knowledge pages (ordered top->bottom, left->right). Khutbah & Islamic Phrases removed from here.
         const knowledgePages = [
             "The Truth",
+            "The Trinity",
             "Aisha",
-            "Heaven In Islam",
+            "Islamic Dilemma",
+            "Women",
+            "Religion of Peace?",
+            "Quranic Preservation",
+            "Predestination",
+            "Apostasy",
+            "Heaven",
             "Islam's History",
-            "Palestine's History",
-            "Khutbah Guidance",
-            "Islamic Phrases"
+            "Palestine's History"
         ];
 
-        // New Islamic array with Qur'an, Iman Hub, and WISE Timings
+        // Islamic pages (third section) including added links
         const islamicPages = [
             "Iman Hub",
             "The Holy Qur'an",
-            "WISE Timings"
+            "WISE Timings",
+            "Heaven In Islam",
+            "Islam's History",
+            "Jummu'ah Khutbah",
+            "Islamic Phrases"
         ];
 
         const displayArea = document.getElementById('display-area');
@@ -300,25 +320,19 @@
             pageLinks.forEach(link => link.style.display = 'none');
 
             if (emojiType === 'tools') {
-                toolsPages.forEach((page, index) => {
+                toolsPages.forEach((_, index) => {
                     const link = pageLinks[index];
-                    if (link) {
-                        link.style.display = 'flex';
-                    }
+                    if (link) link.style.display = 'flex';
                 });
             } else if (emojiType === 'knowledge') {
-                knowledgePages.forEach((page, index) => {
+                knowledgePages.forEach((_, index) => {
                     const link = pageLinks[toolsPages.length + index];
-                    if (link) {
-                        link.style.display = 'flex';
-                    }
+                    if (link) link.style.display = 'flex';
                 });
             } else if (emojiType === 'islamic') {
-                islamicPages.forEach((page, index) => {
+                islamicPages.forEach((_, index) => {
                     const link = pageLinks[toolsPages.length + knowledgePages.length + index];
-                    if (link) {
-                        link.style.display = 'flex';
-                    }
+                    if (link) link.style.display = 'flex';
                 });
             }
 
