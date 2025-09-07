@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Page in Development</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            line-height: 1.7;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        header h1 {
+            color: #ffdd57;
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: #999;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Accent Line */
+        .accent-line {
+            width: 160px;
+            height: 5px;
+            background-color: #ffdd57;
+            margin: 25px auto;
+            border-radius: 2px;
+            animation: expandLine 1s ease-in-out;
+        }
+
+        /* Empty Introduction/Body Wrapper (kept for structure) */
+        .introduction {
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
+            text-align: left;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        /* Alert Box */
+        .dev-alert {
+            max-width: 1000px;
+            margin: 0 auto 60px auto;
+            background-color: #1a1a1a;
+            border: 2px solid #ffdd57;
+            color: #ffdd57;
+            padding: 22px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            animation: pulseGlow 2.5s ease-in-out infinite;
+        }
+        .dev-alert strong {
+            color: #ffdd57;
+        }
+        @keyframes pulseGlow {
+            0%   { box-shadow: 0 0 0 rgba(255,221,87,0.25); }
+            50%  { box-shadow: 0 0 20px rgba(255,221,87,0.35); }
+            100% { box-shadow: 0 0 0 rgba(255,221,87,0.25); }
+        }
+
+        /* Accordion Wrapper (intentionally empty) */
+        .accordion {
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        /* Home Link */
+        .home-link {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.2rem;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .home-link a {
+            color: #ffdd57;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #1a1a1a;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-link a:hover {
+            background-color: #333333;
+        }
+
+        /* Scroll to Top Button */
+        #top-button {
+            display: none;
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            z-index: 99;
+            font-size: 20px;
+            border: none;
+            outline: none;
+            background-color: #ffdd57;
+            color: #1a1a1a;
+            cursor: pointer;
+            padding: 18px 22px;
+            border-radius: 50px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        #top-button:hover {
+            background-color: #f39c12;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes expandLine {
+            from { width: 0; }
+            to { width: 160px; }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInContent {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Query for Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            #top-button {
+                bottom: 25px;
+                right: 25px;
+                padding: 14px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Page in Development</h1>
+        <p>This page is a deconstruction of the misrepresentation of and confusion around</p>
+        <p>Apostasy in Islam.</p>
+        <div class="accent-line"></div>
+    </header>
+
+    <section class="introduction"></section>
+
+    <!-- Alert -->
+    <div class="dev-alert" role="alert" aria-live="polite">
+        <strong>Page in development...</strong><br>
+        Check back later إن شاء الله
+    </div>
+
+    <!-- Empty Accordion (kept for layout parity and future content) -->
+    <div class="accordion"></div>
+
+    <!-- Home Link -->
+    <div class="home-link">
+        <a href="https://teopoulter.github.io/teo">Home</a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="top-button" onclick="scrollToTop()">↑</button>
+
+    <!-- JavaScript (structure preserved) -->
+    <script>
+        // Scroll to Top Functionality
+        const topButton = document.getElementById("top-button");
+
+        window.onscroll = function() { scrollFunction(); };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                topButton.style.display = "block";
+            } else {
+                topButton.style.display = "none";
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
