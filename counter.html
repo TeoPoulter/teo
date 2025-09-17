@@ -141,6 +141,20 @@
       top:6px; width:2px; height:6px; background:#fff; border-radius:1px;
     }
 
+    /* ===== TOP-RIGHT FULLSCREEN BUTTON ===== */
+    .top-controls{
+      position:fixed;
+      top: calc(12px + var(--safe-top));
+      right:16px;
+      display:flex; gap:12px;
+      pointer-events:none;
+      z-index:4;
+    }
+    .icon-glyph{
+      font-size:16px; line-height:16px; font-weight:700; opacity:.92;
+      color:#fff; transform: translateY(-1px);
+    }
+
     /* ===== ACTION SHEET (Reset) ===== */
     .sheet-wrap{
       position:fixed; inset:0; display:none; align-items:flex-end; justify-content:center;
@@ -245,6 +259,13 @@
     <div id="numberWrap" class="number-wrap">
       <div id="prev" class="num prev">0</div>
       <div id="current" class="num current">0</div>
+    </div>
+
+    <!-- Top-right controls -->
+    <div class="top-controls">
+      <button id="fullscreen" class="btn" aria-label="Full Screen" aria-pressed="false" title="Full Screen">
+        <div class="icon-glyph" aria-hidden="true">⛶</div>
+      </button>
     </div>
 
     <!-- Bottom controls -->
@@ -378,6 +399,9 @@
     const bgA = $('#bgA');
     const bgB = $('#bgB');
 
+    /* Fullscreen button */
+    const fullscreenBtn = $('#fullscreen');
+
     let activeBg = 'A'; // which layer currently shown
 
     let value = 0;
@@ -488,6 +512,41 @@
     });
 
     /* =======================
+       FULLSCREEN (Top-right toggle)
+    ======================= */
+    function fsElement(){
+      return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+    }
+    async function enterFullscreen(){
+      const el = document.documentElement;
+      try{
+        if(el.requestFullscreen) await el.requestFullscreen();
+        else if(el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
+        else if(el.msRequestFullscreen) await el.msRequestFullscreen();
+      }catch(e){ /* ignore */ }
+    }
+    async function exitFullscreen(){
+      try{
+        if(document.exitFullscreen) await document.exitFullscreen();
+        else if(document.webkitExitFullscreen) await document.webkitExitFullscreen();
+        else if(document.msExitFullscreen) await document.msExitFullscreen();
+      }catch(e){ /* ignore */ }
+    }
+    function updateFSUI(){
+      const on = !!fsElement();
+      fullscreenBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      fullscreenBtn.setAttribute('aria-label', on ? 'Exit Full Screen' : 'Full Screen');
+      fullscreenBtn.title = on ? 'Exit Full Screen' : 'Full Screen';
+    }
+    function toggleFullscreen(){
+      if(fsElement()) exitFullscreen(); else enterFullscreen();
+    }
+    fullscreenBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleFullscreen(); }, {passive:true});
+    document.addEventListener('fullscreenchange', updateFSUI);
+    document.addEventListener('webkitfullscreenchange', updateFSUI);
+    document.addEventListener('msfullscreenchange', updateFSUI);
+
+    /* =======================
        RENDER / UPDATE
        (No ghost previous number; single element with re-triggered animation)
     ======================= */
@@ -530,6 +589,7 @@
     bgA.classList.add('show'); bgB.classList.remove('show');
     soundLabel.textContent = settings.sound === 'click' ? 'Click Sound' :
                              settings.sound === 'none' ? 'None' : 'Haptic Feedback';
+    updateFSUI();
 
     /* =======================
        INTERACTION (TAPS)
