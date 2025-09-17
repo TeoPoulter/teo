@@ -155,6 +155,32 @@
       color:#fff; transform: translateY(-1px);
     }
 
+    /* ===== INTERVAL BANNER ===== */
+    .interval-banner{
+      position:fixed;
+      top: calc(12px + var(--safe-top));
+      left:16px; right:76px; /* leave room for the fullscreen button on the right */
+      margin:0 auto;
+      max-width:520px;
+      z-index:4;
+      display:flex; align-items:center; justify-content:center;
+      pointer-events:none; /* clicks pass through */
+      opacity:0; transform: translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .interval-banner.show{ opacity:1; transform: translateY(0); }
+    .interval-chip{
+      padding:8px 12px;
+      background: rgba(255,255,255,.16);
+      border:1px solid var(--btn-border);
+      border-radius:12px;
+      box-shadow: var(--shadow);
+      font-size:14px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      white-space:nowrap;
+    }
+
     /* ===== ACTION SHEET (Reset) ===== */
     .sheet-wrap{
       position:fixed; inset:0; display:none; align-items:flex-end; justify-content:center;
@@ -256,6 +282,11 @@
 
     <div class="texture"></div>
 
+    <!-- Interval banner -->
+    <div id="intervalBanner" class="interval-banner" aria-live="polite" aria-atomic="true">
+      <div class="interval-chip" id="intervalText">Interval Time: —</div>
+    </div>
+
     <div id="numberWrap" class="number-wrap">
       <div id="prev" class="num prev">0</div>
       <div id="current" class="num current">0</div>
@@ -315,6 +346,14 @@
         <div>Text Animation</div>
         <label class="switch">
           <input id="toggleAnim" type="checkbox" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="row">
+        <div>Time Between Clicks</div>
+        <label class="switch">
+          <input id="toggleInterval" type="checkbox" />
           <span class="slider"></span>
         </label>
       </div>
@@ -395,6 +434,10 @@
     const toggleColor = $('#toggleColor');
     const toggleAnim = $('#toggleAnim');
     const toggleWake = $('#toggleWake');
+    const toggleInterval = $('#toggleInterval');
+
+    const intervalBanner = $('#intervalBanner');
+    const intervalText = $('#intervalText');
 
     const bgA = $('#bgA');
     const bgB = $('#bgB');
@@ -410,7 +453,8 @@
       textAnim: true,
       sound: 'haptic', // 'none' | 'haptic' | 'click'
       wakeLock: false,
-      themeIndex: 0
+      themeIndex: 0,
+      timeBetweenClicks: false
     };
 
     const LS_KEY_VAL = 'vividCounter.value';
@@ -547,6 +591,35 @@
     document.addEventListener('msfullscreenchange', updateFSUI);
 
     /* =======================
+       INTERVAL (time between clicks)
+    ======================= */
+    let lastPressTime = null;
+    function humanizeInterval(ms){
+      if(ms < 1000) return `${Math.round(ms)}ms`;
+      let s = Math.floor(ms / 1000);
+      const h = Math.floor(s / 3600);
+      s = s % 3600;
+      const m = Math.floor(s / 60);
+      s = s % 60;
+      const parts = [];
+      if(h) parts.push(`${h}h`);
+      if(m) parts.push(`${m}m`);
+      if(h || m){
+        if(s) parts.push(`${s}s`);
+      }else{
+        parts.push(`${s}s`);
+      }
+      return parts.join(' ');
+    }
+    function showInterval(ms){
+      intervalText.textContent = `Interval Time: ${humanizeInterval(ms)}`;
+      intervalBanner.classList.add('show');
+    }
+    function hideInterval(){
+      intervalBanner.classList.remove('show');
+    }
+
+    /* =======================
        RENDER / UPDATE
        (No ghost previous number; single element with re-triggered animation)
     ======================= */
@@ -570,6 +643,20 @@
       }
       if(fromTap) feedback();
 
+      // Interval timing
+      if(fromTap){
+        const now = performance.now();
+        if(settings.timeBetweenClicks){
+          if(lastPressTime !== null){
+            const delta = now - lastPressTime;
+            showInterval(delta);
+          } else {
+            hideInterval();
+          }
+        }
+        lastPressTime = now;
+      }
+
       try{
         localStorage.setItem(LS_KEY_VAL, String(value));
         localStorage.setItem(LS_KEY_SET, JSON.stringify(settings));
@@ -583,6 +670,7 @@
     toggleColor.checked = !!settings.colorChange;
     toggleAnim.checked = !!settings.textAnim;
     toggleWake.checked = !!settings.wakeLock;
+    toggleInterval.checked = !!settings.timeBetweenClicks;
     // initialize both layers so first paint is correct (no flash)
     setLayerBG(bgA, themes[settings.themeIndex].bg);
     setLayerBG(bgB, themes[(settings.themeIndex+1)%themes.length].bg);
@@ -590,6 +678,7 @@
     soundLabel.textContent = settings.sound === 'click' ? 'Click Sound' :
                              settings.sound === 'none' ? 'None' : 'Haptic Feedback';
     updateFSUI();
+    if(!settings.timeBetweenClicks) hideInterval();
 
     /* =======================
        INTERACTION (TAPS)
@@ -643,6 +732,11 @@
     toggleWake.addEventListener('change', async ()=>{
       settings.wakeLock = toggleWake.checked;
       if(settings.wakeLock) await requestWake(); else await releaseWake();
+      try{ localStorage.setItem(LS_KEY_SET, JSON.stringify(settings)); }catch(e){}
+    });
+    toggleInterval.addEventListener('change', ()=>{
+      settings.timeBetweenClicks = toggleInterval.checked;
+      if(!settings.timeBetweenClicks) hideInterval();
       try{ localStorage.setItem(LS_KEY_SET, JSON.stringify(settings)); }catch(e){}
     });
 
