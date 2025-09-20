@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Khalaf ‘An Hamzah — teos.tools</title>
+  <meta name="description" content="Access the Noble Qurʾān according to the riwāyah Khalaf ʿan Ḥamzah. Browse all 114 sūrahs and open a clean reader for the Khalaf mushaf pages." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://teostoolsquran.s3.eu-west-2.amazonaws.com" crossorigin>
+
+  <style>
+    /* --- LIGHT-ONLY THEME (keeps the mushaf page visually native) --- */
+    :root{
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #0f1115;
+      --muted: #5e6472;
+      --border: #e7e8ee;
+      --accent: #b49f5e;
+      --ring: rgba(0,0,0,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --radius: 18px;
+      --maxw: 1200px;
+      --gap: clamp(14px, 2.4vw, 22px);
+      --zoom: 1;                 /* 0.75–2 via settings */
+      --readerMax: 1100px;       /* base width for the page image container */
+      --slide-distance: 28px;    /* slide amount for transitions */
+      --slide-duration: 220ms;   /* transition duration */
+      --slide-ease: cubic-bezier(.22,.61,.36,1); /* smooth ease */
+    }
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{
+      margin:0;
+      font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 15% -10%, rgba(180,159,94,.10), transparent 60%),
+        var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    a, button{ -webkit-tap-highlight-color: transparent; }
+
+    /* Shared wrappers */
+    .wrap{ max-width: var(--maxw); margin:0 auto; padding: clamp(16px,3vw,28px); }
+    .panel{
+      margin-top: clamp(16px, 2.6vw, 24px);
+      padding: clamp(14px, 2.2vw, 20px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .visually-hidden{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+    svg{ display:block }
+
+    /* HERO */
+    header.hero{
+      display:flex; flex-direction:column; gap: 12px;
+      padding: clamp(18px,3vw,26px);
+      background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.72));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative; overflow:hidden; isolation:isolate;
+    }
+    header.hero::after{
+      content:""; position:absolute; inset:-100% -40%;
+      background: radial-gradient(60% 20% at 50% 0%, rgba(180,159,94,.18), transparent 60%);
+      transform: translateY(0); animation: floatGlow 9s ease-in-out infinite;
+      pointer-events:none; z-index:-1;
+    }
+    @keyframes floatGlow{ 0%,100%{ transform:translateY(0); opacity:.7 } 50%{ transform:translateY(12%); opacity:.45 } }
+    h1{
+      margin:0; font-weight:600; letter-spacing:.2px; line-height:1.15; font-size: clamp(28px, 4vw, 44px);
+      background: linear-gradient(90deg, var(--text), #3b404d 40%, var(--text) 80%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subtitle{
+      margin:2px 0 4px; font-size: clamp(14px, 1.7vw, 16.5px); line-height: 1.75; color: var(--muted);
+    }
+
+    /* SURAH GRID */
+    .grid{
+      display:grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: var(--gap);
+    }
+    @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width:820px){ .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (min-width:1100px){ .grid{ grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+    .surah{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding: 14px 16px; border-radius: 14px;
+      border:1px solid var(--border); background: linear-gradient(180deg, #ffffff, #fbfbfe);
+      text-decoration:none; color:var(--text);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .2s ease, background .25s ease;
+      will-change: transform;
+    }
+    .surah:hover{
+      transform: translateY(-2px);
+      border-color: rgba(180,159,94,.55);
+      box-shadow: 0 10px 26px rgba(0,0,0,.08);
+      background: linear-gradient(180deg, #ffffff, #f8f9fd);
+    }
+    .surah:focus-visible{ outline:2px solid var(--accent); outline-offset: 2px; }
+    .badge{
+      font-weight:600; font-size:12px; letter-spacing:.35px; text-transform:uppercase;
+      padding:6px 9px; border-radius:999px; border:1px solid rgba(180,159,94,.55);
+      background: radial-gradient(120% 100% at 10% 0%, rgba(180,159,94,.18), transparent 60%);
+      color:#6f6136; flex:0 0 auto;
+    }
+    .meta{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .num{ font-weight:600; color:#2c2f37; flex:0 0 auto; }
+    .name{ font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#1f222a; }
+    .arrow{ opacity:.6; transition: transform .18s ease, opacity .18s ease; flex:0 0 auto; }
+    .surah:hover .arrow{ transform:translateX(3px); opacity:1; }
+
+    /* READER (own “page” via hash routing) */
+    .page-head{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      padding: clamp(10px,1.8vw,14px);
+      background: linear-gradient(180deg, #ffffff, #f7f8fc);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: clamp(16px, 2.6vw, 24px) auto 0;
+      max-width: var(--maxw);
+    }
+    .title-group{ display:flex; flex-direction:column; gap:2px; min-width: 0; }
+    .readerTitle{ font-weight:600; letter-spacing:.2px; font-size: clamp(18px, 2.5vw, 22px); }
+    .readerSub{ color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      height: 40px; padding: 0 12px; border-radius: 12px;
+      border:1px solid var(--border); background: var(--card); color: var(--text);
+      text-decoration:none; cursor:pointer; transition: transform .15s ease, border-color .15s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ transform:translateY(-1px); border-color: rgba(180,159,94,.55); box-shadow: 0 10px 26px rgba(0,0,0,.08) }
+    .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px }
+    .chip{
+      font-weight:600; font-size:12px; letter-spacing:.35px; text-transform:uppercase;
+      padding:6px 9px; border-radius:999px; border:1px solid rgba(180,159,94,.55);
+      background: radial-gradient(120% 100% at 10% 0%, rgba(180,159,94,.18), transparent 60%);
+      color:#6f6136;
+    }
+
+    .readerBody{
+      padding: clamp(10px, 2vw, 16px);
+      background:#fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: var(--maxw);
+      margin: 12px auto 28px;
+    }
+    .pageWrap{
+      max-width: calc(var(--readerMax) * var(--zoom));
+      margin: 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background:#000;
+      position: relative;
+    }
+    .pageInner{
+      position: relative;
+      will-change: transform, opacity;
+    }
+
+    /* Slide transitions */
+    .slide-next{ animation: slideNext var(--slide-duration) var(--slide-ease); }
+    .slide-prev{ animation: slidePrev var(--slide-duration) var(--slide-ease); }
+    @keyframes slideNext{
+      0%{ transform: translateX(var(--slide-distance)); opacity:.0; }
+      100%{ transform: translateX(0); opacity:1; }
+    }
+    @keyframes slidePrev{
+      0%{ transform: translateX(calc(var(--slide-distance) * -1)); opacity:.0; }
+      100%{ transform: translateX(0); opacity:1; }
+    }
+
+    .skeleton{
+      position:relative; overflow:hidden; border-radius:14px;
+      aspect-ratio: 7 / 10; background: linear-gradient(90deg, #f2f3f7 25%, #f8f9fb 37%, #f2f3f7 63%);
+      background-size: 400% 100%; animation: shimmer 1.1s infinite linear;
+    }
+    @keyframes shimmer{ 0%{background-position:0 0} 100%{background-position:-135% 0} }
+    .pageImg{ display:block; width:100%; height:auto; opacity:0; transition: opacity .25s ease; user-select:none; -webkit-user-drag:none; background:#fff; }
+
+    .readerFoot{
+      display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap;
+      padding: 10px 0 0;
+    }
+    .muted{ color: var(--muted) }
+    .control{ display:flex; align-items:center; gap:10px; flex-wrap: wrap; }
+    .range{ appearance:none; width: 220px; max-width: 60vw; height: 6px; background: #eceef4; border-radius:999px; outline:none; }
+    .range::-webkit-slider-thumb{
+      appearance:none; width:22px; height:22px; border-radius:50%;
+      background: var(--accent); border:2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer;
+    }
+    .pill{ height: 36px; padding: 0 12px; border-radius: 999px; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); background: var(--card); cursor: pointer; }
+    .pill:hover{ border-color: rgba(180,159,94,.55); }
+
+    .hidden{ display:none !important; }
+  </style>
+</head>
+<body>
+  <!-- Icons -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M13 5l7 7-7 7M5 12h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24">
+      <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24">
+      <path d="M20 7v6h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 13a8 8 0 1 1-2.34-5.66L20 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <!-- LIST VIEW -->
+  <div id="listView" class="wrap">
+    <header class="hero" aria-labelledby="title">
+      <h1 id="title">Khalaf ‘An Hamzah</h1>
+      <p class="subtitle">
+        "Khalaf ʿan Ḥamzah refers to one of the canonical riwāyāt (transmissions) of Qurʾānic recitation. It reflects the qirāʾah of Ḥamzah al-Kūfī (d. 156 AH / 772 CE) as transmitted through Khalaf ibn Hishām al-Bazzār (d. 229 AH / 843 CE). Within the tradition of the Ten Qirāʾāt, this riwāyah is recognized as an authentic mode, preserved through precise isnād (chain of transmission) and rooted in the Kūfan recitational school. This page provides access to the Noble Qurʾān according to this riwāyah."
+      </p>
+    </header>
+
+    <section class="panel" aria-labelledby="surah-list-heading">
+      <h2 id="surah-list-heading" class="visually-hidden">Surah list</h2>
+      <div class="grid" id="surahGrid" role="list"></div>
+    </section>
+  </div>
+
+  <!-- READER VIEW -->
+  <div id="readerView" class="hidden">
+    <div class="page-head wrap" aria-live="polite">
+      <div class="title-group">
+        <div id="readerTitle" class="readerTitle">Sūrah</div>
+        <div id="readerSub" class="readerSub">Khalaf ʿan Ḥamzah · Mushaf view</div>
+      </div>
+      <div class="control" style="gap:8px;">
+        <span class="chip" aria-hidden="true">Reader</span>
+        <a id="btnBack" class="btn" href="#" aria-label="Back to surah list">Back to List</a>
+      </div>
+    </div>
+
+    <div class="readerBody wrap">
+      <div class="pageWrap" id="pageWrap">
+        <div class="pageInner" id="pageInner">
+          <div class="skeleton" id="skeleton" aria-hidden="true"></div>
+          <img id="pageImg" class="pageImg" src="" alt="" decoding="async" fetchpriority="high"/>
+        </div>
+      </div>
+
+      <div class="readerFoot">
+        <div class="control" role="group" aria-label="Font size">
+          <label for="rngZoom" class="muted">Font Size</label>
+          <button type="button" class="btn" id="btnMinus" aria-label="Decrease font size"><svg width="16" height="16" aria-hidden="true"><use href="#i-minus"/></svg></button>
+          <input id="rngZoom" class="range" type="range" min="0.75" max="2" step="0.05" value="1" />
+          <button type="button" class="btn" id="btnPlus" aria-label="Increase font size"><svg width="16" height="16" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          <span id="zoomLabel" class="muted" aria-live="polite" style="min-width:64px;text-align:right;">100%</span>
+          <button type="button" class="pill" id="btnReset"><svg width="16" height="16" aria-hidden="true"><use href="#i-reset"/></svg>Reset</button>
+        </div>
+
+        <div class="control" style="gap:8px;">
+          <label for="pageInput" class="muted">Page</label>
+          <input id="pageInput" type="number" min="1" max="604" step="1" inputmode="numeric" style="width:92px; height:36px; border-radius:10px; border:1px solid var(--border); padding:0 10px;" />
+          <button type="button" class="btn" id="btnGo">Go</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      "use strict";
+
+      /* ---------- SURAH NAMES (exactly as provided) ---------- */
+      const SURAH_NAMES = [
+        "Al-Fatihah","Al-Baqarah","Aal-E-Imran","An-Nisa","Al-Maidah","Al-Anam","Al-Araf","Al-Anfal","At-Tawbah","Yunus",
+        "Hud","Yusuf","Ar-Rad","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
+        "Al-Anbiya","Al-Hajj","Al-Muminun","An-Nur","Al-Furqan","Ash-Shuara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum",
+        "Luqman","As-Sajda","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir",
+        "Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiya","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujraat","Qaf",
+        "Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqia","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahina",
+        "As-Saff","Al-Jumua","Al-Munafiqoon","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqa","Al-Maarij",
+        "Nuh","Al-Jinn","Al-Muzzammil","Al-Muddathir","Al-Qiyama","Al-Insan","Al-Mursalat","An-Naba","An-Naziat","Abasa",
+        "At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-Ala","Al-Ghashiya","Al-Fajr","Al-Balad",
+        "Ash-Shams","Al-Lail","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyina","Az-Zalzala","Al-Adiyat",
+        "Al-Qaria","At-Takathur","Al-Asr","Al-Humaza","Al-Fil","Quraish","Al-Maun","Al-Kawthar","Al-Kafiroon","An-Nasr",
+        "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
+      ];
+
+      /* ---------- PAGE→SURAH START MAP (exactly as provided) ---------- */
+      const SURAH_START_PAGE = {
+        1:1, 2:2, 3:50, 4:77, 5:106, 6:128, 7:151, 8:177, 9:187, 10:208,
+        11:221, 12:235, 13:249, 14:255, 15:262, 16:267, 17:282, 18:294, 19:306, 20:312,
+        21:322, 22:332, 23:341, 24:350, 25:359, 26:367, 27:377, 28:385, 29:396, 30:402,
+        31:411, 32:415, 33:418, 34:427, 35:433, 36:439, 37:446, 38:453, 39:458, 40:467,
+        41:475, 42:483, 43:489, 44:496, 45:499, 46:502, 47:507, 48:510, 49:515, 50:518,
+        51:520, 52:523, 53:526, 54:528, 55:531, 56:534, 57:537, 58:542, 59:545, 60:549,
+        61:551, 62:553, 63:554, 64:556, 65:558, 66:560, 67:562, 68:564, 69:566, 70:568,
+        71:570, 72:572, 73:574, 74:575, 75:577, 76:578, 77:580, 78:582, 79:583, 80:585,
+        81:586, 82:587, 83:587, 84:589, 85:590, 86:591, 87:591, 88:592, 89:593, 90:594,
+        91:595, 92:595, 93:596, 94:596, 95:597, 96:597, 97:598, 98:598, 99:599, 100:599,
+        101:600, 102:600, 103:601, 104:601, 105:601, 106:602, 107:602, 108:602, 109:603, 110:603,
+        111:603, 112:604, 113:604, 114:604
+      };
+
+      const S3_BASE = "https://teostoolsquran.s3.eu-west-2.amazonaws.com/khalaf/mushaf/Khalaf-1%2CKhalaf-2%2CKhalaf-3/";
+
+      /* ---------- ELEMENTS ---------- */
+      const listView   = document.getElementById('listView');
+      const readerView = document.getElementById('readerView');
+      const grid       = document.getElementById('surahGrid');
+
+      const readerTitle = document.getElementById('readerTitle');
+      const readerSub   = document.getElementById('readerSub');
+      const btnBack     = document.getElementById('btnBack');
+
+      const pageWrap  = document.getElementById('pageWrap');
+      const pageInner = document.getElementById('pageInner');
+      const img       = document.getElementById('pageImg');
+      const skeleton  = document.getElementById('skeleton');
+      const pageInput = document.getElementById('pageInput');
+      const btnGo     = document.getElementById('btnGo');
+
+      const rngZoom   = document.getElementById('rngZoom');
+      const btnMinus  = document.getElementById('btnMinus');
+      const btnPlus   = document.getElementById('btnPlus');
+      const btnReset  = document.getElementById('btnReset');
+      const zoomLabel = document.getElementById('zoomLabel');
+
+      /* ---------- HELPERS & STATE ---------- */
+      const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+      const LS_ZOOM = "khalaf:zoom";
+      let currentPage = 1;
+      let isNavigating = false;
+
+      function setZoom(z){
+        const min = parseFloat(rngZoom.min), max = parseFloat(rngZoom.max);
+        z = Number(clamp(z, min, max).toFixed(2));
+        rngZoom.value = z;
+        zoomLabel.textContent = Math.round(z*100) + "%";
+        document.documentElement.style.setProperty('--zoom', z);
+        try{ localStorage.setItem(LS_ZOOM, String(z)); }catch(e){}
+      }
+      function getZoom(){
+        try{ const v = localStorage.getItem(LS_ZOOM); if(v!==null) return clamp(parseFloat(v), parseFloat(rngZoom.min), parseFloat(rngZoom.max)); }catch(e){}
+        return 1;
+      }
+      function imageUrl(page){ return S3_BASE + "Khalaf-" + page + ".png"; }
+
+      // Precompute starts as ascending array of [startPage, surahNumber], tie-broken by surah number
+      const STARTS = Object.keys(SURAH_START_PAGE)
+        .map(k => [SURAH_START_PAGE[k], parseInt(k,10)])
+        .sort((a,b) => a[0] === b[0] ? a[1]-b[1] : a[0]-b[0]);
+
+      function surahByPage(page){
+        let result = 1;
+        for (let i=0;i<STARTS.length;i++){
+          const [start, sNum] = STARTS[i];
+          if (start === page) return sNum;
+          if (start < page) result = sNum;
+          if (start > page) break;
+        }
+        return result;
+      }
+
+      function surahStartPage(n){ return SURAH_START_PAGE[n] || 1; }
+
+      function updateHeaderForPage(page){
+        const sNum = surahByPage(page);
+        const name = SURAH_NAMES[sNum-1] || "Surah";
+        readerTitle.textContent = sNum + ". " + name;
+        readerSub.textContent = "Khalaf ʿan Ḥamzah · Mushaf view (Page " + page + ")";
+        const desiredHash = "#/" + sNum;
+        if (location.hash !== desiredHash) history.replaceState(null, "", desiredHash);
+      }
+
+      function addSlideAnimation(direction){
+        // Remove any previous animation classes first
+        pageInner.classList.remove('slide-next','slide-prev');
+        // Force reflow so the class re-triggers
+        void pageInner.offsetWidth;
+        if (direction === 1) pageInner.classList.add('slide-next');   // next page (forward) slides in from right
+        else if (direction === -1) pageInner.classList.add('slide-prev'); // previous page slides in from left
+      }
+
+      function loadPage(page, direction = 0){
+        const target = clamp(parseInt(page,10)||1, 1, 604);
+        currentPage = target;
+        pageInput.value = target;
+        const url = imageUrl(target);
+
+        isNavigating = true;
+        skeleton.style.display = 'block';
+        img.style.opacity = '0';
+        img.alt = "Mushaf page " + target;
+
+        if (direction !== 0) addSlideAnimation(direction);
+
+        const onLoad = () => {
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+          requestAnimationFrame(() => {
+            skeleton.style.display = 'none';
+            img.style.opacity = '1';
+            updateHeaderForPage(target);
+            setTimeout(() => { isNavigating = false; }, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--slide-duration')) || 220);
+          });
+        };
+        const onError = () => {
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+          skeleton.style.display = 'none';
+          img.alt = "Failed to load. Open in new tab: " + url;
+          isNavigating = false;
+        };
+
+        img.addEventListener('load', onLoad, { once:true });
+        img.addEventListener('error', onError, { once:true });
+        img.src = url;
+      }
+
+      function navigate(delta){
+        if (listView.classList.contains('hidden') === false) return; // only in reader view
+        if (isNavigating) return;
+        const next = clamp(currentPage + delta, 1, 604);
+        if (next === currentPage) return;
+        loadPage(next, delta > 0 ? 1 : -1);
+      }
+
+      function buildList(){
+        if (grid.hasChildNodes()) return;
+        SURAH_NAMES.forEach((name,i) => {
+          const num = i + 1;
+          const a = document.createElement('a');
+          a.href = "#/" + num;
+          a.className = 'surah';
+          a.setAttribute('role','listitem');
+          a.setAttribute('aria-label', `Open reader for Surah ${num}: ${name}`);
+
+          const meta = document.createElement('div'); meta.className='meta';
+          const numEl = document.createElement('div'); numEl.className='num'; numEl.textContent = num;
+          const nameEl = document.createElement('div'); nameEl.className='name'; nameEl.textContent = name;
+          meta.appendChild(numEl); meta.appendChild(nameEl);
+
+          const badge = document.createElement('div'); badge.className='badge'; badge.textContent='Open';
+          const arrow = document.createElementNS('http://www.w3.org/2000/svg','svg');
+          arrow.setAttribute('class','arrow'); arrow.setAttribute('width','18'); arrow.setAttribute('height','18');
+          arrow.setAttribute('viewBox','0 0 24 24'); arrow.setAttribute('aria-hidden','true');
+          arrow.innerHTML = '<path d="M13 5l7 7-7 7M5 12h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+
+          a.appendChild(meta); a.appendChild(badge); a.appendChild(arrow);
+          grid.appendChild(a);
+        });
+      }
+
+      function showList(){
+        listView.classList.remove('hidden');
+        readerView.classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+      }
+
+      function showReaderForSurah(surahNum){
+        const n = parseInt(surahNum,10);
+        const valid = Number.isInteger(n) && n >= 1 && n <= 114;
+        const name = valid ? SURAH_NAMES[n-1] : "Surah";
+        const start = valid ? surahStartPage(n) : 1;
+
+        readerTitle.textContent = (valid ? (n + ". " + name) : "Sūrah");
+        readerSub.textContent   = "Khalaf ʿan Ḥamzah · Mushaf view (Page " + start + ")";
+
+        setZoom(getZoom());
+        loadPage(start, 0);
+
+        btnBack.setAttribute('href', '#');
+        listView.classList.add('hidden');
+        readerView.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+      }
+
+      function onRoute(){
+        const m = location.hash.trim().match(/^#\/(\d{1,3})$/);
+        if (m) showReaderForSurah(parseInt(m[1],10)); else showList();
+      }
+
+      /* ---------- KEYBOARD NAV (reader only, RTL book logic) ---------- */
+      window.addEventListener('keydown', (e) => {
+        if (readerView.classList.contains('hidden')) return;
+        // In a mushaf (RTL), LEFT arrow advances to the next page; RIGHT arrow goes back.
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(+1); }  // NEXT page
+        if (e.key === 'ArrowRight') { e.preventDefault(); navigate(-1); }  // PREV page
+      }, { passive:false });
+
+      /* ---------- TOUCH SWIPE NAV (mobile, RTL book logic) ---------- */
+      let touchStartX = 0, touchStartY = 0, touchStartT = 0, swiping = false;
+      const SWIPE_THRESHOLD_PX = 40;     // minimum horizontal distance
+      const SWIPE_MAX_OFFAXIS  = 60;     // ignore if too vertical
+      const SWIPE_MAX_TIME_MS  = 600;    // quick gesture
+
+      pageWrap.addEventListener('touchstart', (e) => {
+        if (readerView.classList.contains('hidden')) return;
+        if (!e.touches || e.touches.length !== 1) return;
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchStartT = Date.now();
+        swiping = true;
+      }, { passive:true });
+
+      pageWrap.addEventListener('touchmove', (e) => {
+        if (!swiping) return;
+        const t = e.touches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+          e.preventDefault(); // lock to horizontal
+        }
+      }, { passive:false });
+
+      pageWrap.addEventListener('touchend', (e) => {
+        if (!swiping) return;
+        swiping = false;
+        const dt = Date.now() - touchStartT;
+        if (dt > SWIPE_MAX_TIME_MS) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dy) <= SWIPE_MAX_OFFAXIS) {
+          if (dx < 0) navigate(+1);  // swipe LEFT -> NEXT page (RTL)
+          else navigate(-1);         // swipe RIGHT -> PREVIOUS page
+        }
+      }, { passive:true });
+
+      /* ---------- UI CONTROLS ---------- */
+      // Zoom controls
+      rngZoom.addEventListener('input', () => setZoom(parseFloat(rngZoom.value)));
+      btnMinus.addEventListener('click', () => setZoom(parseFloat(rngZoom.value) - 0.1));
+      btnPlus .addEventListener('click', () => setZoom(parseFloat(rngZoom.value) + 0.1));
+      btnReset.addEventListener('click', () => setZoom(1));
+
+      // Page navigation (manual input keeps neutral animation)
+      btnGo.addEventListener('click', () => loadPage(pageInput.value, 0));
+      pageInput.addEventListener('keydown', (e) => { if(e.key==='Enter'){ e.preventDefault(); loadPage(pageInput.value, 0); } });
+
+      // Back to list
+      btnBack.addEventListener('click', (e) => { e.preventDefault(); location.hash = '#/'; });
+
+      // Router & init
+      window.addEventListener('hashchange', onRoute, { passive:true });
+      buildList();
+      setZoom(getZoom());
+      onRoute();
+
+      // Orientation/layout polish
+      let lastW = window.innerWidth;
+      window.addEventListener('resize', () => {
+        const w = window.innerWidth;
+        if (Math.abs(w - lastW) > 120) { window.scrollTo({ top: 0 }); }
+        lastW = w;
+      }, { passive:true });
+    })();
+  </script>
+</body>
+</html>
