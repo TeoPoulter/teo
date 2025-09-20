@@ -23,7 +23,6 @@
       --radius: 18px;
       --maxw: 1200px;
       --gap: clamp(14px, 2.4vw, 22px);
-      --zoom: 1;                 /* 0.75–2 via settings */
       --readerMax: 1100px;       /* base width for the page image container */
       --slide-distance: 28px;    /* slide amount for transitions */
       --slide-duration: 220ms;   /* transition duration */
@@ -157,7 +156,7 @@
       margin: 12px auto 28px;
     }
     .pageWrap{
-      max-width: calc(var(--readerMax) * var(--zoom));
+      max-width: var(--readerMax);
       margin: 0 auto;
       border-radius: 14px;
       overflow: hidden;
@@ -169,6 +168,14 @@
       position: relative;
       will-change: transform, opacity;
     }
+
+    /* Click/tap navigation zones (invisible) */
+    .navZone{
+      position:absolute; top:0; bottom:0; width:32%;
+      z-index:5; cursor: pointer;
+    }
+    .nav-left{ left:0; }
+    .nav-right{ right:0; }
 
     /* Slide transitions */
     .slide-next{ animation: slideNext var(--slide-duration) var(--slide-ease); }
@@ -196,15 +203,27 @@
     }
     .muted{ color: var(--muted) }
     .control{ display:flex; align-items:center; gap:10px; flex-wrap: wrap; }
-    .range{ appearance:none; width: 220px; max-width: 60vw; height: 6px; background: #eceef4; border-radius:999px; outline:none; }
-    .range::-webkit-slider-thumb{
-      appearance:none; width:22px; height:22px; border-radius:50%;
-      background: var(--accent); border:2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer;
-    }
-    .pill{ height: 36px; padding: 0 12px; border-radius: 999px; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); background: var(--card); cursor: pointer; }
-    .pill:hover{ border-color: rgba(180,159,94,.55); }
 
     .hidden{ display:none !important; }
+
+    /* -------- Fullscreen mode (white surround, prevent image clipping) -------- */
+    body.fs{ background:#fff; }
+    body.fs .wrap{ max-width:none; padding: 0; }
+    body.fs .page-head, body.fs .readerFoot{ display:none !important; }
+    body.fs .readerBody{
+      border:none; border-radius:0; box-shadow:none; background:#fff; margin:0;
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+    }
+    /* Let container auto-size to the image; no clipping */
+    body.fs .pageWrap{
+      width:auto; max-width:100vw; border:none; border-radius:0;
+      background:#fff; overflow:visible;
+    }
+    /* The image sets the size; fit within viewport height and width without cropping */
+    body.fs .pageImg{
+      height:100vh; width:auto; max-width:100vw;
+      display:block; margin:0 auto;
+    }
   </style>
 </head>
 <body>
@@ -213,15 +232,8 @@
     <symbol id="i-arrow" viewBox="0 0 24 24">
       <path d="M13 5l7 7-7 7M5 12h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </symbol>
-    <symbol id="i-minus" viewBox="0 0 24 24">
-      <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </symbol>
-    <symbol id="i-reset" viewBox="0 0 24 24">
-      <path d="M20 7v6h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M20 13a8 8 0 1 1-2.34-5.66L20 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <symbol id="i-full" viewBox="0 0 24 24">
+      <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
   </svg>
 
@@ -249,6 +261,9 @@
       </div>
       <div class="control" style="gap:8px;">
         <span class="chip" aria-hidden="true">Reader</span>
+        <button id="btnFull" type="button" class="btn" aria-label="Enter full screen">
+          <svg width="16" height="16" aria-hidden="true"><use href="#i-full"/></svg> Full Screen
+        </button>
         <a id="btnBack" class="btn" href="#" aria-label="Back to surah list">Back to List</a>
       </div>
     </div>
@@ -258,19 +273,13 @@
         <div class="pageInner" id="pageInner">
           <div class="skeleton" id="skeleton" aria-hidden="true"></div>
           <img id="pageImg" class="pageImg" src="" alt="" decoding="async" fetchpriority="high"/>
+          <!-- Invisible click/tap zones for quick nav -->
+          <div class="navZone nav-left" id="tapLeft" aria-label="Next page (left)"></div>
+          <div class="navZone nav-right" id="tapRight" aria-label="Previous page (right)"></div>
         </div>
       </div>
 
       <div class="readerFoot">
-        <div class="control" role="group" aria-label="Font size">
-          <label for="rngZoom" class="muted">Font Size</label>
-          <button type="button" class="btn" id="btnMinus" aria-label="Decrease font size"><svg width="16" height="16" aria-hidden="true"><use href="#i-minus"/></svg></button>
-          <input id="rngZoom" class="range" type="range" min="0.75" max="2" step="0.05" value="1" />
-          <button type="button" class="btn" id="btnPlus" aria-label="Increase font size"><svg width="16" height="16" aria-hidden="true"><use href="#i-plus"/></svg></button>
-          <span id="zoomLabel" class="muted" aria-live="polite" style="min-width:64px;text-align:right;">100%</span>
-          <button type="button" class="pill" id="btnReset"><svg width="16" height="16" aria-hidden="true"><use href="#i-reset"/></svg>Reset</button>
-        </div>
-
         <div class="control" style="gap:8px;">
           <label for="pageInput" class="muted">Page</label>
           <input id="pageInput" type="number" min="1" max="604" step="1" inputmode="numeric" style="width:92px; height:36px; border-radius:10px; border:1px solid var(--border); padding:0 10px;" />
@@ -326,6 +335,7 @@
       const readerTitle = document.getElementById('readerTitle');
       const readerSub   = document.getElementById('readerSub');
       const btnBack     = document.getElementById('btnBack');
+      const btnFull     = document.getElementById('btnFull');
 
       const pageWrap  = document.getElementById('pageWrap');
       const pageInner = document.getElementById('pageInner');
@@ -334,30 +344,14 @@
       const pageInput = document.getElementById('pageInput');
       const btnGo     = document.getElementById('btnGo');
 
-      const rngZoom   = document.getElementById('rngZoom');
-      const btnMinus  = document.getElementById('btnMinus');
-      const btnPlus   = document.getElementById('btnPlus');
-      const btnReset  = document.getElementById('btnReset');
-      const zoomLabel = document.getElementById('zoomLabel');
+      const tapLeft   = document.getElementById('tapLeft');
+      const tapRight  = document.getElementById('tapRight');
 
       /* ---------- HELPERS & STATE ---------- */
       const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
-      const LS_ZOOM = "khalaf:zoom";
       let currentPage = 1;
       let isNavigating = false;
 
-      function setZoom(z){
-        const min = parseFloat(rngZoom.min), max = parseFloat(rngZoom.max);
-        z = Number(clamp(z, min, max).toFixed(2));
-        rngZoom.value = z;
-        zoomLabel.textContent = Math.round(z*100) + "%";
-        document.documentElement.style.setProperty('--zoom', z);
-        try{ localStorage.setItem(LS_ZOOM, String(z)); }catch(e){}
-      }
-      function getZoom(){
-        try{ const v = localStorage.getItem(LS_ZOOM); if(v!==null) return clamp(parseFloat(v), parseFloat(rngZoom.min), parseFloat(rngZoom.max)); }catch(e){}
-        return 1;
-      }
       function imageUrl(page){ return S3_BASE + "Khalaf-" + page + ".png"; }
 
       // Precompute starts as ascending array of [startPage, surahNumber], tie-broken by surah number
@@ -388,12 +382,10 @@
       }
 
       function addSlideAnimation(direction){
-        // Remove any previous animation classes first
         pageInner.classList.remove('slide-next','slide-prev');
-        // Force reflow so the class re-triggers
         void pageInner.offsetWidth;
-        if (direction === 1) pageInner.classList.add('slide-next');   // next page (forward) slides in from right
-        else if (direction === -1) pageInner.classList.add('slide-prev'); // previous page slides in from left
+        if (direction === 1) pageInner.classList.add('slide-next');   // NEXT page slides in from right
+        else if (direction === -1) pageInner.classList.add('slide-prev'); // PREV page slides in from left
       }
 
       function loadPage(page, direction = 0){
@@ -433,7 +425,7 @@
       }
 
       function navigate(delta){
-        if (listView.classList.contains('hidden') === false) return; // only in reader view
+        if (!readerView || listView.classList.contains('hidden') === false) return; // only in reader view
         if (isNavigating) return;
         const next = clamp(currentPage + delta, 1, 604);
         if (next === currentPage) return;
@@ -469,6 +461,7 @@
       function showList(){
         listView.classList.remove('hidden');
         readerView.classList.add('hidden');
+        document.body.classList.remove('fs'); // ensure we exit fullscreen if returning to list
         window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
       }
 
@@ -481,7 +474,6 @@
         readerTitle.textContent = (valid ? (n + ". " + name) : "Sūrah");
         readerSub.textContent   = "Khalaf ʿan Ḥamzah · Mushaf view (Page " + start + ")";
 
-        setZoom(getZoom());
         loadPage(start, 0);
 
         btnBack.setAttribute('href', '#');
@@ -498,9 +490,10 @@
       /* ---------- KEYBOARD NAV (reader only, RTL book logic) ---------- */
       window.addEventListener('keydown', (e) => {
         if (readerView.classList.contains('hidden')) return;
-        // In a mushaf (RTL), LEFT arrow advances to the next page; RIGHT arrow goes back.
+        // RTL: LEFT arrow advances to the next page; RIGHT arrow goes back.
         if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(+1); }  // NEXT page
         if (e.key === 'ArrowRight') { e.preventDefault(); navigate(-1); }  // PREV page
+        if (e.key === 'Escape' && document.body.classList.contains('fs')) { e.preventDefault(); document.body.classList.remove('fs'); }
       }, { passive:false });
 
       /* ---------- TOUCH SWIPE NAV (mobile, RTL book logic) ---------- */
@@ -543,16 +536,27 @@
         }
       }, { passive:true });
 
-      /* ---------- UI CONTROLS ---------- */
-      // Zoom controls
-      rngZoom.addEventListener('input', () => setZoom(parseFloat(rngZoom.value)));
-      btnMinus.addEventListener('click', () => setZoom(parseFloat(rngZoom.value) - 0.1));
-      btnPlus .addEventListener('click', () => setZoom(parseFloat(rngZoom.value) + 0.1));
-      btnReset.addEventListener('click', () => setZoom(1));
+      /* ---------- CLICK/TAP ZONES (left/right edges) ---------- */
+      tapLeft.addEventListener('click', () => navigate(+1));  // Left side (RTL: NEXT)
+      tapRight.addEventListener('click', () => navigate(-1)); // Right side (RTL: PREV)
 
-      // Page navigation (manual input keeps neutral animation)
+      /* ---------- PAGE INPUT ---------- */
       btnGo.addEventListener('click', () => loadPage(pageInput.value, 0));
       pageInput.addEventListener('keydown', (e) => { if(e.key==='Enter'){ e.preventDefault(); loadPage(pageInput.value, 0); } });
+
+      /* ---------- FULLSCREEN TOGGLE ---------- */
+      btnFull.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent document click handler from immediately exiting
+        document.body.classList.toggle('fs');
+      });
+
+      // Click anywhere outside the mushaf (not inside pageWrap) to exit fullscreen
+      document.addEventListener('click', (e) => {
+        if (!document.body.classList.contains('fs')) return;
+        if (!pageWrap.contains(e.target)) {
+          document.body.classList.remove('fs');
+        }
+      });
 
       // Back to list
       btnBack.addEventListener('click', (e) => { e.preventDefault(); location.hash = '#/'; });
@@ -560,7 +564,6 @@
       // Router & init
       window.addEventListener('hashchange', onRoute, { passive:true });
       buildList();
-      setZoom(getZoom());
       onRoute();
 
       // Orientation/layout polish
