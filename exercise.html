@@ -398,6 +398,73 @@
       opacity: 1;
     }
 
+    /* Volume Slider */
+    .volume-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .volume-slider-wrap {
+      flex: 2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      padding: 0;
+      height: 10px;
+      border: none;
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, rgba(74, 222, 128, 0.9), rgba(56, 189, 248, 0.9));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 10px 24px rgba(0, 0, 0, 0.18);
+      cursor: pointer;
+      accent-color: var(--green);
+    }
+
+    input[type="range"]:focus {
+      box-shadow:
+        0 0 0 4px rgba(74, 222, 128, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.09),
+        0 12px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 4px solid var(--green);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 4px solid var(--green);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .volume-value {
+      min-width: 44px;
+      color: var(--green);
+      font-weight: 700;
+      text-align: right;
+      font-size: 0.95em;
+    }
+
     /* Controls */
     .controls {
       display: flex;
@@ -582,7 +649,8 @@
         height: 168px;
       }
 
-      .input-container {
+      .input-container,
+      .volume-container {
         align-items: stretch;
       }
 
@@ -592,6 +660,19 @@
 
       input {
         padding: 12px 10px;
+      }
+
+      input[type="range"] {
+        padding: 0;
+      }
+
+      .volume-slider-wrap {
+        gap: 10px;
+      }
+
+      .volume-value {
+        min-width: 40px;
+        font-size: 0.9em;
       }
 
       .controls {
@@ -643,6 +724,15 @@
       <input type="number" id="seconds" min="0" max="59" value="0" placeholder="Seconds" oninput="saveSettings()" />
     </div>
 
+    <!-- Volume Slider -->
+    <div class="volume-container">
+      <label for="volumeSlider">Volume:</label>
+      <div class="volume-slider-wrap">
+        <input type="range" id="volumeSlider" min="0" max="100" value="100" oninput="setVolume()" />
+        <span class="volume-value" id="volumeValue">100%</span>
+      </div>
+    </div>
+
     <!-- Controls -->
     <div class="controls">
       <button onclick="togglePause()" id="pauseButton" class="pause-button">Pause</button>
@@ -681,10 +771,14 @@
         const times = localStorage.getItem('times');
         const minutes = localStorage.getItem('minutes');
         const seconds = localStorage.getItem('seconds');
+        const volume = localStorage.getItem('volume');
 
         if (times) document.getElementById('times').value = times;
         if (minutes) document.getElementById('minutes').value = minutes;
         if (seconds) document.getElementById('seconds').value = seconds;
+        if (volume) document.getElementById('volumeSlider').value = volume;
+
+        setVolume();
 
         // Update the estimated time on load
         updateEstimatedTime(
@@ -699,6 +793,7 @@
 
     function playSound() {
       const audio = document.getElementById('alarmSound');
+      audio.volume = parseInt(document.getElementById('volumeSlider').value) / 100;
       audio.play();
       incrementPressesCount();
     }
@@ -721,6 +816,17 @@
       localStorage.setItem('seconds', seconds);
 
       updateEstimatedTime(times, minutes, seconds);
+    }
+
+    function setVolume() {
+      const volumeSlider = document.getElementById('volumeSlider');
+      const volumeValue = document.getElementById('volumeValue');
+      const audio = document.getElementById('alarmSound');
+      const volume = parseInt(volumeSlider.value) || 0;
+
+      audio.volume = volume / 100;
+      volumeValue.textContent = `${volume}%`;
+      localStorage.setItem('volume', volume);
     }
 
     function showNotification(message, completed) {
