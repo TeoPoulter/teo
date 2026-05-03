@@ -17,23 +17,26 @@
     }
 
     :root {
-      --bg-dark: #05070c;
-      --card-bg: rgba(8, 12, 20, 0.72);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --text-main: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.72);
+      --bg-dark: #030712;
+      --panel: rgba(8, 13, 24, 0.74);
+      --panel-strong: rgba(10, 16, 30, 0.9);
+      --border: rgba(255, 255, 255, 0.13);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
       --green: #4ade80;
-      --green-strong: #22c55e;
+      --green-deep: #16a34a;
       --cyan: #38bdf8;
       --yellow: #fde68a;
       --red: #ef4444;
-      --red-dark: #991b1b;
-      --shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+      --red-deep: #991b1b;
+      --shadow-xl: 0 34px 110px rgba(0, 0, 0, 0.62);
+      --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.34);
     }
 
     body {
       font-family: 'Roboto', sans-serif;
-      color: var(--text-main);
+      color: var(--text);
       position: relative;
       overflow-x: hidden;
       min-height: 100vh;
@@ -41,7 +44,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 90px 20px 70px;
+      padding: 96px 20px 76px;
     }
 
     /* Infinite Background Gradient Animation */
@@ -52,12 +55,12 @@
       width: 100%;
       height: 100%;
       background:
-        radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.25), transparent 30%),
-        radial-gradient(circle at 80% 10%, rgba(56, 189, 248, 0.22), transparent 32%),
-        radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.18), transparent 35%),
-        linear-gradient(135deg, #020617, #07111f, #050816, #0a0f1f);
-      background-size: 180% 180%;
-      animation: gradientAnimation 18s ease infinite;
+        radial-gradient(circle at 18% 18%, rgba(74, 222, 128, 0.22), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(56, 189, 248, 0.2), transparent 30%),
+        radial-gradient(circle at 50% 96%, rgba(168, 85, 247, 0.16), transparent 36%),
+        linear-gradient(135deg, #020617, #06111f 36%, #050816 68%, #020617);
+      background-size: 190% 190%;
+      animation: gradientAnimation 20s ease infinite;
       z-index: -4;
     }
 
@@ -92,11 +95,13 @@
       width: 200%;
       height: 200%;
       background:
-        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-      background-size: 58px 58px;
-      opacity: 0.55;
-      animation: moveParticles 22s linear infinite;
+        linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: 0.52;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      -webkit-mask-image: radial-gradient(circle at center, black, transparent 78%);
+      animation: moveParticles 24s linear infinite;
     }
 
     @keyframes moveParticles {
@@ -104,7 +109,7 @@
         transform: translate(0, 0);
       }
       to {
-        transform: translate(-58px, -58px);
+        transform: translate(-64px, -64px);
       }
     }
 
@@ -116,11 +121,12 @@
       width: 200%;
       height: 200%;
       background-image:
-        radial-gradient(circle, rgba(74, 222, 128, 0.16), transparent 14%),
-        radial-gradient(circle, rgba(56, 189, 248, 0.12), transparent 18%);
-      background-position: 20% 30%, 70% 65%;
-      animation: rotate 30s linear infinite;
-      filter: blur(18px);
+        radial-gradient(circle, rgba(74, 222, 128, 0.13), transparent 15%),
+        radial-gradient(circle, rgba(56, 189, 248, 0.1), transparent 18%);
+      background-position: 22% 30%, 72% 66%;
+      animation: rotate 34s linear infinite;
+      filter: blur(20px);
+      opacity: 0.9;
     }
 
     @keyframes rotate {
@@ -135,24 +141,32 @@
     /* Time Buttons for Start and End Time */
     .time-button {
       position: fixed;
-      background: rgba(8, 12, 20, 0.68);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
+        rgba(8, 13, 24, 0.76);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--border);
       padding: 11px 16px;
       border-radius: 999px;
       font-size: 0.95em;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
-      transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+      color: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow-md);
+      transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease;
       z-index: 2;
+    }
+
+    .time-button.is-empty {
+      display: none;
     }
 
     .time-button:hover {
       transform: translateY(-2px);
-      border-color: rgba(74, 222, 128, 0.4);
-      background: rgba(8, 12, 20, 0.82);
+      border-color: rgba(74, 222, 128, 0.42);
+      background:
+        linear-gradient(180deg, rgba(74, 222, 128, 0.12), rgba(255, 255, 255, 0.04)),
+        rgba(8, 13, 24, 0.88);
     }
 
     .time-start {
@@ -169,20 +183,26 @@
     .notification {
       position: fixed;
       right: 20px;
-      min-width: 145px;
-      background: rgba(8, 12, 20, 0.74);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      min-width: 148px;
+      background:
+        linear-gradient(180deg, rgba(74, 222, 128, 0.08), rgba(255, 255, 255, 0.035)),
+        rgba(8, 13, 24, 0.78);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
       color: var(--green);
       padding: 13px 18px;
-      border-radius: 16px;
-      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: 18px;
+      border: 1px solid rgba(74, 222, 128, 0.22);
       font-size: 1.15em;
       font-weight: 700;
       text-align: center;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-md);
       transition: opacity 0.3s ease-in-out, transform 0.3s ease;
       z-index: 2;
+    }
+
+    .notification:empty {
+      display: none;
     }
 
     /* Swap positions: "[y] done" on top, "[number] left" below */
@@ -191,7 +211,7 @@
     }
 
     #notification {
-      top: 142px;
+      top: 144px;
     }
 
     /* Lifetime Reps Counter */
@@ -199,16 +219,18 @@
       position: fixed;
       bottom: 20px;
       left: 20px;
-      background: rgba(8, 12, 20, 0.72);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
+        rgba(8, 13, 24, 0.76);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--border);
       padding: 11px 16px;
       border-radius: 999px;
       font-size: 0.95em;
       font-weight: 500;
       color: rgba(255, 255, 255, 0.86);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+      box-shadow: var(--shadow-md);
       z-index: 2;
     }
 
@@ -222,16 +244,16 @@
       position: relative;
       z-index: 1;
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035)),
-        var(--card-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--card-border);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      padding: 38px;
+        linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.035)),
+        var(--panel);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow-xl);
+      padding: 40px;
       width: 92%;
-      max-width: 620px;
+      max-width: 630px;
       text-align: center;
       margin: 0 auto;
       animation: fadeIn 0.9s ease forwards;
@@ -243,8 +265,18 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 50% 0%, rgba(74, 222, 128, 0.18), transparent 36%),
-        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+        radial-gradient(circle at 50% 0%, rgba(74, 222, 128, 0.2), transparent 35%),
+        radial-gradient(circle at 100% 20%, rgba(56, 189, 248, 0.12), transparent 32%),
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.075), transparent);
+      pointer-events: none;
+    }
+
+    .container::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: 31px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
       pointer-events: none;
     }
 
@@ -265,12 +297,12 @@
     }
 
     h1 {
-      margin-bottom: 22px;
-      font-size: clamp(2.1em, 6vw, 3.1em);
+      margin-bottom: 24px;
+      font-size: clamp(2.15em, 6vw, 3.2em);
       font-weight: 700;
-      letter-spacing: -0.055em;
-      line-height: 1;
-      text-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+      letter-spacing: -0.06em;
+      line-height: 0.95;
+      text-shadow: 0 14px 38px rgba(0, 0, 0, 0.42);
     }
 
     /* Button Container */
@@ -278,37 +310,37 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 22px 0 28px;
+      margin: 24px 0 30px;
     }
 
     .alarm-button {
       background: url('/teo/i.png') no-repeat center;
       background-size: contain;
-      width: 190px;
-      height: 190px;
+      width: 196px;
+      height: 196px;
       border: none;
       cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.25s ease, filter 0.25s ease;
+      transition: transform 0.14s ease, box-shadow 0.25s ease, filter 0.25s ease;
       border-radius: 50%;
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.08),
-        0 22px 60px rgba(0, 0, 0, 0.45),
-        0 0 70px rgba(74, 222, 128, 0.14);
-      filter: drop-shadow(0 20px 28px rgba(0, 0, 0, 0.35));
+        0 24px 65px rgba(0, 0, 0, 0.48),
+        0 0 82px rgba(74, 222, 128, 0.16);
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.38));
     }
 
     .alarm-button:active {
       transform: scale(0.95);
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.08),
-        0 10px 30px rgba(0, 0, 0, 0.45),
-        0 0 50px rgba(74, 222, 128, 0.18);
+        0 12px 35px rgba(0, 0, 0, 0.48),
+        0 0 58px rgba(74, 222, 128, 0.2);
     }
 
     .alarm-button:hover {
       outline: none;
-      transform: translateY(-3px) scale(1.025);
-      filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.42)) brightness(1.08);
+      transform: translateY(-4px) scale(1.025);
+      filter: drop-shadow(0 26px 36px rgba(0, 0, 0, 0.44)) brightness(1.08);
     }
 
     /* Input Containers */
@@ -326,36 +358,43 @@
       text-align: right;
       font-size: 1.05em;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--muted);
     }
 
     input {
       flex: 2;
       min-width: 0;
-      padding: 13px 14px;
-      border-radius: 14px;
+      padding: 14px 14px;
+      border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.14);
       font-size: 1em;
       font-weight: 500;
-      background-color: rgba(255, 255, 255, 0.065);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.045)),
+        rgba(255, 255, 255, 0.045);
       color: #fff;
       text-align: center;
       outline: none;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 10px 24px rgba(0, 0, 0, 0.18);
       transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     input:focus {
       outline: none;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-color: rgba(74, 222, 128, 0.75);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.065)),
+        rgba(255, 255, 255, 0.07);
+      border-color: rgba(74, 222, 128, 0.76);
       box-shadow:
         0 0 0 4px rgba(74, 222, 128, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        inset 0 1px 0 rgba(255, 255, 255, 0.09),
+        0 12px 28px rgba(0, 0, 0, 0.22);
     }
 
     input::placeholder {
-      color: rgba(255, 255, 255, 0.58);
+      color: rgba(255, 255, 255, 0.56);
       opacity: 1;
     }
 
@@ -365,42 +404,42 @@
       justify-content: space-between;
       align-items: center;
       gap: 14px;
-      margin: 24px 0 18px;
+      margin: 26px 0 18px;
     }
 
     button {
-      padding: 13px 26px;
+      padding: 14px 27px;
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.055));
+        linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.055));
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
       cursor: pointer;
       font-size: 1.05em;
       font-weight: 700;
       letter-spacing: -0.01em;
-      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.3);
       transition: background-color 0.3s, transform 0.2s, border-color 0.3s, box-shadow 0.3s;
     }
 
     button:hover {
       background:
-        linear-gradient(180deg, rgba(74, 222, 128, 0.25), rgba(34, 197, 94, 0.13));
-      border-color: rgba(74, 222, 128, 0.35);
+        linear-gradient(180deg, rgba(74, 222, 128, 0.28), rgba(34, 197, 94, 0.14));
+      border-color: rgba(74, 222, 128, 0.38);
       transform: translateY(-2px);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.36);
     }
 
     .pause-button {
       background:
-        linear-gradient(180deg, rgba(239, 68, 68, 0.32), rgba(153, 27, 27, 0.42));
-      border-color: rgba(248, 113, 113, 0.26);
+        linear-gradient(180deg, rgba(239, 68, 68, 0.34), rgba(153, 27, 27, 0.44));
+      border-color: rgba(248, 113, 113, 0.28);
     }
 
     .pause-button:hover {
       background:
-        linear-gradient(180deg, rgba(239, 68, 68, 0.48), rgba(153, 27, 27, 0.56));
-      border-color: rgba(248, 113, 113, 0.42);
+        linear-gradient(180deg, rgba(239, 68, 68, 0.5), rgba(153, 27, 27, 0.58));
+      border-color: rgba(248, 113, 113, 0.44);
     }
 
     /* Estimated Time & Countdown Timer */
@@ -413,12 +452,12 @@
     }
 
     .countdown-timer {
-      font-size: 1.3em;
+      font-size: 1.32em;
       font-weight: 700;
       margin-top: 18px;
       color: var(--cyan);
       transition: color 0.3s ease;
-      text-shadow: 0 0 26px rgba(56, 189, 248, 0.25);
+      text-shadow: 0 0 28px rgba(56, 189, 248, 0.28);
     }
 
     /* Full-Screen Notification */
@@ -429,10 +468,10 @@
       width: 100%;
       height: 100%;
       background:
-        radial-gradient(circle at 50% 40%, rgba(74, 222, 128, 0.16), transparent 35%),
-        rgba(2, 6, 23, 0.88);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+        radial-gradient(circle at 50% 40%, rgba(74, 222, 128, 0.18), transparent 35%),
+        rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -452,17 +491,17 @@
 
     .notification-content {
       text-align: center;
-      padding: 34px 38px;
-      border-radius: 28px;
+      padding: 36px 40px;
+      border-radius: 30px;
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04)),
-        rgba(8, 12, 20, 0.86);
-      border: 1px solid rgba(255, 255, 255, 0.13);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04)),
+        rgba(8, 13, 24, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: var(--green);
       transform: scale(1);
       transition: transform 0.3s ease;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
-      max-width: 520px;
+      box-shadow: var(--shadow-xl);
+      max-width: 530px;
       width: 100%;
     }
 
@@ -488,12 +527,16 @@
     @media (max-width: 680px) {
       body {
         align-items: flex-start;
-        padding: 118px 14px 90px;
+        padding: 120px 14px 90px;
       }
 
       .container {
-        padding: 28px 20px;
-        border-radius: 24px;
+        padding: 30px 20px;
+        border-radius: 26px;
+      }
+
+      .container::after {
+        border-radius: 25px;
       }
 
       .time-button {
@@ -516,6 +559,7 @@
         min-width: 122px;
         font-size: 0.98em;
         padding: 10px 13px;
+        border-radius: 15px;
       }
 
       #completedNotification {
@@ -523,18 +567,19 @@
       }
 
       #notification {
-        top: 112px;
+        top: 113px;
       }
 
       .lifetime-presses {
         left: 14px;
         bottom: 14px;
         font-size: 0.88em;
+        padding: 10px 13px;
       }
 
       .alarm-button {
-        width: 165px;
-        height: 165px;
+        width: 168px;
+        height: 168px;
       }
 
       .input-container {
@@ -566,8 +611,8 @@
   <div class="background"></div>
 
   <!-- Display of Start and End Time -->
-  <div class="time-button time-start">Start Time: <span id="startTime"></span></div>
-  <div class="time-button time-end">End Time: <span id="endTime"></span></div>
+  <div class="time-button time-start is-empty">Start Time: <span id="startTime"></span></div>
+  <div class="time-button time-end is-empty">End Time: <span id="endTime"></span></div>
 
   <!-- Notifications on the right side -->
   <div class="notification" id="completedNotification"></div>
@@ -594,7 +639,7 @@
     <!-- Rest Time Input -->
     <div class="input-container">
       <label for="minutes">Rest Time:</label>
-      <input type="number" id="minutes" min="0" value="0" placeholder="Minutes" oninput="saveSettings()" />
+      <input type="number" id="minutes" min="0" value="5" placeholder="Minutes" oninput="saveSettings()" />
       <input type="number" id="seconds" min="0" max="59" value="0" placeholder="Seconds" oninput="saveSettings()" />
     </div>
 
@@ -642,7 +687,11 @@
         if (seconds) document.getElementById('seconds').value = seconds;
 
         // Update the estimated time on load
-        updateEstimatedTime(times, minutes, seconds);
+        updateEstimatedTime(
+          document.getElementById('times').value,
+          document.getElementById('minutes').value,
+          document.getElementById('seconds').value
+        );
       } catch (error) {
         console.error('Error on DOMContentLoaded:', error);
       }
@@ -731,10 +780,12 @@
         // Show start time
         const startTimeElement = document.getElementById('startTime');
         startTimeElement.textContent = new Date(startTime).toLocaleTimeString();
+        document.querySelector('.time-start').classList.remove('is-empty');
 
         // Set the end time for display
         const endTimeVal = startTime + times * interval;
         document.getElementById('endTime').textContent = new Date(endTimeVal).toLocaleTimeString();
+        document.querySelector('.time-end').classList.remove('is-empty');
 
         // Update the UI
         updateEstimatedTime(times, minutes, seconds);
